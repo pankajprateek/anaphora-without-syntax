@@ -1,0 +1,258 @@
+# Sentence pair (1) source length 5 target length 5 alignment score : 0.000160379
+construct lineSegment AB length 7.8cm 
+NULL ({ 2 }) Construct ({ 1 }) AB ({ 3 }) of ({ }) length ({ 4 }) 7.8cm ({ 5 }) 
+# Sentence pair (2) source length 8 target length 6 alignment score : 4.37195e-05
+cut ? lineSegment AC length 4.7cm 
+NULL ({ 2 }) From ({ }) this, ({ 1 }) cut ({ }) off ({ 3 }) AC ({ 4 }) of ({ }) length ({ 5 }) 4.7cm ({ 6 }) 
+# Sentence pair (3) source length 13 target length 6 alignment score : 6.09452e-06
+construct lineSegment PQ twice length AB 
+NULL ({ }) construct ({ 1 }) PQ ({ }) such ({ 2 }) that ({ }) the ({ }) length ({ }) of ({ }) PQ ({ 3 }) is ({ }) twice ({ 4 }) that ({ 5 }) of ({ }) AB ({ 6 }) 
+# Sentence pair (4) source length 11 target length 5 alignment score : 5.73616e-05
+construct lineSegment PX length AB 
+NULL ({ }) Construct ({ 1 }) PX ({ }) such ({ 2 }) that ({ }) length ({ }) of ({ }) PX ({ }) = ({ 3 }) length ({ 4 }) of ({ }) AB ({ 5 }) 
+# Sentence pair (5) source length 13 target length 6 alignment score : 1.25267e-06
+cut ? lineSegment XQ length AB 
+NULL ({ 2 }) then ({ 1 }) cut ({ }) off ({ 3 }) XQ ({ 4 }) such ({ }) that ({ }) XQ ({ }) also ({ }) has ({ }) the ({ }) length ({ 5 }) of ({ }) AB ({ 6 }) 
+# Sentence pair (6) source length 23 target length 8 alignment score : 1.69868e-09
+construct lineSegment XY difference length AB length CD 
+NULL ({ }) construct ({ }) a ({ 1 }) line ({ }) segment ({ 2 }) XY ({ 3 }) such ({ 4 }) that ({ }) the ({ }) length ({ 5 }) of ({ }) XY ({ }) is ({ }) equal ({ }) to ({ }) the ({ }) difference ({ 6 }) between ({ }) the ({ }) lengths ({ 7 }) of ({ }) AB ({ }) and ({ }) CD ({ 8 }) 
+# Sentence pair (7) source length 5 target length 3 alignment score : 0.0119329
+construct copy PQ 
+NULL ({ }) construct ({ }) a ({ 1 }) copy ({ 2 }) of ({ }) PQ ({ 3 }) 
+# Sentence pair (8) source length 13 target length 6 alignment score : 6.09452e-06
+construct lineSegment PQ twice length AB 
+NULL ({ }) construct ({ 1 }) PQ ({ }) such ({ 2 }) that ({ }) the ({ }) length ({ }) of ({ }) PQ ({ 3 }) is ({ }) twice ({ 4 }) that ({ 5 }) of ({ }) AB ({ 6 }) 
+# Sentence pair (9) source length 8 target length 5 alignment score : 0.000178759
+construct point P line l 
+NULL ({ }) Given ({ }) a ({ 1 }) point ({ 2 }) P ({ 3 }) on ({ }) a ({ }) line ({ 4 }) l ({ 5 }) 
+# Sentence pair (10) source length 21 target length 14 alignment score : 5.79168e-15
+construct arc centre point P radius ? intersect line l point A point B 
+NULL ({ 4 7 }) With ({ 3 }) P ({ 5 }) as ({ }) centre ({ 6 }) and ({ }) a ({ 1 }) convenient ({ }) radius, ({ 2 }) construct ({ }) an ({ }) arc ({ }) intersecting ({ 8 }) the ({ }) line ({ 9 }) l ({ 10 }) at ({ }) two ({ }) points ({ 11 }) A ({ 12 }) and ({ 13 }) B ({ 14 }) 
+# Sentence pair (11) source length 21 target length 14 alignment score : 2.26493e-16
+construct intersectingArcs centres point A point B radii greaterThan length AP intersectAt point Q 
+NULL ({ 4 }) With ({ }) A ({ 5 }) and ({ 6 }) B ({ 7 }) as ({ }) centres ({ 8 }) and ({ }) a ({ 1 }) radius ({ }) greater ({ 2 }) than ({ }) AP ({ 3 }) construct ({ }) two ({ }) arcs, ({ 9 }) which ({ }) cut ({ 10 }) each ({ 11 }) other ({ 12 }) at ({ 13 }) Q ({ 14 }) 
+# Sentence pair (12) source length 2 target length 2 alignment score : 0.115833
+join PQ 
+NULL ({ }) Join ({ 1 }) PQ ({ 2 }) 
+# Sentence pair (13) source length 11 target length 7 alignment score : 7.79227e-06
+extend P? intersect ? l point M 
+NULL ({ 4 }) Join ({ }) PM ({ }) along ({ 1 }) the ({ }) edge ({ 2 }) through ({ }) P, ({ }) meeting ({ 3 }) l ({ 5 }) at ({ 6 }) M ({ 7 }) 
+# Sentence pair (14) source length 17 target length 13 alignment score : 5.3553e-13
+construct arc centre P radius ? intersect line l point A point B 
+NULL ({ 6 }) With ({ 3 }) P ({ 4 }) as ({ }) centre, ({ }) draw ({ 1 }) an ({ 2 }) arc ({ }) which ({ 5 }) intersects ({ 7 }) line ({ 8 }) l ({ 9 }) at ({ }) two ({ }) points ({ 10 }) A ({ 11 }) and ({ 12 }) B ({ 13 }) 
+# Sentence pair (15) source length 25 target length 12 alignment score : 4.66829e-17
+construct intersectingArcs centres point A point B radii ? intersectAt point Q 
+NULL ({ }) Using ({ 3 }) the ({ }) same ({ 4 }) radius ({ }) and ({ }) with ({ }) A ({ 5 }) and ({ 6 }) B ({ 7 }) as ({ }) centres, ({ 8 }) construct ({ }) two ({ }) arcs ({ }) that ({ }) intersect ({ 9 }) at ({ 11 }) a ({ 1 }) point, ({ }) say ({ 2 }) Q, ({ }) on ({ }) the ({ }) other ({ 10 }) side ({ 12 }) 
+# Sentence pair (16) source length 2 target length 2 alignment score : 0.115833
+join PQ 
+NULL ({ }) Join ({ 1 }) PQ ({ 2 }) 
+# Sentence pair (17) source length 5 target length 3 alignment score : 0.00143109
+draw lineSegment AB 
+NULL ({ }) Draw ({ }) any ({ 1 }) line ({ }) segment ({ 2 }) AB ({ 3 }) 
+# Sentence pair (18) source length 6 target length 5 alignment score : 0.00428049
+construct point M on ? 
+NULL ({ }) Mark ({ 1 }) any ({ }) point ({ 2 }) M ({ 3 }) on ({ 4 }) it ({ 5 }) 
+# Sentence pair (19) source length 7 target length 7 alignment score : 9.00841e-09
+construct perpendicular to lineSegment AB through M 
+NULL ({ 4 }) Through ({ 6 }) M, ({ 7 }) draw ({ }) a ({ 1 }) perpendicular ({ 2 }) to ({ 3 }) AB ({ 5 }) 
+# Sentence pair (20) source length 5 target length 3 alignment score : 0.0116968
+construct lineSegment PQ 
+NULL ({ }) Draw ({ 1 }) any ({ }) line ({ }) segment ({ 2 }) PQ ({ 3 }) 
+# Sentence pair (21) source length 7 target length 5 alignment score : 0.00107221
+construct point R noton ? 
+NULL ({ }) Take ({ 1 }) any ({ }) point ({ 2 }) R ({ 3 }) not ({ 4 }) on ({ }) it ({ 5 }) 
+# Sentence pair (22) source length 7 target length 7 alignment score : 8.59364e-09
+construct perpendicular to lineSegment PQ through R 
+NULL ({ 4 }) Through ({ 6 }) R, ({ 7 }) draw ({ }) a ({ 1 }) perpendicular ({ 2 }) to ({ 3 }) PQ ({ 5 }) 
+# Sentence pair (23) source length 4 target length 3 alignment score : 0.024454
+construct line l 
+NULL ({ }) Draw ({ }) a ({ 1 }) line ({ 2 }) l ({ 3 }) 
+# Sentence pair (24) source length 6 target length 5 alignment score : 0.0031195
+construct point X on ? 
+NULL ({ }) Draw ({ }) a ({ 1 }) point ({ 2 }) X ({ 3 }) on ({ 4 }) it ({ 5 }) 
+# Sentence pair (25) source length 10 target length 7 alignment score : 9.00978e-12
+construct perpendicular to line l through X 
+NULL ({ }) Through ({ 6 }) X, ({ }) draw ({ }) a ({ 1 }) line ({ }) segment ({ }) XY ({ }) perpendicular ({ 2 }) to ({ 3 }) l. ({ 4 5 7 }) 
+# Sentence pair (26) source length 8 target length 7 alignment score : 5.34081e-08
+construct perpendicular to lineSegment XY through Y 
+NULL ({ 4 }) Now ({ }) draw ({ }) a ({ 1 }) perpendicular ({ 2 }) to ({ 3 }) XY ({ 5 }) at ({ }) Y. ({ 6 7 }) 
+# Sentence pair (27) source length 8 target length 5 alignment score : 0.000606478
+construct lineSegment AB length ? 
+NULL ({ 5 }) Draw ({ }) a ({ 1 }) line ({ }) segment ({ 2 }) AB ({ 3 }) of ({ }) any ({ }) length ({ 4 }) 
+# Sentence pair (28) source length 18 target length 10 alignment score : 3.92623e-13
+construct circle centre A radius greater than half length AB 
+NULL ({ }) With ({ }) A ({ }) as ({ }) centre, ({ }) using ({ 3 }) compasses, ({ 4 }) draw ({ }) a ({ 1 }) circle ({ 2 }) with ({ }) radius ({ 5 }) more ({ 6 }) than ({ 7 }) half ({ 8 }) the ({ }) length ({ 9 }) of ({ }) AB. ({ 10 }) 
+# Sentence pair (29) source length 14 target length 6 alignment score : 8.84425e-09
+construct circle centre B radius ? 
+NULL ({ 6 }) With ({ 1 }) the ({ }) same ({ }) radius ({ }) and ({ }) with ({ }) B ({ 4 }) as ({ }) centre, ({ 5 }) draw ({ }) another ({ }) circle ({ 2 }) using ({ 3 }) compasses ({ }) 
+# Sentence pair (30) source length 10 target length 8 alignment score : 1.43694e-06
+label intersectionPoints ? ? point C point D 
+NULL ({ 4 }) Let ({ 1 }) it ({ }) cut ({ }) the ({ }) previous ({ 2 }) circle ({ 3 }) at ({ 5 }) C ({ 6 }) and ({ 7 }) D ({ 8 }) 
+# Sentence pair (31) source length 2 target length 2 alignment score : 0.108221
+join CD 
+NULL ({ }) Join ({ 1 }) CD ({ 2 }) 
+# Sentence pair (32) source length 5 target length 6 alignment score : 7.09072e-05
+label intersectionPoints ? AB point O 
+NULL ({ 3 }) It ({ 1 }) cuts ({ 2 }) AB ({ 4 }) at ({ 5 }) O ({ 6 }) 
+# Sentence pair (33) source length 5 target length 5 alignment score : 0.00014402
+construct lineSegment AB length 7.3cm 
+NULL ({ 2 }) Draw ({ 1 }) AB ({ 3 }) of ({ }) length ({ 4 }) 7.3cm ({ 5 }) 
+# Sentence pair (34) source length 7 target length 5 alignment score : 0.000330641
+construct lineSegment ? length 9.5cm 
+NULL ({ }) Draw ({ }) a ({ 1 }) line ({ }) segment ({ 2 }) of ({ 3 }) length ({ 4 }) 9.5cm ({ 5 }) 
+# Sentence pair (35) source length 4 target length 3 alignment score : 0.0027141
+construct perpendicularBisector ? 
+NULL ({ }) Construct ({ 1 }) its ({ }) perpendicular ({ 2 }) bisector ({ 3 }) 
+# Sentence pair (36) source length 6 target length 5 alignment score : 2.00185e-05
+construct lineSegment XY length 10.3cm 
+NULL ({ 2 }) Draw ({ 1 }) XY ({ 3 }) whose ({ }) length ({ 4 }) is ({ }) 10.3cm ({ 5 }) 
+# Sentence pair (37) source length 6 target length 4 alignment score : 0.000267148
+construct prependicularBisector lineSegment XY 
+NULL ({ }) Draw ({ 1 }) the ({ }) perpendicular ({ }) bisector ({ 2 }) of ({ 3 }) XY ({ 4 }) 
+# Sentence pair (38) source length 8 target length 5 alignment score : 0.000585318
+construct point P on ? 
+NULL ({ }) Take ({ 1 }) any ({ }) point ({ 2 }) P ({ 3 }) on ({ 4 }) the ({ }) bisector ({ }) drawn. ({ 5 }) 
+# Sentence pair (39) source length 7 target length 5 alignment score : 0.000290933
+construct lineSegment ? length 12.8cm 
+NULL ({ }) Draw ({ }) a ({ 1 }) line ({ }) segment ({ 2 }) of ({ 3 }) length ({ 4 }) 12.8cm ({ 5 }) 
+# Sentence pair (40) source length 8 target length 4 alignment score : 0.000425059
+divide ? numParts four 
+NULL ({ }) Using ({ }) compasses, ({ }) divide ({ 1 }) it ({ }) into ({ }) four ({ 2 }) equal ({ 3 }) parts. ({ 4 }) 
+# Sentence pair (41) source length 7 target length 7 alignment score : 1.71372e-07
+construct circle centre ? diameter length 6.1cm 
+NULL ({ 4 }) With ({ 1 }) 6.1cm ({ 2 }) as ({ 3 }) diameter, ({ 5 }) draw ({ }) a ({ }) circle. ({ 6 7 }) 
+# Sentence pair (42) source length 9 target length 6 alignment score : 0.000131875
+construct circle center C radius 3.4cm 
+NULL ({ }) Draw ({ }) a ({ 1 }) circle ({ 2 }) with ({ 3 }) centre ({ }) C ({ 4 }) and ({ }) radius ({ 5 }) 3.4cm ({ 6 }) 
+# Sentence pair (43) source length 4 target length 5 alignment score : 2.54294e-06
+construct chord AB distanceFromCenter ? 
+NULL ({ 5 }) Draw ({ 1 }) any ({ }) chord ({ 2 4 }) AB ({ 3 }) 
+# Sentence pair (44) source length 6 target length 4 alignment score : 0.000274233
+construct perpendicularBisector lineSegment AB 
+NULL ({ }) Construct ({ 1 }) the ({ }) perpendicular ({ }) bisector ({ 2 }) of ({ 3 }) AB ({ 4 }) 
+# Sentence pair (45) source length 6 target length 6 alignment score : 1.98341e-06
+construct circle center ? radius 4cm 
+NULL ({ 4 }) Draw ({ }) a ({ 1 }) circle ({ 2 }) of ({ }) radius ({ 3 }) 4cm ({ 5 6 }) 
+# Sentence pair (46) source length 6 target length 7 alignment score : 1.3185e-06
+construct chords ? distanceFromCenter ? distanceFromCenter ? 
+NULL ({ 5 7 }) Draw ({ 1 }) any ({ }) two ({ 2 }) of ({ }) its ({ 3 }) chords. ({ 4 6 }) 
+# Sentence pair (47) source length 7 target length 4 alignment score : 0.0012308
+construct perpendicularBisectors ? ? 
+NULL ({ 4 }) Construct ({ 1 }) the ({ }) perpendicular ({ }) bisectors ({ 2 }) of ({ }) these ({ 3 }) chords. ({ }) 
+# Sentence pair (48) source length 6 target length 4 alignment score : 0.00900496
+construct angle vertex O 
+NULL ({ }) Draw ({ 1 }) any ({ }) angle ({ 2 }) with ({ }) vertex ({ 3 }) O ({ 4 }) 
+# Sentence pair (49) source length 13 target length 8 alignment score : 8.63795e-11
+construct points point A point B arms ? 
+NULL ({ 4 8 }) Take ({ }) a ({ 1 }) point ({ }) A ({ }) on ({ }) one ({ }) of ({ }) its ({ }) arms ({ 2 }) and ({ 3 5 }) B ({ 6 }) on ({ }) another ({ 7 }) 
+# Sentence pair (50) source length 8 target length 6 alignment score : 9.60132e-07
+construct perpendicularBisectors lineSegment OA lineSegment OB 
+NULL ({ 5 }) Draw ({ 1 }) the ({ }) perpendicular ({ }) bisectors ({ 2 }) of ({ 3 }) OA ({ 4 }) and ({ }) OB ({ 6 }) 
+# Sentence pair (51) source length 5 target length 6 alignment score : 0.000175503
+label intersectionPoint ? ? point P 
+NULL ({ 3 }) Let ({ 1 }) them ({ 2 }) meet ({ 4 }) at ({ 5 }) P ({ 6 }) 
+# Sentence pair (52) source length 4 target length 3 alignment score : 0.024454
+construct line l 
+NULL ({ }) Draw ({ }) a ({ 1 }) line ({ 2 }) l ({ 3 }) 
+# Sentence pair (53) source length 6 target length 5 alignment score : 0.00253192
+construct point P on ? 
+NULL ({ }) Choose ({ }) a ({ 1 }) point ({ 2 }) P ({ 3 }) on ({ 4 }) it ({ 5 }) 
+# Sentence pair (54) source length 19 target length 16 alignment score : 4.39736e-23
+construct cuttingArc center A radius ? cuts rays angle A at points point B point C 
+NULL ({ 6 10 }) Place ({ 2 }) the ({ }) compasses ({ 3 }) at ({ }) A ({ 4 }) and ({ }) draw ({ 1 }) an ({ }) arc ({ 5 }) to ({ }) cut ({ }) the ({ 7 }) rays ({ 8 }) of ({ 9 }) ∠A ({ 16 }) at ({ 13 }) B ({ 14 }) and ({ 15 }) C. ({ 11 12 }) 
+# Sentence pair (55) source length 17 target length 13 alignment score : 3.99953e-17
+construct cuttingArc center point P radius ? cuts line l at point Q 
+NULL ({ 7 }) Use ({ 2 }) the ({ }) same ({ 4 }) compasses ({ }) setting ({ 1 }) to ({ }) draw ({ }) an ({ }) arc ({ }) with ({ 3 }) P ({ 5 }) as ({ }) centre, ({ 6 }) cutting ({ 8 9 }) l ({ 10 }) in ({ 11 12 }) Q. ({ 13 }) 
+# Sentence pair (56) source length 18 target length 11 alignment score : 5.11339e-13
+construct cuttingArc center Q radius ? cuts ? at point R 
+NULL ({ 6 8 }) Place ({ 2 }) the ({ }) compasses ({ }) pointer ({ 3 }) at ({ }) Q ({ 4 }) and ({ }) draw ({ 1 }) the ({ }) arc ({ }) to ({ }) cut ({ }) the ({ }) arc ({ 5 }) drawn ({ 7 }) earlier ({ 9 }) in ({ 10 }) R. ({ 11 }) 
+# Sentence pair (57) source length 2 target length 2 alignment score : 0.106491
+join PR 
+NULL ({ }) Join ({ 1 }) PR ({ 2 }) 
+# Sentence pair (58) source length 11 target length 9 alignment score : 3.84409e-12
+construct rays origin O ends point A point B 
+NULL ({ 7 }) With ({ }) O ({ 4 }) as ({ }) initial ({ 5 }) point, ({ 6 }) draw ({ 1 }) two ({ }) rays ({ 2 }) OA ({ 3 }) and ({ 8 }) OB ({ 9 }) 
+# Sentence pair (59) source length 20 target length 15 alignment score : 1.05169e-22
+construct intersectingArc center A radius ? cuts rays angle A at point B point C 
+NULL ({ 4 6 10 }) With ({ }) A ({ }) as ({ }) centre ({ }) and ({ }) using ({ }) compasses, ({ }) draw ({ 1 }) an ({ 2 }) arc ({ 3 5 }) that ({ }) cuts ({ 7 }) both ({ }) rays ({ 8 }) of ({ 9 }) ∠A ({ 15 }) at ({ 12 }) B ({ 13 }) and ({ 14 }) C. ({ 11 }) 
+# Sentence pair (60) source length 16 target length 11 alignment score : 9.97435e-14
+construct arc center B radius greater than half length lineSegment BC 
+NULL ({ 10 }) With ({ 1 }) B ({ 4 }) as ({ }) centre, ({ 5 }) draw ({ }) an ({ 2 }) arc ({ }) whose ({ }) radius ({ 3 }) is ({ }) more ({ 6 }) than ({ 7 }) half ({ 8 }) the ({ }) length ({ 9 }) BC. ({ 11 }) 
+# Sentence pair (61) source length 17 target length 6 alignment score : 4.7878e-09
+consturct arc center C radius ? 
+NULL ({ 6 }) With ({ }) the ({ }) same ({ 2 }) radius ({ }) and ({ }) with ({ 3 }) C ({ 4 }) as ({ }) centre, ({ 5 }) draw ({ }) another ({ }) arc ({ }) in ({ }) the ({ }) interior ({ 1 }) of ({ }) ∠A ({ }) 
+# Sentence pair (62) source length 7 target length 6 alignment score : 0.000121232
+label intersectingPoints ? ? point D 
+NULL ({ 4 }) Let ({ 1 }) the ({ }) two ({ }) arcs ({ 2 }) intersect ({ 3 }) at ({ 5 }) D ({ 6 }) 
+# Sentence pair (63) source length 4 target length 3 alignment score : 0.024454
+construct line l 
+NULL ({ }) Draw ({ }) a ({ 1 }) line ({ 2 }) l ({ 3 }) 
+# Sentence pair (64) source length 6 target length 5 alignment score : 0.00330092
+construct point O on ? 
+NULL ({ }) mark ({ }) a ({ 1 }) point ({ 2 }) O ({ 3 }) on ({ 4 }) it ({ 5 }) 
+# Sentence pair (65) source length 25 target length 12 alignment score : 3.75654e-16
+construct intersectingArc center O radius ? cuts lineSegment PQ at point A 
+NULL ({ 6 }) Place ({ }) the ({ }) pointer ({ }) of ({ }) the ({ }) compasses ({ }) at ({ }) O ({ 4 }) and ({ }) draw ({ 1 }) an ({ }) arc ({ }) of ({ }) convenient ({ 2 }) radius ({ 3 }) which ({ 5 }) cuts ({ 7 }) the ({ }) line ({ 8 }) PQ ({ 9 }) at ({ 10 }) a ({ }) point ({ 11 }) say, ({ }) A ({ 12 }) 
+# Sentence pair (66) source length 13 target length 9 alignment score : 4.02978e-11
+construct arc center A radius ? passesThrough point O 
+NULL ({ 4 6 }) With ({ }) the ({ }) pointer ({ }) at ({ }) A, ({ }) now ({ }) draw ({ 1 }) an ({ 2 }) arc ({ 3 5 }) that ({ }) passes ({ 7 }) through ({ 8 }) O ({ 9 }) 
+# Sentence pair (67) source length 7 target length 6 alignment score : 0.000122935
+label intersectingPoints ? ? point B 
+NULL ({ 4 }) Let ({ 1 }) the ({ }) two ({ }) arcs ({ 2 }) intersect ({ 3 }) at ({ 5 }) B ({ 6 }) 
+# Sentence pair (68) source length 2 target length 2 alignment score : 0.0732665
+join OB 
+NULL ({ }) Join ({ 1 }) OB ({ 2 }) 
+# Sentence pair (69) source length 4 target length 3 alignment score : 0.00828588
+construct lineSegment PQ 
+NULL ({ }) Draw ({ 1 }) any ({ }) line ({ 2 }) PQ ({ 3 }) 
+# Sentence pair (70) source length 6 target length 5 alignment score : 0.00326546
+construct point O on ? 
+NULL ({ }) Take ({ }) a ({ 1 }) point ({ 2 }) O ({ 3 }) on ({ 4 }) it ({ 5 }) 
+# Sentence pair (71) source length 21 target length 12 alignment score : 1.54516e-16
+construct intersectingArc center O radius ? cuts line ? at point A 
+NULL ({ 6 9 }) Place ({ }) the ({ }) pointer ({ }) of ({ }) the ({ }) compasses ({ }) at ({ }) O ({ 4 }) and ({ }) draw ({ 1 }) an ({ }) arc ({ }) of ({ }) convenient ({ 2 }) radius ({ 3 }) which ({ 5 }) cuts ({ 7 }) the ({ }) line ({ 8 }) at ({ 10 11 }) A ({ 12 }) 
+# Sentence pair (72) source length 21 target length 10 alignment score : 2.50236e-10
+construct intersectingArc center A radius ? cuts ? point B 
+NULL ({ 6 8 }) Without ({ }) disturbing ({ }) the ({ }) radius ({ }) on ({ }) the ({ }) compasses, ({ }) draw ({ 1 }) an ({ 2 }) arc ({ }) with ({ 3 }) A ({ 4 }) as ({ }) centre ({ }) which ({ 5 }) cuts ({ }) the ({ }) first ({ 7 }) arc ({ }) at ({ 9 }) B ({ 10 }) 
+# Sentence pair (73) source length 23 target length 10 alignment score : 1.30752e-10
+construct intersectingArc center B radius ? cuts ? point C 
+NULL ({ 6 8 }) Again ({ }) without ({ 1 }) disturbing ({ 2 }) the ({ }) radius ({ }) on ({ }) the ({ }) compasses ({ 3 }) and ({ }) with ({ }) B ({ 4 }) as ({ }) centre, ({ }) draw ({ }) an ({ }) arc ({ }) which ({ 5 }) cuts ({ }) the ({ }) first ({ 7 }) arc ({ }) at ({ 9 }) C ({ 10 }) 
+# Sentence pair (74) source length 5 target length 5 alignment score : 1.23732e-06
+construct angle POQ measure 75° 
+NULL ({ }) Draw ({ 1 }) ∠POQ ({ 3 }) of ({ 2 }) measure ({ 4 }) 75° ({ 5 }) 
+# Sentence pair (75) source length 6 target length 5 alignment score : 0.000844001
+construct angle ? measure 147° 
+NULL ({ }) Draw ({ 1 }) an ({ }) angle ({ 2 }) of ({ 3 }) measure ({ 4 }) 147° ({ 5 }) 
+# Sentence pair (76) source length 3 target length 3 alignment score : 0.0125281
+construct bisector ? 
+NULL ({ 3 }) Construct ({ 1 }) its ({ }) bisector ({ 2 }) 
+# Sentence pair (77) source length 4 target length 5 alignment score : 9.56594e-08
+construct angle ? measure right 
+NULL ({ 3 }) Draw ({ }) a ({ 1 }) right ({ 2 5 }) angle ({ 4 }) 
+# Sentence pair (78) source length 3 target length 3 alignment score : 0.0125281
+construct bisector ? 
+NULL ({ 3 }) Construct ({ 1 }) its ({ }) bisector ({ 2 }) 
+# Sentence pair (79) source length 6 target length 5 alignment score : 0.000844001
+construct angle ? measure 153° 
+NULL ({ }) Draw ({ 1 }) an ({ }) angle ({ 2 }) of ({ 3 }) measure ({ 4 }) 153° ({ 5 }) 
+# Sentence pair (80) source length 6 target length 4 alignment score : 0.00543354
+divide ? numParts four 
+NULL ({ }) Divide ({ 1 }) it ({ }) into ({ }) four ({ 2 }) equal ({ 3 }) parts ({ 4 }) 
+# Sentence pair (81) source length 6 target length 5 alignment score : 0.000632149
+construct angle ? measure 45° 
+NULL ({ }) Draw ({ 1 }) an ({ }) angle ({ 2 }) of ({ 3 }) measure ({ 4 }) 45° ({ 5 }) 
+# Sentence pair (82) source length 2 target length 2 alignment score : 0.122068
+bisect ? 
+NULL ({ }) Bisect ({ 1 }) it ({ 2 }) 
+# Sentence pair (83) source length 6 target length 5 alignment score : 0.000844001
+construct angle ? measure 135° 
+NULL ({ }) Draw ({ 1 }) an ({ }) angle ({ 2 }) of ({ 3 }) measure ({ 4 }) 135° ({ 5 }) 
+# Sentence pair (84) source length 2 target length 2 alignment score : 0.122068
+bisect ? 
+NULL ({ }) Bisect ({ 1 }) it ({ 2 }) 
+# Sentence pair (85) source length 5 target length 5 alignment score : 7.95588e-06
+construct angle ? measure 70° 
+NULL ({ }) Draw ({ 1 }) an ({ }) angle ({ 2 }) of ({ 3 }) 70° ({ 4 5 }) 
+# Sentence pair (86) source length 5 target length 5 alignment score : 7.95588e-06
+construct angle ? measure 40° 
+NULL ({ }) Draw ({ 1 }) an ({ }) angle ({ 2 }) of ({ 3 }) 40° ({ 4 5 }) 

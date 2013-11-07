@@ -1,0 +1,48 @@
+Exercise 7.10.1:
+
+Draw a line, say AB, take a point C outside it. Through C, draw a line parallel to AB using ruler and compasses only.
+
+Draw a line l. Draw a perpendicular to l at any point on l. On this perpendicular choose a point X, 4 cm away from l. Through X, draw a line m parallel to l.
+
+Let l be a line and P be a point not on l. Through P, draw a line m parallel to l. Now join P to any point Q on l. Choose any other point R on m. Through R, draw a line parallel to PQ. Let this meet l at S. What shape do the two sets of parallel lines enclose?
+
+Exercise 7.10.2
+Construct ΔXYZ in which XY = 4.5 cm, YZ = 5 cm and ZX = 6 cm.
+
+Construct an equilateral triangle of side 5.5 cm.
+
+Draw ΔPQR with PQ = 4 cm, QR = 3.5 cm and PR = 4 cm. What type of triangle is this?
+
+Construct ΔABC such that AB = 2.5 cm, BC = 6 cm and AC = 6.5 cm. Measure ∠B.
+
+Exercise 7.10.3
+Construct ΔDEF such that DE = 5 cm, DF = 3 cm and ∠EDF = 90°.
+Construct an isosceles triangle in which the lengths of each of its equal sides is 6.5 cm and the angle between them is 110°.
+Construct ΔABC with BC = 7.5 cm, AC = 5 cm and ∠C=60°.
+
+Exercise 7.10.4
+Construct ΔABC, given ∠A=60°, ∠B=30° and AB=5.8 cm.
+Construct ΔPQR if PQ=5 cm, ∠PQR=105° and ∠QRP=40°.
+
+Exercise 7.10.5
+Construct the right angled ΔPQR, where ∠Q=90°, QR=8cm and PR=10 cm.
+Construct a right-angled triangle whose hypotenuse is 6 cm long and one of the legs is 4 cm long.
+Construct an isosceles right-angled triangle ABC, where ∠ACB = 90° and AC = 6 cm.
+
+
+Exercise 9.11.1
+Construct an angle of 90° at the initial point  of a given ray.
+Construct an angle of 45° at the initial point of a given ray and justify the construction.
+Construct the angles of the following measurements:
+(i) 30° (ii) 22 1/2° (iii) 15°
+Construct the following angles:
+(i) 75° (ii) 105° (iii) 135°
+Construct an equilateral triangle, given its side.
+
+
+Exercise 9.11.2
+Construct a triangle ABC in which BC = 7cm, ∠B = 75° and AB + AC = 13 cm.
+Construct a triangle ABC in which BC = 8cm, ∠B = 45° and AB – AC = 3.5 cm.
+Construct a triangle PQR in which QR = 6cm, ∠Q = 60° and PR – PQ = 2cm.
+Construct a triangle XYZ in which ∠Y = 30°, ∠Z = 90° and XY + YZ + ZX = 11 cm.
+Construct a right triangle whose base is 12cm and sum of its hypotenuse and other side is 18 cm.
