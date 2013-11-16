@@ -1,0 +1,86 @@
+Construct AB of length 7.8cm
+From this, cut off AC of length 4.7cm
+construct PQ such that the length of PQ is twice that of AB
+Construct PX such that length of PX = length of AB
+then cut off XQ such that XQ also has the length of AB
+construct a line segment XY such that the length of XY is equal to the difference between the lengths of AB and CD
+construct a copy of PQ
+construct PQ such that the length of PQ is twice that of AB
+Given a point P on a line l
+With P as centre and a convenient radius, construct an arc intersecting the line l at two points A and B
+With A and B as centres and a radius greater than AP construct two arcs, which cut each other at Q
+Join PQ
+Join PM along the edge through P, meeting l at M
+With P as centre, draw an arc which intersects line l at two points A and B
+Using the same radius and with A and B as centres, construct two arcs that intersect at a point, say Q, on the other side
+Join PQ
+Draw any line segment AB
+Mark any point M on it
+Through M, draw a perpendicular to AB
+Draw any line segment PQ
+Take any point R not on it
+Through R, draw a perpendicular to PQ
+Draw a line l
+Draw a point X on it
+Through X, draw a line segment XY perpendicular to l.
+Draw a perpendicular to XY at Y.
+Draw a line segment AB of any length
+With A as centre, using compasses, draw a circle with radius more than half the length of AB.
+With the same radius and with B as centre, draw another circle
+Let it cut the previous circle at C and D
+Join CD
+It cuts AB at O
+Draw AB of length 7.3cm
+Draw a line segment of length 9.5cm
+Construct its perpendicular bisector
+Draw XY whose length is 10.3cm
+Draw the perpendicular bisector of XY
+Take any point P on the bisector drawn.
+Draw a line segment of length 12.8cm
+divide it into four equal parts.
+With 6.1cm as diameter, draw a circle.
+Draw a circle with centre C and radius 3.4cm
+Draw any chord AB
+Construct the perpendicular bisector of AB
+Draw a circle of radius 4cm
+Draw any two of its chords. 
+Construct the perpendicular bisectors of these chords.
+Draw any angle with vertex O
+Take a point A on one of its arms and B on another
+Draw the perpendicular bisectors of OA and OB
+Let them meet at P
+Draw a line l
+Choose a point P on it
+With A as center, draw an arc to cut the rays of ∠A at B and C
+Use the same radius to draw an arc with P as centre, cutting l in Q
+With center at Q, draw the arc to cut the arc drawn earlier in R
+Join PR
+With O as initial point, draw two rays OA and OB
+With A as centre and using compasses, draw an arc that cuts both rays of ∠A at B and C.
+With B as centre, draw an arc whose radius is more than half the length BC.
+With the same radius and with C as centre, draw another arc
+Let the two arcs intersect at D
+Draw a line l
+mark a point O on it
+with O as center, draw an arc of convenient radius which cuts the line PQ at a point say, A
+With the pointer at A, now draw an arc that passes through O
+Let the two arcs intersect at B
+Join OB
+Draw any line PQ
+Take a point O on it
+Place the pointer of the compasses at O and draw an arc of convenient radius which cuts the line at A
+with the same radius, draw an arc with A as centre which cuts the first arc at B
+with same radius and with B as centre, draw an arc which cuts the first arc at C
+Draw ∠POQ of measure 75°
+Draw an angle of measure 147°
+Construct its bisector
+Draw a right angle
+Construct its bisector
+Draw an angle of measure 153°
+Divide it into four equal parts
+Draw an angle of measure 45°
+Bisect it
+Draw an angle of measure 135°
+Bisect it
+Draw an angle of 70°
+Draw an angle of 40°
