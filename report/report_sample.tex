@@ -1,0 +1,138 @@
+\documentclass[a4paper]{article}
+\usepackage{float}
+\usepackage{graphics, epsfig, verbatim, hyperref, color, pstricks, pst-node, pst-coil, pst-rel-points}
+\usepackage[margin=3cm]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.2cm}
+\topskip 0.0in
+
+\title{Using Progressive Stochastic Search to solve Sudoku CSP}
+\author{Jeetesh Mangwani \& Pankaj Prateek\\
+	Advisor: Dr. Amitabh Mukherjee\cite{instructorWebsite}\cite{courseWebsite}\\
+        Dept. of Computer Science and Engineering\\
+	Indian Institute of Technology, Kanpur, India\\
+	\{jeeteshm, pratikkr, amit\} @ cse.iitk.ac.in}
+\date{April 14, 2012}
+
+\begin{document}
+
+\maketitle
+\begin{center}{\b \em ABSTRACT}\end{center}
+{\em Using stochastic search methods to find solutions to Constraing Satisfaction Problems (CSPs) has been reasonably successful in the recent years, with the deterministic search methods performing worse in many combinatorially hard problems. This motivated us to test this {\lq}superiority\rq of Stochastic Search methods over Deterministic Search methods. In this project, we implement Progressive Stochastic Search and Incremental Progressive Stochastic Search as methods to solve Sudoku puzzles of order-2,3 and 4. The results show that these methods do converge to correct solutions, building heuristics during the process, without exploiting any problem-specific standard solving methods. The timings show that deterministic methods have an extremely fast convergence, solving order-2 \& 3 puzzles in time less than 20 ms. On the other hand, PSS solves order-2 puzzles in about 11.554 $\mu$, order-3 puzzles in about 545.850 ms, easy, intermediate \& hard order-4 puzzles in about 2, 12 and 30 minutes respectively.}
+
+\section{Previous Work}
+This project is based on a 2003 paper titled \lq PSS for solving CSPs\rq\cite{mainref}, by Bryan Chi-ho Lam and Ho-fung Leung. PSS requires no previous knowledge of the problem and builds heuristics during the period problem is being solved. The paper also suggests a modified PSS algorithm, termed as Incremental Progressive Stochastic Search (IPSS). The results talk about timing comparisons when PSS, IPSS, max-PSS, max-IPSS and LSDL are tested over N-queens problem, permutation generation problem, Latin squares, Quasigroup completion problems and random CSPs. 
+
+Stochastic optimization approaches have previously been applied to solve sudoku CSP. Perez and Marwala used Cultural Genetic Algorithm (CGA), Repulsive Particle Swarm Optimization (RPSO), Quantum Simulated Annealing (QSA) and Hybrid Genetic Algorithm with Simulated Annealing (HGASA) to solve sudoku CSP\cite{uww}.
+
+\section{Introduction}
+A CSP is conventionally defined as a problem of finding a consistent assignment, if any, of discrete values to a finite set of variables such that the assignment satisfies a finite set of given constraints over these variables. The characteristic of PSS is that it maintains a list of variables, which dictates the sequence of variables to repair. When a variable is designated to be repaired, it always has to choose a new value even if its original value should give the best cost value.\\
+Intuitively, the search can be thought to be driven by a “force” so that the search is able to “rush through” the local minima and plateaus. The search paths are also slightly “marked” by “worsening” at every point on the paths as the search proceeds. Random restarts are no longer necessary, and expensive heuristic learning is replaced by simple path marking.\cite{mainref}\\
+
+An order-N sudoku puzzle has $4N^4$ constraints: Each of the $N^2$ rows, columns, blocks must have exactly $N^2$ values, while each of the $N^4$ cells must be filled with only one value.\cite{suppref}
+
+\section{Progressive Stochastic Search}
+In Progressive Stochastic Search (PSS)\footnote{For details, consult the paper\cite{mainref} by Lam and Leung}, a CSP is modelled as a network of variables, each represented by a cluster of label nodes, each of which correspond to the values present in the domain of the variable. At any moment, only one of these label nodes is active in a cluster (is in on state) while the others are in off state. In other words, this active node corresponds to the current value assigned to the cluster. In the following notes, the terms variables, cells and clusters are used interchangeably.
+
+A constraint c $\in$ C on two clusters $x$ and $y$ is represented as weighed connections between the label nodes of these clusters, $x_i$ and $y_j$. These two label nodes are connected if and only if $(x=x_i)\bigwedge(y=y_j)$ is prohibited. Each connection is associated with a weight W($x_i$,$y_j$) which is initialised to 1.
+An assignment of values to the variables from their domains is called a state of the problem, with the solution state being the one in which no two on label nodes are connected to each other. \\
+
+The clusters \footnote{cluster : a cell in the sudoku puzzle} are initialised using their minimum conflicting values in accordance with the given values in the sudoku puzzle, until the first complete assignment is reached.\\
+
+All clusters are then added to a list {\em Q}. In each iteration, the head of the queue {\em h} is removed and \lq repaired\rq to a new value $n_h$ (its minimum conflicting value among all values other than the present value) even if the present value $p_h$ gives a better cost, unless the present value is the only possible value in the domain. Each cluster, with its on value connected to this new value $n_h$, i.e. having the same on node as the just-switched-on label node of {\em h}, is appended to {\em Q}, if it is not already present. We then increase the weights of all the connections between the on label nodes and $p_h$ by 1.\\
+
+These iterations are continued till the queue is empty. In this situation, PSS is in a solution state.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=11cm]{pss.jpg}
+  \end{center}
+  \caption{PSS Network}
+  \label{fig:pspic}
+\end{figure}
+
+\section{Incremental PSS}
+Incremental PSS\footnote{For details, consult the paper\cite{mainref} by Lam and Leung} is a variant of PSS, which finds a consistent partial assignment and extends it until a complete solution is found. In IPSS, the underlying network architecture is same as that of PSS with a difference that the state represents a partial assignment of values to variables from their respective domains.\\
+
+IPSS divides the set of clusters into two subsets, $Q_{PSS}$ which contains the clusters with one on label node and $Q_{IPSS}$ which contains the rest. Initially, all clusters are in $Q_{IPSS}$ which are selected and moved to $Q_{PSS}$ one by one. While moving a cluster {\em i} to $Q_{PSS}$, its label node $m_i$ with the minimum conflicting value is turned on.\\
+
+The list $Q_{PSS}$ is initialised to empty. Any cluster in $Q_{IPSS}$, having its on label node connected to $m_i$ is appeneded to {\em Q}, unless it is already present. Then the convergence step in PSS is applied to $Q_{PSS}$ until it becomes empty. This is followed by moving next head cluster and conflicting clusters from $Q_{IPSS}$ to $Q_{PSS}$. Convergence is achieved once both the lists are empty.
+\section{Implementation}
+The code has been written in C++ and compiled using GNU C++ v4.3.2. The code was compiled and tested on Intel i7 @2GHz machine. The code can be found in \cite{webMangwani}\cite{webKewalramani}. The order-2 and 3 puzzles were generated using generator available at \cite{web23Generator}. The order-4 puzzles were taken from \cite{web4Generator}. The Norvig-like Python code was taken from \cite{webNorvigLikeCode} and edited to get it working on order-2 and order-3 puzzles.
+
+\section{Results}
+PSS, IPSS and Norvig's code were tested on the generated puzzle set, while the remaining results are from \cite{uww}.
+\begin{table}[H]
+  \caption{Average Time required to solve a puzzle}
+  \smallskip
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+      \hline {\bf Algorithm/Code} & {\bf 4X4} & {\bf 9X9} & {\bf 16X16}\\\hline
+      {\bf\em Stochastic Algorithms} & & &\\
+      PSS\cite{mainref} & 11.554$\mu$ & 545.850 ms & 902.599 s\\
+      IPSS\cite{mainref} & 12.515$\mu$ & 7.260 s & - \\
+      Cultural Genetic Algorithm (CGA)\cite{uww} & - & 28 s & - \\
+      Quantum Simulated Annealing (QSA)\cite{uww} & - & 65 s & - \\
+      Repulsive Particle Swarm Optimization (RPSO)\cite{uww} & - & Unable & - \\
+      Hybrid Genetic Algorithm with Simulated Annealing (HGASA)\cite{uww} & - & 1.447 s & - \\\hline
+      {\bf\em Deterministic Algorithms} & & &\\
+      Norvig's Code (python)\cite{webNorvigCode} & 0.539 ms & 18.500 ms& - \\\hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\subsection{Progressive Stochastic Search}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{stat2.jpg}
+  \end{center}
+  \caption{4X4 Sudoku: Average Time = 11.554 $\mu$}
+  \label{fig:pspic}
+\end{figure}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{stat3.jpg}
+  \end{center}
+  \caption{9X9 Sudoku: Average Time = 545.850 ms}
+  \label{fig:pspic}
+\end{figure}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{stat4.jpg}
+  \end{center}
+  \caption{16X16 Sudoku: Average Time = 902.599 s}
+  \label{fig:pspic}
+\end{figure}
+\subsection{Incremental Progressive Stochastic Search}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{istat2.jpg}
+  \end{center}
+  \caption{4X4 Sudoku: Average Time = 12.515 $\mu$s}
+  \label{fig:pspic}
+\end{figure}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{istat3.jpg}
+  \end{center}
+  \caption{9X9 Sudoku: Average Time = 7.260 s}
+  \label{fig:pspic}
+\end{figure}
+
+\begin{thebibliography}{99}
+  \bibitem{mainref} Bryan Chi-ho Lam and Ho-fung Leung, 2003. Progressive Stochastic Search for Solving Constraint Satisfaction Problems. Proceedings of the 15th IEEE International Conference on Tools with Artificial Intelligence (ICTAI’03) 1082-3409/03, Pages 487-491.
+  \bibitem{suppref} Rhydian Lewis, 2007. On the Combination of Constraint Programming and Stochastic Search. The Sudoku Case Proceedings of the 4th international conference on Hybrid metaheuristics. 
+  \bibitem{webNorvigCode} http://norvig.com/sudoku.html
+  \bibitem{uww} Meir Perez and Tshilidzi Marwala, 2008. Stochastic Optimization Approaches for Solving Sudoku. CoRR, journals/corr/abs-0805-0697.
+  \bibitem{webMangwani} http://home.iitk.ac.in/{\raise.17ex\hbox{$\scriptstyle\sim$}}jeeteshm/cs365/projects
+  \bibitem{webKewalramani} http://home.iitk.ac.in/{\raise.17ex\hbox{$\scriptstyle\sim$}}pratikkr/cs365/projects
+  \bibitem{web23Generator} http://ostermiller.org/qqwing/
+  \bibitem{web4Generator} http://www.menneske.no/sudoku/4/eng/
+  \bibitem{webNorvigLikeCode} http://pastebin.com/kamVh7Cx
+  \bibitem{courseWebsite} http://www.cse.iitk.ac.in/users/cs365/
+  \bibitem{instructorWebsite} http://www.cse.iitk.ac.in/users/amit//
+\end{thebibliography}
+
+
+
+\end{document}
