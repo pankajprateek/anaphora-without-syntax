@@ -1,4 +1,9 @@
 .PHONY: all english hindi
+CC = g++
+SOURCES = mapper.cpp interpreter.cpp
+OBJECTS = $(SOURCES:.cpp=.o)
+EXECUTABLE = interpret
+
 
 all english:
 	cp ./english/english-source.vcb ./source.vcb
@@ -10,6 +15,13 @@ hindi:
 	cp ./hindi/hindi-target.vcb ./target.vcb
 	cp ./hindi/alignment.txt ./
 
+interpret: $(OBJECTS)
+	$(CC) -o $@ $^
+
+.cpp.o:
+	$(CC) -c $< -o $@
+
 clean:
 	rm -f ./english/*
 	rm -f ./hindi/*
+

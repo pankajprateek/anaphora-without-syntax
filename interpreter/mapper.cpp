@@ -1,13 +1,9 @@
 #include<iostream>
 #include<fstream>
 #include<stdio.h>
-#include<vector>
-#include<map>
-#include<utility>
-#include<string>
 #include<algorithm>
+#include "mapper.h"
 #define debug 0
-using namespace std;
 
 vector<pair<string, int> > src;
 vector<pair<int, string> > trg;
@@ -79,7 +75,7 @@ vector<pair<string, double> > getsentences(int iter) {
 }
 
 
-int main() {
+vector<pair<string, double> > getPossibleMappings() {
 	ifstream f("source.vcb");
 	int tmp1, tmp3;
 	string tmp2;
@@ -170,7 +166,11 @@ int main() {
 	
 	sort(sentences.begin(), sentences.end(), compare);
 	
-	for(int i=0;i<int(sentences.size());i++) {
-		cout<<sentences[i].first<<"\t -> "<<sentences[i].second<<endl;
+	if(debug){
+		for(int i=0;i<int(sentences.size());i++) {
+			cout<<sentences[i].first<<"\t -> "<<sentences[i].second<<endl;
+		}
 	}
+	
+	return sentences;
 }
