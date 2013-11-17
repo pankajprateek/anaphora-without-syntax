@@ -1,7 +1,8 @@
 .PHONY: all english hindi
 CC = g++
-SOURCES = mapper.cpp interpreter.cpp
+SOURCES = mapper.cpp interpreter.cpp action.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
+HEADERS = $(SOURCES:.cpp=.h)
 EXECUTABLE = interpret
 
 
@@ -15,7 +16,7 @@ hindi:
 	cp ./hindi/hindi-target.vcb ./target.vcb
 	cp ./hindi/alignment.txt ./
 
-interpret: $(OBJECTS)
+interpret: $(OBJECTS) $(HEADERS)
 	$(CC) -o $@ $^
 
 .cpp.o:

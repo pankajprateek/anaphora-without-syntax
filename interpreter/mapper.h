@@ -5,3 +5,4 @@
 using namespace std;
 
 vector<pair<string, double> > getPossibleMappings();
+vector<string> split(string str);
