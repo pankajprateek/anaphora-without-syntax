@@ -5,16 +5,17 @@ OBJECTS = $(SOURCES:.cpp=.o)
 HEADERS = $(SOURCES:.cpp=.h)
 EXECUTABLE = interpret
 
+all: english
 
-all english:
+english:
 	cp ./english/english-source.vcb ./source.vcb
 	cp ./english/english-target.vcb ./target.vcb
 	cp ./english/alignment.txt ./
 	
 hindi:
-	cp ./hindi/hindi-source.vcb ./source.vcb
-	cp ./hindi/hindi-target.vcb ./target.vcb
-	cp ./hindi/alignment.txt ./
+	cp ./english/english-source.vcb ./source.vcb
+	cp ./english/english-target.vcb ./target.vcb
+	cp ./english/alignment.txt ./
 
 interpret: $(OBJECTS) $(HEADERS)
 	$(CC) -o $@ $^
@@ -23,6 +24,5 @@ interpret: $(OBJECTS) $(HEADERS)
 	$(CC) -c $< -o $@
 
 clean:
-	rm -f ./english/*
-	rm -f ./hindi/*
-
+	rm -f ./source.vcb ./target.vcb ./alignment.txt
+	

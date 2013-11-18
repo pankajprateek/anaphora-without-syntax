@@ -1,5 +1,5 @@
-Construct AB of length 7.8cm
-From this, cut off AC of length 4.7cm
+Construct AB of length 7.8  cm
+From this, cut off AC of length 4.7  cm
 construct PQ such that the length of PQ is twice that of AB
 Construct PX such that length of PX = length of AB
 then cut off XQ such that XQ also has the length of AB
@@ -30,19 +30,19 @@ With the same radius and with B as centre, draw another circle
 Let it cut the previous circle at C and D
 Join CD
 It cuts AB at O
-Draw AB of length 7.3cm
-Draw a line segment of length 9.5cm
+Draw AB of length 7.3  cm
+Draw a line segment of length 9.5 cm
 Construct its perpendicular bisector
-Draw XY whose length is 10.3cm
+Draw XY whose length is 10.3 cm
 Draw the perpendicular bisector of XY
 Take any point P on the bisector drawn.
-Draw a line segment of length 12.8cm
+Draw a line segment of length 12.8 cm
 divide it into four equal parts.
-With 6.1cm as diameter, draw a circle.
-Draw a circle with centre C and radius 3.4cm
+With 6.1 cm as diameter, draw a circle.
+Draw a circle with centre C and radius 3.4 cm
 Draw any chord AB
 Construct the perpendicular bisector of AB
-Draw a circle of radius 4cm
+Draw a circle of radius 4 cm
 Draw any two of its chords. 
 Construct the perpendicular bisectors of these chords.
 Draw any angle with vertex O

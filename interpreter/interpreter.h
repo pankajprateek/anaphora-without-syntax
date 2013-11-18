@@ -71,3 +71,4 @@ struct token{
 };
 
 void interpret();
+bool isValidPoint(char point);

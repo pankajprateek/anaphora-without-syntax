@@ -1,5 +1,5 @@
-construct lineSegment AB length 7.8cm
-cut from ? lineSegment AC length 4.7cm
+construct lineSegment AB length 7.8  cm
+cut from ? lineSegment AC length 4.7  cm
 construct lineSegment PQ twice length AB
 construct lineSegment PX length AB
 cut from ? lineSegment XQ length AB
@@ -30,19 +30,19 @@ construct circle centre B radius same
 label intersectionPoints it previous circle point C point D
 join CD
 label intersectionPoints it AB point O
-construct lineSegment AB length 7.3cm
-construct lineSegment any length 9.5cm
+construct lineSegment AB length 7.3 cm
+construct lineSegment any length 9.5 cm
 construct perpendicularBisector it
-construct lineSegment XY length 10.3cm
+construct lineSegment XY length 10.3 cm
 construct prependicularBisector of lineSegment XY
 construct point P on bisector
-construct lineSegment any length 12.8cm
+construct lineSegment any length 12.8 cm
 divide it numParts four
-construct circle centre any diameter 6.1cm
-construct circle center C radius 3.4cm
+construct circle centre any diameter 6.1 cm
+construct circle center C radius 3.4 cm
 construct chord AB distanceFromCenter any
 construct perpendicularBisector of lineSegment AB
-construct circle center any radius 4cm
+construct circle center any radius 4 cm
 construct chords its distanceFromCenter any distanceFromCenter any
 construct perpendicularBisectors of chords these
 construct angle vertex O

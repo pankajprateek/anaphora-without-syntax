@@ -1,8 +1,8 @@
-Construct AB of length 7.8cm
-construct lineSegment AB length 7.8cm
+Construct AB of length 7.8  cm
+construct lineSegment AB length 7.8  cm
 
-From this, cut off AC of length 4.7cm
-cut from ? lineSegment AC length 4.7cm
+From this, cut off AC of length 4.7  cm
+cut from ? lineSegment AC length 4.7  cm
 
 construct PQ such that the length of PQ is twice that of AB
 construct lineSegment PQ twice length AB
@@ -94,17 +94,17 @@ join CD
 It cuts AB at O
 label intersectionPoints it AB point O
 
-Draw AB of length 7.3cm
-construct lineSegment AB length 7.3cm
+Draw AB of length 7.3  cm
+construct lineSegment AB length 7.3 cm
 
-Draw a line segment of length 9.5cm
-construct lineSegment any length 9.5cm
+Draw a line segment of length 9.5 cm
+construct lineSegment any length 9.5 cm
 
 Construct its perpendicular bisector
 construct perpendicularBisector it
  
-Draw XY whose length is 10.3cm
-construct lineSegment XY length 10.3cm
+Draw XY whose length is 10.3 cm
+construct lineSegment XY length 10.3 cm
 
 Draw the perpendicular bisector of XY
 construct prependicularBisector of lineSegment XY
@@ -112,17 +112,17 @@ construct prependicularBisector of lineSegment XY
 Take any point P on the bisector drawn.
 construct point P on bisector
 
-Draw a line segment of length 12.8cm
-construct lineSegment any length 12.8cm
+Draw a line segment of length 12.8 cm
+construct lineSegment any length 12.8 cm
 
 divide it into four equal parts.
 divide it numParts four
 
-With 6.1cm as diameter, draw a circle.
-construct circle centre any diameter 6.1cm
+With 6.1 cm as diameter, draw a circle.
+construct circle centre any diameter 6.1 cm
 
-Draw a circle with centre C and radius 3.4cm
-construct circle center C radius 3.4cm
+Draw a circle with centre C and radius 3.4 cm
+construct circle center C radius 3.4 cm
 
 Draw any chord AB
 construct chord AB distanceFromCenter any
@@ -130,8 +130,8 @@ construct chord AB distanceFromCenter any
 Construct the perpendicular bisector of AB
 construct perpendicularBisector of lineSegment AB
 
-Draw a circle of radius 4cm
-construct circle center any radius 4cm
+Draw a circle of radius 4 cm
+construct circle center any radius 4 cm
 
 Draw any two of its chords. 
 construct chords its distanceFromCenter any distanceFromCenter any

@@ -9,6 +9,7 @@
 #include "action.h"
 using namespace std;
 const int max_keyword_length = 32;
+bool actionFound;
 
 void printSentence(token* sentence, int sentenceLength){
 	
@@ -36,6 +37,7 @@ int getIndex(token* sentence, int sentenceLength, int keywordIndex, int origin, 
 			for(int i=origin; i<sentenceLength && i>=0; i += delta){
 				if(sentence[i].used == true) continue;
 				const char *word = sentence[i].word;
+				//~ cout<<"Trying "<<word<<endl;
 				if(strlen(word)>2) continue;
 				char ch1 = word[0], ch2 = word[1];
 				if(ch1>='A' && ch1<='Z' && ch2>='A' && ch2<='Z') return i;
@@ -56,9 +58,9 @@ int getIndex(token* sentence, int sentenceLength, int keywordIndex, int origin, 
 			for(int i=origin; i<sentenceLength && i>=0; i += delta){
 				if(sentence[i].used == true) continue;
 				const char *word = sentence[i].word;
+				//~ cout<<"Trying "<<word<<endl;
 				double val = atof(word);
-				if(val==0.0) return -1;
-				else return i;
+				if(val!=0.0) return i;
 			}
 			return -1;		
 			break;
@@ -83,25 +85,69 @@ int getIndex(token* sentence, int sentenceLength, int keywordIndex, int origin, 
 	return -1;
 }
 
+int getPreferredIndex(int left, int right, int origin){
+	if(left < 0 && right < 0) return -1;
+	else if(left < 0) return right;
+	else if(right < 0) return left;
+	else{
+		int diffLeft = origin - left, diffRight = right - origin;
+		if(diffLeft <= diffRight) return left;
+		else return right;
+	}
+}
+
+void interpretParameters(Action action, token* sentence, int sentenceLength, int constructibleIndex){
+	cout<<"Interpreting parameters"<<endl;
+	printSentence(sentence, sentenceLength);
+	action.toString();
+	switch(action.constructible){
+		case keywords::LINE_SEGMENT:
+			int leftPointPairIndex = getIndex(sentence, sentenceLength, keywords::POINT_PAIR, constructibleIndex, false);
+			int rightPointPairIndex = getIndex(sentence, sentenceLength, keywords::POINT_PAIR, constructibleIndex, true);
+			int pointPairIndex = getPreferredIndex(leftPointPairIndex, rightPointPairIndex, constructibleIndex);
+			//~ cout<<leftPointPairIndex<<rightPointPairIndex<<pointPairIndex<<endl;
+			if(pointPairIndex < 0){
+				cout<<"Could not get the index for point pair"<<endl;
+				return;
+			}
+			sentence[pointPairIndex].used = true;
+			action.point1 = sentence[pointPairIndex].word[0];
+			action.point2 = sentence[pointPairIndex].word[1];
+			int leftLengthIndex = getIndex(sentence, sentenceLength, keywords::DOUBLE, constructibleIndex, false);
+			int rightLengthIndex = getIndex(sentence, sentenceLength, keywords::DOUBLE, constructibleIndex, true);
+			int lengthIndex = getPreferredIndex(leftLengthIndex, rightLengthIndex, constructibleIndex);
+			if(lengthIndex < 0){
+				cout<<"Could not get the index for length"<<endl;
+				return;
+			}
+			sentence[lengthIndex].used = true;
+			action.length = atof(sentence[lengthIndex].word);
+			action.toString();
+			if(action.isValid()){
+				cout<<"FINAL ACTION"<<endl;
+				action.toString();
+				actionFound = true;
+			}
+			return;
+	}
+}
+
 void interpretConstructible(Action action, token* sentence, int sentenceLength, int actionWordIndex){
+	cout<<"Interpreting constructible"<<endl;
+	printSentence(sentence, sentenceLength);
+	action.toString();
 	switch(action.action){
 		case keywords::CONSTRUCT:
 			for(int i=0; i<keywords::numConstructibles; i++){
 				int leftConstructibleIndex = getIndex(sentence, sentenceLength, constructibles[i], actionWordIndex, false);
 				int rightConstructibleIndex = getIndex(sentence, sentenceLength, constructibles[i], actionWordIndex, true);
-				int constructibleIndex;
-				if(leftConstructibleIndex<0 && rightConstructibleIndex<0) constructibleIndex = -1;
-				else if(leftConstructibleIndex < 0) constructibleIndex = rightConstructibleIndex;
-				else if(rightConstructibleIndex < 0) constructibleIndex = leftConstructibleIndex;
-				else if(rightConstructibleIndex - actionWordIndex < actionWordIndex - leftConstructibleIndex)
-					constructibleIndex = rightConstructibleIndex;
-				else constructibleIndex = leftConstructibleIndex;
-				if(constructibleIndex<0){
+				int constructibleIndex = getPreferredIndex(leftConstructibleIndex, rightConstructibleIndex, actionWordIndex);
+				
+				if(constructibleIndex >= 0){
 					sentence[constructibleIndex].used = true;
 					action.constructible = constructibles[i];
-					//~ interpretParameters(action, sentence, sentenceLength, constructibleIndex);
-					action.toString();
-					return;
+					interpretParameters(action, sentence, sentenceLength, constructibleIndex);
+					
 				}
 			}
 			break;
@@ -115,7 +161,7 @@ void interpretAction(Action action, token* sentence, int sentenceLength){
 		if(actionWordIndex >= 0){
 			sentence[actionWordIndex].used = true;
 			action.action = actions[i];
-			cout<<"Action found "<<actions[i]<<endl;
+			//cout<<"Action found "<<actions[i]<<endl;
 			interpretConstructible(action, sentence, sentenceLength, actionWordIndex);
 			return;
 		}
@@ -159,6 +205,13 @@ void interpret(){
 			sentence[j].used = false;
 		}
 		//~ printSentence(sentence, words.size());
+		actionFound = false;
 		interpretSentence(sentence, words.size());
+		if(actionFound == true) break;
+		
 	}
+}
+
+bool isValidPoint(char point){
+	return point >= 'A' && point <= 'Z';
 }

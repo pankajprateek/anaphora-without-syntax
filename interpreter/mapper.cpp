@@ -124,7 +124,7 @@ vector<pair<string, double> > getPossibleMappings() {
 		}
 	}
 
-	parse = "Construct AB of length 7.8cm";
+	parse = "Construct line segment AB of length 7.8 cm";
 	split_parse = split(parse);
 	
 	if(debug) {

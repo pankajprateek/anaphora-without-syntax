@@ -9,5 +9,7 @@ class Action{
 		char center1, center2;
 		double radius1, radius2;
 		
+		Action();
 		void toString();
+		bool isValid();
 };

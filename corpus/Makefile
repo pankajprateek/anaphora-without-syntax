@@ -1,16 +1,12 @@
 .PHONY: all english hindi
 all: english
 
-english: english-source.txt english-target.txt
-
-english-source.txt english-target.txt:
+english:
 	make english --directory=./english
 	cp ./english/source.txt ./english-source.txt
 	cp ./english/target.txt ./english-target.txt
 	
-hindi: hindi-source.txt hindi-target.txt
-
-hindi-source.txt hindi-target.txt:
+hindi: 
 	make hindi --directory=./hindi
 	cp ./hindi/source.txt ./hindi-source.txt
 	cp ./hindi/target.txt ./hindi-target.txt
