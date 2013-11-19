@@ -1,0 +1,28 @@
+A.  The lit review section is rather de-focused.  The paragraphs you have would go better in an 
+annotated bibl.  What is needed is a more specific review stating how these works are related and particularly their deficiencies w.r.t. the objectives. 
+
+0. Review the papers (or give a table showing which papers use a) parse knowledge, b) other 
+linguistic / domain knowledge. c) assume linguistic cues are already translated into logical forms
+
+Then state that in this work
+
+1. Unlike all other prior attempts, here we do not assume that logical forms are already available, nor do we assume the availability of a parser
+
+2. It is therefore able to handle a large range of languages - here we demonstrate for two widely-spoken languages from very different families - English Hindi
+
+
+B. Instead of talking too much about "Giza++" talk use a term such as "cross-lingual alignment". 
+Both in abstract and many points in text.  Refer to GIZA as only the most popular 
+scheme and its implementation
+
+C. If the annotations are not too big, replace the references w the annotated bibliography. 
+
+E. As part of the results, discuss some ambiguous / failures / difficulties . 
+
+
+spend a paragraph near the top talking about resource-rich langauges (those that have 
+penn tree-bank like expensive resources - about 5-10 in the world, of the 600+ languages
+in wide use). 
+
+2ndly - mention that the POS tags etc used in traditional parsers are not always the
+best way to break up language.  

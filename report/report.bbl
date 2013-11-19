@@ -1,0 +1,73 @@
+\begin{thebibliography}{1}
+
+\bibitem{ahmed2012can}
+Umair~Z Ahmed, Arpit Kumar, Monojit Choudhury, and Kalika Bali.
+\newblock Can modern statistical parsers lead to better natural language
+  understanding for education?
+\newblock In {\em Computational Linguistics and Intelligent Text Processing},
+  pages 415--427. Springer, 2012.
+ \begin{quotation}\noindent Focusing on the educational domain, this paper
+  seeks to build robust domain specific natural language understanding modules
+  by suitable preprocessing of the text and use of domain knowledge to deal
+  with parser errors. The paper starts with showing that even off-the-shelf
+  parsers do not perform up to the mark on texts with domain-specific
+  vocabulary and long sentences. The paper also talks about GeoSynth, built
+  using state-of-the-art parsing technology. GeoSynth is a system which can
+  automatically solve geometric constructions word problems. \end{quotation}
+\bibitem{gulwani2011synthesizing}
+Sumit Gulwani, Vijay~Anand Korthikanti, and Ashish Tiwari.
+\newblock Synthesizing geometry constructions.
+\newblock In {\em ACM SIGPLAN Notices}, volume~46, pages 50--61. ACM, 2011.
+ \begin{quotation}\noindent Aiming to solve ruler and compass based geometry
+  construction problems, the tool described in this paper claims to have
+  synthesized construction steps for problems posed from high-school textbooks
+  and examination papers. It focuses on three important insights viz. reduction
+  of symbolic reasoning to concrete reasoning using verification based on
+  random testing, augmenting the instruction set with higher level constructs
+  and simulating backward deduction used by humans by using a goal-based
+  heuristic. \end{quotation}
+\bibitem{itzhaky2012solving}
+Shachar Itzhaky, Sumit Gulwani, Neil Immerman, and Mooly Sagiv.
+\newblock Solving geometry problems using a combination of symbolic and
+  numerical reasoning.
+\newblock Technical report, Technical report, Tel Aviv University, 2012.
+ \begin{quotation}\noindent This paper combines deductive, numeric and
+  inductive reasoning to solve geometric problems. Using a mixture of these
+  methods, several problems are solved which, otherwise, wouldn't have been
+  solved using the methods individually. The paper uses the number of
+  nondeterministic choices as a measure of how close a partial program is to
+  the solution, claiming this to be useful in grading and providing hints to
+  the students. The implementation takes an average of few seconds on 18
+  Scholastic Aptitude Test geometry problems and 11 other ruler and
+  compass-based geometry construction problems. \end{quotation}
+\bibitem{och2003systematic}
+Franz~Josef Och and Hermann Ney.
+\newblock A systematic comparison of various statistical alignment models.
+\newblock {\em Computational linguistics}, 29(1):19--51, 2003.
+
+
+\bibitem{schreck2012geometric}
+Pascal Schreck, Pascal Mathis, and Julien Narboux.
+\newblock Geometric construction problem solving in computer-aided learning.
+\newblock In {\em Tools with Artificial Intelligence (ICTAI), 2012 IEEE 24th
+  International Conference on}, volume~1, pages 1139--1144. IEEE, 2012.
+ \begin{quotation}\noindent This paper introduces CAD methods to deal with
+  Constraint Satisfaction Problems related to geometry, at the same time claims
+  to have met the requirement met by the educational domain. The methods show
+  that results must be construction programs to take into account particular
+  cases. A knowledge-based system implemented in Prolog has also been
+  presented. \end{quotation}
+\bibitem{zettlemoyer2012learning}
+Luke~S Zettlemoyer and Michael Collins.
+\newblock Learning to map sentences to logical form: Structured classification
+  with probabilistic categorial grammars.
+\newblock {\em arXiv preprint arXiv:1207.1420}, 2012.
+ \begin{quotation}\noindent With the objective of mapping natural language
+  sentences to their counterpart lambda-calculus encoding, this paper
+  introduces an algorithm which learns from the input set of natural language
+  sentences labeled with lambda calculus expressions. The algorithm attempts to
+  infer the underlying distribution over semantic and syntactic analyses
+  conditioned on the input sentences and outputs a log-linear model.
+  \end{quotation}
+
+\end{thebibliography}
