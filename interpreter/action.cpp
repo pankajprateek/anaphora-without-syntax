@@ -50,6 +50,14 @@ bool Action::isValid(){
 				default: return false; break;
 			}
 			break;
+    case(keywords::JOIN):
+      if(this->constructible!=keywords::JOINING_SEGMENT)
+        return false;
+      if(!isValidPoint(this->point1)
+          || !isValidPoint(this->point2)){
+            return false;
+      }
+      break;
 		default: return false;
 	}
 	return true;

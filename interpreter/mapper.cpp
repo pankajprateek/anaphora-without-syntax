@@ -124,9 +124,12 @@ vector<pair<string, double> > getPossibleMappings() {
     }
   }
 
-  //parse = "Construct line segment AB of length 7.8 cm";
+  //~ parse = "Construct line segment AB of length 7.8 cm";
   //~ parse = "With A as center radius 7.8 cm draw an arc";
-  parse = "एक ही केंद्र O लेकर 4 सेमी और 2. 5 सेमी त्रिज्या वाले दो वृत्त खींचिए";
+  //~ parse = "एक ही केंद्र O लेकर 4 सेमी और 2. 5 सेमी त्रिज्या वाले दो वृत्त खींचिए";
+  //~ parse = "With A and B as centers and radius 4 and 5 cm draw two arcs intersecting each other at C";
+  //~ parse = "Join AB";
+  parse = "PQ को जोड़िये";
   split_parse = split(parse);
 	
   if(debug) {

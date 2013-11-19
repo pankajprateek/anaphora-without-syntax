@@ -15,8 +15,10 @@ class keywords{
 	//constructibles
 	static const int numConstructibles = 3;
 	static const int LINE_SEGMENT = 101;
-	static const int ARC =102;
-	static const int INTERSECTING_ARCS =103;
+	static const int INTERSECTING_ARCS =102;
+  static const int ARC =103;
+	
+  static const int JOINING_SEGMENT = 104;
 	
 	//parameter names
 	static const int numParameterNames = 4;
@@ -24,6 +26,8 @@ class keywords{
 	static const int CENTER = 202;
 	static const int RADIUS = 203;
 	static const int POINT = 204;
+  static const int INTERSECTING_AT = 205;
+  static const int CENTERS = 206;
 
 	//parameter values
 	static const int numParameterValues = 4;

@@ -7,12 +7,12 @@ construct lineSegment XY difference length AB length CD
 construct copy PQ
 construct lineSegment PQ twice length AB
 construct point P on line l
-construct arc centre point P radius any intersecting line l point A point B
-construct intersectingArcs centres point A point B radii greaterThan length AP intersectingAt point Q
+construct arc center point P radius any intersecting line l point A point B
+construct intersectingArcs centers point A point B radii greaterThan length AP intersectingAt point Q
 join PQ
 extend P? intersect l point M
-construct arc centre P radius any intersect line l point A point B
-construct intersectingArcs centres point A point B radii same intersectingAt point Q
+construct arc center P radius any intersect line l point A point B
+construct intersectingArcs centers point A point B radii same intersectingAt point Q
 join PQ
 draw lineSegment AB
 mark point M on it
@@ -25,20 +25,20 @@ draw point X on it
 construct perpendicular to line l through X
 construct perpendicular to lineSegment XY through Y
 construct lineSegment AB length any
-construct circle centre A radius greaterThan half length AB
-construct circle centre B radius same
+construct circle center A radius greaterThan half length AB
+construct circle center B radius same
 label intersectionPoints it previous circle point C point D
 join CD
 label intersectionPoints it AB point O
-construct lineSegment AB length 7.3 cm
+construct lineSegment AB length 4 cm
 construct lineSegment any length 9.5 cm
 construct perpendicularBisector it
-construct lineSegment XY length 10.3 cm
+construct lineSegment XY length 5 cm
 construct prependicularBisector of lineSegment XY
 construct point P on bisector
 construct lineSegment any length 12.8 cm
 divide it numParts four
-construct circle centre any diameter 6.1 cm
+construct circle center any diameter 6.1 cm
 construct circle center C radius 3.4 cm
 construct chord AB distanceFromCenter any
 construct perpendicularBisector of lineSegment AB

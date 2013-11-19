@@ -7,7 +7,7 @@ mark point C in exterior of circle
 construct line l
 mark point A on it
 construct arc center A radius any intersecting line l at B
-construct lineSegment length 7.3 cm
+construct lineSegment length 4 cm
 construct lineSegment length 5.6 cm
 construct lineSegment length 7.8 cm
 cut from this AC length 4.7 cm
@@ -15,7 +15,7 @@ construct lineSegment AB length 2.9 cm
 construct lineSegment PQ length twice length AB
 construct lineSegment PX length AB
 cut XQ length AB
-construct linseSegment AB length 7.3 cm
+construct linseSegment AB length 4 cm
 construct lineSegment CD length 3.4 cm
 construct lineSegment XY length difference AB CD
 construct arc intersecting l at D
@@ -41,9 +41,9 @@ construct circle center B radius same
 mark intersectingPoints circles at C D
 join CD
 mark intersectingPoint it AB at O
-construct lineSegment AB length 7.3 cm
+construct lineSegment AB length 4 cm
 construct lineSegment length 9.5 cm
-construct perpendicularBisector linseSegment XY length 10.3 cm
+construct perpendicularBisector linseSegment XY length 5 cm
 mark point P on perpendicularBisector 
 construct lineSegment length 12.8 cm
 construct lineSegment PQ length 6.1 cm
