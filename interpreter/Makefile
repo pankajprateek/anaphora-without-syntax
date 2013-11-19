@@ -24,5 +24,6 @@ interpret: $(OBJECTS) $(HEADERS)
 	$(CC) -c $< -o $@
 
 clean:
-	rm -f ./source.vcb ./target.vcb ./alignment.txt
+	rm drawing_instructions.txt
+	#rm -f ./source.vcb ./target.vcb ./alignment.txt
 	rm -f interpret *.o
