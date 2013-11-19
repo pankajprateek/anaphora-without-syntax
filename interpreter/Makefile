@@ -13,9 +13,9 @@ english:
 	cp ./english/alignment.txt ./
 
 hindi:
-	cp ./english/english-source.vcb ./source.vcb
-	cp ./english/english-target.vcb ./target.vcb
-	cp ./english/alignment.txt ./
+	cp ./hindi/hindi-source.vcb ./source.vcb
+	cp ./hindi/hindi-target.vcb ./target.vcb
+	cp ./hindi/alignment.txt ./
 
 interpret: $(OBJECTS) $(HEADERS)
 	$(CC) -o $@ $^
