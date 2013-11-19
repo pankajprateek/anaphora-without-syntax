@@ -12,7 +12,6 @@ const int max_keyword_length = 32;
 bool actionFound;
 
 void printSentence(token* sentence, int sentenceLength){
-	
 	for(int i=0; i<sentenceLength; i++){
 		cout<<" "<<sentence[i].word<<"("<<sentence[i].used<<")"<<endl;
 	}
@@ -96,40 +95,163 @@ int getPreferredIndex(int left, int right, int origin){
 	}
 }
 
-void interpretParameters(Action action, token* sentence, int sentenceLength, int constructibleIndex){
-	cout<<"Interpreting parameters"<<endl;
+int getParameterValueIndex(token* sentence, int sentenceLength, int parameterNameIndex, int parameter){
+	cout<<"getting value of"<<parameter<<endl;
 	printSentence(sentence, sentenceLength);
-	action.toString();
-	switch(action.constructible){
-		case keywords::LINE_SEGMENT:
-			int leftPointPairIndex = getIndex(sentence, sentenceLength, keywords::POINT_PAIR, constructibleIndex, false);
-			int rightPointPairIndex = getIndex(sentence, sentenceLength, keywords::POINT_PAIR, constructibleIndex, true);
-			int pointPairIndex = getPreferredIndex(leftPointPairIndex, rightPointPairIndex, constructibleIndex);
-			//~ cout<<leftPointPairIndex<<rightPointPairIndex<<pointPairIndex<<endl;
+	
+	switch(parameter){
+		case keywords::DOUBLE:{
+			int leftDoubleIndex = getIndex(sentence, sentenceLength, keywords::DOUBLE, parameterNameIndex, false);
+			int rightDoubleIndex = getIndex(sentence, sentenceLength, keywords::DOUBLE, parameterNameIndex, true);
+			int doubleIndex = getPreferredIndex(leftDoubleIndex, rightDoubleIndex, parameterNameIndex);
+			return doubleIndex;
+		}
+		break;
+		case keywords::POINT_SINGLE:{
+			int leftPointIndex = getIndex(sentence, sentenceLength, keywords::POINT_SINGLE, parameterNameIndex, false);
+			int rightPointIndex = getIndex(sentence, sentenceLength, keywords::POINT_SINGLE, parameterNameIndex, true);
+			int pointIndex = getPreferredIndex(leftPointIndex, rightPointIndex, parameterNameIndex);
+			return pointIndex;
+		}
+		break;
+		case keywords::POINT_PAIR:{
+			int leftPointPairIndex = getIndex(sentence, sentenceLength, keywords::POINT_PAIR, parameterNameIndex, false);
+			int rightPointPairIndex = getIndex(sentence, sentenceLength, keywords::POINT_PAIR, parameterNameIndex, true);
+			int pointPairIndex = getPreferredIndex(leftPointPairIndex, rightPointPairIndex, parameterNameIndex);
+			return pointPairIndex;
+		}
+		case keywords::POINT_TRIPLET:{
+			//TODO
+		}
+		break;
+		default: break;
+	}
+	return -1;
+}
+
+int getParameterNameIndex(token* sentence, int sentenceLength, int constructibleIndex, int parameterName){
+	cout<<"getting index of "<<parameterName<<endl;
+	printSentence(sentence, sentenceLength);
+	
+	switch(parameterName){
+		case keywords::LINE_SEGMENT:{
+			int leftLineSegmentIndex = getIndex(sentence, sentenceLength, keywords::LINE_SEGMENT, constructibleIndex, false);
+			int rightLineSegmentIndex = getIndex(sentence, sentenceLength, keywords::LINE_SEGMENT, constructibleIndex, true);
+			int lineSegmentIndex = getPreferredIndex(leftLineSegmentIndex, rightLineSegmentIndex, constructibleIndex);
+			return lineSegmentIndex;
+		}
+		break;
+		case keywords::ARC:{
+			int leftArcIndex = getIndex(sentence, sentenceLength, keywords::ARC, constructibleIndex, false);
+			int rightArcIndex = getIndex(sentence, sentenceLength, keywords::ARC, constructibleIndex, true);
+			int arcIndex = getPreferredIndex(leftArcIndex, rightArcIndex, constructibleIndex);
+			return arcIndex;
+		}
+		break;
+		case keywords::INTERSECTING_ARCS:{
+			int leftIntersectingArcIndex = getIndex(sentence, sentenceLength, keywords::ARC, constructibleIndex, false);
+			int rightIntersectingArcIndex = getIndex(sentence, sentenceLength, keywords::ARC, constructibleIndex, true);
+			int intersectingArcIndex = getPreferredIndex(leftIntersectingArcIndex, rightIntersectingArcIndex, constructibleIndex);
+			return intersectingArcIndex;
+		}
+		break;
+		case keywords::CENTER:{
+			int leftCenterIndex = getIndex(sentence, sentenceLength, keywords::CENTER, constructibleIndex, false);
+			int rightCenterIndex = getIndex(sentence, sentenceLength, keywords::CENTER, constructibleIndex, true);
+			int centerIndex = getPreferredIndex(leftCenterIndex, rightCenterIndex, constructibleIndex);
+			return centerIndex;
+		}
+		break;
+		case keywords::RADIUS:{
+			int leftRadiusIndex = getIndex(sentence, sentenceLength, keywords::RADIUS, constructibleIndex, false);
+			int rightRadiusIndex = getIndex(sentence, sentenceLength, keywords::RADIUS, constructibleIndex, true);
+			int radiusIndex = getPreferredIndex(leftRadiusIndex, rightRadiusIndex, constructibleIndex);
+			return radiusIndex;
+		}
+		break;
+		default: break;
+	}
+	return -1;
+}
+
+void interpretParameters(Action action, token* sentence, int sentenceLength, int constructibleIndex, int constructible){
+	cout<<"Interpreting parameters for "<<constructible<<endl;
+	printSentence(sentence, sentenceLength);
+	
+	switch(constructible){
+		case keywords::LINE_SEGMENT:{
+			int pointPairIndex = getParameterValueIndex(sentence, sentenceLength, constructibleIndex, keywords::POINT_PAIR);
 			if(pointPairIndex < 0){
-				cout<<"Could not get the index for point pair"<<endl;
+				cout<<"Could not find point pair index"<<endl;
 				return;
 			}
 			sentence[pointPairIndex].used = true;
 			action.point1 = sentence[pointPairIndex].word[0];
 			action.point2 = sentence[pointPairIndex].word[1];
-			int leftLengthIndex = getIndex(sentence, sentenceLength, keywords::DOUBLE, constructibleIndex, false);
-			int rightLengthIndex = getIndex(sentence, sentenceLength, keywords::DOUBLE, constructibleIndex, true);
-			int lengthIndex = getPreferredIndex(leftLengthIndex, rightLengthIndex, constructibleIndex);
+			int lengthIndex = getParameterNameIndex(sentence, sentenceLength, constructibleIndex, keywords::LENGTH);
 			if(lengthIndex < 0){
-				cout<<"Could not get the index for length"<<endl;
+				sentence[lengthIndex].used = true;
+			}
+			int effectiveIndex = lengthIndex < 0?constructibleIndex:lengthIndex;
+			int doubleIndex = getParameterValueIndex(sentence, sentenceLength, effectiveIndex, keywords::DOUBLE);
+			if(doubleIndex <0){
+				cout<<"Could not find length index"<<endl;
 				return;
 			}
-			sentence[lengthIndex].used = true;
-			action.length = atof(sentence[lengthIndex].word);
+			sentence[doubleIndex].used = true;
+			action.length = atof(sentence[doubleIndex].word);
 			action.toString();
 			if(action.isValid()){
 				cout<<"FINAL ACTION"<<endl;
 				action.toString();
 				actionFound = true;
+				return;
 			}
-			return;
+			break;
+		}
+		case keywords::ARC:{
+			int centerIndex = getParameterNameIndex(sentence, sentenceLength, constructibleIndex, keywords::CENTER);
+			if(centerIndex < 0){
+				cout<<"Could not find 'center'"<<endl;
+				return;
+			}
+			sentence[centerIndex].used=true;
+			int pointIndex = getParameterValueIndex(sentence, sentenceLength, centerIndex, keywords::POINT_SINGLE);
+			if(pointIndex<0){
+				cout<<"Could not find value for center"<<endl;
+			}
+			sentence[pointIndex].used=true;
+			action.center1 = sentence[pointIndex].word[0];
+			
+			int radiusIndex = getParameterNameIndex(sentence, sentenceLength, constructibleIndex, keywords::RADIUS);
+			if(radiusIndex < 0){
+				cout<<"Could not find 'radius'"<<endl;
+				return;
+			}
+			sentence[radiusIndex].used=true;
+			int doubleIndex = getParameterValueIndex(sentence, sentenceLength, radiusIndex, keywords::DOUBLE);
+			if(doubleIndex<0){
+				cout<<"Could not find value for radius"<<endl;
+			}
+			sentence[doubleIndex].used=true;
+			action.radius1 = atof(sentence[doubleIndex].word);
+			action.toString();
+			if(action.isValid()){
+				cout<<"FINAL ACTION"<<endl;
+				action.toString();
+				actionFound = true;
+				return;
+			}
+			break;
+		}
+		
+		case keywords::INTERSECTING_ARCS:{
+				//TODO
+			}
+			break;
+		default: break;
 	}
+	return;
 }
 
 void interpretConstructible(Action action, token* sentence, int sentenceLength, int actionWordIndex){
@@ -146,7 +268,7 @@ void interpretConstructible(Action action, token* sentence, int sentenceLength, 
 				if(constructibleIndex >= 0){
 					sentence[constructibleIndex].used = true;
 					action.constructible = constructibles[i];
-					interpretParameters(action, sentence, sentenceLength, constructibleIndex);
+					interpretParameters(action, sentence, sentenceLength, constructibleIndex, constructibles[i]);
 					
 				}
 			}
