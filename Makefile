@@ -1,11 +1,35 @@
-all: clean
-	make --directory=./corpus
-	cp ./corpus/source.txt ./
-	cp ./corpus/target.txt ./
-	./giza-pp/GIZAppv2/plain2snt.out source.txt target.txt
-	./giza-pp/GIZAppv2/snt2cooc.out source.vcb target.vcb source_target.snt > coocurrenceFile.cooc
-	./giza-pp/GIZAppv2/GIZA++ -s source.vcb -t target.vcb -c source_target.snt -CoocurrenceFile coocurrenceFile.cooc
+.PHONY: all english hindi
+all: english
 
+english: english-align english-interpret
+
+english-align:
+	make english --directory=./corpus
+	cp ./corpus/english-source.txt ./aligner/english/
+	cp ./corpus/english-target.txt ./aligner/english/
+	make english --directory=./aligner
+	cp ./aligner/english/*.t3.* ./interpreter/english/alignment.txt
+	cp ./aligner/english/english-source.vcb ./interpreter/english/
+	cp ./aligner/english/english-target.vcb ./interpreter/english/
+
+english-interpret:
+	make english --directory=./interpreter
+
+hindi: hindi-align hindi-interpret
+	
+hindi-align:
+	make hindi --directory=./corpus
+	cp ./corpus/hindi-source.txt ./aligner/hindi
+	cp ./corpus/hindi-target.txt ./aligner/hindi
+	make hindi --directory=./aligner
+	cp ./aligner/hindi/*.t3.* ./interpreter/hindi/alignment.txt
+	cp ./aligner/hindi/hindi-source.vcb ./interpreter/hindi/
+	cp ./aligner/hindi/hindi-target.vcb ./interpreter/hindi/	
+
+hindi-interpret:
+	make hindi --directory=./interpreter
+	
 clean:
-	rm -rf *.jeeteshm.*
-	rm -rf *.pankaj.*
+	make clean --directory=./corpus
+	make clean --directory=./aligner
+	make clean --directory=./interpreter

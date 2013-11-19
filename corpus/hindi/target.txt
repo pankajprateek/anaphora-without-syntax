@@ -1,0 +1,90 @@
+construct circle center any radius 3.2 cm
+construct arc centers point O radii 2.5 cm
+construct circle
+mark point A on circle
+mark point B in interior of circle
+mark point C in exterior of circle
+construct line l
+mark point A on it
+construct arc center A radius any intersecting line l at B
+construct lineSegment length 7.3 cm
+construct lineSegment length 5.6 cm
+construct lineSegment length 7.8 cm
+cut from this AC length 4.7 cm
+construct lineSegment AB length 2.9 cm
+construct lineSegment PQ length twice length AB
+construct lineSegment PX length AB
+cut XQ length AB
+construct linseSegment AB length 7.3 cm
+construct lineSegment CD length 3.4 cm
+construct lineSegment XY length difference AB CD
+construct arc intersecting l at D
+construct lineSegment PQ length twice AB
+construct arc center P radius any intersecting ray l at points A B
+construct intersectingArcs centers A B radii greaterThan AP intersecting at Q
+join PQ
+construct arc center P radius any intersecting ray l at points A B
+construct intersectingArcs centers A B radii any intersecting at Q
+join PQ
+construct lineSegment AB
+mark point M on it
+construct perperndicular to AB passingThrough M
+construct lineSegment PQ
+construct point R notOn PQ
+construct perpendicular to PQ passingThrough R
+construct line l
+mark point X on it
+construct perperndicular XY to ray l
+construct lineSegment AB length any
+construct circle center A radius greaterThan half length AB
+construct circle center B radius same
+mark intersectingPoints circles at C D
+join CD
+mark intersectingPoint it AB at O
+construct lineSegment AB length 7.3 cm
+construct lineSegment length 9.5 cm
+construct perpendicularBisector linseSegment XY length 10.3 cm
+mark point P on perpendicularBisector 
+construct lineSegment length 12.8 cm
+construct lineSegment PQ length 6.1 cm
+construct circle radius PQ
+construct circle center C radius 3.4 cm
+construct chord AB
+construct perpendicularBisector chord
+construct circle radius 4 cm
+construct chords two
+construct perpendicularBisectors chords
+construct angle vertex O
+mark points A B arms condition OA=OB
+construct perpendicularBisectors OA OB
+mark intersectingPoint P
+construct ray AB
+construct ray AC
+construct line l
+mark point P on it
+construct arcs center A intersecting arms angle A at B C
+construct arc center P intersecting l at Q
+construct arc center Q intersecting previous arc at R
+construct ray PR
+construct rays OA OB origin O
+construct arc center A intersecting arms angle A at B C
+construct arc center B radius greaterThan half BC
+construct arc center A passingThrough O
+mark intersectingPoint arcs at point B
+construct ray OB
+construct line l
+mark point O on it
+construct arc center O radius any intersecting ray l at A
+construct arc center A radius same intersecting previous arc at B
+contruct arc center B radius same intersecting previous arc at C
+construct ray OC
+construct angle POQ measure 75 degree
+construct angle measure 147 degree
+construct angle measure 153 degree
+divide it numParts 4
+construct angle measure 45 degree
+construct bisectors
+construct angle measure 135 degree
+construct bisector
+construct angle measure 70 degree
+construct angle measure 40 degree

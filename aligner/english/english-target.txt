@@ -1,0 +1,86 @@
+construct lineSegment AB length 7.8  cm
+cut from ? lineSegment AC length 4.7  cm
+construct lineSegment PQ twice length AB
+construct lineSegment PX length AB
+cut from ? lineSegment XQ length AB
+construct lineSegment XY difference length AB length CD
+construct copy PQ
+construct lineSegment PQ twice length AB
+construct point P on line l
+construct arc centre point P radius any intersecting line l point A point B
+construct intersectingArcs centres point A point B radii greaterThan length AP intersectingAt point Q
+join PQ
+extend P? intersect l point M
+construct arc centre P radius any intersect line l point A point B
+construct intersectingArcs centres point A point B radii same intersectingAt point Q
+join PQ
+draw lineSegment AB
+mark point M on it
+construct perpendicular to lineSegment AB through M
+construct lineSegment PQ
+construct point R notOn it
+construct perpendicular to lineSegment PQ through R
+draw line l
+draw point X on it
+construct perpendicular to line l through X
+construct perpendicular to lineSegment XY through Y
+construct lineSegment AB length any
+construct circle centre A radius greaterThan half length AB
+construct circle centre B radius same
+label intersectionPoints it previous circle point C point D
+join CD
+label intersectionPoints it AB point O
+construct lineSegment AB length 7.3 cm
+construct lineSegment any length 9.5 cm
+construct perpendicularBisector it
+construct lineSegment XY length 10.3 cm
+construct prependicularBisector of lineSegment XY
+construct point P on bisector
+construct lineSegment any length 12.8 cm
+divide it numParts four
+construct circle centre any diameter 6.1 cm
+construct circle center C radius 3.4 cm
+construct chord AB distanceFromCenter any
+construct perpendicularBisector of lineSegment AB
+construct circle center any radius 4 cm
+construct chords its distanceFromCenter any distanceFromCenter any
+construct perpendicularBisectors of chords these
+construct angle vertex O
+construct points point A its arms point B its arms
+construct perpendicularBisectors of lineSegment OA lineSegment OB
+label intersectionPoint them point P
+construct line l
+construct point P on it
+construct arc center A radius any cuts rays angle A at points point B point C
+construct arc center point P radius same cuts line l at point Q
+construct arc center Q radius same cuts arc earlier at point R
+join PR
+construct rays origin O ends point A point B
+construct intersectingArc center A radius ? cuts rays angle A at point B point C
+construct arc center B radius greaterThan half length lineSegment BC
+consturct arc center C radius same
+label intersectingPoints arcs two point D
+construct line l
+construct point O on it
+construct arc center O radius any cuts lineSegment PQ at point A
+construct arc center A radius any passesThrough point O
+label intersectingPoints arc two point B
+join OB
+construct lineSegment PQ
+construct point O on it
+construct arc center O radius any cuts line the at point A
+construct intersectingArc center A radius same cuts arc first at point B
+construct arc center B radius same cuts arc first at point C
+construct angle POQ measure 75°
+construct angle any measure 147°
+construct bisector of it
+construct angle any measure right
+construct bisector of it
+construct angle any measure 153°
+divide it numParts four
+construct angle any measure 45°
+bisect it
+construct angle any measure 135°
+bisect it
+construct angle any measure 70°
+construct angle any measure 40°
