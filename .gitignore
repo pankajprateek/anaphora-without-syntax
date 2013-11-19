@@ -3,3 +3,5 @@
 *.gizacfg
 *.perp
 *.vcb
+*.out
+*.o
