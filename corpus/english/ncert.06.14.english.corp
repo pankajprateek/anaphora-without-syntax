@@ -25,11 +25,11 @@ construct lineSegment PQ twice length AB
 Given a point P on a line l
 construct point P on line l
 
-With P as centre and a convenient radius, construct an arc intersecting the line l at two points A and B
-construct arc centre point P radius any intersecting line l point A point B
+With P as center and a convenient radius, construct an arc intersecting the line l at two points A and B
+construct arc center point P radius any intersecting line l point A point B
 
-With A and B as centres and a radius greater than AP construct two arcs, which cut each other at Q
-construct intersectingArcs centres point A point B radii greaterThan length AP intersectingAt point Q
+With A and B as centers and a radius greater than AP construct two arcs, which cut each other at Q
+construct intersectingArcs centers point A point B radii greaterThan length AP intersectingAt point Q
 
 Join PQ
 join PQ
@@ -37,11 +37,11 @@ join PQ
 Join PM along the edge through P, meeting l at M
 extend P? intersect l point M
 
-With P as centre, draw an arc which intersects line l at two points A and B
-construct arc centre P radius any intersect line l point A point B
+With P as center, draw an arc which intersects line l at two points A and B
+construct arc center P radius any intersect line l point A point B
 
-Using the same radius and with A and B as centres, construct two arcs that intersect at a point, say Q, on the other side
-construct intersectingArcs centres point A point B radii same intersectingAt point Q
+Using the same radius and with A and B as centers, construct two arcs that intersect at a point, say Q, on the other side
+construct intersectingArcs centers point A point B radii same intersectingAt point Q
 
 Join PQ
 join PQ
@@ -70,20 +70,20 @@ draw line l
 Draw a point X on it
 draw point X on it
 
-Through X, draw a line segment XY perpendicular to l.
+Through X, draw a line segment XY perpendicular to l
 construct perpendicular to line l through X
 
-Draw a perpendicular to XY at Y.
+Draw a perpendicular to XY at Y
 construct perpendicular to lineSegment XY through Y
 
 Draw a line segment AB of any length
 construct lineSegment AB length any
 
-With A as centre, using compasses, draw a circle with radius more than half the length of AB.
-construct circle centre A radius greaterThan half length AB
+With A as center, using compasses, draw a circle with radius more than half the length of AB
+construct circle center A radius greaterThan half length AB
 
-With the same radius and with B as centre, draw another circle
-construct circle centre B radius same
+With the same radius and with B as center, draw another circle
+construct circle center B radius same
 
 Let it cut the previous circle at C and D
 label intersectionPoints it previous circle point C point D
@@ -94,8 +94,8 @@ join CD
 It cuts AB at O
 label intersectionPoints it AB point O
 
-Draw AB of length 7.3  cm
-construct lineSegment AB length 7.3 cm
+Draw AB of length 4  cm
+construct lineSegment AB length 4 cm
 
 Draw a line segment of length 9.5 cm
 construct lineSegment any length 9.5 cm
@@ -103,25 +103,25 @@ construct lineSegment any length 9.5 cm
 Construct its perpendicular bisector
 construct perpendicularBisector it
  
-Draw XY whose length is 10.3 cm
-construct lineSegment XY length 10.3 cm
+Draw XY whose length is 5 cm
+construct lineSegment XY length 5 cm
 
 Draw the perpendicular bisector of XY
 construct prependicularBisector of lineSegment XY
 
-Take any point P on the bisector drawn.
+Take any point P on the bisector drawn
 construct point P on bisector
 
 Draw a line segment of length 12.8 cm
 construct lineSegment any length 12.8 cm
 
-divide it into four equal parts.
+divide it into four equal parts
 divide it numParts four
 
-With 6.1 cm as diameter, draw a circle.
-construct circle centre any diameter 6.1 cm
+With 6.1 cm as diameter, draw a circle
+construct circle center any diameter 6.1 cm
 
-Draw a circle with centre C and radius 3.4 cm
+Draw a circle with center C and radius 3.4 cm
 construct circle center C radius 3.4 cm
 
 Draw any chord AB
@@ -136,7 +136,7 @@ construct circle center any radius 4 cm
 Draw any two of its chords. 
 construct chords its distanceFromCenter any distanceFromCenter any
 
-Construct the perpendicular bisectors of these chords.
+Construct the perpendicular bisectors of these chords
 construct perpendicularBisectors of chords these
 
 Draw any angle with vertex O
@@ -160,7 +160,7 @@ construct point P on it
 With A as center, draw an arc to cut the rays of ∠A at B and C
 construct arc center A radius any cuts rays angle A at points point B point C
 
-Use the same radius to draw an arc with P as centre, cutting l in Q
+Use the same radius to draw an arc with P as center, cutting l in Q
 construct arc center point P radius same cuts line l at point Q
 
 With center at Q, draw the arc to cut the arc drawn earlier in R
@@ -172,13 +172,13 @@ join PR
 With O as initial point, draw two rays OA and OB
 construct rays origin O ends point A point B
 
-With A as centre and using compasses, draw an arc that cuts both rays of ∠A at B and C.
+With A as center and using compasses, draw an arc that cuts both rays of ∠A at B and C
 construct intersectingArc center A radius ? cuts rays angle A at point B point C
 
-With B as centre, draw an arc whose radius is more than half the length BC.
+With B as center, draw an arc whose radius is more than half the length BC
 construct arc center B radius greaterThan half length lineSegment BC
 
-With the same radius and with C as centre, draw another arc
+With the same radius and with C as center, draw another arc
 consturct arc center C radius same
 
 Let the two arcs intersect at D
@@ -211,10 +211,10 @@ construct point O on it
 Place the pointer of the compasses at O and draw an arc of convenient radius which cuts the line at A
 construct arc center O radius any cuts line the at point A
 
-with the same radius, draw an arc with A as centre which cuts the first arc at B
+with the same radius, draw an arc with A as center which cuts the first arc at B
 construct intersectingArc center A radius same cuts arc first at point B
 
-with same radius and with B as centre, draw an arc which cuts the first arc at C
+with same radius and with B as center, draw an arc which cuts the first arc at C
 construct arc center B radius same cuts arc first at point C
 
 Draw ∠POQ of measure 75°

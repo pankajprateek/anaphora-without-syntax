@@ -25,8 +25,8 @@ mark point A on it
 A को केंद्र लेकर l को B पर काटता हुआ एक चाप लगा दीजिये 
 construct arc center A radius any intersecting line l at B
 
-7.3 सेमी लम्बाई का एक रेखाखण्ड खींचिए 
-construct lineSegment length 7.3 cm
+4 सेमी लम्बाई का एक रेखाखण्ड खींचिए 
+construct lineSegment length 4 cm
 
 5.6 सेमी लम्बाई का एक रेखाखण्ड खींचिए 
 construct lineSegment length 5.6 cm
@@ -49,8 +49,8 @@ construct lineSegment PX length AB
 XQ काटिये ताकि XQ की लम्बाई भी AB की लम्बाई के बराबर हो 
 cut XQ length AB
 
-7.3 सेमी लम्बाई का एक रेखाखण्ड AB खींचिए 
-construct linseSegment AB length 7.3 cm
+4 सेमी लम्बाई का एक रेखाखण्ड AB खींचिए 
+construct linseSegment AB length 4 cm
 
 3.4 सेमी लम्बाई का रेखाखण्ड CD खींचिए
 construct lineSegment CD length 3.4 cm
@@ -127,14 +127,14 @@ join CD
 मान लीजिये यह AB को O पर प्रतिच्छेद करता है 
 mark intersectingPoint it AB at O
 
-7.3 सेमी लम्बाई का एक रेखाखण्ड AB खींचिए 
-construct lineSegment AB length 7.3 cm
+4 सेमी लम्बाई का एक रेखाखण्ड AB खींचिए 
+construct lineSegment AB length 4 cm
 
 9.5 सेमी लम्बाई एक रेखाखण्ड खींचिए 
 construct lineSegment length 9.5 cm
 
-रेखाखण्ड XY का लांब समद्विभाजक खींचिए जिसकी लम्बाई 10.3 सेमी हो
-construct perpendicularBisector linseSegment XY length 10.3 cm
+रेखाखण्ड XY का लांब समद्विभाजक खींचिए जिसकी लम्बाई 5 सेमी हो
+construct perpendicularBisector linseSegment XY length 5 cm
 
 इस लांब समद्विभाजक पर कोई बिंदु P लीजिये 
 mark point P on perpendicularBisector 

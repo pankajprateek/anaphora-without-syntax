@@ -19,6 +19,7 @@ void printSentence(token* sentence, int sentenceLength){
 }
 
 int getIndex(token* sentence, int sentenceLength, int keywordIndex, int origin, bool right=true){
+<<<<<<< HEAD
   int delta = right?1:-1;
   char* toBeSearched = (char*)malloc(sizeof(char)*max_keyword_length);
   switch(keywordIndex){
@@ -76,6 +77,69 @@ int getIndex(token* sentence, int sentenceLength, int keywordIndex, int origin, 
   case keywords::POINT: strcpy(toBeSearched,"point"); break;
   default: break;
   }
+=======
+	int delta = right?1:-1;
+	char* toBeSearched = (char*)malloc(sizeof(char)*max_keyword_length);
+	switch(keywordIndex){
+		case keywords::POINT_SINGLE:	
+			for(int i=origin; i<sentenceLength && i>=0; i += delta){
+				if(sentence[i].used == true) continue;
+				const char *word = sentence[i].word;
+				if(strlen(word)>1) continue;
+				char ch = word[0];
+				if(ch>='A' && ch<='Z') return i;
+			}
+			return -1;
+			break;
+		case keywords::POINT_PAIR:
+			for(int i=origin; i<sentenceLength && i>=0; i += delta){
+				if(sentence[i].used == true) continue;
+				const char *word = sentence[i].word;
+				//~ cout<<"Trying "<<word<<endl;
+				if(strlen(word)>2) continue;
+				char ch1 = word[0], ch2 = word[1];
+				if(ch1>='A' && ch1<='Z' && ch2>='A' && ch2<='Z') return i;
+			}
+			return -1;
+			break;
+		case keywords::POINT_TRIPLET:
+			for(int i=origin; i<sentenceLength && i>=0; i += delta){
+				if(sentence[i].used == true) continue;
+				const char *word = sentence[i].word;
+				if(strlen(word)>3) continue;
+				char ch1 = word[0], ch2 = word[1], ch3 = word[2];
+				if(ch1>='A' && ch1<='Z' && ch2>='A' && ch2<='Z' && ch3>='A' && ch3<='Z') return i;
+			}
+			return -1;			
+			break;
+		case keywords::DOUBLE:
+			for(int i=origin; i<sentenceLength && i>=0; i += delta){
+				if(sentence[i].used == true) continue;
+				const char *word = sentence[i].word;
+				//~ cout<<"Trying "<<word<<endl;
+				double val = atof(word);
+				if(val!=0.0) return i;
+			}
+			return -1;		
+			break;
+		case keywords::CONSTRUCT: strcpy(toBeSearched, "construct"); break;
+		case keywords::CUT: strcpy(toBeSearched , "cut"); break;
+		case keywords::MARK: strcpy(toBeSearched , "mark"); break;
+		case keywords::LABEL: strcpy(toBeSearched , "mark"); break;
+    case keywords::JOIN: strcpy(toBeSearched, "join"); break;
+		case keywords::LINE_SEGMENT: strcpy(toBeSearched , "lineSegment"); break;
+		case keywords::ARC: strcpy(toBeSearched,"arc"); break;
+		case keywords::INTERSECTING_ARCS: strcpy(toBeSearched,"intersectingArcs"); break;
+		case keywords::LENGTH: strcpy(toBeSearched,"length"); break;
+		case keywords::CENTER: strcpy(toBeSearched,"center"); break;
+    case keywords::CENTERS: strcpy(toBeSearched,"centers"); break;
+		case keywords::RADIUS: strcpy(toBeSearched,"radius"); break;
+    case keywords::INTERSECTING_AT: strcpy(toBeSearched, "intersecting"); break;
+    //~ case keywords::RADII: strcpy(toBeSearched,"radii"); break;
+		case keywords::POINT: strcpy(toBeSearched,"point"); break;
+		default: break;
+	}
+>>>>>>> 16f66e71fe0e9c517d5aee7082265173314cf396
 	
   for(int i=origin; i<sentenceLength && i>=0; i+= delta){
     if(sentence[i].used == true) continue;
@@ -133,6 +197,7 @@ int getParameterNameIndex(token* sentence, int sentenceLength, int constructible
   cout<<"getting index of "<<parameterName<<endl;
   printSentence(sentence, sentenceLength);
 	
+<<<<<<< HEAD
   switch(parameterName){
   case keywords::LINE_SEGMENT:{
     int leftLineSegmentIndex = getIndex(sentence, sentenceLength, keywords::LINE_SEGMENT, constructibleIndex, false);
@@ -172,6 +237,68 @@ int getParameterNameIndex(token* sentence, int sentenceLength, int constructible
   default: break;
   }
   return -1;
+=======
+	switch(parameterName){
+		case keywords::LINE_SEGMENT:{
+			int leftLineSegmentIndex = getIndex(sentence, sentenceLength, keywords::LINE_SEGMENT, constructibleIndex, false);
+			int rightLineSegmentIndex = getIndex(sentence, sentenceLength, keywords::LINE_SEGMENT, constructibleIndex, true);
+			int lineSegmentIndex = getPreferredIndex(leftLineSegmentIndex, rightLineSegmentIndex, constructibleIndex);
+			return lineSegmentIndex;
+		}
+		break;
+		case keywords::ARC:{
+			int leftArcIndex = getIndex(sentence, sentenceLength, keywords::ARC, constructibleIndex, false);
+			int rightArcIndex = getIndex(sentence, sentenceLength, keywords::ARC, constructibleIndex, true);
+			int arcIndex = getPreferredIndex(leftArcIndex, rightArcIndex, constructibleIndex);
+			return arcIndex;
+		}
+		break;
+		case keywords::INTERSECTING_ARCS:{
+			int leftIntersectingArcIndex = getIndex(sentence, sentenceLength, keywords::INTERSECTING_ARCS, constructibleIndex, false);
+			int rightIntersectingArcIndex = getIndex(sentence, sentenceLength, keywords::INTERSECTING_ARCS, constructibleIndex, true);
+			int intersectingArcIndex = getPreferredIndex(leftIntersectingArcIndex, rightIntersectingArcIndex, constructibleIndex);
+			return intersectingArcIndex;
+		}
+		break;
+    case keywords::INTERSECTING_AT:{
+      int leftIntersectingAtIndex = getIndex(sentence, sentenceLength, keywords::INTERSECTING_AT, constructibleIndex, false);
+			int rightIntersectingAtIndex = getIndex(sentence, sentenceLength, keywords::INTERSECTING_AT, constructibleIndex, true);
+			int intersectingAtIndex = getPreferredIndex(leftIntersectingAtIndex, rightIntersectingAtIndex, constructibleIndex);
+			return intersectingAtIndex;
+    }
+    break;
+		case keywords::CENTER:{
+			int leftCenterIndex = getIndex(sentence, sentenceLength, keywords::CENTER, constructibleIndex, false);
+			int rightCenterIndex = getIndex(sentence, sentenceLength, keywords::CENTER, constructibleIndex, true);
+			int centerIndex = getPreferredIndex(leftCenterIndex, rightCenterIndex, constructibleIndex);
+			return centerIndex;
+		}
+		break;
+    case keywords::CENTERS:{
+			int leftCentersIndex = getIndex(sentence, sentenceLength, keywords::CENTERS, constructibleIndex, false);
+			int rightCentersIndex = getIndex(sentence, sentenceLength, keywords::CENTERS, constructibleIndex, true);
+			int centersIndex = getPreferredIndex(leftCentersIndex, rightCentersIndex, constructibleIndex);
+			return centersIndex;
+		}
+		break;
+		case keywords::RADIUS:{
+			int leftRadiusIndex = getIndex(sentence, sentenceLength, keywords::RADIUS, constructibleIndex, false);
+			int rightRadiusIndex = getIndex(sentence, sentenceLength, keywords::RADIUS, constructibleIndex, true);
+			int radiusIndex = getPreferredIndex(leftRadiusIndex, rightRadiusIndex, constructibleIndex);
+			return radiusIndex;
+		}
+		break;
+    //~ case keywords::RADII:{
+			//~ int leftRadiiIndex = getIndex(sentence, sentenceLength, keywords::RADII, constructibleIndex, false);
+			//~ int rightRadiiIndex = getIndex(sentence, sentenceLength, keywords::RADII, constructibleIndex, true);
+			//~ int radiiIndex = getPreferredIndex(leftRadiiIndex, rightRadiiIndex, constructibleIndex);
+			//~ return radiiIndex;
+		//~ }
+		//~ break;
+		default: break;
+	}
+	return -1;
+>>>>>>> 16f66e71fe0e9c517d5aee7082265173314cf396
 }
 
 void interpretParameters(Action action, token* sentence, int sentenceLength, int constructibleIndex, int constructible){
@@ -233,6 +360,7 @@ void interpretParameters(Action action, token* sentence, int sentenceLength, int
     break;
   }
 		
+<<<<<<< HEAD
   case keywords::INTERSECTING_ARCS:{
     //TODO
   }
@@ -246,6 +374,110 @@ void interpretParameters(Action action, token* sentence, int sentenceLength, int
     return;
   }
   return;
+=======
+		case keywords::INTERSECTING_ARCS:{
+			int centersIndex = getParameterNameIndex(sentence, sentenceLength, constructibleIndex, keywords::CENTERS);
+			if(centersIndex < 0){
+				cout<<"Could not find 'centers'"<<endl;
+				return;
+			}
+			sentence[centersIndex].used=true;
+			int center1Index = getParameterValueIndex(sentence, sentenceLength, centersIndex, keywords::POINT_SINGLE);
+			if(center1Index<0){
+				cout<<"Could not find value for centers"<<endl;
+        return;
+			}
+			sentence[center1Index].used=true;
+			action.center1 = sentence[center1Index].word[0];
+      
+      int center2Index = getParameterValueIndex(sentence, sentenceLength, centersIndex, keywords::POINT_SINGLE);
+			if(center2Index<0){
+				cout<<"Could not find value for centers"<<endl;
+        return;
+			}
+			sentence[center2Index].used=true;
+      int firstCenterIndex, secondCenterIndex;
+      if(center1Index > center2Index){
+        firstCenterIndex = center2Index;
+        secondCenterIndex = center1Index;
+      }else{
+        firstCenterIndex = center1Index;
+        secondCenterIndex = center2Index;
+      }
+      action.center1 = sentence[firstCenterIndex].word[0];
+      action.center2 = sentence[secondCenterIndex].word[0];
+
+			int radiusIndex = getParameterNameIndex(sentence, sentenceLength, constructibleIndex, keywords::RADIUS);
+			if(radiusIndex < 0){
+				cout<<"Could not find 'radii'"<<endl;
+				return;
+			}
+			sentence[radiusIndex].used=true;
+      
+			int double1Index = getParameterValueIndex(sentence, sentenceLength, radiusIndex, keywords::DOUBLE);
+			if(double1Index<0){
+				cout<<"Could not find first value for radii"<<endl;
+			}
+			sentence[double1Index].used=true;
+			action.radius1 = atof(sentence[double1Index].word);
+      
+      int double2Index = getParameterValueIndex(sentence, sentenceLength, radiusIndex, keywords::DOUBLE);
+			if(double2Index<0){
+				cout<<"Could not find second value for radii"<<endl;
+			}
+			sentence[double2Index].used=true;
+      int firstRadiusIndex, secondRadiusIndex;
+      if(double1Index > double2Index){
+        firstRadiusIndex = double2Index;
+        secondRadiusIndex = double1Index;
+      }else{
+        firstRadiusIndex = double1Index;
+        secondRadiusIndex = double2Index;
+      }
+      action.radius1 = atof(sentence[firstRadiusIndex].word);
+			action.radius2 = atof(sentence[secondRadiusIndex].word);
+      
+      int intersectingAtIndex = getParameterNameIndex(sentence, sentenceLength, constructibleIndex, keywords::INTERSECTING_AT);
+			if(intersectingAtIndex < 0){
+				cout<<"Could not find 'intersectingAt'"<<endl;
+				return;
+			}
+			sentence[intersectingAtIndex].used=true;
+      
+      int ipointIndex = getParameterValueIndex(sentence, sentenceLength, intersectingAtIndex, keywords::POINT_SINGLE);
+			if(ipointIndex<0){
+				cout<<"Could not find value for intersectingAt"<<endl;
+			}
+			sentence[ipointIndex].used=true;
+			action.point1 = sentence[ipointIndex].word[0];
+      
+			action.toString();
+			break;
+		}
+		
+			break;
+    case keywords::JOINING_SEGMENT:{
+      int pointPairIndex = getParameterValueIndex(sentence, sentenceLength, constructibleIndex, keywords::POINT_PAIR);
+			if(pointPairIndex < 0){
+				cout<<"Could not find point pair index for joining segment"<<endl;
+				return;
+			}
+			sentence[pointPairIndex].used = true;
+			action.point1 = sentence[pointPairIndex].word[0];
+			action.point2 = sentence[pointPairIndex].word[1];
+      action.toString();
+      break;
+    }
+		default: break;
+	}
+	if(action.isValid()){
+		cout<<"FINAL ACTION"<<endl;
+		action.toString();
+		actionFound = true;
+		return;
+	}
+	return;
+>>>>>>> 16f66e71fe0e9c517d5aee7082265173314cf396
 }
 
 void interpretConstructible(Action action, token* sentence, int sentenceLength, int actionWordIndex){
@@ -264,11 +496,23 @@ void interpretConstructible(Action action, token* sentence, int sentenceLength, 
 	action.constructible = constructibles[i];
 	interpretParameters(action, sentence, sentenceLength, constructibleIndex, constructibles[i]);
 					
+<<<<<<< HEAD
       }
     }
     break;
   default: break;
   }	
+=======
+				}
+			}
+			break;
+    case keywords::JOIN:
+      action.constructible = keywords::JOINING_SEGMENT;
+      interpretParameters(action, sentence, sentenceLength, actionWordIndex, keywords::JOINING_SEGMENT);
+      break;  
+		default: break;
+	}	
+>>>>>>> 16f66e71fe0e9c517d5aee7082265173314cf396
 }
 
 void interpretAction(Action action, token* sentence, int sentenceLength){

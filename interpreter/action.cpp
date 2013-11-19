@@ -33,6 +33,7 @@ void Action::toString(){
 }
 
 bool Action::isValid(){
+<<<<<<< HEAD
   switch(this->action){
   case(keywords::CONSTRUCT):
     switch(this->constructible){
@@ -63,4 +64,44 @@ bool Action::isValid(){
   default: return false;
   }
   return true;
+=======
+	switch(this->action){
+		case(keywords::CONSTRUCT):
+			switch(this->constructible){
+				case(keywords::LINE_SEGMENT):
+					if(this->length == 0.0
+						|| !isValidPoint(this->point1)
+						|| !isValidPoint(this->point2)){
+							return false;
+						}
+					break;
+				case(keywords::ARC):
+					if(!isValidPoint(this->center1)
+						||  this->radius1 == 0.0){
+							return false;
+						}
+					break;
+				case(keywords::INTERSECTING_ARCS):
+					if(!isValidPoint(this->center1)
+						|| !isValidPoint(this->center2)
+						|| this->radius1 == 0.0
+						|| this->radius2 == 0.0 ){
+							return false;
+					}
+					break;
+				default: return false; break;
+			}
+			break;
+    case(keywords::JOIN):
+      if(this->constructible!=keywords::JOINING_SEGMENT)
+        return false;
+      if(!isValidPoint(this->point1)
+          || !isValidPoint(this->point2)){
+            return false;
+      }
+      break;
+		default: return false;
+	}
+	return true;
+>>>>>>> 16f66e71fe0e9c517d5aee7082265173314cf396
 }
