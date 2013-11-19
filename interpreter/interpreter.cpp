@@ -201,12 +201,6 @@ void interpretParameters(Action action, token* sentence, int sentenceLength, int
 			sentence[doubleIndex].used = true;
 			action.length = atof(sentence[doubleIndex].word);
 			action.toString();
-			if(action.isValid()){
-				cout<<"FINAL ACTION"<<endl;
-				action.toString();
-				actionFound = true;
-				return;
-			}
 			break;
 		}
 		case keywords::ARC:{
@@ -236,12 +230,6 @@ void interpretParameters(Action action, token* sentence, int sentenceLength, int
 			sentence[doubleIndex].used=true;
 			action.radius1 = atof(sentence[doubleIndex].word);
 			action.toString();
-			if(action.isValid()){
-				cout<<"FINAL ACTION"<<endl;
-				action.toString();
-				actionFound = true;
-				return;
-			}
 			break;
 		}
 		
@@ -250,6 +238,12 @@ void interpretParameters(Action action, token* sentence, int sentenceLength, int
 			}
 			break;
 		default: break;
+	}
+	if(action.isValid()){
+		cout<<"FINAL ACTION"<<endl;
+		action.toString();
+		actionFound = true;
+		return;
 	}
 	return;
 }
