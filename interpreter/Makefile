@@ -11,7 +11,7 @@ english:
 	cp ./english/english-source.vcb ./source.vcb
 	cp ./english/english-target.vcb ./target.vcb
 	cp ./english/alignment.txt ./
-	
+
 hindi:
 	cp ./english/english-source.vcb ./source.vcb
 	cp ./english/english-target.vcb ./target.vcb
@@ -25,4 +25,4 @@ interpret: $(OBJECTS) $(HEADERS)
 
 clean:
 	rm -f ./source.vcb ./target.vcb ./alignment.txt
-	
+	rm -f interpret *.o

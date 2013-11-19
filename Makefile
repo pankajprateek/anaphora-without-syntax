@@ -16,7 +16,7 @@ english-interpret:
 	make english --directory=./interpreter
 
 hindi: hindi-align hindi-interpret
-	
+
 hindi-align:
 	make hindi --directory=./corpus
 	cp ./corpus/hindi-source.txt ./aligner/hindi
@@ -28,7 +28,7 @@ hindi-align:
 
 hindi-interpret:
 	make hindi --directory=./interpreter
-	
+
 clean:
 	make clean --directory=./corpus
 	make clean --directory=./aligner
