@@ -1,3 +1,6 @@
+A और B को केंद्र मानकर 4 सेमी और 5 सेमी त्रिज्या लेकर दो चाप बनाइये जो परस्पर C पर काटें
+construct intersectingArcs centers A B radius 4 cm 5 cm intersecting C
+
 3.2 सेमी त्रिज्या का एक वृत्त खींचिए
 construct circle center any radius 3.2 cm
 
@@ -94,6 +97,9 @@ mark point M on it
 M से होकर AB पर एक लांब खींचिए 
 construct perperndicular to AB passingThrough M
 
+A और B को केंद्र मानकर 4 सेमी और 5 सेमी त्रिज्या लेकर दो चाप बनाइये जो परस्पर C पर काटें
+construct intersectingArcs centers A B radius 4 cm 5 cm intersecting C
+
 एक रेखाखण्ड PQ खींचिए
 construct lineSegment PQ
 
@@ -147,6 +153,9 @@ construct lineSegment length 12.8 cm
 
 6.1 सेमी लम्बाई का एक रेखाखण्ड PQ खींचिए 
 construct lineSegment PQ length 6.1 cm
+
+A और B को केंद्र मानकर 4 सेमी और 5 सेमी त्रिज्या लेकर दो चाप बनाइये जो परस्पर C पर काटें
+construct intersectingArcs centers A B radius 4 cm 5 cm intersecting C
 
 PQ को व्यास मानकर एक वृत्त खींचिए 
 construct circle radius PQ
@@ -214,6 +223,9 @@ construct arc center A intersecting arms angle A at B C
 B को केंद्र मानकर और BC के आधे से अधिक कि त्रिज्या लेकर एक चाप खींचिए 
 construct arc center B radius greaterThan half BC
 
+A और B को केंद्र मानकर 4 सेमी और 5 सेमी त्रिज्या लेकर दो चाप बनाइये जो परस्पर C पर काटें
+construct intersectingArcs centers A B radius 4 cm 5 cm intersecting C
+
 A को केंद्र मानकर O से होकर जाता एक चाप खींचिए 
 construct arc center A passingThrough O
 
@@ -270,3 +282,6 @@ construct angle measure 70 degree
 
 40 डिग्री का एक कोण खींचिए 
 construct angle measure 40 degree
+
+A और B को केंद्र मानकर 4 सेमी और 5 सेमी त्रिज्या लेकर दो चाप बनाइये जो परस्पर C पर काटें
+construct intersectingArcs centers A B radius 4 cm 5 cm intersecting C

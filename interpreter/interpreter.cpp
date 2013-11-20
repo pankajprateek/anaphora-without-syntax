@@ -257,6 +257,7 @@ void interpretParameters(Action action, token* sentence, int sentenceLength, int
     sentence[doubleIndex].used=true;
     action.radius1 = atof(sentence[doubleIndex].word);
     //action.toString();
+    //cout<<"Hell Yeah!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
     break;
   }
 		
@@ -417,6 +418,7 @@ int main(){
     cout<<parse<<endl;
     interpret(parse);
   }
+  //interpret(parse);
   return 0;
 }
 
@@ -447,7 +449,6 @@ void interpret(string parse){
     actionFound = false;
     interpretSentence(sentence, words.size());
     if(actionFound == true) break;
-		
   }
   return;
 }

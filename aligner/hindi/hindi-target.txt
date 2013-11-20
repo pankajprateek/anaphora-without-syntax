@@ -1,3 +1,4 @@
+construct intersectingArcs centers A B radius 4 cm 5 cm intersecting C
 construct circle center any radius 3.2 cm
 construct circle center point O radii 2.5 cm
 construct arc center point O radii 4 cm
@@ -30,6 +31,7 @@ join PQ
 construct lineSegment AB
 mark point M on it
 construct perperndicular to AB passingThrough M
+construct intersectingArcs centers A B radius 4 cm 5 cm intersecting C
 construct lineSegment PQ
 construct point R notOn PQ
 construct perpendicular to PQ passingThrough R
@@ -48,6 +50,7 @@ construct perpendicularBisector linseSegment XY length 5 cm
 mark point P on perpendicularBisector 
 construct lineSegment length 12.8 cm
 construct lineSegment PQ length 6.1 cm
+construct intersectingArcs centers A B radius 4 cm 5 cm intersecting C
 construct circle radius PQ
 construct circle center C radius 3.4 cm
 construct chord AB
@@ -70,6 +73,7 @@ construct ray PR
 construct rays OA OB origin O
 construct arc center A intersecting arms angle A at B C
 construct arc center B radius greaterThan half BC
+construct intersectingArcs centers A B radius 4 cm 5 cm intersecting C
 construct arc center A passingThrough O
 mark intersectingPoint arcs at point B
 construct ray OB
@@ -89,3 +93,4 @@ construct angle measure 135 degree
 construct bisector
 construct angle measure 70 degree
 construct angle measure 40 degree
+construct intersectingArcs centers A B radius 4 cm 5 cm intersecting C

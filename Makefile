@@ -1,5 +1,5 @@
 .PHONY: all english hindi
-all: english
+all: english hindi
 
 english: english-align english-interpret
 
