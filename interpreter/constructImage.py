@@ -84,6 +84,7 @@ def takeAction(action_number, constructible, length, point, center, radii):
         display_point(point[1], points[point[1]][0], points[point[1]][1])
         w.create_line(points[point[0]][0], points[point[0]][1], points[point[1]][0], points[point[1]][1], fill = "black", width=2)
 
+
 f = open("drawing_instructions.txt")
 lines = f.readlines()
 

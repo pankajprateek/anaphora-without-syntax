@@ -75,7 +75,14 @@ vector<pair<string, double> > getsentences(int iter) {
 }
 
 
-vector<pair<string, double> > getPossibleMappings() {
+vector<pair<string, double> > getPossibleMappings(string parse) {
+  src.clear();
+  trg.clear();
+  relation.clear();
+  parsed.clear();
+  split_parse.clear();
+  sentences.clear();
+
   ifstream f("source.vcb");
   int tmp1, tmp3;
   string tmp2;
@@ -127,7 +134,7 @@ vector<pair<string, double> > getPossibleMappings() {
   //~ parse = "Construct line segment AB of length 7.8 cm";
   //~ parse = "With A as center radius 7.8 cm draw an arc";
   //~ parse = "O को केंद्र लेकर 4 सेमी त्रिज्या वाला एक चाप खींचिए";
-  parse = "With A and B as centers and radius 4 and 5 cm draw two arcs intersecting each other at C";
+  //parse = "With A and B as centers and radius 4 and 5 cm draw two arcs intersecting each other at C";
   //~ parse = "Join AB";
   //~ parse = "PQ को जोड़िये";
   split_parse = split(parse);
@@ -143,7 +150,6 @@ vector<pair<string, double> > getPossibleMappings() {
     }
     cout<<endl;
   }
-	
 	
   for(int i=0;i<int(split_parse.size());i++) {
     vector<pair<int, double> > tmp = get_data(split_parse[i]);
@@ -161,14 +167,14 @@ vector<pair<string, double> > getPossibleMappings() {
     }
   }
 	
-	
+  sentences.clear();
   for(int i=0;i<int(parsed[0].size());i++) {
     vector<pair<string, double> > tmp = getsentences(1);
     for(int j=0;j<int(tmp.size());j++) {
       sentences.push_back((pair<string, double>)make_pair(string(find_trg(parsed[0][i].first))+" "+string(tmp[j].first), parsed[0][i].second*tmp[j].second) );
     }
   }
-	
+
   sort(sentences.begin(), sentences.end(), compare);
 	
   if(debug){

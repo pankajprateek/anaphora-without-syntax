@@ -1,3 +1,4 @@
+#include<string>
 #include<vector>
 using namespace std;
 
@@ -74,5 +75,5 @@ struct token{
 	const char* word;
 };
 
-void interpret();
+void interpret(string parse);
 bool isValidPoint(char point);

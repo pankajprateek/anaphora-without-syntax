@@ -29,6 +29,7 @@ void Action::toString(){
   g<<"Points: "<<this->point1<<this->point2<<this->point3<<endl;
   g<<"Centers: "<<this->center1<<this->center2<<endl;
   g<<"Radii: "<<this->radius1<<" "<<this->radius2<<endl;
+  g<<endl;
   g.close();
 }
 
