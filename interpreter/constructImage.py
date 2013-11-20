@@ -1,7 +1,9 @@
 from Tkinter import *
 from math import *
 
-SCALE = 15
+SCALE = 35
+X_BASE = 300
+Y_BASE = 500
 
 master = Tk()
 w = Canvas(master, width=1000, height=1000)
@@ -41,7 +43,7 @@ def takeAction(action_number, constructible, length, point, center, radii):
     if action_number == 1:
         if constructible == 101:
             if point[0] not in points.keys():
-                points[point[0]] = [150, 500]
+                points[point[0]] = [X_BASE, Y_BASE]
             if point[1] not in points.keys():
                 points[point[1]] = [points[point[0]][0]+length * SCALE, 500]
             display_point(point[0], points[point[0]][0], points[point[0]][1])
@@ -50,7 +52,7 @@ def takeAction(action_number, constructible, length, point, center, radii):
 
         elif constructible == 103:
             if point[0] not in points.keys():
-                points[center[0]] = [150, 500]
+                points[center[0]] = [X_BASE, Y_BASE]
             radius = radii[0]*SCALE
             display_point(center[0], points[center[0]][0], points[center[0]][1])
             w.create_oval(points[center[0]][0]-radius, points[center[0]][1]-radius, points[center[0]][0]+radius, points[center[0]][1]+radius, outline="black", width=2, dash=(4,4))
