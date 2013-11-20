@@ -1,5 +1,6 @@
 construct circle center any radius 3.2 cm
-construct arc center point O radii 2.5 cm
+construct circle center point O radii 2.5 cm
+construct arc center point O radii 4 cm
 construct circle
 mark point A on circle
 mark point B in interior of circle

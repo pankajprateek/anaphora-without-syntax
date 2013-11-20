@@ -2,7 +2,10 @@
 construct circle center any radius 3.2 cm
 
 एक ही केंद्र O लेकर 4 सेमी और 2. 5 सेमी त्रिज्या वाले दो वृत्त खींचिए 
-construct arc center point O radii 2.5 cm
+construct circle center point O radii 2.5 cm
+
+O को केंद्र लेकर 4 सेमी त्रिज्या वाला एक चाप खींचिए 
+construct arc center point O radii 4 cm
 
 एक वृत्त खींचिए 
 construct circle
