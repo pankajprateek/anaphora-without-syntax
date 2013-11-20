@@ -412,15 +412,10 @@ void interpretSentence(token* sentence, int sentenceLength){
 
 
 int main(){
-  vector<string> parse_structure;
-  parse_structure.push_back("Construct line segment AB of length 7.8 cm");
-  //parse_structure.push_back("With A as center radius 7.8 cm draw an arc");
-  parse_structure.push_back("With A and B as centers and radius 4 and 5 cm draw two arcs intersecting each other at C");
-  parse_structure.push_back("Join AC");
-  parse_structure.push_back("Join BC");
-  for(int i=0;i<int(parse_structure.size());i++) {
-    cout<<"Interpreting"<<endl<<parse_structure[i]<<endl;
-    interpret(parse_structure[i]);
+  string parse;
+  while(getline(cin, parse)) {
+    cout<<parse<<endl;
+    interpret(parse);
   }
   return 0;
 }

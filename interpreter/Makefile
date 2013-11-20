@@ -5,7 +5,7 @@ OBJECTS = $(SOURCES:.cpp=.o)
 HEADERS = $(SOURCES:.cpp=.h)
 EXECUTABLE = interpret
 
-all: english
+all: english hindi
 
 english:
 	cp ./english/english-source.vcb ./source.vcb
@@ -19,6 +19,10 @@ hindi:
 
 interpret: $(OBJECTS) $(HEADERS)
 	$(CC) -o $@ $^
+
+image: interpret
+	./interpret
+	python constructImage.py
 
 .cpp.o:
 	$(CC) -c $< -o $@
