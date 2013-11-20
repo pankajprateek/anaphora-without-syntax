@@ -48,14 +48,14 @@ def takeAction(action_number, constructible, length, point, center, radii):
             display_point(point[1], points[point[1]][0], points[point[1]][1])
             w.create_line(points[point[0]][0], points[point[0]][1], points[point[1]][0], points[point[1]][1], fill = "black", width=2)
 
-        elif constructible == 102:
+        elif constructible == 103:
             if point[0] not in points.keys():
                 points[center[0]] = [150, 500]
             radius = radii[0]*SCALE
             display_point(center[0], points[center[0]][0], points[center[0]][1])
             w.create_oval(points[center[0]][0]-radius, points[center[0]][1]-radius, points[center[0]][0]+radius, points[center[0]][1]+radius, outline="black", width=2, dash=(4,4))
 
-        elif constructible == 103:
+        elif constructible == 102:
             if center[0] not in points.keys():
                 print "First Point not Valid"
                 return
