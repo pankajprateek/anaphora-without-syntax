@@ -21,6 +21,7 @@ interpret: $(OBJECTS) $(HEADERS)
 	$(CC) -o $@ $^
 
 image: interpret
+	rm -f drawing_instructions.txt
 	./interpret
 	python constructImage.py
 
