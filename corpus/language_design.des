@@ -6,17 +6,39 @@ command =
     constructCommand 
   | markCommand 
   | cutCommand
+  | joinCommand
+  
+joinCommand = 
+    JOIN addressPointPair
+    
+JOIN = join
+
+addressPointPair = 
+    POINTPAIR
+  | addressPreviousObject
 
 constructCommand = 
   CONSTRUCT constructibleAndProperties
 
-CONSTRUCT = construct
+CONSTRUCT =
+    construct
+  | draw
 
 constructibleAndProperties = 
     lineSegmentAndProperties
+  | lineAndProperties
   | ArcAndProperties
   | intersectingArcsAndProperties
+  | circleAndProperties
+  
+circleAndProperties = 
+    CIRCLE CENTER addressPoint RADIUS addressLength
+    
+CIRCLE = circle
 
+lineAndProperties = 
+    line [a-z]
+  
 lineSegmentAndProperties = 
   LINESEGMENT POINTPAIR lineSegmentProperties
 
@@ -24,8 +46,7 @@ LINESEGMENT = lineSegment
 POINTPAIR = [A-Z][A-Z]
 
 lineSegmentProperties = 
-    LENGTH REAL CM 
-  | 
+    LENGTH addressLength
 
 LENGTH = length
 CM = cm
@@ -36,7 +57,8 @@ ArcAndProperties =
 ARC = arc
 
 arcProperties =
-  CENTER POINTSINGLE RADIUS REAL CM
+    CENTER POINTSINGLE RADIUS addressLength
+  | CENTER POINTSINGLE RADIUS addressLength cutCommand
 
 CENTER = center
 POINTSINGLE = [A-Z]
@@ -47,44 +69,135 @@ intersectingArcsAndProperties = INTERSECTINARCS intersectingArcsProperties
 
 INTERSECTINGARCS = intersectingArcs
 
+CENTERS =
+    CENTER
+  | centers
+  
 intersectingArcsProperties =
-    CENTERS POINTSINGLE POINTSINGLE RADIUS REAL CM REAL CM
-  | CENTER POINTSINGLE POINTSINGLE RADIUS REAL CM REAL CM
-  | CENTERS POINTSINGLE POINTSINGLE RADIUS REAL REAL CM
-  | CENTER POINTSINGLE POINTSINGLE RADIUS REAL REAL CM
+    CENTERS POINTSINGLE POINTSINGLE RADIUS intersectingArcsRadius INTERSECTINGAT addressPoint
+  
+intersectingArcsRadius = 
+    addressLength addressLength
+  | addressLength
 
+INTERSECTINGAT =
+    intersectingAt
+  
 POINTTRIPLET = [A-Z][A-Z][A-Z]
 
 markCommand =
     MARK markableAndProperties
 
-MARK = mark
+MARK = 
+    mark
+  | draw
 
 markableAndProperties =
     pointAndProperties
+  | intersectionPointsAndProperties
+  
+intersectionPointsAndProperties = 
+    INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint addressPoint
+  | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
+    
+INTERSECTIONPOINTS = intersectionPoints
+
+addressIntersectingObject = 
+    addressArc
+  | addressCircle
+  | addressLine
+  | addressLineSegment
 
 pointAndProperties = 
     POINT POINTSINGLE ON labelable
+  | POINT POINTSINGLE NOTON labelable
 
+ON = on
+
+NOTON = notOn
+    
 labelable =
+    addressLineSegment
+  | addressArc
+  | addressLine
+  
+addressLine =
+    LINE [a-z]
+  | addressPreviousObject
+  
+addressLineSegment =
     LINESEGMENT POINTPAIR
-  | ARC addressArc
+  | addressPreviousObject
   
 addressArc =
-  | ARC previousObject
+  | addressPreviousObject
   
-previousObject =
-    this
-  | previous
-  | previously
-  | it
+addressPreviousObject =
+    THIS object
+  | PREVIOUS object
+  | PREVIOUSLY
+  | IT
+  
+object = 
+    LINESEGMENT
+  | LINE
+  | CIRCLE
+  | ARC
 
+cutCommand = CUT cuttableAndProperties
 
+CUT = cut
 
+addressPoint =
+    POINTSINGLE
+  | POINT POINTSINGLE
+  | addressPreviousObject
 
+POINT = point
+  
+cuttableAndProperties =
+    addressLineSegment FROM addressLineSegment LENGTH addressLength
+  | addressLineSegment FROM addressLine LENGTH addressLength
+  | addressLine AT addressPoint
+  | addressLine AT addressPoint addressPoint
+  | addressArc AT addressPoint
+  | addressCircle AT addressPoint addressPoint
+  
+addressCircle = 
+    CIRCLE POINTSINGLE
+  | addressPreviousObject
 
+FROM = from
+TWICE = twice
+THRICE = thrice
 
+EQUALS =
+    equals
+  | equal
+  | is
+  | has
 
+addressLength =
+    REAL CM
+  | LENGTH addressLineSegment
+  | TWICE addressLength
+  | THRICE addressLength
+  | REAL TIMES addressLength
+  | HALF addressLength
+  | GREATERTHAN addressLength
+  | LESSTHAN addressLength
+  | EQUALS addressLength
+  | operation addressLength addressLength
+  | FREEVARIABLE
+  | previousLength
+  
+previousLength =
+    same
+  
+operation =
+    DIFFERENCE
+  | SUM
 
-
-
+FREEVARIABLE =
+    any
+  | convenient

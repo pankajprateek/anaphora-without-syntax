@@ -1,35 +1,29 @@
-Construct AB of length 7.8  cm
-construct lineSegment AB length 7.8  cm
+construct AB of length 7.8  cm
+construct lineSegment AB length 7.8 cm
 
 From this, cut off AC of length 4.7  cm
-cut from ? lineSegment AC length 4.7  cm
+cut lineSegment AC from this length 4.7 cm
 
 construct PQ such that the length of PQ is twice that of AB
-construct lineSegment PQ twice length AB
+construct lineSegment PQ length PQ twice length AB
 
-Construct PX such that length of PX = length of AB
-construct lineSegment PX length AB
+Construct PX such that length of PX is equal to length of AB
+construct lineSegment PX length PX equals length AB
 
 then cut off XQ such that XQ also has the length of AB
-cut from ? lineSegment XQ length AB
+cut lineSegment XQ length XQ equals length AB
 
 construct a line segment XY such that the length of XY is equal to the difference between the lengths of AB and CD
-construct lineSegment XY difference length AB length CD
-
-construct a copy of PQ
-construct copy PQ
+construct lineSegment XY length XY equals difference length AB length CD
 
 construct PQ such that the length of PQ is twice that of AB
-construct lineSegment PQ twice length AB
-
-Given a point P on a line l
-construct point P on line l
+construct lineSegment PQ length PQ twice length AB
 
 With P as center and a convenient radius, construct an arc intersecting the line l at two points A and B
-construct arc center point P radius any intersecting line l point A point B
+construct arc center P radius any cut line l at point A point B
 
 With A and B as centers and a radius greater than AP construct two arcs, which cut each other at Q
-construct intersectingArcs centers point A point B radii greaterThan length AP intersectingAt point Q
+construct intersectingArcs centers point A point B radius greaterThan length AP intersectingAt Q
 
 Join PQ
 join PQ
@@ -47,22 +41,16 @@ Join PQ
 join PQ
 
 Draw any line segment AB
-draw lineSegment AB
+draw lineSegment AB length any
 
 Mark any point M on it
 mark point M on it
 
-Through M, draw a perpendicular to AB
-construct perpendicular to lineSegment AB through M
-
 Draw any line segment PQ
-construct lineSegment PQ
+draw lineSegment PQ length any
 
 Take any point R not on it
-construct point R notOn it
-
-Through R, draw a perpendicular to PQ
-construct perpendicular to lineSegment PQ through R
+mark point R notOn it
 
 Draw a line l
 draw line l
@@ -70,32 +58,26 @@ draw line l
 Draw a point X on it
 draw point X on it
 
-Through X, draw a line segment XY perpendicular to l
-construct perpendicular to line l through X
-
-Draw a perpendicular to XY at Y
-construct perpendicular to lineSegment XY through Y
-
 Draw a line segment AB of any length
-construct lineSegment AB length any
+draw lineSegment AB length any
 
-With A as center, using compasses, draw a circle with radius more than half the length of AB
-construct circle center A radius greaterThan half length AB
+With A as center, draw a circle with radius more than half the length of AB
+draw circle center A radius greaterThan half length AB
 
 With the same radius and with B as center, draw another circle
 construct circle center B radius same
 
 Let it cut the previous circle at C and D
-label intersectionPoints it previous circle point C point D
+mark intersectionPoints it previous circle point C point D
 
 Join CD
 join CD
 
 It cuts AB at O
-label intersectionPoints it AB point O
+mark intersectionPoints it AB point O
 
 Draw AB of length 4  cm
-construct lineSegment AB length 4 cm
+draw lineSegment AB length 4 cm
 
 Draw a line segment of length 9.5 cm
 construct lineSegment any length 9.5 cm
@@ -255,3 +237,15 @@ construct angle any measure 70°
 
 Draw an angle of 40°
 construct angle any measure 40°
+
+Through M, draw a perpendicular to AB
+construct perpendicular to lineSegment AB through M
+
+Through R, draw a perpendicular to PQ
+construct perpendicular to lineSegment PQ through R
+
+Through X, draw a line segment XY perpendicular to l
+construct perpendicular to line l through X
+
+Draw a perpendicular to XY at Y
+construct perpendicular to lineSegment XY through Y
