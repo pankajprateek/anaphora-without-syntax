@@ -79,47 +79,29 @@ mark intersectionPoints it AB point O
 Draw AB of length 4  cm
 draw lineSegment AB length 4 cm
 
-Draw a line segment of length 9.5 cm
-construct lineSegment any length 9.5 cm
-
-Construct its perpendicular bisector
-construct perpendicularBisector it
- 
 Draw XY whose length is 5 cm
-construct lineSegment XY length 5 cm
-
-Draw the perpendicular bisector of XY
-construct prependicularBisector of lineSegment XY
+draw lineSegment XY length 5 cm
 
 Take any point P on the bisector drawn
-construct point P on bisector
+mark point P on it
+##
+divide it into four equal parts
+divide it numParts 4
 
 Draw a line segment of length 12.8 cm
-construct lineSegment any length 12.8 cm
+draw lineSegment any length 12.8 cm
 
-divide it into four equal parts
-divide it numParts four
+Draw a line segment of length 9.5 cm
+draw lineSegment any length 9.5 cm
 
 With 6.1 cm as diameter, draw a circle
-construct circle center any diameter 6.1 cm
+draw circle center any diameter 6.1 cm
 
 Draw a circle with center C and radius 3.4 cm
-construct circle center C radius 3.4 cm
-
-Draw any chord AB
-construct chord AB distanceFromCenter any
-
-Construct the perpendicular bisector of AB
-construct perpendicularBisector of lineSegment AB
+draw circle center C radius 3.4 cm
 
 Draw a circle of radius 4 cm
-construct circle center any radius 4 cm
-
-Draw any two of its chords. 
-construct chords its distanceFromCenter any distanceFromCenter any
-
-Construct the perpendicular bisectors of these chords
-construct perpendicularBisectors of chords these
+draw circle center any radius 4 cm
 
 Draw any angle with vertex O
 construct angle vertex O
@@ -249,3 +231,21 @@ construct perpendicular to line l through X
 
 Draw a perpendicular to XY at Y
 construct perpendicular to lineSegment XY through Y
+
+Construct its perpendicular bisector
+construct perpendicularBisector it 
+
+Draw the perpendicular bisector of XY
+construct prependicularBisector lineSegment XY
+
+Draw any chord AB
+construct chord AB distanceFromCenter any
+
+Construct the perpendicular bisector of AB
+construct perpendicularBisector of lineSegment AB
+
+Draw any two of its chords. 
+construct chords its distanceFromCenter any distanceFromCenter any
+
+Construct the perpendicular bisectors of these chords
+construct perpendicularBisectors of chords these

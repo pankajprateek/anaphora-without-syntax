@@ -7,7 +7,22 @@ command =
   | markCommand 
   | cutCommand
   | joinCommand
+  | divideCommand
   
+divideCommand =
+    DIVIDE divisibleAndProperties
+    
+DIVIDE =
+    divide
+    
+divisibleAndProperties =
+    divisibleObject NUMPARTS [0-9]+
+    
+NUMPARTS = numParts
+
+divisibleObject =
+    addressLineSegment
+    
 joinCommand = 
     JOIN addressPointPair
     
@@ -30,9 +45,11 @@ constructibleAndProperties =
   | ArcAndProperties
   | intersectingArcsAndProperties
   | circleAndProperties
+  | angleAndProperties
   
 circleAndProperties = 
     CIRCLE CENTER addressPoint RADIUS addressLength
+  | CIRCLE CENTER addressPoint DIAMETER addressLength
     
 CIRCLE = circle
 
@@ -63,6 +80,7 @@ arcProperties =
 CENTER = center
 POINTSINGLE = [A-Z]
 RADIUS = radius
+DIAMETER = diameter
 REAL = [0-9]+(.[0-9]+)?
 
 intersectingArcsAndProperties = INTERSECTINARCS intersectingArcsProperties
@@ -124,13 +142,16 @@ labelable =
 addressLine =
     LINE [a-z]
   | addressPreviousObject
+  | addressFreeObject
   
 addressLineSegment =
     LINESEGMENT POINTPAIR
   | addressPreviousObject
+  | addressFreeObject
   
 addressArc =
   | addressPreviousObject
+  | addressFreeObject
   
 addressPreviousObject =
     THIS object
@@ -152,6 +173,12 @@ addressPoint =
     POINTSINGLE
   | POINT POINTSINGLE
   | addressPreviousObject
+  | addressFreeObject
+ 
+addressFreeObject =
+    ANY
+    
+ANY = any
 
 POINT = point
   
@@ -166,6 +193,7 @@ cuttableAndProperties =
 addressCircle = 
     CIRCLE POINTSINGLE
   | addressPreviousObject
+  | addressFreeObject  
 
 FROM = from
 TWICE = twice
