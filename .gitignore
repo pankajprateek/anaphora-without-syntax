@@ -10,3 +10,4 @@
 *.snt
 *.align
 *~
+interpreter/interpret
