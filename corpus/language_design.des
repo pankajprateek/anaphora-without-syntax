@@ -8,7 +8,9 @@ command =
   | cutCommand
 
 constructCommand = 
-  construct constructibleAndProperties
+  CONSTRUCT constructibleAndProperties
+
+CONSTRUCT = construct
 
 constructibleAndProperties = 
     lineSegmentAndProperties
@@ -52,6 +54,30 @@ intersectingArcsProperties =
   | CENTER POINTSINGLE POINTSINGLE RADIUS REAL REAL CM
 
 POINTTRIPLET = [A-Z][A-Z][A-Z]
+
+markCommand =
+    MARK markableAndProperties
+
+MARK = mark
+
+markableAndProperties =
+    pointAndProperties
+
+pointAndProperties = 
+    POINT POINTSINGLE ON labelable
+
+labelable =
+    LINESEGMENT POINTPAIR
+  | ARC addressArc
+  
+addressArc =
+  | ARC previousObject
+  
+previousObject =
+    this
+  | previous
+  | previously
+  | it
 
 
 
