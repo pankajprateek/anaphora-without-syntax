@@ -101,20 +101,17 @@ Draw a circle with center C and radius 3.4 cm
 draw circle center C radius 3.4 cm
 
 Draw a circle of radius 4 cm
-draw circle center any radius 4 cm
+circle center any radius 4 cm
 
 Draw any angle with vertex O
-construct angle vertex O
+draw angle vertex O degree any
 
 Take a point A on one of its arms and B on another
-construct points point A its arms point B its arms
-
-Draw the perpendicular bisectors of OA and OB
-construct perpendicularBisectors of lineSegment OA lineSegment OB
+mark point A on arm it point B on arm it
 
 Let them meet at P
 label intersectionPoint them point P
-
+#Done till here
 Draw a line l
 construct line l
 
@@ -243,6 +240,9 @@ construct chord AB distanceFromCenter any
 
 Construct the perpendicular bisector of AB
 construct perpendicularBisector of lineSegment AB
+
+Draw the perpendicular bisectors of OA and OB
+construct perpendicularBisectors of lineSegment OA lineSegment OB
 
 Draw any two of its chords. 
 construct chords its distanceFromCenter any distanceFromCenter any

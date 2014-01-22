@@ -46,6 +46,17 @@ constructibleAndProperties =
   | intersectingArcsAndProperties
   | circleAndProperties
   | angleAndProperties
+
+angleAndProperties =
+    ANGLE VERTEX addressPoint addressDegree
+    
+addressDegree =
+    REAL DEGREES
+  | FREEVARIABLE
+  
+DEGREES =
+    degree
+  | degrees
   
 circleAndProperties = 
     CIRCLE CENTER addressPoint RADIUS addressLength
@@ -109,14 +120,27 @@ markCommand =
 MARK = 
     mark
   | draw
+  | label
 
 markableAndProperties =
     pointAndProperties
   | intersectionPointsAndProperties
+  | angleArmPointsAndProperties
+  
+angleArmPointsAndProperties =
+    POINT POINTSINGLE ON ARM addressAngle POINTSINGLE ON ARM addressAngle
+    
+ARM = arm
+    
+addressAngle =
+    POINTTRIPLET
+  | POINTSINGLE
+  | addressPreviousObject
   
 intersectionPointsAndProperties = 
     INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint addressPoint
   | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
+  | INTERSECTIONPOINTS addressPreviousObjects POINT addressPoint
     
 INTERSECTIONPOINTS = intersectionPoints
 
@@ -158,6 +182,17 @@ addressPreviousObject =
   | PREVIOUS object
   | PREVIOUSLY
   | IT
+  
+addressPreviousObject =
+    THEM
+  | THOSE
+  
+THEM = them
+THOSE = those
+THIS = this
+PREVIOUS = previous
+PREVIOUSLY = previously
+IT = it
   
 object = 
     LINESEGMENT
