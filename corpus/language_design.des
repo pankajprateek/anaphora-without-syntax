@@ -1,3 +1,17 @@
+addressLength =
+    REAL CM
+  | LENGTH addressLineSegment
+  | TWICE addressLength
+  | THRICE addressLength
+  | REAL TIMES addressLength
+  | HALF addressLength
+  | GREATERTHAN addressLength
+  | LESSTHAN addressLength
+  | EQUALS addressLength
+  | operation addressLength addressLength
+  | FREEVARIABLE
+  | previousLength
+
 commands = 
     commands command
   | command
@@ -8,29 +22,6 @@ command =
   | cutCommand
   | joinCommand
   | divideCommand
-  
-divideCommand =
-    DIVIDE divisibleAndProperties
-    
-DIVIDE =
-    divide
-    
-divisibleAndProperties =
-    divisibleObject NUMPARTS [0-9]+
-    
-NUMPARTS = numParts
-
-divisibleObject =
-    addressLineSegment
-    
-joinCommand = 
-    JOIN addressPointPair
-    
-JOIN = join
-
-addressPointPair = 
-    POINTPAIR
-  | addressPreviousObject
 
 constructCommand = 
   CONSTRUCT constructibleAndProperties
@@ -42,10 +33,27 @@ CONSTRUCT =
 constructibleAndProperties = 
     lineSegmentAndProperties
   | lineAndProperties
-  | ArcAndProperties
+  | arcAndProperties
   | intersectingArcsAndProperties
   | circleAndProperties
   | angleAndProperties
+
+lineSegmentAndProperties = 
+  addressLineSegment lineSegmentProperties
+
+LINESEGMENT = lineSegment
+POINTPAIR = [A-Z][A-Z]
+
+lineSegmentProperties = 
+    addressLength
+
+LENGTH = length
+CM = cm
+  
+addressLineSegment =
+    LINESEGMENT POINTPAIR
+  | addressPreviousObject
+  | addressFreeObject
 
 angleAndProperties =
     ANGLE VERTEX addressPoint addressDegree
@@ -65,19 +73,7 @@ circleAndProperties =
 CIRCLE = circle
 
 lineAndProperties = 
-    line [a-z]
-  
-lineSegmentAndProperties = 
-  LINESEGMENT POINTPAIR lineSegmentProperties
-
-LINESEGMENT = lineSegment
-POINTPAIR = [A-Z][A-Z]
-
-lineSegmentProperties = 
-    LENGTH addressLength
-
-LENGTH = length
-CM = cm
+    line [a-z] 
 
 ArcAndProperties =
   ARC arcProperties
@@ -111,6 +107,29 @@ intersectingArcsRadius =
 
 INTERSECTINGAT =
     intersectingAt
+  
+divideCommand =
+    DIVIDE divisibleAndProperties
+    
+DIVIDE =
+    divide
+    
+divisibleAndProperties =
+    divisibleObject NUMPARTS [0-9]+
+    
+NUMPARTS = numParts
+
+divisibleObject =
+    addressLineSegment
+    
+joinCommand = 
+    JOIN addressPointPair
+    
+JOIN = join
+
+addressPointPair = 
+    POINTPAIR
+  | addressPreviousObject
   
 POINTTRIPLET = [A-Z][A-Z][A-Z]
 
@@ -165,11 +184,6 @@ labelable =
   
 addressLine =
     LINE [a-z]
-  | addressPreviousObject
-  | addressFreeObject
-  
-addressLineSegment =
-    LINESEGMENT POINTPAIR
   | addressPreviousObject
   | addressFreeObject
   
@@ -240,20 +254,6 @@ EQUALS =
   | is
   | has
 
-addressLength =
-    REAL CM
-  | LENGTH addressLineSegment
-  | TWICE addressLength
-  | THRICE addressLength
-  | REAL TIMES addressLength
-  | HALF addressLength
-  | GREATERTHAN addressLength
-  | LESSTHAN addressLength
-  | EQUALS addressLength
-  | operation addressLength addressLength
-  | FREEVARIABLE
-  | previousLength
-  
 previousLength =
     same
   
