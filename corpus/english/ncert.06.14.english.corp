@@ -101,7 +101,7 @@ Draw a circle with center C and radius 3.4 cm
 draw circle center C radius 3.4 cm
 
 Draw a circle of radius 4 cm
-circle center any radius 4 cm
+draw circle center any radius 4 cm
 
 Draw any angle with vertex O
 draw angle vertex O degree any
