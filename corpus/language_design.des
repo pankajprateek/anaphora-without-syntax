@@ -200,6 +200,8 @@ addressPreviousObject =
 addressPreviousObject =
     THEM
   | THOSE
+  | PREVIOUS
+  
   
 THEM = them
 THOSE = those

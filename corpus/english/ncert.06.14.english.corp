@@ -19,6 +19,14 @@ construct lineSegment XY length XY equals difference length AB length CD
 construct PQ such that the length of PQ is twice that of AB
 construct lineSegment PQ length PQ twice length AB
 
+rekhakhand PQ ki rachna kijiye taaki AB PQ se doguna lamba ho
+construct lineSegment PQ length AB twice length PQ
+
+rekhakhand PQ ki rachna kijiye taaki AB se PQ doguna lamba ho
+construct lineSegment PQ length PQ twice length AB
+
+
+
 With P as center and a convenient radius, construct an arc intersecting the line l at two points A and B
 construct arc center P radius any cut line l at point A point B
 
@@ -112,6 +120,8 @@ mark point A on arm it point B on arm it
 Let them meet at P
 label intersectionPoint them point P
 #Done till here 22/1/2014
+--- Draw a angle of any measure
+
 Draw a line l
 construct line l
 
