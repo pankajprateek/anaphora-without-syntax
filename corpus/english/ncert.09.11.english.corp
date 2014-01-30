@@ -1,102 +1,141 @@
-Take a line ‘l’ and a point ‘A’ outside ‘l’
+Take a line l and a point A outside l
+
 Take any point B on l and join B to A
+
 With B as centre and a convenient radius, draw an arc cutting l at C and BA at D
-Now with A as centre and the same radius as in Step 3, draw an arc EF cutting AB at G
-Place the pointed tip of the compasses at C and adjust the opening so that the pencil tip is at D
-With the same opening as in Step 5 and with G as centre, draw an arc cutting the arc EF at H
-Now, join AH to draw a line ‘m’
 
+Now with A as centre and the same radius, draw an arc EF cutting AB at G
 
-Construct a triangle ABC, given that AB = 5 cm, BC = 6 cm and AC = 7 cm.
-Draw a line segment BC of length 6 cm.
-From B, point A is at a distance of 5 cm. So, with B as centre, draw an arc of radius 5 cm.
-From C, point A is at a distance of 7 cm. So, with C as centre, draw an arc of radius 7 cm.
-Mark the point of intersection of arcs as A. Join AB and AC.
+With the same radius and with G as centre, draw an arc cutting the arc EF at H
 
+Now, join AH to draw a line m
 
-Construct a triangle PQR, given that PQ = 3 cm, QR = 5.5 cm and ∠PQR = 60°.
-Draw a line segment QR of length 5.5 cm.
-At Q, draw QX making 60° with QR.
-With Q as centre, draw an arc of radius 3 cm. It cuts QX at the point P.
-Join PR.
+Construct a triangle ABC, given that AB = 5 cm, BC = 6 cm and AC = 7 cm
 
+Draw a line segment BC of length 6 cm
 
-Construct ΔXYZ if it is given that XY = 6 cm, ∠ZXY = 30° and ∠XYZ = 100°.
-Draw XY of length 6 cm.
-At X, draw a ray XP making an angle of 30° with XY.
-At Y, draw a ray YQ making an angle of 100° with YX.
-The point of intersection of the two rays is Z.
+with B as centre, draw an arc of radius 5 cm
 
+with C as centre, draw an arc of radius 7 cm
 
-Construct ΔLMN, right-angled at M, given that LN = 5 cm and MN = 3 cm.
-Draw MN of length 3 cm.
-At M, draw MX ⊥ MN.
-With N as centre, draw an arc of radius 5 cm.
-L has to be on the perpendicular line MX as well as on the arc drawn with centre N. Therefore, L is the meeting point of these two.
+Mark the point of intersection of arcs as A
 
+Join AB and AC
 
+Construct a triangle PQR, given that PQ = 3 cm, QR = 5.5 cm and ∠PQR = 60°
 
+Draw a line segment QR of length 5.5 cm
 
-To construct the bisector of a given angle.
-Given an angle ABC, construct its bisector.
-Taking B as centre and any radius, draw an arc to intersect the rays BA and BC, say at E and D respectively.
-Next, taking D and E as centres and with the radius more than 1/2 DE, draw arcs to ntersect each other, say at F.
-Draw the ray BF. This ray BF is the required bisector of the angle ABC.
+At Q, draw QX making 60° with QR
 
+With Q as centre, draw an arc of radius 3 cm
 
-To construct the perpendicular bisector of a given line segment.
-Given a line segment AB, construct its perpendicular bisector.
-1. Taking A and B as centres and radius more than 1/2
-AB, draw arcs on both sides of the line segment
-AB (to intersect each other).
-2. Let these arcs intersect each other at P and Q.
-Join PQ.
-3. Let PQ intersect AB at the point M. Then line PMQ is the required perpendicular bisector of AB.
+It cuts QX at the point P
 
+Join PR
 
-To construct an angle of 60° at the initial point of a given ray.
-Take a ray AB with initial point A. Construct a ray
-AC such that ∠CAB = 60°
-Taking A as centre and some radius, draw an arc of a circle, which intersects AB, say at a point D.
-Taking D as centre and with the same radius as before, draw an arc intersecting the previously drawn arc, say at a point E.
-Draw the ray AC passing through E.
+Construct ΔXYZ if it is given that XY = 6 cm, ∠ZXY = 30° and ∠XYZ = 100°
 
+Draw XY of length 6 cm
 
-To construct a triangle, given its base, a base angle and sum of other two sides.
-Given the base BC, a base angle, say ∠B and the sum  AB + AC of the other two sides of a triangle ABC, you are required to construct it.
-Draw the base BC and at the point B make an angle, say XBC equal to the given angle.
-Cut a line segment BD equal to AB+AC from the ray BX.
-Join DC and make an angle DCY equal to ∠BDC.
-Let CY intersect BX at A.
-Then draw perpendicular bisector PQ of CD to intersect BD at a point A.
-Join AC.
+At X, draw a ray XP making an angle of 30° with XY
 
+At Y, draw a ray YQ making an angle of 100° with YX
 
-To construct a triangle given its base, a base angle and the difference of the other two sides.
-Given the base BC, a base angle, say ∠B and the difference of other two sides AB – AC or AC – AB, you have to construct the triangle ABC.
-Draw the base BC and at point B make an angle say XBC equal to the given angle.
-Cut the line segment BD equal to AB – AC from ray BX.
-Join DC and draw the perpendicular bisector, say PQ of DC.
-Let it intersect BX at a point A.
-Join AC.
-Cut line segment BD equal to AC – AB from the line BX extended on opposite side of line segment BC.
-Join DC and draw the perpendicular bisector, say PQ of DC.
-Let PQ intersect BX at A. 
-Join AC.
+The point of intersection of the two rays is Z
 
+Construct ΔLMN, right-angled at M, given that LN = 5 cm and MN = 3 cm
 
-To construct a triangle, given its perimeter and its two base angles.
-Given the base angles, say ∠B and ∠C and BC+CA+AB, you have to construct the triangle ABC.
-Draw a line segment, say XY equal to BC + CA + AB.
-Make angles LXY equal to ∠B and MYX equal to ∠C.
-Bisect ∠LXY and ∠MYX. Let these bisectors intersect at a point A.
-Draw perpendicular bisectors PQ of AX and RS of AY.
-Let PQ intersect XY at B and RS intersect XY at C. 
-Join AB and AC.
+Draw MN of length 3 cm
 
-Construct a triangle ABC, in which ∠B = 60°, ∠ C = 45° and AB + BC + CA = 11 cm
-Draw a line segment PQ = 11 cm.
-At P construct an angle of 60° and at Q, an angle of 45°.
-Bisect these angles. Let the bisectors of these angles intersect at a point A.
-Draw perpendicular bisectors DE of AP to intersect PQ at B and FG of AQ to intersect PQ at C.
-Join AB and AC.
+At M, draw MX ⊥ MN
+
+With N as centre, draw an arc of radius 5 cm
+
+Taking B as centre and any radius, draw an arc to intersect the rays BA and BC, say at E and D respectively
+
+taking D and E as centres and with the radius more than 1/2 DE, draw arcs to intersect each other, say at F
+
+Draw the ray BF
+
+Taking A and B as centres and radius more than 0.5 AB, draw arcs on both sides of the line segment AB
+
+Let these arcs intersect each other at P and Q
+
+Join PQ
+
+Let PQ intersect AB at the point M
+
+Take a ray AB with initial point A
+
+Construct a ray AC such that ∠CAB = 60°
+
+Taking A as centre and some radius, draw an arc of a circle, which intersects AB, say at a point D
+
+Taking D as centre and with the same radius as before, draw an arc intersecting the previously drawn arc, say at a point E
+
+Draw the ray AC passing through E
+
+Draw the base BC and at the point B make angle XBC equal to 60 degrees
+
+Cut a line segment BD equal to AB+AC from the ray BX
+
+Join DC
+
+Make an angle DCY equal to ∠BDC
+
+Let CY intersect BX at A
+
+Then draw perpendicular bisector PQ of CD to intersect BD at a point A
+
+Join AC
+
+Draw the base BC.
+
+At point B make an angle say XBC equal to 120 degrees
+
+Cut the line segment BD equal to AB – AC from ray BX
+
+Join DC
+
+Draw the perpendicular bisector, say PQ of DC
+
+Let it intersect BX at a point A
+
+Join AC
+
+Cut line segment BD equal to AC – AB from the line BX extended on opposite side of line segment BC
+
+Join DC
+
+Draw the perpendicular bisector, say PQ of DC
+
+Let PQ intersect BX at A
+
+Join AC
+
+Draw a line segment, say XY equal to BC + CA + AB
+
+Make angles LXY equal to ∠B and MYX equal to ∠C
+
+Bisect ∠LXY and ∠MYX
+
+Let these bisectors intersect at a point A
+
+Draw perpendicular bisectors PQ of AX and RS of AY
+
+Let PQ intersect XY at B and RS intersect XY at C
+
+Join AB and AC
+
+Draw a line segment PQ = 11 cm
+
+At P construct an angle of 60° and at Q, an angle of 45°
+
+Bisect these angles
+
+Let the bisectors of these angles intersect at a point A
+
+Draw perpendicular bisectors DE of AP to intersect PQ at B and FG of AQ to intersect PQ at C
+
+Join AB and AC
