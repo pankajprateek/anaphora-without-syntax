@@ -1,158 +1,211 @@
+Take a line I and a point A outside it
 एक रेखा I और उसके बाहर स्थित कोई बिंदु A लीजिए
 construct line l and construct point A outside it
 
+take a line l and a point B and join A to B
 रेखा I और कोई बिंदु B लीजिए और A को B से मिलाइए
 construct point B on l and join AB
 
+With B as center a convenient radius construct an arc curring I at C and AB at D
 बिंदु B को केंद्र मानकर और कोई सुविधाजनक त्रिज्या को लेकर I को C पर और BA को D पर काटता हुआ एक चाप खींचिए
 construct arc center B radius convenient intersecting I C BA D
 
+Taking A as center and radius same as step 3 construct and arc EF cutting AB at G
 अब A बिन्दु को केन्द्र मान कर और चरण 3 वाली ही त्रिज्या लेकर AB को G पर काटता हुआ एक चाप EF खींचिए
 construct arc EF center A radius previous intersecting AB at G
 
-G को केन्द्र मानकर और परकार का खुलाव चरण 5 वाला ही रखते हुए एक चाप खींचिए जो चाप EF को H पर काटे
+Taking G as center and radius same as step 5 construct an arc cutting EF at H
+G को केन्द्र मानकर और चरण 3 वाली ही त्रिज्या रखते हुए एक चाप खींचिए जो चाप EF को H पर काटे
 construct arc center G radius previous intersecting EF at H
 
+Join AH
 अब AH को मिलाइए
 join AH
 
+construct a line AB and take a point C outside it
 एक रेखा AB खींचिए और इसके बाहर स्थित कोई बिंदु C लीजिए
 construct line AB and construct point C outside it
 
+construct a line parallel to AB through C
 C से होकर AB समांतर एक रेखा खींचिए
 construct line parallelTo AB through C
 
+construct a line I and construct a perpendicular at any point on I
 एक रेखा I खींचिए और I पर स्थित किसी भी बिंदु पर I पर लंब खींचिए
 construct line I and construct perpendicular to I at point any
 
+take a point X on this perpendicular line which is at a distance of 4 cm from I
 इस लंब रेखा पर एक बिंदु X लीजिए जो I से 4 cm की दूरी पर हो
 construct point X on perpendicular this distanceFrom I 4 cm
 
+construct a line m parallel to I and passing through X
 X से होकर I के समांतर एक रेखा m खींचिए
 construct line m parallelTo I through X
 
+Take a line I and a point P not on it
 मान लीजिए I एक रेखा है और P एक बिंदु है जो I पर स्थित नहीं है
 construct line l and construct point P notOn I
 
+construct a line m parallel to I and passing through P
 P से होकर I के समांतर एक रेखा m खींचिए
 construct line m parallelTo I through P
 ##
+Join P to any point Q on I
 अब P को I के किसी बिंदु Q से जोड़िए
 join P 
 
+take a point R on m
 m पर कोई अन्य बिन्दु R चुनिए
 construct point R on m
 
+construct a line parallel to PQ and passing through R
 R से होकर PQ के समांतर एक रेखा खींचिए
 construct line parallelTo PQ through R
 
-मान लीजिए यह रेखा रेखा I से बिंदु S पर मिलती है
+let it cut line I at point S
+मान लीजिए यह रेखा I से बिंदु S पर मिलती है
 mark intersectionPoint line this line I point S
 
+construct a triangle ABC such that AB = 5 cm, BC = 6 cm and AC = 7 cm
 एक त्रिभुज ABC की रचना कीजिए जबकि AB = 5 cm, BC = 6 cm और AC = 7 cm दिया है
 construct triangle ABC length AB equals 5 cm length BC equals 6 cm length AC equals 7 cm
 
+construct a line segment BC of length 6 cm 
 6 cm लंबाई का रेखा खंड BC खींचिए
 construct lineSegment BC length 6 cm
 
+Taking B as center and 5 cm as radius construct an arc
 B को केंद्र मानकर और 5 cm त्रिज्या लेकर एक चाप खींचिए
 construct arc center B radius 5 cm
 
+Taking C as center and radius 7 cm construct an arc
 C को केंद्र मानकर और 7 cm त्रिज्या लेकर एक चाप खींचिए
 construct arc center C radius 7 cm
 
+mark the intersection points of these arcs as A
 इन चापों के प्रतिच्छेद बिंदु को A से अंकित कीजिए
 mark intersectionPoints arcs these A
 
+join AB and AC
 AB और AC को जोड़िए
 join AB AC
 
+construct triangle XYZ such that XY = 4.5 cm, YZ = 5 cm and ZX = 6 cm
 त्रिभुज XYZ की रचना कीजिए, जिसमें XY = 4.5 cm, YZ = 5 cm और ZX = 6 cm है
 construct triangle XYZ length XY equals 4.5 cm length YZ equals 5 cm length ZX equals 6 cm
 
+construct an equilateral triangle with 5.5 cm as its side length
 5.5 cm भुजा वाले एक समबाहु त्रिभुज की रचना कीजिए
 construct equilateral triangle sideLength 5.5 cm
 
+construct triangle PQR such that PQ = 4 cm, QR = 3.5 cm and PR = 4 cm
 त्रिभुज PQR की रचना कीजिए, जिसमें PQ = 4 cm, QR = 3.5 cm और PR = 4 cm है
 construct triangle PQR length PQ equals 4 cm length QR equals 3.5 cm length PR equals 4 cm
 
+construct a triangle ABC such that AB = 2.5 cm, BC = 6 cm and AC = 6.5 cm
 ABC की रचना कीजिए, ताकि AB = 2.5 cm, BC = 6 cm और AC = 6.5 cm हो
 construct triangle ABC length AB equals 2.5 cm length BC equals 6 cm length AC equals 6.5 cm
 
+construct a triangle PQR such that PQ = 3 cm, QR = 5.5 cm and angle PQR = 60 degrees
 एक त्रिभुज PQR की रचना कीजिए जब दिया है कि PQ = 3 cm, QR = 5.5 cm और कोण PQR = 60 डिग्री है
 construct triangle PQR length PQ equals 3 cm length QR equals 5.5 cm angle PQR equals 60 degrees
 
+construct a ray QX on Q such that it makes an angle of 60 degrees with QR
 Q पर किरण QX खींचिए जो QR के साथ 60 डिग्री का कोण बनाए
 construct ray QX angleWith QR equals 60 degrees
 
+Taking Q as center and radius 3 cm construct an arc
 Q को केंद्र मान कर 3 cm त्रिज्या वाली एक चाप खींचिए
 construct arc center Q radius 4 cm
 ##
+let it cut QX at point P
 यह QX को बिंदु P पर काटता है
 make intersectionPoint this QX point P
 
+join PR
 PR को जोड़िए
 join PR
 
+construct a triangle ABC such that AB = 3 cm, BC = 6.5 cm and angle ABC = 60 degrees
 एक अन्य त्रिभुज ABC की रचना करें ताकि AB = 3 cm , BC = 6.5 cm और कोण ABC = 60 डिग्री हो
 construct triangle ABC length AB equals 3 cm length BC equals 6.5 cm angle ABC equals 60 degrees
 ##
+construct AC = 5 cm and angle C = 30 degrees
 AC = 5 cm खींच कर कोण C = 30 डिग्री खींच सकते है
 construct AC length 5 cm angle C measure 30 degrees
 
+construct trangle DEF such that DE = 5 cm, DF = 3 cm and angle EDF = 90 degrees
 त्रिभुज DEF की रचना कीजिए ताकि DE = 5 cm , DF = 3 cm और कोण EDF = 90 डिग्री हो
 construct triangle DEF length DE equals 5 cm length DF equals 3 cm angle EDF equals 90 degrees
 
+construct an isosceles triangle so that length of equal sides is 6.5 cm and angle between them is 110 degrees
 एक समद्विबाहु त्रिभुज की रचना कीजिए, जिसकी प्रत्येक समन भुजा की लंबाई 6.5 cm हो और उनके बीच का कोण 110 डिग्री का हो
 construct isosceles triangle equalSidesLength 6.5 cm equalSidesAngle 110 degrees
 
+construct a triangle ABC such that BC = 7.5 m, AC = 5 cm and angle C = 60 degrees
 BC = 7.5 cm और AC = 5 cm और कोण C = 60 डिग्री वाले त्रिभुज ABC की रचना कीजिए
 construct triangle ABC length BC equals 7.5 cm length AC equals 5 cm angle C equals 60 degrees
 
+construct a line segment XY of length 6 cm
 6 cm लंबाई का रेखाखंड XY खींचिए
 construct lineSegment XY length 6 cm
 
+construct an ray XP on X which makes an angle of 30 degrees with XY
 X पर एक किरण XP खींचिए जो XY से 30 डिग्री का कोण बनाए
 construct ray XP angleWith XY equals 30 degrees
 
+construct a ray YK on Y which makes an angle of 100 degrees with YX
 Y पर एक किरण YK खींचिए जो YX से 100 डिग्री का कोण बनाए
 construct ray YK angleWith YX equals 100 degrees
 
+Let the intersection point of these two be Z
 अतः इन दोनों किरणों का प्रतिच्छेद बिंदु ही Z है
 mark intersectionPoints rays these Z
 
+construc a triangle LMN such that angle NLM = 30 degrees, LM = 6 cm and angle NML = 100 degrees
 अब एक अन्य त्रिभुज LMN खींचिए जिसमें कोण NLM = 30 डिग्री , LM = 6 cm और कोण NML = 100 डिग्री हो
 construct triangle LMN angle NLM equals 30 degrees length LM equals 6 cm angle NML equals 100 degrees
 
+construct triangle ABC such that angle A = 60 degrees, angle B = 30 degrees and AB = 5.8 cm
 त्रिभुज ABC की रचना कीजिए जब कोण A = 60 डिग्री, कोण B = 30 डिग्री और AB = 5.8 cm दिया है
 construct triangle ABC angle Z equals 60 degrees angle B equals 30 degrees length AB equals 5.8 cm
 
+construct triangle PQR such that PQ = 5 cm, angle PQR = 105 degrees and angle QRP = 40 degrees
 त्रिभुज PQR की रचना कीजिए यदि PQ = 5 cm , कोण PQR = 105 डिग्री  और कोण QRP = 40 डिग्री दिया है
 construct triangle PQR length PQ equals 5 cm angle PQR equals 105 degrees angle QRP equals 40 degrees
 
+construct a triangle such that angle LMN is right angle and LN = 5 cm and MN = 3 cm
 त्रिभुज की रचना कीजिए, जिसका कोण LMN समकोण है तथा दिया है कि LN = 5 cm और MN = 3 cm
 construct triangle rightAngle angle LMN length LN equals 5 cm length MN equals 3 cm
 
+construct a line segment of length 3 cm
 3 cm लंबाई का रेखाखंड MN खींचिए
 construct lineSegment MN length 3 cm
 
+construct a MX perpendicular to MN on M
 M पर MX लंब MN खींचिए
 construct MX perpendicularTo MN
 
+taking N as center construct an arc of radius 5 cm
 N को केन्द्र मान कर 5cm त्रिज्या का एक चाप खींचिए
 construct arc center N radius 5 cm
 
+mark the intersection point of these two as L
 अतः L इन दोनों का प्रतिच्छेद बिंदु होगा
 mark intersectionPoint these L
 
+join LN
 LN को जोड़िए
 join LN
 
+construct a right triangle PQR such that angle Q = 90 degrees, QR = 8 cm and PR = 10 cm
 अब समकोण त्रिभुज PQR की रचना कीजिए जहाँ कोण Q = 90 डिग्री QR = 8 cm और PR = 10 cm है
 construct right triangle PQR angle Q equals 90 degrees length QR equals 8 cm length PR equals 10 cm
 
+construct a right triangle such that the hypotenuse is 6 cm long and one leg is 4 cm long
 एक समकोण त्रिभुज की रचना कीजिए जिसका कर्ण 6cm लंबा है और एक पाद 4 cm लंबा है
 construct right triangle hypotenuseLength 6 cm firstLegLength 4 cm
 
+construct an isosceles triangle ABC so that angle ACB = 90 degrees and AC = 6 cm
 एक समद्विबाहु समकोण त्रिभुज ABC की रचना कीजिए, जहाँ कोण ACB = 90 डिग्री है और AC = 6 cm है
 construct isosceles triangle ABC angle ACB equals 90 degrees length AC equals 6 cm
