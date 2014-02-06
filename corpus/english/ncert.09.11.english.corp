@@ -50,7 +50,7 @@ Draw a line segment QR of length 5.5 cm
 construct lineSegment QR length 5.5 cm
 
 At Q, draw QX making 60° with QR
-construct QX angleWith QR equals 60 degrees
+construct QX angleWith QR 60 degrees
 
 With Q as centre, draw an arc of radius 3 cm
 construct arc center Q radius 3 cm

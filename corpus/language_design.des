@@ -1,16 +1,35 @@
+<action-word> <action-subject> <conditions>
+
 addressLength =
+    addressLength1
+  | addressLength2
+  | addressLength3
+
+addressLength1 =
     REAL CM
-  | LENGTH addressLineSegment
-  | TWICE addressLength
-  | THRICE addressLength
-  | REAL TIMES addressLength
-  | HALF addressLength
-  | GREATERTHAN addressLength
-  | LESSTHAN addressLength
-  | EQUALS addressLength
-  | operation addressLength addressLength
   | FREEVARIABLE
   | previousLength
+  | LENGTH addressLineSegment
+  
+addressLength2 =
+  | TWICE addressLength1
+  | THRICE addressLength1
+  | REAL TIMES addressLength1
+  | HALF addressLength1
+  | GREATERTHAN addressLength1
+  | LESSTHAN addressLength1
+  | EQUALS addressLength1
+  | operation addressLength1 addressLength1
+  
+addressLength3 =
+  | TWICE addressLength2
+  | THRICE addressLength2
+  | REAL TIMES addressLength2
+  | HALF addressLength2
+  | GREATERTHAN addressLength2
+  | LESSTHAN addressLength2
+  | EQUALS addressLength2
+  | operation addressLength2 addressLength2  
 
 commands = 
     commands command
@@ -27,8 +46,8 @@ constructCommand =
   CONSTRUCT constructibleAndProperties
 
 CONSTRUCT =
-    construct
-  | draw
+    'construct'
+  | 'draw'
 
 constructibleAndProperties = 
     lineSegmentAndProperties
@@ -41,17 +60,18 @@ constructibleAndProperties =
 lineSegmentAndProperties = 
   addressLineSegment lineSegmentProperties
 
-LINESEGMENT = lineSegment
+LINESEGMENT = 'lineSegment'
 POINTPAIR = [A-Z][A-Z]
 
 lineSegmentProperties = 
     addressLength
 
-LENGTH = length
-CM = cm
+LENGTH = 'length'
+CM = 'cm'
   
 addressLineSegment =
     LINESEGMENT POINTPAIR
+  | POINTPAIR
   | addressPreviousObject
   | addressFreeObject
 
