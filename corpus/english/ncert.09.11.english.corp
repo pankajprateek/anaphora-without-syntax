@@ -7,17 +7,17 @@ construct point A outside l
 Take any point B on l
 construct point B on l
 
-Join B to A
+Join BA
 join BA
 
 With B as centre and a convenient radius, draw an arc cutting l at C and BA at D
-construct arc center B radius convenient intersecting l at C BA at D
+B center and any radius construct arc intersecting l at C and BA at D
 
 Now with A as centre and the same radius, draw an arc EF cutting AB at G
-construct arc EF center A radius same intersecting AB at G
+A center same radius construct arc EF intersecting AB at G
 
 With the same radius and with G as centre, draw an arc cutting the arc EF at H
-construct arc center G radius same intersecting arc EF at H
+radius same and G center construct arc intersecting arc EF at H
 
 join AH
 join AH
@@ -26,16 +26,16 @@ Construct a triangle ABC, given that AB = 5 cm, BC = 6 cm and AC = 7 cm
 construct triangle ABC length AB equals 5 cm length BC equals 6 cm length AC equals 7 cm
 
 Draw a line segment BC of length 6 cm
-construct lineSegment BC length 6 cm
+construct line segment BC length 6 cm
 
 with B as centre, draw an arc of radius 5 cm
-construct arc center B radius 5 cm
+B center construct arc radius 5 cm
 
 with C as centre, draw an arc of radius 7 cm
-construct arc center C radius 7 cm
+C cener construct arc radius 7 cm
 
-Mark the point of intersection of arcs as A
-mark intersectionPoints arc A
+Mark the point of intersection of these arcs as A
+mark point intersection these arcs as A
 
 Join AB
 join AB
@@ -47,16 +47,16 @@ Construct a triangle PQR, given that PQ = 3 cm, QR = 5.5 cm and ∠PQR = 60°
 construct triangle PQR length PQ equals 3 cm length QR equals 5.5 cm angle PQR equals 60 degrees
 
 Draw a line segment QR of length 5.5 cm
-construct lineSegment QR length 5.5 cm
+construct line segment QR length 5.5 cm
 
 At Q, draw QX making 60° with QR
-construct QX angleWith QR 60 degrees
+at Q construct QX making 60 degrees QR
 
 With Q as centre, draw an arc of radius 3 cm
-construct arc center Q radius 3 cm
+Q center construct arc radius 3 cm
 
-It cuts QX at the point P
-mark intersectionPoint it QX P
+mark its intersection point with QX as P
+mark its intersection point QX P
 
 Join PR
 join PR
@@ -68,70 +68,70 @@ Draw XY of length 6 cm
 constrcut XY length 6 cm
 
 At X, draw a ray XP making an angle of 30° with XY
-construct ray XP angleWith XY equals 30 degrees
+at X construct ray XP making angle 30 degrees XY
 
 At Y, draw a ray YQ making an angle of 100° with YX
-construct ray YQ angleWith YX equals 100 degrees
+at Y construct ray YQ making angle 100 degrees YX
 
-The point of intersection of the two rays is Z
-mark intersectionPoint rays Z
+mark the point of intersection of these rays as Z
+mark intersection points these rays Z
 
 Construct ΔLMN, right-angled at M, given that LN = 5 cm and MN = 3 cm
-construct triangle LMN rightAngle M length LN equals 5 cm length MN equals 3 cm
+construct triangle LMN rightangle M length LN equals 5 cm length MN equals 3 cm
 
 Draw MN of length 3 cm
 construct MN length 3 cm
 
-At M, draw MX ⊥ MN
-construct MX perpendicularTo MN
+At M, draw MX perpendicular to MN
+at M construct MX perpendicular to MN
 
 With N as centre, draw an arc of radius 5 cm
-construct arc center N radius 5 cm
+center N construct arc radius 5 cm
 
 Taking B as centre and any radius, draw an arc to intersect the rays BA and BC, say at E and D respectively
-construct arc center B radius any intersecting ray BA ray BC at E D
+B center and any radius construct arc intersecting rays BA and BC at E and D
 
 taking D and E as centres and with the radius more than 0.5 DE, draw arcs to intersect each other, say at F
-construct intersectingArcs centers D E radius greaterThan 0.5 DE intersectingAt F
+D and E centers and radius greater than 0.5 DE construct arcs intersecting each other at F
 
 Draw the ray BF
 construct ray BF
 
-Taking A and B as centres and radius more than 0.5 AB, draw arcs on both sides of the line segment AB
-construct arcs centers A B radius greaterThann 0.5 AB
+Taking A and B as centres and radius more than 0.5 AB, draw arcs
+A and B centers and radius greater than 0.5 AB construct arcs
 
-Let these arcs intersect each other at P and Q
-mark intersectionPoints arcs these P Q
+mark the intersection point ot these arcs as P and Q
+mark intersection points these arcs P and Q
 
 Join PQ
 join PQ
 
-Let PQ intersect AB at the point M
-mark intersectionPoint PQ AB M
+mark intersection points of PQ and AB as M
+mark intersection points PQ and AB M
 
-Take a ray AB with initial point A
-construct ray AB initialPoint A
+construct a ray AB with initial point A
+construct ray AB origin point A
 
 Construct a ray AC such that ∠CAB = 60°
 construct ray AC angle CAB equals 60 degrees
 
-Taking A as centre and some radius, draw an arc of a circle, which intersects AB, say at a point D
-construct arc center A radius some intersecting AB at D
+Taking A as centre and some radius, draw an arc, which intersects AB, say at a point D
+A center and any radius construct arc intersecting AB at point D
 
-Taking D as centre and with the same radius as before, draw an arc intersecting the previously drawn arc, say at a point E
-construct arc center D radius same intersecting arc previous at E
+Taking D as centre and with the same radius, draw an arc intersecting the previous arc, say at a point E
+D center and same radius construct arc intersecting previous arc at point E
 
 Draw the ray AC passing through E
-construct ray AC passingThrough E
+construct ray AC passing through E
 
-Draw the base BC
+Draw BC
 construct BC
 
-At the point B make angle XBC equal to 60 degrees
-construct angle XBC measure 60 degrees
+At the point B construct angle XBC equal to 60 degrees
+at B construct angle XBC equals 60 degrees
 
-Cut a line segment BD equal to AB+AC from the ray BX
-cut lineSegment BD from ray BX length sum length AB length AC
+Cut a line segment BD equal to AB + AC from the ray BX
+cut line segment BD equals AB sum AC from ray BX
 
 Join DC
 join DC
@@ -139,92 +139,92 @@ join DC
 Make an angle DCY equal to ∠BDC
 construct angle DCY measure angle BDC
 
-Let CY intersect BX at A
-mark intersectionPoint CY BX A
+mark intersection point CY BX at A
+mark intersection point CY BX A
 
 Then draw perpendicular bisector PQ of CD to intersect BD at a point A
-construct perpendicularBisector PQ of CD intersecting BD at A
+construct perpendicular bisector PQ of CD intersecting BD at point A
 
 Join AC
 join AC
 
-Draw the base BC
+Draw BC
 construct BC
 
 At point B make an angle say XBC equal to 120 degrees
-construct angle XBC measure 120 degrees
+at B construct angle XBC equals 120 degrees
 
 Cut the line segment BD equal to AB – AC from ray BX
-cut lineSegment BD from ray BX length difference length AB length AC
+cut line segment BD equals AB difference AC from ray BX
 
 Join DC
 join DC
 
 Draw the perpendicular bisector, say PQ of DC
-construct perpendicularBisector PQ of DC
+construct perpendicular bisector PQ to DC
 
-Let it intersect BX at a point A
-mark intersectionPoints it BX A
+mark its intersection point with BX as A
+mark it intersection point BX A
 
 Join AC
 join AC
 
-Cut line segment BD equal to AC – AB from the line BX extended on opposite side of line segment BC
-cut lineSegment BD from BX length difference length AC length AB
+#Cut line segment BD equal to AC – AB from the line BX extended on opposite side of line segment BC
+#cut line segment BD equals AC difference AB from line BX length difference length AC length AB
 
 Join DC
 join DC
 
 Draw the perpendicular bisector, say PQ of DC
-construct perpendicular Bisector PQ of DC
+construct perpendicular bisector PQ to DC
 
-Let PQ intersect BX at A
-mark intersectionPoint PQ BX A
+mark intersection point of PQ with BX as A
+mark intersection point PQ BX A
 
 Join AC
 join AC
 
 Draw a line segment, say XY equal to BC + CA + AB
-construct lineSegment XY length sum length BC length CA length AB
+construct line segment XY equals BC sum CA sum AB
 
 Make angle LXY equal to ∠B
-construct angle LXY measure angle B
+construct angle LXY equals angle B
 
 Make angle MYX equal to ∠C
-construct angle MYX measure angle C
+construct angle MYX equals angle C
 
 Bisect ∠LXY
-construct angleBisector of LXY
+bisect angle LXY
 
 Bisect ∠MYX
-construct angleBisector of MYX
+bisect angle MYX
 
-Let these bisectors intersect at a point A
-mark intersectionPoints these bisectors A
+mark intersection point of these bisectors as A
+mark intersection points these bisectors A
 
 Draw perpendicular bisectors PQ of AX and RS of AY
-construct perpendicularBisector PQ of AX RS of AY
+construct perpendicular bisectors PQ AX and RS AY
 
-Let PQ intersect XY at B and RS intersect XY at C
-mark intersectionPoints PQ XY B RS XY C
+mark intersection point of PQ with XY as B and of RS with XY as C
+mark intersection point PQ XY B and RS XY C
 
 Join AB and AC
 join AB AC
 
 Draw a line segment PQ = 11 cm
-construct lineSegment PQ length 11 cm
+construct line segment PQ equals 11 cm
 
-At P construct an angle of 60° and at Q, an angle of 45°
-construct angle at P measure 60 degrees at Q measure 45 degrees
+At B construct an angle ABC of 60° and at Q, an angle DEF of 45°
+at P construct angle ABC 60 degrees and at Q angle DEF 45 degrees
 
 Bisect these angles
-construct angleBisectors these
+bisect these angles
 
-Let the bisectors of these angles intersect at a point A
-mark intersectionPoint these bisectors A
+mark intersection point of these bisectors as A
+mark intersection point thses bisectors A
 
 Draw perpendicular bisectors DE of AP to intersect PQ at B and FG of AQ to intersect PQ at C
-construct perpendicularBisector DE of AP intersecting PQ at B FG of AQ intersecting PQ at C
+construct perpendicular bisectors DE AP intersecting PQ at B and FG AQ intersecting PQ at C
 
 Join AB and AC
 join AB AC
