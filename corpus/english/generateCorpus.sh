@@ -1,4 +1,4 @@
-#!/bash/bin
+#!/bin/bash
 
 rm -f source.txt
 rm -f target.txt

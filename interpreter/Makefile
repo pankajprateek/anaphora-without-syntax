@@ -1,6 +1,6 @@
 .PHONY: all english hindi
 CC = g++
-SOURCES = mapper.cpp interpreter.cpp action.cpp
+SOURCES = mapper.cpp interpreter.cpp action.cpp grammar.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 HEADERS = $(SOURCES:.cpp=.h)
 EXECUTABLE = interpret
@@ -18,7 +18,7 @@ hindi:
 	cp ./hindi/alignment.txt ./
 
 interpret: $(OBJECTS) $(HEADERS)
-	$(CC) -o $@ $^
+	$(CC) -g -o $@ $^
 
 image: interpret
 	rm -f drawing_instructions.txt
@@ -26,7 +26,7 @@ image: interpret
 	python constructImage.py
 
 .cpp.o:
-	$(CC) -c $< -o $@
+	$(CC) -g -c $< -o $@
 
 clean:
 	rm -f drawing_instructions.txt
