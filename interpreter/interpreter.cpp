@@ -423,6 +423,7 @@ int main(){
 }
 
 void interpret(string parse){
+  // cout<<"Hey "<<parse<<endl;
   vector<pair<string, double> > mappings = getPossibleMappings(parse);
 	
   cout<<"Listing mappings..."<<endl;	
