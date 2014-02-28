@@ -1,6 +1,7 @@
 #!/bin/bash
 
-sed 's/[A-Z][ \n\r\t]/A /g'\
+sed 's/[\n\r]+/\n/g'\
+| sed 's/[A-Z][ \n\r\t]/A /g'\
 | sed "s/[A-Z]$/A\'/g"\
 | sed 's/[A-Z][A-Z][ \n\r\t]/AB /g'\
 | sed "s/[A-Z][A-Z]$/AB\'/g"\
