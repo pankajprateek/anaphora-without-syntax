@@ -3,6 +3,9 @@ CC = g++
 SOURCES = mapper.cpp interpreter.cpp action.cpp grammar.cpp filter.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 HEADERS = $(SOURCES:.cpp=.h)
+SOURCES1 = interpreter1.cpp filter.cpp
+OBJECTS1 = $(SOURCES1:.cpp=.o)
+HEADERS1 = $(SOURCES1:.cpp=.h)
 EXECUTABLE = interpret
 
 all: english hindi
@@ -18,6 +21,9 @@ hindi:
 	cp ./hindi/alignment.txt ./
 
 interpret: $(OBJECTS) $(HEADERS)
+	$(CC) -g -o $@ $^
+
+interpret1: $(OBJECTS1) $(HEADERS1)
 	$(CC) -g -o $@ $^
 
 image: interpret

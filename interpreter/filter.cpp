@@ -2,6 +2,7 @@
 #include<cstdio>
 #include<algorithm>
 #include<string>
+#include<cstdlib>
 #define debug 0
 using namespace std;
 
@@ -32,11 +33,36 @@ bool isPointTriple(string str) {
 }
 
 bool isNumber(string str) {
+  bool decimal = false;
   for(int i=0;i<str.length();i++) {
+    if(str[i] == '.' and !decimal) {
+      decimal = true;
+      continue;
+    }
     if(str[i]<48 or str[i]>57)
       return false;
   }
   return true;
+}
+
+double stod(string str) {
+  bool decimal = false;
+  double n = 0;
+  double power = 1;
+  for(int i=0;i<str.length();i++) {
+    if(str[i] == '.') {
+      decimal = true;
+      power = 10;
+      continue;
+    }
+    if(decimal) {
+      n = n + (str[i] - '0')/power;
+      power = power*10;
+    } else {
+      n = n*10 + (str[i] - '0');
+    }
+  }
+  return n;
 }
 
 // int main() {
