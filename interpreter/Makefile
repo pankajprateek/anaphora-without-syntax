@@ -1,6 +1,6 @@
 .PHONY: all english hindi
 CC = g++
-SOURCES = mapper.cpp interpreter.cpp action.cpp grammar.cpp
+SOURCES = mapper.cpp interpreter.cpp action.cpp grammar.cpp filter.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 HEADERS = $(SOURCES:.cpp=.h)
 EXECUTABLE = interpret

@@ -3,12 +3,13 @@
 #include<stdio.h>
 #include<algorithm>
 #include "mapper.h"
+#include "filter.h"
 #define debug 1
 
 vector<pair<string, int> > src;
 vector<pair<int, string> > trg;
 vector<pair<pair<int, int>, double > > relation;
-vector<vector<pair<int, double> > > parsed;
+vector<vector<pair<string, double> > > parsed;
 vector<string> split_parse;
 string parse;
 vector<pair<string, double> > sentences;
@@ -46,12 +47,12 @@ string find_trg(int token) {
   return "";
 }
 
-vector<pair<int, double> > get_data(string str) {
-  vector<pair<int, double> > answer;
+vector<pair<string, double> > get_data(string str) {
+  vector<pair<string, double> > answer;
   int token_no = find_src(str);
   for(int i=0;i<int(relation.size());i++) {
     if(relation[i].first.first == token_no) {
-      answer.push_back((pair<int, double>)make_pair(relation[i].first.second, relation[i].second));
+      answer.push_back((pair<string, double>)make_pair(find_trg(relation[i].first.second), relation[i].second));
     }
   }
   return answer;
@@ -61,14 +62,14 @@ vector<pair<string, double> > getsentences(int iter) {
   vector<pair<string, double> > answer;
   if(iter == int(parsed.size())-1) {
     for(int i=0;i<int(parsed[iter].size());i++) {
-      answer.push_back((pair<string, double>)make_pair(find_trg(parsed[iter][i].first), parsed[iter][i].second));
+      answer.push_back((pair<string, double>)make_pair(parsed[iter][i].first, parsed[iter][i].second));
     }
     return answer;
   }
   for(int i=0;i<int(parsed[iter].size());i++) {
     vector<pair<string, double> > tmp = getsentences(iter+1);
     for(int j=0;j<int(tmp.size());j++) {
-      answer.push_back((pair<string, double>)make_pair(string(find_trg(parsed[iter][i].first))+" "+string(tmp[j].first), tmp[j].second*parsed[iter][i].second));
+      answer.push_back((pair<string, double>)make_pair(string(parsed[iter][i].first)+" "+string(tmp[j].first), tmp[j].second*parsed[iter][i].second));
     }
   }
   return answer;
@@ -94,11 +95,11 @@ vector<pair<string, double> > getPossibleMappings(string parse) {
   }
   f.close();
 	
-  if(debug) {
-    for(int i=0;i<int(src.size());i++) {
-      cout<<src[i].first<<" "<<src[i].second<<endl;
-    }
-  }
+  // if(debug) {
+  //   for(int i=0;i<int(src.size());i++) {
+  //     cout<<src[i].first<<" "<<src[i].second<<endl;
+  //   }
+  // }
 	
   f.open("target.vcb");
   while (true) {
@@ -109,11 +110,11 @@ vector<pair<string, double> > getPossibleMappings(string parse) {
   }
   f.close();
 	
-  if(debug) {
-    for(int i=0;i<int(trg.size());i++) {
-      cout<<trg[i].first<<" "<<trg[i].second<<endl;
-    }
-  }
+  // if(debug) {
+  //   for(int i=0;i<int(trg.size());i++) {
+  //     cout<<trg[i].first<<" "<<trg[i].second<<endl;
+  //   }
+  // }
 	
   f.open("alignment.txt");
   double tmp4;
@@ -125,11 +126,11 @@ vector<pair<string, double> > getPossibleMappings(string parse) {
   }
   f.close();
 	
-  if(debug) {
-    for(int i=0;i<int(relation.size());i++) {
-      cout<<relation[i].first.first<<" "<<relation[i].first.second<<" "<<relation[i].second<<endl;
-    }
-  }
+  // if(debug) {
+  //   for(int i=0;i<int(relation.size());i++) {
+  //     cout<<relation[i].first.first<<" "<<relation[i].first.second<<" "<<relation[i].second<<endl;
+  //   }
+  // }
 
   //~ parse = "Construct line segment AB of length 7.8 cm";
   //~ parse = "With A as center radius 7.8 cm draw an arc";
@@ -152,26 +153,34 @@ vector<pair<string, double> > getPossibleMappings(string parse) {
   }
 	
   for(int i=0;i<int(split_parse.size());i++) {
-    vector<pair<int, double> > tmp = get_data(split_parse[i]);
+    vector<pair<string, double> > tmp = get_data(split_parse[i]);
     parsed.push_back(tmp);
   }
-	
-	
+
+  for(int i=0;i<int(split_parse.size());i++) {
+    cout << split_parse[i] << " " << split_parse[i].size() << " " << isPointSingle(split_parse[i]) << isPointDouble(split_parse[i]) << isPointTriple(split_parse[i]) << isNumber(split_parse[i])<<endl;
+    if(isPointSingle(split_parse[i]) or isPointDouble(split_parse[i]) or isPointTriple(split_parse[i]) or isNumber(split_parse[i])) {
+      vector<pair<string, double> > tmp;
+      tmp.push_back(make_pair(split_parse[i],1));
+      parsed[i] = tmp;
+    }
+  }
+
   if(debug) {
     for(int i=0;i<int(split_parse.size());i++) {
       cout<<split_parse[i]<<" -> ";
       for(int j=0;j<int(parsed[i].size());j++) {
-	cout<<"("<<find_trg(parsed[i][j].first)<<","<<parsed[i][j].second<<") ";
+	cout<<"("<<parsed[i][j].first<<","<<parsed[i][j].second<<") ";
       }
       cout<<endl;
     }
   }
-	
+  
   sentences.clear();
   for(int i=0;i<int(parsed[0].size());i++) {
     vector<pair<string, double> > tmp = getsentences(1);
     for(int j=0;j<int(tmp.size());j++) {
-      sentences.push_back((pair<string, double>)make_pair(string(find_trg(parsed[0][i].first))+" "+string(tmp[j].first), parsed[0][i].second*tmp[j].second) );
+      sentences.push_back((pair<string, double>)make_pair(string(parsed[0][i].first)+" "+string(tmp[j].first), parsed[0][i].second*tmp[j].second) );
     }
   }
 
