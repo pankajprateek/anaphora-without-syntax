@@ -157,8 +157,19 @@ vector<pair<string, double> > getPossibleMappings(string parse) {
     parsed.push_back(tmp);
   }
 
+  for(int i=0;i<int(parsed.size());i++) {
+    for(int j=0;j<int(parsed[i].size());j++) {
+      if(isPointSingle(parsed[i][j].first) or isPointDouble(parsed[i][j].first) or isPointTriple(parsed[i][j].first) or isNumber(parsed[i][j].first)) {
+	// some word can't map to a point or a number
+	// if it is actually a number or a point it is 
+	// reassigned in next loop
+	// FIXME: Might have to boost the probability of the others
+	parsed[i][j].second = 0;
+      }
+    }
+  }
+
   for(int i=0;i<int(split_parse.size());i++) {
-    cout << split_parse[i] << " " << split_parse[i].size() << " " << isPointSingle(split_parse[i]) << isPointDouble(split_parse[i]) << isPointTriple(split_parse[i]) << isNumber(split_parse[i])<<endl;
     if(isPointSingle(split_parse[i]) or isPointDouble(split_parse[i]) or isPointTriple(split_parse[i]) or isNumber(split_parse[i])) {
       vector<pair<string, double> > tmp;
       tmp.push_back(make_pair(split_parse[i],1));
