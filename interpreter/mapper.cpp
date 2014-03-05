@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include<algorithm>
 #include "mapper.h"
-#define debug 0
+#define debug 1
 
 vector<pair<string, int> > src;
 vector<pair<int, string> > trg;
