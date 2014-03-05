@@ -415,17 +415,17 @@ void interpretSentence(token* sentence, int sentenceLength){
 
 
 int main(){
-  grammar_t grammar = GrammarReader::getGrammar();
-  GrammarReader::printGrammar(grammar);
+  // grammar_t grammar = GrammarReader::getGrammar();
+  // GrammarReader::printGrammar(grammar);
+  // return 0;
+ 
+  string parse;
+  while(getline(cin, parse)) {
+    cout<<parse<<endl;
+    interpret(parse);
+  }
+  //interpret(parse);
   return 0;
-//~ 
-  //~ string parse;
-  //~ while(getline(cin, parse)) {
-    //~ cout<<parse<<endl;
-    //~ interpret(parse);
-  //~ }
-  //~ //interpret(parse);
-  //~ return 0;
 }
 
 void interpret(string parse){
