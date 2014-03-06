@@ -474,7 +474,7 @@ int main() {
   // sentence.push_back("AB");
 
   string str;
-  ifstream f("drawing_instructions.txt", fstream::app | fstream::out);
+  fstream f("drawing_instructions.txt", ios::out | ios::app);
   while(getline(cin, str)) {
     init();
     cout<<str<<endl;
@@ -498,6 +498,7 @@ int main() {
       f<<"Points: "<<A.points[0]<<A.points[1]<<A.points[2]<<endl;
       f<<"Centres: "<<A.centers[0]<<A.centers[1]<<endl;
       f<<"Radii: "<<A.radii[0]<<" "<<A.radii[1]<<endl;
+      f<<endl;
       break;
     }
   }
