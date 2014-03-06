@@ -9,7 +9,7 @@
 #include "mapper.h"
 using namespace std;
 
-#define MaxUsed 20
+#define MaxUsed 50
 
 typedef struct action {
   int value;
@@ -93,6 +93,23 @@ action A;
 vector<string> sentence;
 bool used[MaxUsed];
 
+int searchPointPair(int index) {
+  int i=index-1, j=index+1;
+  while(i>=0 or j<sentence.size()) {
+    if(i>=0) {
+      if(isPointDouble(sentence[i]))
+	return i;
+    }
+    if(j<sentence.size()) {
+      if(isPointDouble(sentence[j]))
+	return j;
+    }
+    i--;
+    j++;
+  }
+  return -1;
+}
+
 int searchCommand() {
   int l = sentence.size();
   for(int i=0;i<l;i++) {
@@ -115,9 +132,9 @@ int searchIntersecting(int index) {
       if(sentence[j] == "intersecting" or sentence[j]=="intersect")
 	return j;
     }
+    i--;
+    j++;
   }
-  i--;
-  j++;
   return -1;
 }
 
@@ -128,11 +145,14 @@ int searchConstructible(int index) {
       if(sentence[i] == "line") {
 	return i;
       }
-      if(sentence[i] == "arc") {  
-	//search for intersecting also here
+      if(sentence[i] == "lineSegment") {
 	return i;
       }
-      if(sentence[i] == "arcs") {
+      // if(sentence[i] == "arc") {  
+      // 	//search for intersecting also here
+      // 	return i;
+      // }
+      if(sentence[i] == "arc" or sentence[i] == "arcs") {
 	int in1 = searchIntersecting(i);
 	if(in1 != -1)
 	  return in1;
@@ -150,11 +170,14 @@ int searchConstructible(int index) {
       if(sentence[j] == "line") {
 	return j;
       }
-      if(sentence[j] == "arc") {
-	//search for intersecting also here
+      if(sentence[j] == "lineSegment") {
 	return j;
       }
-      if(sentence[j] == "arcs") {
+      // if(sentence[j] == "arc") {
+      // 	//search for intersecting also here
+      // 	return j;
+      // }
+      if(sentence[j] == "arc" or sentence[j] == "arcs") {
 	int in1 = searchIntersecting(j);
 	if(in1 != -1)
 	  return in1;
@@ -297,12 +320,12 @@ int searchCentresKeyword(int index) {
   int i=index-1,j=index+1;
   while(i>=0 or j<sentence.size()) {
     if(i>=0) {
-      if(sentence[i] == "centres" or sentence[i] == "centers") {
+      if(sentence[i] == "centres" or sentence[i] == "centers" or sentence[i] == "centre" or sentence[i] == "center") {
 	return i;
       }
     }
     if(j<sentence.size()) {
-      if(sentence[j] == "centeres" or sentence[j] == "centers") {
+      if(sentence[j] == "centeres" or sentence[j] == "centers" or sentence[j] == "centere" or sentence[j] == "center") {
 	return j;
       }
     }
@@ -336,7 +359,7 @@ void searchConstructibleAndProperties(int index) {
   assert(index1 != -1);
   // assumption: word linesegment, arc circle angle would occur
   // "Construct AB of length 5 cm" is not valid
-  if(sentence[index1] == "line" and sentence[index1+1] == "segment") {
+  if((sentence[index1] == "line" and sentence[index1+1] == "segment") or (sentence[index1] == "lineSegment")) {
     A.setConstructible(101);
     searchAddressLineSegment(index1);
     searchLineSegmentProperties(index1);
@@ -421,8 +444,9 @@ void parse() {
     //sentence of the form join AB
     A.setAction(5);
     A.setConstructible(104);
-    A.setPoint1(sentence[index+1][0]);
-    A.setPoint2(sentence[index+1][1]);
+    int index1 = searchPointPair(index);
+    A.setPoint1(sentence[index1][0]);
+    A.setPoint2(sentence[index1][1]);
     // do something
   }
   return;

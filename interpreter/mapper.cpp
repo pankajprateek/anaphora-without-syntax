@@ -4,7 +4,7 @@
 #include<algorithm>
 #include "mapper.h"
 #include "filter.h"
-#define debug 1
+#define debug 0
 
 vector<pair<string, int> > src;
 vector<pair<int, string> > trg;
