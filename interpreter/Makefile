@@ -3,7 +3,7 @@ CC = g++
 SOURCES = mapper.cpp interpreter.cpp action.cpp grammar.cpp filter.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 HEADERS = $(SOURCES:.cpp=.h)
-SOURCES1 = interpreter1.cpp filter.cpp
+SOURCES1 = mapper.cpp interpreter1.cpp filter.cpp
 OBJECTS1 = $(SOURCES1:.cpp=.o)
 HEADERS1 = $(SOURCES1:.cpp=.h)
 EXECUTABLE = interpret

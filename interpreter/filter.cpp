@@ -14,24 +14,6 @@ string toupper(string a) {
   return a;
 }
 
-bool isPointSingle(string str) {
-  if(str.length() == 1 and str.compare(toupper(str))==0)
-    return true;
-  return false;
-}
-
-bool isPointDouble(string str) {
-  if(str.length() == 2 and str.compare(toupper(str))==0)
-    return true;
-  return false;
-}
-
-bool isPointTriple(string str) {
-  if(str.length() == 3 and str.compare(toupper(str))==0)
-    return true;
-  return false;
-}
-
 bool isNumber(string str) {
   bool decimal = false;
   for(int i=0;i<str.length();i++) {
@@ -43,6 +25,24 @@ bool isNumber(string str) {
       return false;
   }
   return true;
+}
+
+bool isPointSingle(string str) {
+  if(str.length() == 1 and str.compare(toupper(str))==0 and !isNumber(str))
+    return true;
+  return false;
+}
+
+bool isPointDouble(string str) {
+  if(str.length() == 2 and str.compare(toupper(str))==0 and !isNumber(str))
+    return true;
+  return false;
+}
+
+bool isPointTriple(string str) {
+  if(str.length() == 3 and str.compare(toupper(str))==0 and !isNumber(str))
+    return true;
+  return false;
 }
 
 double stod(string str) {
