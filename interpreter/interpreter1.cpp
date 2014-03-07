@@ -523,6 +523,15 @@ int main() {
       f<<"Centres: "<<A.centers[0]<<A.centers[1]<<endl;
       f<<"Radii: "<<A.radii[0]<<" "<<A.radii[1]<<endl;
       f<<endl;
+      fstream g("drawing.txt", ios::out);
+      g<<"Action: "<<A.value<<endl;
+      g<<"Constructible: "<<A.constructible<<endl;
+      g<<"Length: "<<A.length<<endl;
+      g<<"Points: "<<A.points[0]<<A.points[1]<<A.points[2]<<endl;
+      g<<"Centres: "<<A.centers[0]<<A.centers[1]<<endl;
+      g<<"Radii: "<<A.radii[0]<<" "<<A.radii[1]<<endl;
+      g<<endl;
+      g.close();
       break;
     }
   }

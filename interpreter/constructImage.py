@@ -45,7 +45,7 @@ def takeAction(action_number, constructible, length, point, center, radii):
             if point[0] not in points.keys():
                 points[point[0]] = [X_BASE, Y_BASE]
             if point[1] not in points.keys():
-                points[point[1]] = [points[point[0]][0]+length * SCALE, 500]
+                points[point[1]] = [points[point[0]][0]+length * SCALE, Y_BASE]
             display_point(point[0], points[point[0]][0], points[point[0]][1])
             display_point(point[1], points[point[1]][0], points[point[1]][1])
             w.create_line(points[point[0]][0], points[point[0]][1], points[point[1]][0], points[point[1]][1], fill = "black", width=2)
@@ -87,27 +87,29 @@ def takeAction(action_number, constructible, length, point, center, radii):
         w.create_line(points[point[0]][0], points[point[0]][1], points[point[1]][0], points[point[1]][1], fill = "black", width=2)
 
 
-f = open("drawing_instructions.txt")
-lines = f.readlines()
+def draw(filename):
+    f = open(filename)
+    lines = f.readlines()
+    
+    for i in range(0,len(lines)):
+        tmp = lines[i].split(':')
+        if tmp[0] == "Action":
+            action_number = int(lines[i].split(':')[1])
+            constructible = int(lines[i+1].split(':')[1])
+            length = float(lines[i+2].split(':')[1])
+            point = []
+            point.append(lines[i+3].split(':')[1].strip()[0].strip())
+            point.append(lines[i+3].split(':')[1].strip()[1].strip())
+            point.append(lines[i+3].split(':')[1].strip()[2].strip())
+            center = [] 
+            center.append(lines[i+4].split(':')[1].strip()[0].strip())
+            center.append(lines[i+4].split(':')[1].strip()[1].strip())
+            radii = []
+            radii.append(float(lines[i+5].split(':')[1].split()[0]))
+            radii.append(float(lines[i+5].split(':')[1].split()[1]))
+            takeAction(action_number, constructible, length, point, center, radii)
+        else:
+            continue
 
-for i in range(0,len(lines)):
-    tmp = lines[i].split(':')
-    if tmp[0] == "Action":
-        action_number = int(lines[i].split(':')[1])
-        constructible = int(lines[i+1].split(':')[1])
-        length = float(lines[i+2].split(':')[1])
-        point = []
-        point.append(lines[i+3].split(':')[1].strip()[0].strip())
-        point.append(lines[i+3].split(':')[1].strip()[1].strip())
-        point.append(lines[i+3].split(':')[1].strip()[2].strip())
-        center = [] 
-        center.append(lines[i+4].split(':')[1].strip()[0].strip())
-        center.append(lines[i+4].split(':')[1].strip()[1].strip())
-        radii = []
-        radii.append(float(lines[i+5].split(':')[1].split()[0]))
-        radii.append(float(lines[i+5].split(':')[1].split()[1]))
-        takeAction(action_number, constructible, length, point, center, radii)
-    else:
-        continue
-
+draw("drawing_instructions.txt")
 mainloop()
