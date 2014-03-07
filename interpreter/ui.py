@@ -7,30 +7,35 @@ from math import *
 class App:
     def __init__(self,master):
         self.SCALE = 30
-        self.X_BASE = 200
-        self.Y_BASE = 300
+        self.X_BASE = 300
+        self.Y_BASE = 330
         self.points = {}
         
         frame = Frame(master)
         frame.pack()
         
+        frame13 = Frame(frame)
+        frame13.pack(side=LEFT, padx=10, pady=2.5)
         #textfr=Frame(frame)
+        
+        frame12 = Frame(frame)
+        frame12.pack()
                 
-        self.text=Text(frame,height=10,width=50,background='white')
+        self.text=Text(frame13,height=25,width=57,background='white')
         self.text.place(x=70, y=40)
         self.text.pack()
         
-        self.entry = Entry(frame,width=50)
+        self.entry = Entry(frame13,width=50)
         self.entry.place(x=30, y=90)
         self.entry.pack()
-        frame2 = Frame(frame, height=40, width=50)
+        frame2 = Frame(frame13, height=40, width=50)
         frame2.pack()
         self.submit = Button(frame2, text="Submit", fg="black", command = self.submit_token)
         self.submit.pack(side=LEFT, padx=10, pady=2.5)
         self.clean = Button(frame2, text="Clean Canvas", fg="black", command = self.clean)
         self.clean.pack(side=LEFT, padx=10, pady=2.5)
 
-        self.w = Canvas(frame, width=600, height=600)
+        self.w = Canvas(frame12, width=800, height=600)
         self.w.pack()
 
     def clean(self):
