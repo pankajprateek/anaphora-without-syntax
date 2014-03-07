@@ -37,21 +37,22 @@ class App:
         self.w.delete("all")
         self.entry.delete(0,END)
         self.text.delete(END)
+        self.points = {}
 
     def submit_token(self):
-        strg = self.entry.get()
+        strg = self.entry.get() + '\n'
         if len(strg)==0:
             self.entry.delete(0,END)
         else:
             sys_exec("rm -f drawing.txt")
             sys_exec("rm -f triangle.in")
             f=open("triangle.in", "w")
-            f.write(strg+'\n')
+            f.write(strg.encode('utf8'))
             f.close()
             #print sys_exec("./interpret1 < triangle.in")
             sys_exec("./interpret1 < triangle.in")
             self.draw("drawing.txt")
-            self.text.insert(END, strg+'\n')
+            self.text.insert(END, strg)
             self.entry.delete(0,END)
 
     def getCircleIntersectionPoint(self, c0, c1, r0, r1):
