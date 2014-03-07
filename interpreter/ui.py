@@ -47,7 +47,7 @@ class App:
             sys_exec("rm -f drawing.txt")
             sys_exec("rm -f triangle.in")
             f=open("triangle.in", "w")
-            f.write(strg.encode('utf8'))
+            f.write(strg.encode('utf8').strip())
             f.close()
             #print sys_exec("./interpret1 < triangle.in")
             sys_exec("./interpret1 < triangle.in")
