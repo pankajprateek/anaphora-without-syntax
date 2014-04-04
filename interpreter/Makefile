@@ -1,14 +1,15 @@
 .PHONY: all english hindi
 CC = g++
-SOURCES = mapper.cpp interpreter.cpp action.cpp grammar.cpp filter.cpp
+SOURCES = mapper.cpp interpreter.cpp action.cpp grammar.cpp filter.cpp parse.cpp lib.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 HEADERS = $(SOURCES:.cpp=.h)
-SOURCES1 = mapper.cpp interpreter1.cpp filter.cpp
+SOURCES1 = mapper.cpp interpreter1.cpp filter.cpp lib.cpp
 OBJECTS1 = $(SOURCES1:.cpp=.o)
 HEADERS1 = $(SOURCES1:.cpp=.h)
 EXECUTABLE = interpret
 
-all: english hindi
+#~ all: english hindi
+all: interpret
 
 english:
 	cp ./english/english-source.vcb ./source.vcb
@@ -20,7 +21,7 @@ hindi:
 	cp ./hindi/hindi-target.vcb ./target.vcb
 	cp ./hindi/alignment.txt ./
 
-interpret: $(OBJECTS) $(HEADERS)
+interpret: main.cpp $(OBJECTS) $(HEADERS)
 	$(CC) -g -o $@ $^
 
 interpret1: $(OBJECTS1) $(HEADERS1)

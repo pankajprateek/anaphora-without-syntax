@@ -2,7 +2,7 @@
 #include<map>
 #include<utility>
 #include<string>
+#include "lib.h"
 using namespace std;
 
-vector<pair<string, double> > getPossibleMappings(string parse);
-vector<string> split(string str);
+vector <pair<string, double> > getPossibleMappings(string parse);

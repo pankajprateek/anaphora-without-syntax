@@ -15,4 +15,3 @@ class GrammarReader{
     static void printGrammar(grammar_t grammar);
 };
 
-

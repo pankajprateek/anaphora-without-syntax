@@ -1,22 +1,6 @@
-#include "parse.h"
-#include <string>
-
+#include<string>
+#include<vector>
 using namespace std;
-
-class Action{
-	public:
-		int action;
-		int constructible;
-		double length;
-		char point1, point2, point3;
-		char center1, center2;
-		double radius1, radius2;
-		
-		Action();
-		string toString();
-		bool isValid();
-    void extractAction(ParseTree tree);
-};
 
 class keywords{
 	public:
@@ -86,4 +70,10 @@ const int parameterValues[] = {
 		keywords::DOUBLE
 };
 
+struct token{
+	bool used;
+	const char* word;
+};
+
+void interpret(string parse);
 bool isValidPoint(char point);

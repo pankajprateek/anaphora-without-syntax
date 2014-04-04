@@ -7,6 +7,7 @@
 #include<fstream>
 #include "filter.h"
 #include "mapper.h"
+#include "lib.h"
 using namespace std;
 
 #define MaxUsed 50

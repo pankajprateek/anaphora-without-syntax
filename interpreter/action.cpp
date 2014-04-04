@@ -2,6 +2,7 @@
 #include "interpreter.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 using namespace std;
 
 Action::Action(){
@@ -14,14 +15,17 @@ Action::Action(){
   this->radius1 = this->radius2 = 0.0;
 }
 
-void Action::toString(){
+string Action::toString(){
   fstream g("drawing_instructions.txt", ios::out | ios::app);
-  cout<<"Action: "<<this->action<<endl;
-  cout<<"Constructible: "<<this->constructible<<endl;
-  cout<<"Length: "<<this->length<<endl;
-  cout<<"Points: "<<this->point1<<this->point2<<this->point3<<endl;
-  cout<<"Centers: "<<this->center1<<this->center2<<endl;
-  cout<<"Radii: "<<this->radius1<<" "<<this->radius2<<endl;
+
+  ostringstream str;
+
+  str<<"Action: "<<this->action<<endl;
+  str<<"Constructible: "<<this->constructible<<endl;
+  str<<"Length: "<<this->length<<endl;
+  str<<"Points: "<<this->point1<<this->point2<<this->point3<<endl;
+  str<<"Centers: "<<this->center1<<this->center2<<endl;
+  str<<"Radii: "<<this->radius1<<" "<<this->radius2<<endl;
 
   g<<"Action: "<<this->action<<endl;
   g<<"Constructible: "<<this->constructible<<endl;
@@ -31,6 +35,9 @@ void Action::toString(){
   g<<"Radii: "<<this->radius1<<" "<<this->radius2<<endl;
   g<<endl;
   g.close();
+
+  return string(str.str());
+
 }
 
 bool Action::isValid(){
@@ -72,4 +79,12 @@ bool Action::isValid(){
   default: return false;
   }
   return true;
+}
+
+void Action::extractAction(ParseTree tree){
+  return;
+}
+
+bool isValidPoint(char point){
+  return point >= 'A' && point <= 'Z';
 }

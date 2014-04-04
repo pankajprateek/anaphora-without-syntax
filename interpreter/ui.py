@@ -156,7 +156,7 @@ class App:
                 continue
                                 
 root=Tk()
-root.title('Bakaiti')
+root.title('Project')
 app = App(root)
 
 def loop():

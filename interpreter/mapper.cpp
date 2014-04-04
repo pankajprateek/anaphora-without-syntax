@@ -2,7 +2,9 @@
 #include<fstream>
 #include<stdio.h>
 #include<algorithm>
+#include<vector>
 #include "mapper.h"
+#include "lib.h"
 #include "filter.h"
 #define debug 0
 
@@ -16,19 +18,6 @@ vector<pair<string, double> > sentences;
 
 bool compare(const pair<string, double>& l, const pair<string, double>& r) {
   return l.second > r.second;
-}
-
-vector<string> split(string str) {
-  vector<string> answer;
-  int j=0;
-  for(int i=0;i<str.length();i++) {
-    if(str[i] == ' ') {
-      answer.push_back(str.substr(j, i-j));
-      j=i+1;
-    }
-  }
-  answer.push_back(str.substr(j, str.length()-j));
-  return answer;
 }
 
 int find_src(string str) {
