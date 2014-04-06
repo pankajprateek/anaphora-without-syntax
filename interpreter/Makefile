@@ -9,7 +9,7 @@ HEADERS1 = $(SOURCES1:.cpp=.h)
 EXECUTABLE = interpret.out
 
 #~ all: english hindi
-all: interpret.out
+all: clean interpret.out
 
 english:
 	cp ./english/english-source.vcb ./source.vcb
@@ -23,7 +23,7 @@ hindi:
 
 interpret.out: main.cpp $(OBJECTS) $(HEADERS)
 	$(CC) -g -o $@ $^
-	./interpret.out < jeetesh_temp.txt
+	#./interpret.out < jeetesh_temp.txt
 
 interpret1.out: $(OBJECTS1) $(HEADERS1)
 	$(CC) -g -o $@ $^
