@@ -6,10 +6,10 @@ HEADERS = $(SOURCES:.cpp=.h)
 SOURCES1 = mapper.cpp interpreter1.cpp filter.cpp lib.cpp
 OBJECTS1 = $(SOURCES1:.cpp=.o)
 HEADERS1 = $(SOURCES1:.cpp=.h)
-EXECUTABLE = interpret
+EXECUTABLE = interpret.out
 
 #~ all: english hindi
-all: interpret
+all: interpret.out
 
 english:
 	cp ./english/english-source.vcb ./source.vcb
@@ -21,10 +21,11 @@ hindi:
 	cp ./hindi/hindi-target.vcb ./target.vcb
 	cp ./hindi/alignment.txt ./
 
-interpret: main.cpp $(OBJECTS) $(HEADERS)
+interpret.out: main.cpp $(OBJECTS) $(HEADERS)
 	$(CC) -g -o $@ $^
+	./interpret < jeetesh_temp.txt
 
-interpret1: $(OBJECTS1) $(HEADERS1)
+interpret1.out: $(OBJECTS1) $(HEADERS1)
 	$(CC) -g -o $@ $^
 
 image: interpret

@@ -1,21 +1,163 @@
 #include <iostream>
+#include <assert.h>
 #include <stdlib.h>
 #include "parse.h"
 #include "grammar.h"
 #include "lib.h"
+#define START_PIVOT -1
 
 using namespace std;
 extern grammar_t grammar;
+
+void ParseTree::print(){
+  this->recursivePrint(this->root, 0);
+}
+
+void ParseTree::printTabs(int num){
+  for(int i=0; i<num; i++){
+    cout<<"\t";
+  }
+}
+
+void ParseTree::recursivePrint(ParseTreeNode* node, int numTabs){
+  printTabs(numTabs);
+  cout<< node->grammarSymbol<<endl;
+  for(int i=0; i< node->numChildren; i++){
+    ParseTreeNode** childTrees = node->children;
+    this->recursivePrint(childTrees[i], numTabs+1);
+  }
+}
 
 void ParseTree::correctParseTree(){
   return;
 }
     
 void ParseTree::parse(){
-  if(root!=NULL) deleteSubtree(root);
-  this->generateListOfWords();
-  this->printListOfWords();
+  cout<<"ParseTree::parse()"<<endl;
+  if(this->root!=NULL) deleteSubtree(root);
+  this->root = recursiveParse(startSymbol, 0, START_PIVOT);
 }
+
+ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow, int parentPivot){
+  cout<<"ParseTree::recursiveParse("<<grammarSymbol<<", "<<leafsTillNow<<", "<<parentPivot<<")"<<endl;
+  //first consider the terminal symbols
+  if(isRegex(grammarSymbol)){
+    string regex = grammarSymbol;
+    vector<Word> words = this->words;
+    int foundIndex = -1;
+    for(int l=parentPivot-1, r=parentPivot+1; (l>=0 || r<words.size());){
+
+      if(l>=0){//Look left
+        Word leftWord = this->words[l];
+        cout<<"leftWord content: "<<leftWord.content<<", leafIndex: "<<leftWord.leafIndex
+          <<", sentence index: "<<r<<endl;
+        if(leftWord.leafIndex > 0 && leftWord.leafIndex <= leafsTillNow){
+          //this word has already been used by the partially constructed parse tree
+          l--;
+        } else if(satisfiesRegex(leftWord.content, regex)){
+          foundIndex = l;
+          leftWord.leafIndex = leafsTillNow + 1;
+          break;
+        } else{
+          l--;
+        }
+      }
+
+      if(r<words.size()){//Look right
+        Word rightWord = this->words[r];
+        cout<<"rightWord content: "<<rightWord.content<<", leafIndex: "<<rightWord.leafIndex
+          <<", sentence index: "<<r<<endl;
+        if(rightWord.leafIndex > 0 && rightWord.leafIndex <= leafsTillNow){
+          //this word has already been used by the partially constructed parse tree
+          r++;
+        } else if(satisfiesRegex(rightWord.content, regex)){
+          foundIndex = r;
+          rightWord.leafIndex = leafsTillNow + 1;
+          break;
+        } else {
+          r++;
+        }
+      }        
+    }
+    
+    if(foundIndex == -1){
+      return NULL;
+    }
+
+    Word foundWord = words[foundIndex];
+    cout<<"FOUND TERMINAL "<<grammarSymbol<<" AS "<<foundWord.content
+      <<" AT "<<foundIndex<<" index"<<endl;
+
+    ParseTreeNode* newNode = new ParseTreeNode();
+    newNode->grammarSymbol.assign(grammarSymbol);
+    newNode->grammarRuleUsed = 0;
+    newNode->numChildren = 0;
+    newNode->leftmostLeafIndex = leafsTillNow + 1;
+    newNode->rightmostLeafIndex = leafsTillNow + 1;
+    newNode->pivotIndex = foundIndex;
+    newNode->children = NULL;
+
+    newNode->content = string(foundWord.content);
+    foundWord.leafIndex = leafsTillNow + 1;
+
+    return newNode;
+  }
+  
+  productionrules_t pds = grammar[grammarSymbol];
+  
+  for(int i=0; i<(int) pds.size(); i++){
+    int l = leafsTillNow;
+    productionrule_t pd = pds[i];
+    cout<<"Trying production rule "<<grammarSymbol<<" -> ";
+    printListOfStrings(pd);
+    cout<<endl;
+    string firstDerivation = pd[0];
+    ParseTreeNode* leftChildTree = recursiveParse(firstDerivation, l, parentPivot);
+
+    if(leftChildTree == NULL){
+      cout<<"Could not derive "<<firstDerivation<<endl;
+      continue;
+    }
+    cout<<"Left child tree at "<<firstDerivation<<endl;
+    int selfPivot = leftChildTree->getPivotIndex();
+    ParseTreeNode** childTrees = (ParseTreeNode**) malloc(pd.size() * sizeof(ParseTreeNode*));
+    childTrees[0] = leftChildTree;
+    l += leftChildTree->getNumOfLeaves();
+    bool success = true;
+    int j = 1;
+    for(; j<(int) pd.size(); j++){
+      string nextDerivation = pd[j];
+      ParseTreeNode* nextChildTree = recursiveParse(nextDerivation, l, selfPivot);
+      if(nextChildTree == NULL){
+        success = false;
+        break;
+      }
+      childTrees[j] = nextChildTree;
+      l += nextChildTree->getNumOfLeaves();
+    }
+    
+    if(success == false){
+      while(--j >= 0){
+        deleteSubtree(childTrees[j]);
+      }
+      free(childTrees);
+      continue;
+    }
+    
+    ParseTreeNode* thisNode = new ParseTreeNode();
+    thisNode->grammarSymbol = string(grammarSymbol);
+    thisNode->grammarRuleUsed = i;
+    thisNode->numChildren = pd.size();
+    thisNode->leftmostLeafIndex = leftChildTree->getLeftmostLeafIndex();
+    assert(thisNode->leftmostLeafIndex == leafsTillNow + 1);
+    thisNode->rightmostLeafIndex = l;
+    thisNode->pivotIndex = selfPivot;
+    thisNode->children = childTrees;
+    return thisNode;
+  }
+  return NULL;
+}
+
 
 void ParseTree::printListOfWords(){
   cout<<"Printing List of words"<<endl;
@@ -26,13 +168,20 @@ void ParseTree::printListOfWords(){
 }
 
 void ParseTree::generateListOfWords(){
+  cout<<"Generating list of words"<<endl;
   vector<string> split_str = split(this->str);
   for(int i=0; i< (int)split_str.size(); i++){
+    if(split_str[i].empty()) continue;
     Word* word = new Word(split_str[i]);
     this->words.push_back(*word);
   }
 }
 
 void ParseTree::deleteSubtree(ParseTreeNode* node){
-  if(node!=NULL) free(node);
+  ParseTreeNode** childTrees = node->children;
+  for(int i=0; i<node->numChildren; i++){
+    deleteSubtree(childTrees[i]);
+  }
+  free(childTrees);
+  free(node);
 }

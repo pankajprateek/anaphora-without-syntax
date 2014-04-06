@@ -9,5 +9,6 @@
 *.cooc
 *.snt
 *.align
+*.pyc
 *~
 interpreter/interpret

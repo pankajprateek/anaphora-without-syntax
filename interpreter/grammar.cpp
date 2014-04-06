@@ -5,10 +5,6 @@
 #include<fstream>
 #include<assert.h>
 
-#ifndef GRAMMAR_FILE_PATH
-#define GRAMMAR_FILE_PATH "../corpus/language_grammar.grm"
-#endif
-
 using namespace std;
 
 grammar_t GrammarReader::getGrammar(){
@@ -76,5 +72,93 @@ void GrammarReader::printGrammar(grammar_t grammar){
       cout<<endl;
     }
     cout<<endl;
+  }
+}
+
+bool isRegex(string str){
+  cout<<"isRegex("<<str<<")"<<endl;
+  if(str.size() == 0) return false;
+  if(str.at(0) == '\'' && str.at(((int)str.size()) - 1) == '\''){
+    assert(str.size() > 2);
+    return true;
+  }
+  
+  return
+    (str.compare(regexInteger) == 0)
+    || (str.compare(regexReal)==0)
+    || (str.compare(regexPointSinglet)==0)
+    || (str.compare(regexPointDoublet)==0)
+    || (str.compare(regexPointTriplet)==0);
+}
+
+bool satisfiesRegex(string str, string regex){
+  cout<<"satisfiesRegex("<<str<<", "<<regex<<")"<<endl;
+  if(regex.compare(regexInteger) == 0){
+    for(int i=0; i<(int)str.size(); i++){
+      if(str.at(i) < '0' || str.at(i) > '9'){
+        return false;
+      }
+    }
+    return true;
+  } else if(regex.compare(regexReal) == 0){
+    bool seenDecimalPoint = false;
+    for(int i=0; i<(int)str.size(); i++){
+      if(str.at(i) == '.'){
+        if(seenDecimalPoint == true){
+          //already seen a decimal point
+          return false;
+        }
+        seenDecimalPoint = true;
+        continue;
+      }
+      
+      if(str.at(i) < '0' || str.at(i) > '9'){
+        //neither a dot nor a number
+        return false;
+      }
+    }
+    return true;
+  } else if(regex.compare(regexPointTriplet)==0){
+    if(((int)str.size()) != 3) return false;
+    for(int i=0; i<3; i++){
+      if(str.at(i) < 'A' || str.at(i) > 'Z'){
+        return false;
+      }
+    }
+    return true;
+  } else if(regex.compare(regexPointDoublet)==0){
+    if(((int)str.size()) != 2) return false;
+    for(int i=0; i<2; i++){
+      if(str.at(i) < 'A' || str.at(i) > 'Z'){
+        return false;
+      }
+    }
+    return true;
+  } else if(regex.compare(regexPointSinglet)==0){
+    if(((int)str.size()) != 1) return false;
+    for(int i=0; i<1; i++){
+      if(str.at(i) < 'A' || str.at(i) > 'Z'){
+        return false;
+      }
+    }
+    return true;
+  } else if (regex.compare(regexSmallCaps) == 0){
+    if(((int)str.size()) != 1) return false;
+    for(int i=0; i<1; i++){
+      if(str.at(i) < 'a' || str.at(i) > 'z'){
+        return false;
+      }
+    }
+    return true;
+  } else{
+    assert(regex.at(0) == '\'');
+    int size = (int) regex.size();
+    assert(regex.at(size - 1) == '\'');
+    assert(size > 2);
+    
+    string literal = regex.substr(1, size-2);
+    cout<<"comparing "<<literal<<" with "<<str<<endl;
+    if(literal.compare(str) == 0) return true;
+    else return false;
   }
 }

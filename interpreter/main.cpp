@@ -8,8 +8,8 @@ using namespace std;
 grammar_t grammar;
 
 int main(){
-  GrammarReader::getGrammar();
-  GrammarReader::printGrammar(grammar);
+  grammar = GrammarReader::getGrammar();
+  //GrammarReader::printGrammar(grammar);
   
   string cmd;
   while(getline(cin, cmd)) {

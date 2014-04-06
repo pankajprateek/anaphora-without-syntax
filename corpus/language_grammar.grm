@@ -59,7 +59,8 @@ lineSegmentAndProperties =
   addressLineSegment lineSegmentProperties
 
 LINESEGMENT =
-  'lineSegment'
+  'line' 'segment'
+  
 POINTPAIR =
   [A-Z][A-Z]
 

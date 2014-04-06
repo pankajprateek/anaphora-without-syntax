@@ -1,4 +1,9 @@
 #include "lib.h"
+#include <vector>
+#include <string>
+#include <iostream>
+
+using namespace std;
 
 vector<string> split(string str) {
   vector<string> *answer = new vector<string>;
@@ -11,4 +16,10 @@ vector<string> split(string str) {
   }
   (*answer).push_back(str.substr(j, str.length()-j));
   return *answer;
+}
+
+void printListOfStrings(vector<string> list){
+  for(int i=0; i< (int) list.size(); i++){
+    cout<<list[i]<<" ";
+  }
 }
