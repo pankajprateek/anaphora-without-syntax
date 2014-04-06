@@ -4,20 +4,29 @@ construct AB length 7.8 cm
 From this, cut off AC of length 4.7  cm
 from this cut AC length 4.7 cm
 
-construct PQ such that the length of PQ is twice that of AB
-construct PQ length PQ twice length AB
+cut off AC of length 4.7 cm from this
+cut AC length 4.7 cm from this
 
-Construct PX such that length of PX is equal to length of AB
-construct PX length PX equals length AB
+cut AC of length 3.5 cm from this
+cut AC length 3.5 cm from this
+
+from this cut AC of length 3.4 cm
+from this cut AC length 3.4 cm
+#
+construct PQ such that the length of PQ is twice that of AB
+construct PQ given that length PQ twice AB
+
+Construct PX such that length of PX equals of AB
+construct PX given that length PX equals length AB
 
 then cut off XQ such that XQ also has the length of AB
-cut XQ length XQ equals length AB
+cut XQ given that XQ equals length AB
 
 construct a line segment XY such that the length of XY is equal to the difference between the lengths of AB and CD
-construct line segment XY length XY equals difference length AB and length CD
+construct line segment XY given that length XY equals difference length AB and length CD
 
 construct PQ such that the length of PQ is twice that of AB
-construct PQ length PQ twice length AB
+construct PQ given that length PQ twice length AB
 
 With P as center and a convenient radius, construct an arc intersecting the line l at two points A and B
 P center and any radius construct arc intersecting line l at two points A and B

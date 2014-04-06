@@ -2,7 +2,7 @@
 #include<string>
 #include<string.h>
 #include<map>
-#define GRAMMAR_FILE_PATH "../corpus/language_grammar.grm"
+#define GRAMMAR_FILE_PATH "./language_grammar.grm"
 
 using namespace std;
 typedef string nonterminal_t;

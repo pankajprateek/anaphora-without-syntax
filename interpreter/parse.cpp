@@ -5,6 +5,7 @@
 #include "grammar.h"
 #include "lib.h"
 #define START_PIVOT -1
+#define PDEBUG 1
 
 using namespace std;
 extern grammar_t grammar;
@@ -38,13 +39,13 @@ void ParseTree::correctParseTree(){
 }
     
 void ParseTree::parse(){
-  cout<<"ParseTree::parse()"<<endl;
+  if(PDEBUG) cout<<"ParseTree::parse()"<<endl;
   if(this->root!=NULL) deleteSubtree(root);
   this->root = recursiveParse(startSymbol, 0, START_PIVOT);
 }
 
 ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow, int parentPivot){
-  cout<<"ParseTree::recursiveParse("<<grammarSymbol<<", "<<leafsTillNow<<", "<<parentPivot<<")"<<endl;
+  if(PDEBUG) cout<<"ParseTree::recursiveParse("<<grammarSymbol<<", "<<leafsTillNow<<", "<<parentPivot<<")"<<endl;
   //first consider the terminal symbols
   if(isRegex(grammarSymbol)){
     string regex = grammarSymbol;
@@ -54,8 +55,9 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
 
       if(l>=0){//Look left
         Word leftWord = this->words[l];
-        cout<<"leftWord content: "<<leftWord.content<<", leafIndex: "<<leftWord.leafIndex
-          <<", sentence index: "<<r<<endl;
+        if(PDEBUG){
+          //cout<<"leftWord content: "<<leftWord.content<<", leafIndex: "<<leftWord.leafIndex<<", sentence index: "<<r<<endl;
+        }
         if(leftWord.leafIndex > 0 && leftWord.leafIndex <= leafsTillNow){
           //this word has already been used by the partially constructed parse tree
           l--;
@@ -69,8 +71,9 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
 
       if(r<words.size()){//Look right
         Word rightWord = this->words[r];
-        cout<<"rightWord content: "<<rightWord.content<<", leafIndex: "<<rightWord.leafIndex
-          <<", sentence index: "<<r<<endl;
+        if(PDEBUG){
+          //cout<<"rightWord content: "<<rightWord.content<<", leafIndex: "<<rightWord.leafIndex<<", sentence index: "<<r<<endl;
+        }
         if(rightWord.leafIndex > 0 && rightWord.leafIndex <= leafsTillNow){
           //this word has already been used by the partially constructed parse tree
           r++;
@@ -89,7 +92,7 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
 
     Word& foundWord = this->words[foundIndex];
     foundWord.leafIndex = leafsTillNow + 1;
-    cout<<"FOUND TERMINAL "<<grammarSymbol<<" AS "<<foundWord.content
+    if(PDEBUG) cout<<"FOUND TERMINAL "<<grammarSymbol<<" AS "<<foundWord.content
       <<" AT "<<foundIndex<<" index with "<<foundWord.leafIndex<<" as leaf index"<<endl;
 
     ParseTreeNode* newNode = new ParseTreeNode();
@@ -113,17 +116,19 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
   for(int i=0; i<(int) pds.size(); i++){
     int l = leafsTillNow;
     productionrule_t pd = pds[i];
-    cout<<"Trying production rule "<<grammarSymbol<<" -> ";
-    printListOfStrings(pd);
-    cout<<endl;
+    if(PDEBUG){
+      cout<<"Trying production rule "<<grammarSymbol<<" -> ";
+      printListOfStrings(pd);
+      cout<<endl;
+    }
     string firstDerivation = pd[0];
     ParseTreeNode* leftChildTree = recursiveParse(firstDerivation, l, parentPivot);
 
     if(leftChildTree == NULL){
-      cout<<"Could not derive "<<firstDerivation<<endl;
+      if(PDEBUG) cout<<"Could not derive "<<firstDerivation<<endl;
       continue;
     }
-    cout<<"Left child tree at "<<firstDerivation<<endl;
+    if(PDEBUG) cout<<"Left child tree at "<<firstDerivation<<endl;
     int selfPivot = leftChildTree->getPivotIndex();
     ParseTreeNode** childTrees = (ParseTreeNode**) malloc(pd.size() * sizeof(ParseTreeNode*));
     childTrees[0] = leftChildTree;
@@ -173,7 +178,7 @@ void ParseTree::printListOfWords(){
 }
 
 void ParseTree::generateListOfWords(){
-  cout<<"Generating list of words"<<endl;
+  if(PDEBUG) cout<<"Generating list of words"<<endl;
   vector<string> split_str = split(this->str);
   for(int i=0; i< (int)split_str.size(); i++){
     if(split_str[i].empty()) continue;

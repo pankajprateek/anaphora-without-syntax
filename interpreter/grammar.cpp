@@ -1,9 +1,11 @@
 #include "grammar.h"
+#include "lib.h"
 #include<stdio.h>
 #include<string>
 #include<iostream>
 #include<fstream>
 #include<assert.h>
+#define GDEBUG 0
 
 using namespace std;
 
@@ -76,7 +78,7 @@ void GrammarReader::printGrammar(grammar_t grammar){
 }
 
 bool isRegex(string str){
-  cout<<"isRegex("<<str<<")"<<endl;
+  if(GDEBUG) cout<<"isRegex("<<str<<")"<<endl;
   if(str.size() == 0) return false;
   if(str.at(0) == '\'' && str.at(((int)str.size()) - 1) == '\''){
     assert(str.size() > 2);
@@ -88,11 +90,12 @@ bool isRegex(string str){
     || (str.compare(regexReal)==0)
     || (str.compare(regexPointSinglet)==0)
     || (str.compare(regexPointDoublet)==0)
-    || (str.compare(regexPointTriplet)==0);
+    || (str.compare(regexPointTriplet)==0)
+    || (str.compare(regexSmallCaps)==0);
 }
 
 bool satisfiesRegex(string str, string regex){
-  cout<<"satisfiesRegex("<<str<<", "<<regex<<")"<<endl;
+  if(GDEBUG) cout<<"satisfiesRegex("<<str<<", "<<regex<<")"<<endl;
   if(regex.compare(regexInteger) == 0){
     for(int i=0; i<(int)str.size(); i++){
       if(str.at(i) < '0' || str.at(i) > '9'){
@@ -157,7 +160,7 @@ bool satisfiesRegex(string str, string regex){
     assert(size > 2);
     
     string literal = regex.substr(1, size-2);
-    cout<<"comparing "<<literal<<" with "<<str<<endl;
+    if(GDEBUG) cout<<"comparing "<<literal<<" with "<<str<<endl;
     if(literal.compare(str) == 0) return true;
     else return false;
   }

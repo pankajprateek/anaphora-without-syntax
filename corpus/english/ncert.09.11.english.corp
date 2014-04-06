@@ -23,7 +23,7 @@ join AH
 join AH
 
 Construct a triangle ABC, given that AB = 5 cm, BC = 6 cm and AC = 7 cm
-construct triangle ABC length AB equals 5 cm length BC equals 6 cm length AC equals 7 cm
+construct triangle ABC given that length AB equals 5 cm length BC equals 6 cm length AC equals 7 cm
 
 Draw a line segment BC of length 6 cm
 construct line segment BC length 6 cm
@@ -44,7 +44,7 @@ join AC
 join AC
 
 Construct a triangle PQR, given that PQ = 3 cm, QR = 5.5 cm and ∠PQR = 60°
-construct triangle PQR length PQ equals 3 cm length QR equals 5.5 cm angle PQR equals 60 degrees
+construct triangle PQR given that length PQ equals 3 cm length QR equals 5.5 cm angle PQR equals 60 degrees
 
 Draw a line segment QR of length 5.5 cm
 construct line segment QR length 5.5 cm
@@ -62,7 +62,7 @@ Join PR
 join PR
 
 Construct ΔXYZ if it is given that XY = 6 cm, ∠ZXY = 30° and ∠XYZ = 100°
-construct triangle XYZ length XY eqausl 6 cm angle ZXY equals 30 degrees angle XYZ equals 100 degrees
+construct triangle XYZ given that length XY eqausl 6 cm angle ZXY equals 30 degrees angle XYZ equals 100 degrees
 
 Draw XY of length 6 cm
 constrcut XY length 6 cm
@@ -77,7 +77,7 @@ mark the point of intersection of these rays as Z
 mark intersection points these rays Z
 
 Construct ΔLMN, right-angled at M, given that LN = 5 cm and MN = 3 cm
-construct triangle LMN rightangle M length LN equals 5 cm length MN equals 3 cm
+construct triangle LMN rightangle M given that length LN equals 5 cm length MN equals 3 cm
 
 Draw MN of length 3 cm
 construct MN length 3 cm
@@ -100,7 +100,7 @@ construct ray BF
 Taking A and B as centres and radius more than 0.5 AB, draw arcs
 A and B centers and radius greater than 0.5 AB construct arcs
 
-mark the intersection point ot these arcs as P and Q
+mark the intersection point of these arcs as P and Q
 mark intersection points these arcs P and Q
 
 Join PQ
@@ -113,7 +113,7 @@ construct a ray AB with initial point A
 construct ray AB origin point A
 
 Construct a ray AC such that ∠CAB = 60°
-construct ray AC angle CAB equals 60 degrees
+construct ray AC given that angle CAB equals 60 degrees
 
 Taking A as centre and some radius, draw an arc, which intersects AB, say at a point D
 A center and any radius construct arc intersecting AB at point D
@@ -154,7 +154,7 @@ construct BC
 At point B make an angle say XBC equal to 120 degrees
 at B construct angle XBC equals 120 degrees
 
-Cut the line segment BD equal to AB – AC from ray BX
+Cut the line segment BD equal to difference of AB and AC from ray BX
 cut line segment BD equals AB difference AC from ray BX
 
 Join DC
@@ -169,7 +169,7 @@ mark it intersection point BX A
 Join AC
 join AC
 
-#Cut line segment BD equal to AC – AB from the line BX extended on opposite side of line segment BC
+#Cut line segment BD equal to AC minus AB from the line BX extended on opposite side of line segment BC
 #cut line segment BD equals AC difference AB from line BX length difference length AC length AB
 
 Join DC

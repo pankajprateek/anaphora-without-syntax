@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#include "lib.h"
 
 using namespace std;
 
@@ -64,7 +65,7 @@ class ParseTree{
       this->str = str;
       this->root = NULL;
       this->generateListOfWords();
-      this->printListOfWords();
+      if(DEBUG) this->printListOfWords();
     }
     ~ParseTree(){
       if(this->root!=NULL){

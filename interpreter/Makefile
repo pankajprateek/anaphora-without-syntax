@@ -23,7 +23,7 @@ hindi:
 
 interpret.out: main.cpp $(OBJECTS) $(HEADERS)
 	$(CC) -g -o $@ $^
-	./interpret.out < jeetesh_temp.txt
+	./interpret.out < jeetesh_temp_english.txt
 
 interpret1.out: $(OBJECTS1) $(HEADERS1)
 	$(CC) -g -o $@ $^

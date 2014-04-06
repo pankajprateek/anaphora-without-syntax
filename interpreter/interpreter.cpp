@@ -4,9 +4,10 @@
 #include "interpreter.h"
 #include "mapper.h"
 #include "action.h"
+#define MAX_TRANSLATIONS 10
 
 string getInterpretation(string parse){
-  cout<<"Interpreting \""<<parse<<"\"..."<<endl;
+  if(DEBUG) cout<<"Interpreting \""<<parse<<"\"..."<<endl;
   vector<pair<string, double> > mappings = getPossibleMappings(parse);
 	/*
   cout<<"Listing mappings..."<<endl;
@@ -15,23 +16,26 @@ string getInterpretation(string parse){
   }
   */
   Action *action = new Action();
-  cout<<"No. of possibilities" <<mappings.size()<<endl;
-  //~ for(int i=0; i < mappings.size(); ++i){
-  for(int i=0; i < 1; ++i){
+  if(DEBUG) cout<<"No. of possibilities " <<mappings.size()<<endl;
+
+  int numTranslations = mappings.size() < MAX_TRANSLATIONS ? mappings.size() : MAX_TRANSLATIONS;
+  for(int i=0; i < numTranslations ; ++i){
     
     ParseTree parseTree(mappings[i].first);
-    cout<<"Parsing \""<<mappings[i].first<<"\""<<endl;
+    if(DEBUG) cout<<"Parsing \""<<mappings[i].first<<"\""<<endl;
     parseTree.parse();
     
     if(parseTree.isEmpty()){
-      cout<<"Could not parse "<<i+1<<"th possibility \""
+      if(DEBUG) cout<<"Could not parse "<<i+1<<"th possibility \""
         <<mappings[i].first<<"\""<<endl;
       continue;
     }
     
-    cout<<"Found a parse tree:"<<endl;
+    if(DEBUG) cout<<"Found a parse tree:"<<endl;
     parseTree.print();
-    cout<<"HERE"<<endl;
+    if(DEBUG) cout<<"HERE"<<endl;
+    
+    return action->toString();
     
     action->extractAction(parseTree);
     while(!action->isValid()){

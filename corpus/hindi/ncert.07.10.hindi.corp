@@ -59,7 +59,7 @@ R through passing PQ parallelTo line construct
 mark this line line I point S at intersetion
 
 एक त्रिभुज ABC की रचना कीजिए जबकि AB = 5 cm, BC = 6 cm और AC = 7 cm दिया है
-construct triangle ABC AB equals 5 cm BC equals 6 cm AC equals 7 cm
+triangle ABC construct given AB equals 5 cm BC equals 6 cm AC equals 7 cm
 
 6 cm लंबाई का रेखाखंड BC खींचिए
 6 cm length lineSegment BC construct
@@ -77,19 +77,19 @@ AB और AC को जोड़िए
 AB and AC join
 
 त्रिभुज XYZ की रचना कीजिए, जिसमें XY = 4.5 cm, YZ = 5 cm और ZX = 6 cm है
-triangle XYZ construct  XY equals 4.5 cm  YZ equals 5 cm  ZX equals 6 cm
+triangle XYZ construct given XY equals 4.5 cm  YZ equals 5 cm  ZX equals 6 cm
 
 5.5 cm भुजा वाले एक समबाहु त्रिभुज की रचना कीजिए
 5.5 cm side equilateral triangle construct
 
 त्रिभुज PQR की रचना कीजिए, जिसमें PQ = 4 cm, QR = 3.5 cm और PR = 4 cm है
-triangle PQR construct PQ equals 4 cm  QR equals 3.5 cm  PR equals 4 cm
+triangle PQR construct given PQ equals 4 cm  QR equals 3.5 cm  PR equals 4 cm
 
-त्रिभुज ABC की रचना कीजिए, ताकि AB = 2.5 cm, BC = 6 cm और AC = 6.5 cm हो
-triangle ABC construct AB equals 2.5 cm BC equals 6 cm AC equals 6.5 cm
+त्रिभुज ABC की रचना कीजिए ताकि AB = 2.5 cm, BC = 6 cm और AC = 6.5 cm हो
+triangle ABC construct given AB equals 2.5 cm BC equals 6 cm AC equals 6.5 cm
 
 एक त्रिभुज PQR की रचना कीजिए जब दिया है कि PQ = 3 cm, QR = 5.5 cm और कोण PQR = 60 डिग्री है
-triangle PQR construct PQ equals 3 cm QR equals 5.5 cm angle PQR equals 60 degrees
+triangle PQR construct given PQ equals 3 cm QR equals 5.5 cm angle PQR equals 60 degrees
 
 Q पर किरण QX खींचिए जो QR के साथ 60 डिग्री का कोण बनाए
 Q at ray QX construct QR with 60 degrees angle subtending
@@ -104,19 +104,19 @@ PR को जोड़िए
 PR join
 
 एक अन्य त्रिभुज ABC की रचना करें ताकि AB = 3 cm , BC = 6.5 cm और कोण ABC = 60 डिग्री हो
-triangle ABC construct AB equals 3 cm BC equals 6.5 cm angle ABC equals 60 degrees
+triangle ABC construct given AB equals 3 cm BC equals 6.5 cm angle ABC equals 60 degrees
 
 #AC = 5 cm खींच कर कोण C = 30 डिग्री खींच सकते है
 #construct AC length 5 cm angle C measure 30 degrees
 
 त्रिभुज DEF की रचना कीजिए ताकि DE = 5 cm , DF = 3 cm और कोण EDF = 90 डिग्री हो
-triangle DEF construct DE equals 5 cm  DF equals 3 cm and angle EDF equals 90 degrees
+triangle DEF construct given DE equals 5 cm  DF equals 3 cm and angle EDF equals 90 degrees
 
-एक समद्विबाहु त्रिभुज की रचना कीजिए, जिसकी प्रत्येक समान भुजा की लंबाई 6.5 cm हो और उनके बीच का कोण 110 डिग्री का हो
-isosceles triangle construct each equal side length 6.5 cm and them between angle 110 degrees
+एक समद्विबाहु त्रिभुज की रचना कीजिए जिसकी प्रत्येक समान भुजा की लंबाई 6.5 cm हो और उनके बीच का कोण 110 डिग्री का हो
+isosceles triangle given construct each equal side length 6.5 cm and them between angle 110 degrees
 
 BC = 7.5 cm और AC = 5 cm और कोण C = 60 डिग्री वाले त्रिभुज ABC की रचना कीजिए
-BC equals 7.5 cm and AC equals 5 cm and angle C equals 60 degrees triangle ABC construct
+BC equals 7.5 cm and AC equals 5 cm and angle C equals 60 degrees given triangle ABC construct
 
 6 cm लंबाई का रेखाखंड XY खींचिए
 6 cm length lineSegment XY construct
@@ -131,16 +131,16 @@ Y at ray YK construct YX with 100 degrees angle subtending
 these two rays intersection point with Z mark
 
 एक अन्य त्रिभुज LMN खींचिए जिसमें कोण NLM = 30 डिग्री , LM = 6 cm और कोण NML = 100 डिग्री हो
-triangle LMN construct angle NLM equals 30 degrees LM equals 6 cm and angle NML equals 100 degrees
+triangle LMN construct given angle NLM equals 30 degrees LM equals 6 cm and angle NML equals 100 degrees
 
 त्रिभुज ABC की रचना कीजिए जब कोण A = 60 डिग्री, कोण B = 30 डिग्री और AB = 5.8 cm दिया है
-triangle ABC construct angle A equals 60 degrees angle B equals 30 degrees and AB equals 5.8 cm
+triangle ABC construct given angle A equals 60 degrees angle B equals 30 degrees and AB equals 5.8 cm
 
 त्रिभुज PQR की रचना कीजिए यदि PQ = 5 cm , कोण PQR = 105 डिग्री  और कोण QRP = 40 डिग्री दिया है
-triangle PQR construct PQ equals 5 cm angle PQR equals 105 degrees and angle QRP equals 40 degrees
+triangle PQR construct given PQ equals 5 cm angle PQR equals 105 degrees and angle QRP equals 40 degrees
 
-त्रिभुज की रचना कीजिए, जिसका कोण LMN समकोण है तथा दिया है कि LN = 5 cm और MN = 3 cm
-triangle construct angle LMN isoscelesAngle and LN equals 5 cm and MN equals 3 cm
+त्रिभुज की रचना कीजिए जिसका कोण LMN समकोण है तथा दिया है कि LN = 5 cm और MN = 3 cm
+triangle construct given angle LMN isoscelesAngle and LN equals 5 cm and MN equals 3 cm
 
 3 सेमी लंबाई का रेखाखंड MN खींचिए
 3 cm length lineSegment MN construct
@@ -158,10 +158,10 @@ LN को जोड़िए
 LN join
 
 समकोण त्रिभुज PQR की रचना कीजिए जहाँ कोण Q = 90 डिग्री QR = 8 cm और PR = 10 cm है
-isosceles triangle PQR construct angle Q equals 90 degrees QR equals 8 cm and PR equals 10 cm
+isosceles triangle PQR construct given angle Q equals 90 degrees QR equals 8 cm and PR equals 10 cm
 
 एक समकोण त्रिभुज की रचना कीजिए जिसका कर्ण 6cm लंबा है और एक पाद 4 cm लंबा है
 isosceles triangle construct base 6 cm length and side 4 cm length
 
 #एक समद्विबाहु समकोण त्रिभुज ABC की रचना कीजिए, जहाँ कोण ACB = 90 डिग्री है और AC = 6 cm है
-#construct isosceles triangle ABC angle ACB equals 90 degrees length AC equals 6 cm
+#isosceles triangle construct given ABC angle ACB equals 90 degrees length AC equals 6 cm
