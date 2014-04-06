@@ -58,6 +58,7 @@ class ParseTree{
   string str;//parse tree for str
   ParseTreeNode* root;
   ListOfWords words;
+  string prefixString; //used in preOrder traversal
   
   public:
     ParseTree(string str){
@@ -86,4 +87,6 @@ class ParseTree{
     void printListOfWords();
     void deleteSubtree(ParseTreeNode* node);
     void printTabs(int num);
+    string preOrder();
+    void recursivePreOrder(ParseTreeNode* node);
 };

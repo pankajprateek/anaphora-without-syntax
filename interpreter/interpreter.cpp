@@ -17,8 +17,8 @@ string getInterpretation(string parse){
   Action *action = new Action();
   cout<<"No. of possibilities" <<mappings.size()<<endl;
   //~ for(int i=0; i < mappings.size(); ++i){
-  for(int i=0; i < 1; ++i){
-    
+  for(int i=0; i < 1; ++i) {
+
     ParseTree parseTree(mappings[i].first);
     cout<<"Parsing \""<<mappings[i].first<<"\""<<endl;
     parseTree.parse();
@@ -31,7 +31,11 @@ string getInterpretation(string parse){
     
     cout<<"Found a parse tree:"<<endl;
     parseTree.print();
+    string preOrder = parseTree.preOrder();
+    cout<< "PreOrder Traversal of Tree:" <<endl<< preOrder <<endl;
     cout<<"HERE"<<endl;
+
+    //return action->toString();
     
     action->extractAction(parseTree);
     while(!action->isValid()){
