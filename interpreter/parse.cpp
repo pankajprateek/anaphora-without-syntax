@@ -15,13 +15,18 @@ void ParseTree::print(){
 
 void ParseTree::printTabs(int num){
   for(int i=0; i<num; i++){
-    cout<<"\t";
+    cout<<"|\t";
   }
 }
 
 void ParseTree::recursivePrint(ParseTreeNode* node, int numTabs){
   printTabs(numTabs);
-  cout<< node->grammarSymbol<<endl;
+
+  if(!(node->isTerminal())){
+    cout<< node->grammarSymbol<<endl;
+  } else {
+    cout<< node->grammarSymbol <<" === "<<node->content<<endl;
+  }
   for(int i=0; i< node->numChildren; i++){
     ParseTreeNode** childTrees = node->children;
     this->recursivePrint(childTrees[i], numTabs+1);
@@ -56,7 +61,6 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
           l--;
         } else if(satisfiesRegex(leftWord.content, regex)){
           foundIndex = l;
-          leftWord.leafIndex = leafsTillNow + 1;
           break;
         } else{
           l--;
@@ -72,7 +76,6 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
           r++;
         } else if(satisfiesRegex(rightWord.content, regex)){
           foundIndex = r;
-          rightWord.leafIndex = leafsTillNow + 1;
           break;
         } else {
           r++;
@@ -84,9 +87,10 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
       return NULL;
     }
 
-    Word foundWord = words[foundIndex];
+    Word& foundWord = this->words[foundIndex];
+    foundWord.leafIndex = leafsTillNow + 1;
     cout<<"FOUND TERMINAL "<<grammarSymbol<<" AS "<<foundWord.content
-      <<" AT "<<foundIndex<<" index"<<endl;
+      <<" AT "<<foundIndex<<" index with "<<foundWord.leafIndex<<" as leaf index"<<endl;
 
     ParseTreeNode* newNode = new ParseTreeNode();
     newNode->grammarSymbol.assign(grammarSymbol);
@@ -104,6 +108,7 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
   }
   
   productionrules_t pds = grammar[grammarSymbol];
+  assert(!pds.empty());
   
   for(int i=0; i<(int) pds.size(); i++){
     int l = leafsTillNow;

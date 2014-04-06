@@ -5,6 +5,7 @@ addressLength =
 
 addressLength1 =
     REAL CM
+  | REAL
   | FREEVARIABLE
   | previousLength
   | LENGTH addressLineSegment
@@ -28,6 +29,21 @@ addressLength3 =
   | LESSTHAN addressLength2
   | EQUALS addressLength2
   | operation addressLength2 addressLength2  
+
+TIMES =
+    'times'
+
+HALF =
+    'half'
+
+GREATERTHAN =
+    'greater' 'than'
+
+LESSTHAN =
+    'less' 'than'
+
+EQUALS =
+    'equals'
 
 commands = 
     commands command
@@ -60,7 +76,7 @@ lineSegmentAndProperties =
 
 LINESEGMENT =
   'line' 'segment'
-  
+
 POINTPAIR =
   [A-Z][A-Z]
 
@@ -69,6 +85,7 @@ lineSegmentProperties =
 
 LENGTH =
   'length'
+
 CM =
   'cm'
 
@@ -81,80 +98,94 @@ addressLineSegment =
 angleAndProperties =
     ANGLE VERTEX addressPoint addressDegree
 
+ANGLE =
+    'angle'
+
 addressDegree =
     REAL DEGREES
   | FREEVARIABLE
 
 DEGREES =
-    degree
-  | degrees
+    'degree'
+  | 'degrees'
 
 circleAndProperties = 
     CIRCLE CENTER addressPoint RADIUS addressLength
   | CIRCLE CENTER addressPoint DIAMETER addressLength
 
 CIRCLE =
-  circle
+  'circle'
 
 lineAndProperties = 
-    line [a-z] 
+    'line' [a-z] 
 
-ArcAndProperties =
+arcAndProperties =
   ARC arcProperties
 
 ARC =
-  arc
+  'arc'
 
 arcProperties =
     CENTER POINTSINGLE RADIUS addressLength
   | CENTER POINTSINGLE RADIUS addressLength cutCommand
 
 CENTER =
-  center
+  'center'
 
 POINTSINGLE =
   [A-Z]
 
 RADIUS =
-  radius
+  'radius'
 
 DIAMETER =
-  diameter
+  'diameter'
 
 REAL =
   [0-9]+(.[0-9]+)?
 
 intersectingArcsAndProperties =
-  INTERSECTINARCS intersectingArcsProperties
+  INTERSECTINGARCS intersectingArcsProperties
 
 INTERSECTINGARCS =
-  intersectingArcs
+  ARCS
+
+ARCS =
+    'arcs'
+
+INTERSECTING =
+    'intersecting'
+  | 'cutting'
+
+EACHOTHER =
+    'eachother'
+  | 'each' 'other'
 
 CENTERS =
     CENTER
-  | centers
+  | 'centers'
 
 intersectingArcsProperties =
-  CENTERS POINTSINGLE POINTSINGLE RADIUS intersectingArcsRadius INTERSECTINGAT addressPoint
+  CENTERS POINTSINGLE POINTSINGLE RADIUS intersectingArcsRadius INTERSECTING AT addressPoint
+
+AT =
+    'at'
 
 intersectingArcsRadius = 
     addressLength addressLength
   | addressLength
 
-INTERSECTINGAT =
-    intersectingAt
-
 divideCommand =
     DIVIDE divisibleAndProperties
 
 DIVIDE =
-    divide
+    'divide'
 
 divisibleAndProperties =
     divisibleObject NUMPARTS [0-9]+
 
 NUMPARTS =
-  numParts
+  'numParts'
 
 divisibleObject =
     addressLineSegment
@@ -163,7 +194,7 @@ joinCommand =
   JOIN addressPointPair
 
 JOIN =
-  join
+  'join'
 
 addressPointPair = 
     POINTPAIR
@@ -176,9 +207,9 @@ markCommand =
     MARK markableAndProperties
 
 MARK = 
-    mark
-  | draw
-  | label
+    'mark'
+  | 'draw'
+  | 'label'
 
 markableAndProperties =
     pointAndProperties
@@ -189,7 +220,7 @@ angleArmPointsAndProperties =
     POINT POINTSINGLE ON ARM addressAngle POINTSINGLE ON ARM addressAngle
 
 ARM =
-  arm
+  'arm'
 
 addressAngle =
     POINTTRIPLET
@@ -215,10 +246,10 @@ pointAndProperties =
   | POINT POINTSINGLE NOTON labelable
 
 ON =
-  on
+  'on'
 
 NOTON =
-  notOn
+  'notOn'
 
 labelable =
     addressLineSegment
@@ -246,22 +277,22 @@ addressPreviousObject =
   | PREVIOUS
 
 THEM =
-  them
+  'them'
 
 THOSE =
-  those
+  'those'
 
 THIS =
-  this
+  'this'
 
 PREVIOUS =
-  previous
+  'previous'
 
 PREVIOUSLY =
-  previously
+  'previously'
 
 IT =
-  it
+  'it'
 
 object = 
     LINESEGMENT
@@ -273,7 +304,7 @@ cutCommand =
   CUT cuttableAndProperties
 
 CUT =
-  cut
+  'cut'
 
 addressPoint =
     POINTSINGLE
@@ -282,13 +313,13 @@ addressPoint =
   | addressFreeObject
 
 addressFreeObject =
-    ANY
+    'ANY'
 
 ANY =
-  any
+  'any'
 
 POINT =
-  point
+  'point'
 
 cuttableAndProperties =
     addressLineSegment FROM addressLineSegment LENGTH addressLength
@@ -304,29 +335,36 @@ addressCircle =
   | addressFreeObject  
 
 FROM =
-  from
+  'from'
 
 TWICE =
-  twice
+  'twice'
 
 THRICE =
-  thrice
+  'thrice'
 
 EQUALS =
-    equals
-  | equal
-  | is
-  | has
+    'equals'
+  | 'equal'
+  | 'is'
+  | 'has'
 
 previousLength =
-    same
+    'same'
 
 operation =
     DIFFERENCE
   | SUM
 
+DIFFERENCE =
+    'minus'
+    'difference'
+
+SUM =
+    'sum'
+
 FREEVARIABLE =
-    any
-  | convenient
+    'any'
+  | 'convenient'
 
 

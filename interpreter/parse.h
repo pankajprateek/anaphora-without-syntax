@@ -49,6 +49,9 @@ class ParseTreeNode{
       return this->getRightmostLeafIndex() - this->getLeftmostLeafIndex() + 1;
     }
   
+    bool isTerminal(){
+      return (this->numChildren == 0);
+    }
 };
 
 class ParseTree{

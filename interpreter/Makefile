@@ -23,14 +23,14 @@ hindi:
 
 interpret.out: main.cpp $(OBJECTS) $(HEADERS)
 	$(CC) -g -o $@ $^
-	./interpret < jeetesh_temp.txt
+	./interpret.out < jeetesh_temp.txt
 
 interpret1.out: $(OBJECTS1) $(HEADERS1)
 	$(CC) -g -o $@ $^
 
 image: interpret
 	rm -f drawing_instructions.txt
-	./interpret
+	./interpret.out
 	python constructImage.py
 
 .cpp.o:
@@ -39,4 +39,4 @@ image: interpret
 clean:
 	rm -f drawing_instructions.txt
 	#rm -f ./source.vcb ./target.vcb ./alignment.txt
-	rm -f interpret *.o
+	rm -f interpret.out *.o
