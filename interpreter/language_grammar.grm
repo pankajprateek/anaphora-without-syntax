@@ -95,7 +95,6 @@ CONSTRUCT =
 constructibleAndProperties = 
     lineSegmentAndProperties
   | lineAndProperties
-  | intersectingArcsAndProperties
   | arcAndProperties
   | circleAndProperties
   | angleAndProperties
@@ -142,7 +141,7 @@ addressLineSegment =
   | addressFreeObject
 
 angleAndProperties =
-    addressAngle addressPoint addressDegree
+    ANGLE addressAngle addressPoint addressDegree
 
 ANGLE =
     'angle'
@@ -174,16 +173,44 @@ arcAndProperties =
   ARC arcProperties
 
 ARC =
-  'arc'
+    'arc'
+  | 'arcs'
 
 arcProperties =
-    CENTER POINTSINGLE RADIUS addressLength
-  | CENTER POINTSINGLE RADIUS addressLength cutCommand
+    centersClause radiiClause mutualIntersectionClause
+  | centersClause radiusClause mutualIntersectionClause
+  | centerClause radiusClause intersectionClause
+
+mutualIntersectionClause =
+    INTERSECTING EACHOTHER AT POINTSINGLET
+  | INTERSECTING EACHOTHER AT POINTSINGLET POINTSINGLET
+
+centerClause =
+    CENTER POINTSINGLET
+
+centersClause =
+    CENTERS POINTSINGLET POINTSINGLET
+
+radiusClause =
+    RADIUS addressLength
+
+radiiClause =
+    RADIUS addressLength addressLength
+
+intersectionClause =
+    INTERSECTING addressIntersectableObject AT POINTSINGLET POINTSINGLET
+  | INTERSECTING addressIntersectableObject AT POINTSINGLET
+
+addressIntersectableObject =
+    addressLineSegment
+  | addressLine
+  | addressArc
+  | addressCircle
 
 CENTER =
   'center'
 
-POINTSINGLE =
+POINTSINGLET =
   [A-Z]
 
 RADIUS =
@@ -224,7 +251,7 @@ intersectingArcsProperties =
   intersectingArcsCenters intersectingArcsRadius intersectingArcsIntersectionPoint
 
 intersectingArcsCenters =
- CENTERS POINTSINGLE POINTSINGLE
+ CENTERS POINTSINGLET POINTSINGLET
 
 intersectingArcsRadius =
     RADIUS addressLength addressLength
@@ -280,14 +307,14 @@ markableAndProperties =
   | angleArmPointsAndProperties
 
 angleArmPointsAndProperties =
-    POINT POINTSINGLE ON ARM addressAngle POINTSINGLE ON ARM addressAngle
+    POINT POINTSINGLET ON ARM addressAngle POINTSINGLET ON ARM addressAngle
 
 ARM =
   'arm'
 
 addressAngle =
     POINTTRIPLET
-  | POINTSINGLE
+  | POINTSINGLET
   | addressPreviousObject
 
 intersectionPointsAndProperties = 
@@ -308,8 +335,8 @@ addressIntersectingObject =
   | addressLineSegment
 
 pointAndProperties = 
-    POINT POINTSINGLE pointAndPropertiesOnCase
-  | POINT POINTSINGLE pointAndPropertiesNotOnCase
+    POINT POINTSINGLET pointAndPropertiesOnCase
+  | POINT POINTSINGLET pointAndPropertiesNotOnCase
 
 pointAndPropertiesOnCase =
     ON labelable
@@ -329,7 +356,8 @@ labelable =
   | addressLine
 
 addressLine =
-    LINE [a-z]
+    [a-z]
+  | LINE [a-z]
   | adjectivePrevious LINE
   | addressFreeObject
 
@@ -424,7 +452,7 @@ fromClause =
   | FROM addressPreviousObject
 
 addressCircle = 
-    CIRCLE POINTSINGLE
+    CIRCLE POINTSINGLET
   | adjectivePrevious CIRCLE
   | addressFreeObject  
 
