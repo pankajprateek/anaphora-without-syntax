@@ -12,21 +12,21 @@ addressLength1 =
   | addressLineSegment
 
 addressLength2 =
+    GREATERTHAN addressLength1
+  | LESSTHAN addressLength1
   | TWICE addressLength1
   | THRICE addressLength1
   | REAL TIMES addressLength1
   | HALF addressLength1
-  | GREATERTHAN addressLength1
-  | LESSTHAN addressLength1
   | operation addressLength1 addressLength1
 
 addressLength3 =
+    GREATERTHAN addressLength2
+  | LESSTHAN addressLength2
   | TWICE addressLength2
   | THRICE addressLength2
   | REAL TIMES addressLength2
   | HALF addressLength2
-  | GREATERTHAN addressLength2
-  | LESSTHAN addressLength2
   | operation addressLength2 addressLength2  
 
 addressDegree =
@@ -42,21 +42,21 @@ addressDegree1 =
   | addressAngle
 
 addressDegree2 =
+    GREATERTHAN addressDegree1
+  | LESSTHAN addressDegree1
   | TWICE addressDegree1
   | THRICE addressDegree1
   | REAL TIMES addressDegree1
   | HALF addressDegree1
-  | GREATERTHAN addressDegree1
-  | LESSTHAN addressDegree1
   | operation addressDegree1 addressDegree1
 
 addressDegree3 =
+    GREATERTHAN addressDegree2
+  | LESSTHAN addressDegree2
   | TWICE addressDegree2
   | THRICE addressDegree2
   | REAL TIMES addressDegree2
   | HALF addressDegree2
-  | GREATERTHAN addressDegree2
-  | LESSTHAN addressDegree2
   | operation addressDegree2 addressDegree2  
 
 TIMES =
@@ -70,9 +70,6 @@ GREATERTHAN =
 
 LESSTHAN =
     'less' 'than'
-
-EQUALS =
-    'equals'
 
 commands = 
     commands command
@@ -151,6 +148,7 @@ addressAngle =
   | ANGLE POINTSINGLET
   | POINTTRIPLET
   | POINTSINGLET
+  | addressPreviousObject
 
 DEGREES =
     'degree'
@@ -177,13 +175,14 @@ ARC =
   | 'arcs'
 
 arcProperties =
-    centersClause radiiClause mutualIntersectionClause
-  | centersClause radiusClause mutualIntersectionClause
+    centersClause radiusClause mutualIntersectionClause
   | centerClause radiusClause intersectionClause
 
 mutualIntersectionClause =
-    INTERSECTING EACHOTHER AT POINTSINGLET
-  | INTERSECTING EACHOTHER AT POINTSINGLET POINTSINGLET
+    INTERSECTING EACHOTHER AT POINTSINGLET POINTSINGLET
+  | INTERSECTING AT POINTSINGLET POINTSINGLET
+  | INTERSECTING EACHOTHER AT POINTSINGLET
+  | INTERSECTING AT POINTSINGLET
 
 centerClause =
     CENTER POINTSINGLET
@@ -192,10 +191,8 @@ centersClause =
     CENTERS POINTSINGLET POINTSINGLET
 
 radiusClause =
-    RADIUS addressLength
-
-radiiClause =
     RADIUS addressLength addressLength
+  | RADIUS addressLength
 
 intersectionClause =
     INTERSECTING addressIntersectableObject AT POINTSINGLET POINTSINGLET
@@ -222,22 +219,11 @@ DIAMETER =
 REAL =
   [0-9]+(.[0-9]+)?
 
-intersectingArcsAndProperties =
-  INTERSECTINGARCS intersectingArcsProperties
-
-INTERSECTINGARCS =
-    ARCS
-  | ARC
-
-ARC =
-    'arc'
-
-ARCS =
-    'arcs'
-
 INTERSECTING =
     'intersecting'
   | 'cutting'
+  | 'cut'
+  | 'intersect'
 
 EACHOTHER =
     'eachother'
@@ -246,19 +232,6 @@ EACHOTHER =
 CENTERS =
     CENTER
   | 'centers'
-
-intersectingArcsProperties =
-  intersectingArcsCenters intersectingArcsRadius intersectingArcsIntersectionPoint
-
-intersectingArcsCenters =
- CENTERS POINTSINGLET POINTSINGLET
-
-intersectingArcsRadius =
-    RADIUS addressLength addressLength
-  | RADIUS addressLength
-
-intersectingArcsIntersectionPoint =
-    INTERSECTING AT addressPoint
 
 AT =
     'at'
@@ -312,15 +285,9 @@ angleArmPointsAndProperties =
 ARM =
   'arm'
 
-addressAngle =
-    POINTTRIPLET
-  | POINTSINGLET
-  | addressPreviousObject
-
 intersectionPointsAndProperties = 
     INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint addressPoint
   | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
-  | INTERSECTIONPOINTS addressPreviousObjects addressPoint
 
 INTERSECTIONPOINTS =
     'intersection' 'points'
@@ -335,8 +302,10 @@ addressIntersectingObject =
   | addressLineSegment
 
 pointAndProperties = 
-    POINT POINTSINGLET pointAndPropertiesOnCase
-  | POINT POINTSINGLET pointAndPropertiesNotOnCase
+    POINT POINTSINGLET pointAndPropertiesNotOnCase
+  | POINT POINTSINGLET pointAndPropertiesOnCase
+  | POINTSINGLET pointAndPropertiesNotOnCase
+  | POINTSINGLET pointAndPropertiesOnCase
 
 pointAndPropertiesOnCase =
     ON labelable
@@ -354,6 +323,7 @@ labelable =
     addressLineSegment
   | addressArc
   | addressLine
+  | addressPreviousObjects
 
 addressLine =
     [a-z]
@@ -372,7 +342,7 @@ adjectivePrevious =
   | PREVIOUS
   | THOSE
 
-addressPreviousObject =
+addressPreviousObjects =
     THIS
   | THIS object
   | THESE
@@ -380,9 +350,13 @@ addressPreviousObject =
   | PREVIOUS object
   | PREVIOUS objects
   | IT
+  | ITS
   | THEM
   | THOSE
   | THOSE objects
+
+ITS =
+    'its'
 
 THIS =
   'this'
@@ -413,6 +387,9 @@ objects =
     ARCS
   | POINTS
   | object
+
+ARCS =
+    ARC
 
 cutCommand =
   CUT cuttableAndProperties
@@ -472,6 +449,9 @@ EQUALS =
   | 'has'
 
 previousLength =
+    'same'
+
+previousDegree =
     'same'
 
 operation =

@@ -36,8 +36,8 @@ A and B centers and radius greater than AP construct two arcs cutting eachother 
 
 Join PQ
 join PQ
-
-With P as center, draw an arc which intersects line l at two points A and B
+#
+With P as center draw an arc which intersects line l at two points A and B
 P center construct arc intersecting line l at two points A and B
 
 Using the same radius and with A and B as centers, construct two arcs that intersect at a point, say Q, on the other side
@@ -74,7 +74,7 @@ With the same radius and with B as center, draw another circle
 same radius and B center construct circle
 
 Mark its intersection points with the previous circle as C and D
-mark its intersection points previous circle C and C
+mark its intersection points previous circle C and D
 
 Join CD
 join CD

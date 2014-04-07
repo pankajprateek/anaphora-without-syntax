@@ -1,10 +1,10 @@
 #include "grammar.h"
 #include "lib.h"
-#include<stdio.h>
-#include<string>
-#include<iostream>
-#include<fstream>
-#include<assert.h>
+#include <stdio.h>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <assert.h>
 #define GDEBUG 0
 
 using namespace std;
@@ -25,11 +25,17 @@ grammar_t GrammarReader::getGrammar(){
     nonterminal_t nonTerminal = line.substr(0, line.find(" ")); //commands =
     productionrules_t productionRules;
     
+    if(GDEBUG){
+      cout<<"NONTERMINAL "<<nonTerminal<<endl;
+    }
+    
     getline(grammarFile, line);//command
     while(!line.empty()){
       productionrule_t productionRule;
       int cursorIndex = line.find_first_not_of(" ");
-      //~ cout<<"PRODUCTION RULE LINE"<<line<<endl;
+      if(GDEBUG){
+        cout<<"PRODUCTION RULE LINE"<<line<<endl;
+      }
       assert(cursorIndex != string::npos);
       if(!line.substr(cursorIndex, 1).compare("|")){
         //| commands command
@@ -54,6 +60,8 @@ grammar_t GrammarReader::getGrammar(){
       productionRules.push_back(productionRule);
       getline(grammarFile, line);
     }
+    productionrules_t alreadyexists = grammar[nonTerminal];
+    assert(alreadyexists.empty());
     grammar[nonTerminal] = productionRules;
     while(!grammarFile.eof() && line.empty()){
       getline(grammarFile, line);//get the next non-terminal

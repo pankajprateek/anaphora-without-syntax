@@ -103,7 +103,7 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
     newNode->rightmostLeafIndex = leafsTillNow + 1;
     newNode->pivotIndex = foundIndex;
     newNode->children = NULL;
-
+    newNode->wordIndex = foundIndex;
     newNode->content = string(foundWord.content);
     foundWord.leafIndex = leafsTillNow + 1;
 
@@ -125,7 +125,11 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
     ParseTreeNode* leftChildTree = recursiveParse(firstDerivation, l, parentPivot);
 
     if(leftChildTree == NULL){
-      if(PDEBUG) cout<<"Could not derive "<<firstDerivation<<endl;
+      if(PDEBUG){
+        cout<<"Could not derive "<<firstDerivation<<endl;
+        //~ this->printListOfWords();
+      }
+      
       continue;
     }
     if(PDEBUG) cout<<"Left child tree at "<<firstDerivation<<endl;
@@ -171,7 +175,7 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
 
 void ParseTree::printListOfWords(){
   cout<<"Printing List of words"<<endl;
-  for(int i=0; i< (int)this->words.size(); i++){
+  for(int i=0; i < this->words.size(); i++){
     cout<<"\""<<this->words[i].content<<"\" leafIndex: "
       <<this->words[i].leafIndex<<endl;
   }  
@@ -188,6 +192,13 @@ void ParseTree::generateListOfWords(){
 }
 
 void ParseTree::deleteSubtree(ParseTreeNode* node){
+  if(node->isTerminal()){
+    assert(node->leftmostLeafIndex == node->rightmostLeafIndex);
+    this->words[node->wordIndex].leafIndex = 0;
+    if(PDEBUG){
+      cout<<"Setting leaf index zero for "<<this->words[node->wordIndex].content<<endl;
+    }
+  }
   ParseTreeNode** childTrees = node->children;
   for(int i=0; i<node->numChildren; i++){
     deleteSubtree(childTrees[i]);
