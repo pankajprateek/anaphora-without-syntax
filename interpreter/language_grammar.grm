@@ -27,7 +27,7 @@ addressLength3 =
   | THRICE addressLength2
   | REAL TIMES addressLength2
   | HALF addressLength2
-  | operation addressLength2 addressLength2  
+  | operation addressLength2 addressLength2
 
 addressDegree =
     addressDegree3
@@ -57,7 +57,7 @@ addressDegree3 =
   | THRICE addressDegree2
   | REAL TIMES addressDegree2
   | HALF addressDegree2
-  | operation addressDegree2 addressDegree2  
+  | operation addressDegree2 addressDegree2
 
 TIMES =
     'times'
@@ -71,16 +71,17 @@ GREATERTHAN =
 LESSTHAN =
     'less' 'than'
 
-commands = 
+commands =
     commands command
   | command
 
 command =
-    constructCommand 
+    constructCommand
   | markCommand 
   | cutCommand
   | joinCommand
   | divideCommand
+  | bisectCommand
 
 constructCommand = 
   CONSTRUCT constructibleAndProperties
@@ -95,10 +96,15 @@ constructibleAndProperties =
   | arcAndProperties
   | circleAndProperties
   | angleAndProperties
+  | rayAndProperties
+  | perpendicularBisectorAndProperties
+  | bisectorAndProperties
+  | perpendicularAndProperties
 
 lineSegmentAndProperties = 
-    addressLineSegment GIVENTHAT conditions
-  | addressLineSegment lineSegmentProperties
+    LINESEGMENT addressLineSegment GIVENTHAT conditions
+  | LINESEGMENT addressLineSegment lineSegmentProperties
+  | LINESEGMENT addressLineSegment perpendicularToClause perpendicularConditionClause
 
 conditions =
     condition
@@ -107,9 +113,9 @@ conditions =
   | condition condition condition condition
 
 condition =
-    LENGTH addressLineSegment EQUALS addressLength
-  | addressLineSegment EQUALS addressLength
-  | addressAngle EQUALS addressAngle
+    EQUALS LENGTH addressLineSegment addressLength
+  | EQUALS addressLineSegment addressLength
+  | EQUALS addressAngle addressAngle
 
 GIVENTHAT =
     'given' 'that'
@@ -138,8 +144,19 @@ addressLineSegment =
   | addressFreeObject
 
 angleAndProperties =
+    genericAngleAndProperties
+  | rightAngleAndProperties
+
+genericAngleAndProperties =
     ANGLE VERTEX addressPoint addressDegree
   | ANGLE addressAngle addressDegree
+
+rightAngleAndProperties =
+    RIGHT ANGLE VERTEX addressPoint
+  | RIGHT ANGLE addressAngle
+
+RIGHT =
+    'right'
 
 VERTEX =
     'vertex'
@@ -182,8 +199,20 @@ ARC =
 
 arcProperties =
     centersClause radiiClause mutualIntersectionClause
-  | centerClause radiusClause intersectionClause
-  | centerClause intersectionClause
+  | centerClause radiusClause arcConditionClause
+  | centerClause arcConditionClause
+  | centerClause radiusClause
+
+arcConditionClause =
+    intersectionClause
+  | passingThroughClause
+
+passingThroughClause =
+    PASSINGTHROUGH addressPoint
+
+PASSINGTHROUGH =
+    'passing' 'through'
+  | 'through'
 
 mutualIntersectionClause =
     INTERSECTING EACHOTHER AT POINTSINGLET POINTSINGLET
@@ -217,9 +246,6 @@ addressIntersectableObject =
 addressAngleRays =
     RAYS ANGLE addressAngle
 
-RAYS =
-    'rays'
-
 CENTER =
   'center'
 
@@ -250,6 +276,51 @@ CENTERS =
 
 AT =
     'at'
+
+rayAndProperties =
+    RAY POINTPAIR originClause
+  | RAYS POINTPAIR POINTPAIR originClause
+
+originClause =
+    ORIGIN addressPoint
+
+ORIGIN =
+    'origin'
+  | 'initial' 'point'
+
+RAY =
+    'ray'
+
+RAYS =
+    'rays'
+
+perpendicularBisectorAndProperties =
+    PERPENDICULARBISECTOR addressLineSegment
+  | PERPENDICULARBISECTOR addressLine
+  | PERPENDICULARBISECTOR addressIndefinitePreviousObjects
+
+PERPENDICULARBISECTOR =
+    'perpendicular' 'bisector'
+
+bisectorAndProperties =
+    BISECTOR addressLineSegment
+  | BISECTOR addressAngle
+  | BISECTOR addressIndefinitePreviousObjects
+
+perpendicularToClause =
+    PERPENDICULAR addressLineSegment
+    PERPENDICULAR addressLine
+
+perpendicularAndProperties =
+    perpendicularToClause perpendicularConditionClause
+
+PERPENDICULAR =
+    'perpendicular'
+  | 'orthogonal'
+
+perpendicularConditionClause =
+    AT addressPoint
+  | passingThroughClause
 
 divideCommand =
     DIVIDE divisibleAndProperties
@@ -307,7 +378,7 @@ ARM =
 intersectionPointsAndProperties = 
     INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint addressPoint
   | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
-  | INTERSECTIONPOINTS addressIndefinitePreviousObjects addressPoint
+  | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint
 
 INTERSECTIONPOINTS =
     'intersection' 'points'
@@ -362,6 +433,14 @@ adjectivePrevious =
   | PREVIOUS
   | THOSE
 
+addressIntersectablePreviousObjects =
+    THIS intersectableObject
+  | THESE intersectableObjects
+  | PREVIOUS intersectableObject
+  | PREVIOUS intersectableObjects
+  | THOSE intersectableObjects
+  | addressIndefinitePreviousObjects
+
 addressPreviousObjects =
     THIS object
   | THESE objects
@@ -403,19 +482,25 @@ THEM =
 THOSE =
   'those'
 
-object = 
+intersectableObject =
     LINESEGMENT
   | LINE
   | CIRCLE
   | ARC
-  | POINT
   | BISECTOR
 
-objects =
+object = 
+    intersectableObject
+  | POINT
+
+intersectableObjects =
     ARCS
-  | POINTS
   | BISECTORS
-  | object
+  | intersectableObject
+
+objects =
+    intersectableObjects
+  | POINTS
 
 BISECTOR =
     'bisector'
@@ -470,7 +555,7 @@ addressCircle =
     CIRCLE AT POINTSINGLET
   | CIRCLE CENTER POINTSINGLET
   | adjectivePrevious CIRCLE
-  | addressFreeObject  
+  | addressFreeObject
 
 FROM =
   'from'
@@ -507,3 +592,14 @@ SUM =
 FREEVARIABLE =
     'any'
   | 'convenient'
+
+bisectCommand =
+    BISECT bisectableAndProperties
+
+BISECT =
+    'bisect'
+
+bisectableAndProperties =
+    addressLineSegment
+  | addressAngle
+  | addressIndefinitePreviousObjects

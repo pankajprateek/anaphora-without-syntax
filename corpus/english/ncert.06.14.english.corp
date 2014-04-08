@@ -139,7 +139,7 @@ join PR
 With O as initial point, draw two rays OA and OB
 O origin point construct two rays OA and OB
 
-With A as center, draw an arc that cuts both rays of ∠A at B and C
+With A as center, draw an arc that cuts both rays of angle A at B and C
 A center construct arc intersecting rays angle A at B and C
 
 With B as center, draw an arc whose radius is more than half the length BC
@@ -148,8 +148,8 @@ center B construct arc radius greater than half length BC
 With the same radius and with C as center, draw another arc
 same radius C center construct arc
 
-mark the intersection of the two arcs as D
-mark intersection points two arcs D
+mark the intersection of these two arcs as D
+mark intersection points arcs D
 
 Draw a line l
 construct line l
@@ -162,7 +162,7 @@ O center construct arc any radius intersecting line PQ at point A
 
 With center as A, now draw an arc that passes through O
 center A construct arc passing through O
-
+#
 mark the intersection points of the two arcs as B
 mark intersection points two arcs B
 
@@ -214,7 +214,7 @@ bisect it
 Draw an angle ABC of measure 135°
 construct angle ABC measure 135°
 
-Bisect it
+bisect it
 bisect it
 
 Draw an angle ABC of 70°
@@ -224,7 +224,7 @@ Draw an angle ABC of 40°
 construct angle ABC 40°
 
 Through M, draw a perpendicular to AB
-throught M construct perpendicular to AB
+through M construct perpendicular to AB
 
 Through R, draw a perpendicular to PQ
 through R construct perpendicular to PQ
