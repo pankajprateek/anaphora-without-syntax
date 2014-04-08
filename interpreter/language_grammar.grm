@@ -100,6 +100,8 @@ constructibleAndProperties =
   | perpendicularBisectorAndProperties
   | bisectorAndProperties
   | perpendicularAndProperties
+  | chordAndProperties
+  | parallelAndProperties
 
 lineSegmentAndProperties = 
     LINESEGMENT addressLineSegment GIVENTHAT conditions
@@ -195,7 +197,6 @@ arcAndProperties =
 
 ARC =
     'arc'
-  | 'arcs'
 
 arcProperties =
     centersClause radiiClause mutualIntersectionClause
@@ -295,9 +296,22 @@ RAYS =
     'rays'
 
 perpendicularBisectorAndProperties =
-    PERPENDICULARBISECTOR addressLineSegment
-  | PERPENDICULARBISECTOR addressLine
+    PERPENDICULARBISECTOR addressPerpendicularBisectableObjects
+  | PERPENDICULARBISECTORS addressPerpendicularBisectableObjects addressPerpendicularBisectableObjects
   | PERPENDICULARBISECTOR addressIndefinitePreviousObjects
+  | PERPENDICULARBISECTORS addressIndefinitePreviousObjects
+
+addressPerpendicularBisectableObjects =
+    addressLineSegment
+  | addressLine
+  | addressChord
+  | addressChords
+
+addressChord =
+    adjectivePrevious CHORD
+
+addressChords =
+    adjectivePrevious CHORDS
 
 PERPENDICULARBISECTOR =
     'perpendicular' 'bisector'
@@ -319,6 +333,34 @@ PERPENDICULAR =
   | 'orthogonal'
 
 perpendicularConditionClause =
+    AT addressPoint
+  | passingThroughClause
+
+chordAndProperties =
+    CHORD addressCircle
+  | CHORD addressCircle distanceFromCenterClause
+  | CHORDS addressCircle numChords
+  | CHORD addressIndefinitePreviousObjects
+  | CHORD addressIndefinitePreviousObjects distanceFromCenterClause
+  | CHORDS addressIndefinitePreviousObjects numChords
+
+distanceFromCenterClause =
+    DISTANCE addressLength FROM CENTER
+
+DISTANCE =
+    'distance'
+
+numChords =
+    [0-9]+
+
+PARALLEL =
+    'parallel'
+
+parallelAndProperties =
+    PARALLEL addressLineSegment parallelConditionClause
+  | PARALLEL addressLine parallelConditionClause
+
+parallelConditionClause =
     AT addressPoint
   | passingThroughClause
 
@@ -409,7 +451,8 @@ ON =
   'on'
 
 NOTON =
-  'not' 'on'
+    'not' 'on'
+  | 'outside'
 
 labelable =
     addressLineSegment
@@ -487,16 +530,45 @@ intersectableObject =
   | LINE
   | CIRCLE
   | ARC
+  | PERPENDICULARBISECTOR
   | BISECTOR
+  | CHORD
+  | RAY
 
 object = 
     intersectableObject
   | POINT
 
 intersectableObjects =
-    ARCS
+    LINESEGMENTS
+  | LINES
+  | CIRCLES
+  | ARCS
+  | PERPENDICULARBISECTORS
   | BISECTORS
-  | intersectableObject
+  | CHORDS
+  | RAYS
+
+LINESEGMENTS =
+    'line' 'segments'
+
+LINES =
+    'lines'
+
+CIRCLES =
+    'circles'
+
+PERPENDICULARBISECTORS =
+    'perpendicular' 'bisectors'
+
+BISECTORS =
+    'bisectors'
+
+CHORDS =
+    'chords'
+
+CHORD =
+    'chord'
 
 objects =
     intersectableObjects
@@ -505,11 +577,8 @@ objects =
 BISECTOR =
     'bisector'
 
-BISECTORS =
-    'bisectors'
-
 ARCS =
-    ARC
+    'arcs'
 
 cutCommand =
   CUT cuttableAndProperties

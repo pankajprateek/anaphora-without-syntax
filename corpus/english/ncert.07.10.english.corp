@@ -2,14 +2,14 @@ Draw a line, say AB
 construct line AB
 
 take a point C outside it
-construct point C outside it
+mark point C outside it
 
 Through C, draw a line parallel to AB
 draw line any parallelTo AB passesThrough C
 
 Draw a line l
 draw line l
-
+#
 Draw a perpendicular to l at any point on l
 draw perpendicular to l at any point on l
 
