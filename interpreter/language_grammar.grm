@@ -107,6 +107,7 @@ lineSegmentAndProperties =
     LINESEGMENT addressLineSegment GIVENTHAT conditions
   | LINESEGMENT addressLineSegment lineSegmentProperties
   | LINESEGMENT addressLineSegment perpendicularToClause perpendicularConditionClause
+  | LINESEGMENT addressLineSegment parallelToClause parallelConditionClause
 
 conditions =
     condition
@@ -190,7 +191,9 @@ LINE =
     'line'
 
 lineAndProperties = 
-    LINE [a-z] 
+    LINE [a-z] perpendicularToClause perpendicularConditionClause
+  | LINE [a-z] parallelToClause parallelConditionClause
+  | LINE [a-z]
 
 arcAndProperties =
   ARC arcProperties
@@ -321,6 +324,10 @@ bisectorAndProperties =
   | BISECTOR addressAngle
   | BISECTOR addressIndefinitePreviousObjects
 
+parallelToClause =
+    PARALLEL addressLineSegment
+  | PARALLEL addressLine
+
 perpendicularToClause =
     PERPENDICULAR addressLineSegment
     PERPENDICULAR addressLine
@@ -357,8 +364,7 @@ PARALLEL =
     'parallel'
 
 parallelAndProperties =
-    PARALLEL addressLineSegment parallelConditionClause
-  | PARALLEL addressLine parallelConditionClause
+    parallelToClause parallelConditionClause
 
 parallelConditionClause =
     AT addressPoint
@@ -437,9 +443,17 @@ addressIntersectingObject =
 
 pointAndProperties = 
     POINT POINTSINGLET pointAndPropertiesNotOnCase
-  | POINT POINTSINGLET pointAndPropertiesOnCase
+  | POINT POINTSINGLET pointAndPropertiesOnCase markConditionClause
+  | POINT POINTSINGLET pointAndPropertiesOnCase  
   | POINTSINGLET pointAndPropertiesNotOnCase
+  | POINTSINGLET pointAndPropertiesOnCase markConditionClause
   | POINTSINGLET pointAndPropertiesOnCase
+
+markConditionClause =
+    DISTANCEFROM addressPoint addressLength
+
+DISTANCEFROM =
+    'distance' 'from'
 
 pointAndPropertiesOnCase =
     ON labelable

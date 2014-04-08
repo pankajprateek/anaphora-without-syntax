@@ -12,7 +12,7 @@ draw line l
 #
 Draw a perpendicular to l at any point on l
 draw perpendicular to l at any point on l
-
+#
 On this perpendicular choose a point X 4 cm away from l
 on this perpendicular construct point X 4 cm distance from l
 
@@ -27,7 +27,7 @@ mark point P not on l
 
 Through P, draw a line m parallel to l
 throught P construct line m parallel to l
-
+#
 Now join P to any point Q on l
 join P to any point Q on l
 
