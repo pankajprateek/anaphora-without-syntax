@@ -111,7 +111,7 @@ draw circle radius 4 cm
 
 Draw any angle with vertex O
 draw any angle vertex O
-
+#
 Take a point A on one of its arms and B on the other
 mark point A on arm it and point B on other
 
@@ -124,13 +124,13 @@ construct line l
 Choose a point P on it
 construct point P on it
 
-With A as center, draw an arc to cut the rays of ∠A at B and C
+With A as center, draw an arc to cut the rays of angle A at B and C
 A center construct arc intersecting rays angle A at B and C
 
-Use the same radius to draw an arc with P as center, cutting l Q
+Use the same radius to draw an arc with P as center, cutting l at Q
 same radius construct arc P center intersecting l at Q
 
-With center at Q, draw the arc to cut the arc drawn earlier at R
+With center at Q, draw an arc to cut the arc drawn earlier at R
 center Q construct arc intersecting arc previous at R
 
 Join PR

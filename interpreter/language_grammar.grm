@@ -138,7 +138,11 @@ addressLineSegment =
   | addressFreeObject
 
 angleAndProperties =
-    ANGLE addressAngle addressPoint addressDegree
+    ANGLE VERTEX addressPoint addressDegree
+  | ANGLE addressAngle addressDegree
+
+VERTEX =
+    'vertex'
 
 ANGLE =
     'angle'
@@ -148,7 +152,7 @@ addressAngle =
   | ANGLE POINTSINGLET
   | POINTTRIPLET
   | POINTSINGLET
-  | addressPreviousObject
+  | adjectivePrevious ANGLE
 
 DEGREES =
     'degree'
@@ -157,6 +161,8 @@ DEGREES =
 circleAndProperties = 
     CIRCLE CENTER addressPoint RADIUS addressLength
   | CIRCLE CENTER addressPoint DIAMETER addressLength
+  | CIRCLE RADIUS addressLength
+  | CIRCLE DIAMETER addressLength
 
 CIRCLE =
   'circle'
@@ -175,8 +181,9 @@ ARC =
   | 'arcs'
 
 arcProperties =
-    centersClause radiusClause mutualIntersectionClause
+    centersClause radiiClause mutualIntersectionClause
   | centerClause radiusClause intersectionClause
+  | centerClause intersectionClause
 
 mutualIntersectionClause =
     INTERSECTING EACHOTHER AT POINTSINGLET POINTSINGLET
@@ -191,8 +198,10 @@ centersClause =
     CENTERS POINTSINGLET POINTSINGLET
 
 radiusClause =
+    RADIUS addressLength
+
+radiiClause =
     RADIUS addressLength addressLength
-  | RADIUS addressLength
 
 intersectionClause =
     INTERSECTING addressIntersectableObject AT POINTSINGLET POINTSINGLET
@@ -203,6 +212,13 @@ addressIntersectableObject =
   | addressLine
   | addressArc
   | addressCircle
+  | addressAngleRays
+
+addressAngleRays =
+    RAYS ANGLE addressAngle
+
+RAYS =
+    'rays'
 
 CENTER =
   'center'
@@ -230,8 +246,7 @@ EACHOTHER =
   | 'each' 'other'
 
 CENTERS =
-    CENTER
-  | 'centers'
+    'centers'
 
 AT =
     'at'
@@ -243,13 +258,17 @@ DIVIDE =
     'divide'
 
 divisibleAndProperties =
-    divisibleObject NUMPARTS [0-9]+
+    divisibleObject INTO [0-9]+ PARTS
 
-NUMPARTS =
-  'numParts'
+PARTS =
+  'parts'
+
+INTO =
+  'into'
 
 divisibleObject =
     addressLineSegment
+  | addressIndefinitePreviousObjects
 
 joinCommand = 
   JOIN addressPointPairs
@@ -288,6 +307,7 @@ ARM =
 intersectionPointsAndProperties = 
     INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint addressPoint
   | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
+  | INTERSECTIONPOINTS addressIndefinitePreviousObjects addressPoint
 
 INTERSECTIONPOINTS =
     'intersection' 'points'
@@ -300,6 +320,7 @@ addressIntersectingObject =
   | addressCircle
   | addressLine
   | addressLineSegment
+  | addressPreviousObjects
 
 pointAndProperties = 
     POINT POINTSINGLET pointAndPropertiesNotOnCase
@@ -334,7 +355,6 @@ addressLine =
 addressArc =
   | adjectivePrevious ARC
   | adjectivePrevious ARCS
-  | addressFreeObject
 
 adjectivePrevious =
     THIS
@@ -343,17 +363,24 @@ adjectivePrevious =
   | THOSE
 
 addressPreviousObjects =
-    THIS
-  | THIS object
-  | THESE
+    THIS object
   | THESE objects
   | PREVIOUS object
   | PREVIOUS objects
+  | THOSE objects
+  | addressIndefinitePreviousObjects
+
+addressIndefinitePreviousObjects =
+    THIS
+  | THESE
   | IT
   | ITS
   | THEM
   | THOSE
-  | THOSE objects
+  | THEIR
+
+THEIR =
+    'their'
 
 ITS =
     'its'
@@ -382,11 +409,19 @@ object =
   | CIRCLE
   | ARC
   | POINT
+  | BISECTOR
 
 objects =
     ARCS
   | POINTS
+  | BISECTORS
   | object
+
+BISECTOR =
+    'bisector'
+
+BISECTORS =
+    'bisectors'
 
 ARCS =
     ARC
@@ -410,7 +445,10 @@ ANY =
   'any'
 
 POINT =
-  'point'
+    'point'
+
+POINTS =
+    'points'
 
 cuttableAndProperties =
     addressLineSegment addressLength fromClause
@@ -426,10 +464,11 @@ atPoints =
 fromClause =
     FROM addressLineSegment
   | FROM addressLine
-  | FROM addressPreviousObject
+  | FROM addressPreviousObjects
 
 addressCircle = 
-    CIRCLE POINTSINGLET
+    CIRCLE AT POINTSINGLET
+  | CIRCLE CENTER POINTSINGLET
   | adjectivePrevious CIRCLE
   | addressFreeObject  
 

@@ -167,6 +167,10 @@ ParseTreeNode* ParseTree::recursiveParse(string grammarSymbol, int leafsTillNow,
     thisNode->rightmostLeafIndex = l;
     thisNode->pivotIndex = selfPivot;
     thisNode->children = childTrees;
+    
+    if(PDEBUG){
+      this->recursivePrint(thisNode, 0);
+    }
     return thisNode;
   }
   return NULL;
