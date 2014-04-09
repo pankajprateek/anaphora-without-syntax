@@ -32,7 +32,7 @@ with B as centre, draw an arc of radius 5 cm
 B center construct arc radius 5 cm
 
 with C as centre, draw an arc of radius 7 cm
-C cener construct arc radius 7 cm
+C center construct arc radius 7 cm
 
 Mark the point of intersection of these arcs as A
 mark point intersection these arcs as A
@@ -62,10 +62,10 @@ Join PR
 join PR
 
 Construct ΔXYZ if it is given that XY = 6 cm, ∠ZXY = 30° and ∠XYZ = 100°
-construct triangle XYZ given that length XY eqausl 6 cm angle ZXY equals 30 degrees angle XYZ equals 100 degrees
+construct triangle XYZ given that length XY equals 6 cm angle ZXY equals 30 degrees angle XYZ equals 100 degrees
 
 Draw XY of length 6 cm
-constrcut XY length 6 cm
+construct XY length 6 cm
 
 At X, draw a ray XP making an angle of 30° with XY
 at X construct ray XP making angle 30 degrees XY
@@ -76,8 +76,8 @@ at Y construct ray YQ making angle 100 degrees YX
 mark the point of intersection of these rays as Z
 mark intersection points these rays Z
 
-Construct ΔLMN, right-angled at M, given that LN = 5 cm and MN = 3 cm
-construct triangle LMN rightangle M given that length LN equals 5 cm length MN equals 3 cm
+Construct ΔLMN, right angled at M, given that LN = 5 cm and MN = 3 cm
+construct triangle LMN right angle M given that length LN equals 5 cm length MN equals 3 cm
 
 Draw MN of length 3 cm
 construct MN length 3 cm
@@ -221,7 +221,7 @@ Bisect these angles
 bisect these angles
 
 mark intersection point of these bisectors as A
-mark intersection point thses bisectors A
+mark intersection point these bisectors A
 
 Draw perpendicular bisectors DE of AP to intersect PQ at B and FG of AQ to intersect PQ at C
 construct perpendicular bisectors DE AP intersecting PQ at B and FG AQ intersecting PQ at C

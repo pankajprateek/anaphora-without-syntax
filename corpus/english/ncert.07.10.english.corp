@@ -5,7 +5,7 @@ take a point C outside it
 mark point C outside it
 
 Through C, draw a line parallel to AB
-draw line any parallelTo AB passesThrough C
+draw line any parallel AB through C
 
 Draw a line l
 draw line l
@@ -26,7 +26,7 @@ choose a point P not on l
 mark point P not on l
 
 Through P, draw a line m parallel to l
-throught P construct line m parallel to l
+through P construct line m parallel to l
 #
 Now join P to any point Q on l
 join P to any point Q on l
