@@ -16,6 +16,7 @@ string getInterpretation(string parse){
   }
   */
   Action *action = new Action();
+
   if(DEBUG) cout<<"No. of possibilities " <<mappings.size()<<endl;
 
   int numTranslations = mappings.size() < MAX_TRANSLATIONS ? mappings.size() : MAX_TRANSLATIONS;
@@ -33,6 +34,11 @@ string getInterpretation(string parse){
     
     if(DEBUG) cout<<"Found a parse tree:"<<endl;
     parseTree.print();
+
+    string preOrder = parseTree.preOrder();
+    cout<< "PreOrder Traversal of Tree:" <<endl<< preOrder <<endl;
+
+    //return action->toString();
     if(DEBUG) cout<<"HERE"<<endl;
     
     return action->toString();

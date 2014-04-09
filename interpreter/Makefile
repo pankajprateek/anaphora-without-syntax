@@ -9,7 +9,7 @@ HEADERS1 = $(SOURCES1:.cpp=.h)
 EXECUTABLE = interpret.out
 
 #~ all: english hindi
-all: interpret.out lyparser.out
+all: interpret.out lyparse.out
 
 english:
 	cp ./english/english-source.vcb ./source.vcb

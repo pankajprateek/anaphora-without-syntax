@@ -34,6 +34,24 @@ void ParseTree::recursivePrint(ParseTreeNode* node, int numTabs){
   }
 }
 
+string ParseTree::preOrder() {
+  this->prefixString.clear();
+  this->recursivePreOrder(this->root);
+  return this->prefixString;
+}
+
+void ParseTree::recursivePreOrder(ParseTreeNode* node) {
+  if(node->isTerminal()) {
+    // cout<< node->content;
+    this->prefixString = (string)this->prefixString + (string)(node->content);
+    this->prefixString = (string)this->prefixString + (string)" ";
+  }
+  for(int i=0; i< node->numChildren; i++){
+    ParseTreeNode** childTrees = node->children;
+    this->recursivePreOrder(childTrees[i]);
+  }
+}
+
 void ParseTree::correctParseTree(){
   return;
 }

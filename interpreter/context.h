@@ -2,11 +2,11 @@
 
 class Context{
   vector <Point> points;
-  vecotr <LineSegment> lineSegments;
+  vector <LineSegment> lineSegments;
   vector <Line> lines;
   vector <Arc> arcs;
   vector <Circle> circles;
-  vecotr <Angle> angles;
+  vector <Angle> angles;
   vector <Length> lengths;
   
   const string contextFilename = "./context.txt";
@@ -40,6 +40,5 @@ class Context{
     
     Angle* getLastAngle();
     
-    Length* getLastLength();
-    
+    Length* getLastLength();    
 }
