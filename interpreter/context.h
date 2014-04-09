@@ -7,6 +7,7 @@ class Context{
   vector <Arc> arcs;
   vector <Circle> circles;
   vecotr <Angle> angles;
+  vector <Length> lengths;
   
   const string contextFilename = "./context.txt";
   
@@ -38,4 +39,7 @@ class Context{
     Circle getCircleAtPosition(int i);
     
     Angle* getLastAngle();
+    
+    Length* getLastLength();
+    
 }
