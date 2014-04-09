@@ -149,16 +149,16 @@ AB और AC को मिलाइए
 AB AC join
 
 एक त्रिभुज ABC की रचना कीजिए, जिसमें BC = 7cm , कोण B = 75 डिग्री और AB + AC = 13 cm हो
-triangle ABC construct BC equals 7 cm angle B equals 75 degrees AB sum AC equals 13 cm
+triangle ABC construct given BC equals 7 cm angle B equals 75 degrees AB sum AC equals 13 cm
 
 एक त्रिभुज ABC की रचना कीजिए, जिसमें BC = 8 cm, कोण B = 45 डिग्री और AB - AC = 3.5 cm हो
-triangle ABC construct BC equals 8 cm angle B equals 45 degrees AB difference AC equals 3.5 cm
+triangle ABC construct given BC equals 8 cm angle B equals 45 degrees AB difference AC equals 3.5 cm
 
 एक त्रिभुज PQR की रचना कीजिए, जिसमें QR = 6 cm, कोण Q = 60 डिग्री और PR - PQ = 2 cm हो
-triangle PQR construct QR equals 6 cm angle Q equals 60 defrees PR difference PQ equals 2 cm
+triangle PQR construct given QR equals 6 cm angle Q equals 60 defrees PR difference PQ equals 2 cm
 
 एक त्रिभुज XYZ की रचना कीजिए, जिसमें कोण Y = 30 डिग्री, कोण Z = 90 डिग्री और XY + YZ + ZX = 11 cm हो
-triangle XYZ construct angle Y equals 30 degrees angle Z equals 90 degrees XY sum YZ sum ZX equals 11 cm
+triangle XYZ construct given angle Y equals 30 degrees angle Z equals 90 degrees XY sum YZ sum ZX equals 11 cm
 ##
 #एक समकोण त्रिभुज की रचना कीजिए, जिसका आधार 12 cm और कर्ण तथा अन्य भुजा का योग 18cm है
 #right triangle construct base 12 cm product and 

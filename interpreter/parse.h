@@ -1,5 +1,7 @@
 #include <vector>
 #include <string>
+#include <assert.h>
+#include "lib.h"
 
 using namespace std;
 
@@ -26,6 +28,7 @@ class ParseTreeNode{
     int rightmostLeafIndex; //it's own index if terminal node
     //otherwise the index of the last leaf under its subtree
     int pivotIndex; //where is this node pivoted
+    int wordIndex; //associated word in the input sentence (if this node is terminal)
     ParseTreeNode** children;
     string content; //only for leaf nodes
     
@@ -65,7 +68,7 @@ class ParseTree{
       this->str = str;
       this->root = NULL;
       this->generateListOfWords();
-      this->printListOfWords();
+      if(DEBUG) this->printListOfWords();
     }
     ~ParseTree(){
       if(this->root!=NULL){

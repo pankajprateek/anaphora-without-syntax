@@ -5,7 +5,7 @@ english:
 	make english --directory=./english
 	cp ./english/source.txt ./english-source.txt
 	cp ./english/target.txt ./english-target.txt
-	
+
 hindi: 
 	make hindi --directory=./hindi
 	cp ./hindi/source.txt ./hindi-source.txt
