@@ -111,9 +111,6 @@ lineSegmentAndProperties =
 
 conditions =
     condition
-  | condition condition
-  | condition condition condition
-  | condition condition condition condition
 
 condition =
     EQUALS LENGTH addressLineSegment addressLength
@@ -284,6 +281,8 @@ AT =
 rayAndProperties =
     RAY POINTPAIR originClause
   | RAYS POINTPAIR POINTPAIR originClause
+  | RAY POINTPAIR
+  | RAYS POINTPAIR POINTPAIR
 
 originClause =
     ORIGIN addressPoint
