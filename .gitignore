@@ -10,5 +10,11 @@
 *.snt
 *.align
 *.pyc
+*.dot
+*.xml
+*.output
+lex.yy.c
+y.tab.c
+y.tab.h
 *~
 interpreter/interpret
