@@ -2,6 +2,10 @@ class Length{
   double length;
   
   public:
+
+    Length(double l){
+      this->length = l;
+    }
    
     void setLength(double l){
       this->length = l;
@@ -15,9 +19,18 @@ class Length{
 
 class Degree{
 public:
-    double absDegree;
-    double getAbsoluteDegree(){
-      return absDegree;
+    double degree;
+    
+    Degree(double d){
+      this->degree = d;
+    }
+    
+    void setDegree(double d){
+      this->degree = d;
+    }
+    
+    double getDegree(){
+      return this->degree;
     }
 }
 
@@ -29,26 +42,43 @@ class Command{
       this->plottables = plottables;
     }
   
-    string getString(){
-      
+    void executeCommand(){
+      assert(!this->plottables.empty());
+      context.writeDiff(p);
+      context.updateContext(p);
+      context.writeContext();
     }
 }
 
 class Plottables{
   public:
     vector<Point> points;
-    vector<LineSegment> lineSegment,
+    vector<LineSegment> lineSegments;
     vector<Arc> arcs;
     vector<Line> lines;
     vecotr<Circle> circles;
     vector<Angle> angles;
     
-    void updatePlottables(Point p);
-    void updatePlottables(LineSegment ls);
+    void updatePlottables(Point p){
+      Point *np = new Point(p);
+      points.push_back(*np);
+    }
+    void updatePlottables(LineSegment ls){
+      
+    }
     void updatePlottables(Arc a);
     void updatePlottables(Line l);
     void updatePlottables(Circle c);
     void updatePlottables(Angle a);
+    
+    bool isEmpty(){
+      return points.empty()
+        && lineSegments.empty()
+        && arcs.empty()
+        && lines.empty()
+        && circles.empty()
+        && angle.empty();
+    }
     
 }
 
@@ -57,10 +87,22 @@ class Condition{
     LineSegment ls;
     double absLength;
     
+    void setLineSegment(LineSegment l){
+      this->ls = l;
+    }
+    
+    LineSegment getLineSegment(){
+      return this->ls;
+    }
+    
     string getAddressedLineSegment(){
       return ls.getName();
     }
     
+    void setLength(double l){
+      this->absLength = l;
+    }
+      
     double getStatedLength(){
       return absLength;
     }
@@ -68,11 +110,23 @@ class Condition{
     Angle a;
     double absMeasure;
     
+    void setAngle(Angle an){
+      this->a = an;
+    }
+    
+    Angle getAngle(){
+      return this->a;
+    }
+    
     string getAddressedAngle(){
       return a.getName();
     }
     
-    double getStatedMeasure(){
+    void setDegree(double a){
+      this->absMeasure = a;
+    }
+    
+    double getStatedDegree(){
       return absMeasure;
     }
     
@@ -82,6 +136,10 @@ class Angle{
   public:
     Point vertex, leftVertex, rightVertex;
     double degree;
+    
+  double getDegree(){
+    return this->degree;
+  }
 }
 
 class Arc{
@@ -151,3 +209,5 @@ class Operation{
     }
   
 }
+
+Context context;
