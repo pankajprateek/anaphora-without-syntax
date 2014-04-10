@@ -254,6 +254,10 @@ class Context{
     f.close();
   }
 
+  bool existsPoint(Point p){
+    return existsPoint(p.getLabel());
+  }
+
   bool existsPoint(char label) {
     int l=(int)points.size();
     for(int i=0;i<l;i++) {
@@ -261,6 +265,12 @@ class Context{
 	return true;
     }
     return false;
+  }
+
+  bool existsLineSegment(string pointpair){
+    assert(pointpair.length() == 2);
+    return existsLineSegment(pointpair[0], pointpair[1]);
+    
   }
 
   bool existsLineSegment(char point1Label, char point2Label) {
@@ -281,6 +291,14 @@ class Context{
     return false;
   }
 
+  bool existsLastAngle(){
+    return angles.size() != 0;
+  }
+
+  bool existsAngle(string name){
+    return existsAngle(name.c_str());
+  }
+
   bool existsAngle(char name[]) {
     int l = (int)angles.size();
     for(int i=0;i<l;i++) {
@@ -296,6 +314,11 @@ class Context{
       if(points[i].label == label)
 	return points[i];
     }
+  }
+
+  LineSegment getLineSegment(string pointpair){
+    assert(pointpair.length() ==2);
+    return getLineSegment(pointpair[0], pointpair[1]);
   }
 
   LineSegment getLineSegment(char point1Label, char point2Label) {
@@ -364,6 +387,15 @@ class Context{
   Length getLastLength() {
     return lengths[(int)lengths.size()-1];
   }
+  
+  bool existsLastLineSegment(){
+    return !lineSegments.empty();
+  }
+  
+  char reserveNextPointLabel(){
+    return 'j';
+  }
+  
 };
 
 Context context;
@@ -376,6 +408,9 @@ class Command{
   Plottables plottables;
   
  public:
+  Command(){
+  }
+
   Command(Plottables plottables){
     this->plottables = plottables;
   }

@@ -9,7 +9,7 @@ HEADERS1 = $(SOURCES1:.cpp=.h)
 EXECUTABLE = interpret.out
 
 #~ all: english hindi
-all: interpret.out lyparse.out
+all: interpret.out lyparser.out
 
 english:
 	cp ./english/english-source.vcb ./source.vcb
@@ -23,7 +23,6 @@ hindi:
 
 interpret.out: main.cpp $(OBJECTS) $(HEADERS)
 	$(CC) -g -o $@ $^
-	rm *.o
 	#./interpret.out < jeetesh_temp_english.txt > temp.txt
 
 interpret1.out: $(OBJECTS1) $(HEADERS1)
@@ -38,19 +37,10 @@ image: interpret
 .cpp.o:
 	$(CC) -g -c $< -o $@
 
-lyparser.out: y.tab.c lex.yy.o lylib.o
-	$(CC) -g -o $@ y.tab.c lex.yy.o lylib.o -w -std=c++0x
-
-lylib.o: lylib.c
-	$(CC) -g -c $< -o $@ -w -std=c++0x
-
-lex.yy.o: tokenize.l
+lyparser.out: tokenize.l lyparse.y
 	flex tokenize.l
-	$(CC) -g -c lex.yy.c -o lex.yy.o
-
-y.tab.c: lyparse.y lylib.h lyparse.h
-	yacc lyparse.y -Wall -k --report=all -g -x -d -t
-	#$(CC) -g -c y.tab.c lylib.h -o y.tab.o -w -std=c++0x
+	yacc lyparse.y
+	$(CC) -g -o $@ y.tab.c lex.yy.c -w -std=c++0x
 
 listkeywords:
 	python listKeywords.py < target.vcb > keywords.txt
@@ -59,3 +49,4 @@ clean:
 	rm -f drawing_instructions.txt
 	#rm -f ./source.vcb ./target.vcb ./alignment.txt
 	rm -f interpret.out *.o
+	rm lex.yy.c y.tab.c lyparser.out

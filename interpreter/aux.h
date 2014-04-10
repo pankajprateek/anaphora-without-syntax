@@ -18,11 +18,20 @@ public:
   Ray *r1, *r2;
   bool flip;
   Intersection(){
-   p1 = ls1 = l1 = a1 = c1 = an1 = NULL;
-   p2 = ls2 = l2 = a2 = c2 = NULL; 
+    p1 = NULL;
+    ls1 = NULL;
+    l1 = NULL;
+    a1 = NULL;
+    c1 = NULL;
+    an1 = NULL;
+    p2 = NULL;
+    ls2 = NULL;
+    l2 = NULL;
+    a2 = NULL;
+    c2 = NULL;
   }
   
-}
+};
 
 class Object{
 public:
@@ -35,23 +44,32 @@ public:
   Angle *an1;
   Ray *r1, *r2;  
   Object(){
-   p1 = ls1 = l1 = a1 = c1 = an1 = NULL;
-   p2 = ls2 = l2 = a2 = c2 = NULL; 
+    p1 = NULL;
+    ls1 = NULL;
+    l1 = NULL;
+    a1 = NULL;
+    c1 = NULL;
+    an1 = NULL;
+    p2 = NULL;
+    ls2 = NULL;
+    l2 = NULL;
+    a2 = NULL;
+    c2 = NULL;
   }
    
-}
+};
 
 class Bisector{
 public:
   LineSegment *ls;
   Angle *a;
-}
+};
 
 class Parallelization{
 public:
   LineSegment* ls;
   Line *l;
-}
+};
 
 class Perpendicularization{
 public:
@@ -59,11 +77,11 @@ public:
   Line *l;
   Point* atPoint;
   Point* passingThroughPoint;
-}
+};
 
 class Cut{
 public:
   Point *p1, *p2;
   LineSegment *ls;
   Line *l;
-}
+};

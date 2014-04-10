@@ -1,74 +1,112 @@
+%code requires
+{
+#include<string>
+}
 %debug
 %{	
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <iostream>
+#include <string>
+#include <vector>
 #include <cassert>
+#include <sstream>
+#include "aux.h"
+#include "lyparse.h"
+#include "context.h"
+using namespace std;
 #define PDEBUG 0
   extern "C"	//g++ compiler needs the definations declared[ not required by gcc]
   {
     int yyparse(void);
     int yylex(void);
-    int yyerror(char* s){		//Print the error as it is on the stderr
-      error_count++;
-      fprintf(stderr, "%s at line %d\n",s, line_number);
+    int yyerror(char* s){
+      cout<<"ERROR: "<<s<<endl;
+      return 0;
     }
   }
-  %}
+double epsilon = 1.0;
 
-%union{		//union declared to store the return value of tokens
+%}
+
+%union{		//union declared to store the $$ = value of tokens
   int ival;
   double dval;
-  string sval;
+  string *sval;
+  Command* command;
+  Plottables* plottables;
+  Length* length;
+  Degree* degree;
+  Angle* angle;
+  Operation* operation;
+  LineSegment* lineSegment;
+  vector<LineSegment>* vecLineSegments;
+  vector<Length>* vecLengths;
+  Line* line;
+  Condition* condition;
+  Point* point;
+  vector<Point> *vecPoints;
+  vector<Arc> *vecArcs;
+  vector<string> *vecString;
+  Circle * circle;
+  Object * object;
+  Cut *cut;
+  Arc *arc;
+  Intersection *intersection;
+  Parallelization *parallelization;
+  Perpendicularization *perpendicularization;
+  Location *location;
+  void* voidPtr;
+  
  }
 //tokentypes for different tokens
 %token <ival> INTEGER
 %token <dval> REAL
-%token <sval> POINTSINGLET POINTPAIR POINTTRIPLET LINELABEL
+%token <sval> POINTSINGLET POINTPAIR POINTTRIPLET LINELABEL KEYWORD
 
-%type <int> numChords;
+%type <ival> numChords;
 %start command
-%type <Length> addressLength addressLength1 addressLength2 addressLength3 distanceFromCenterClause
-%type <Degree> addressDegree addressDegree1 addressDegree2 addressDegree3
-%type <Angle> addressAngle addressAngleRays
-%type <Operation> operation
-%type <Command> command constructCommand markCommand cutCommand joinCommand divideCommand bisectCommand
+%type <length> addressLength addressLength1 addressLength2 addressLength3 distanceFromCenterClause
+%type <degree> addressDegree addressDegree1 addressDegree2 addressDegree3
+%type <angle> addressAngle addressAngleRays
+%type <operation> operation
+%type <command> command constructCommand markCommand cutCommand joinCommand divideCommand bisectCommand
 
-%type <Plottables> constructibleAndProperties lineSegmentAndProperties lineAndProperties arcAndProperties circleAndProperties angleAndProperties rayAndProperties perpendicularBisectorAndProperties bisectorAndProperties perpendicularAndProperties parallelAndProperties genericAngleAndProperties rightAngleAndProperties bisectableAndProperties cuttableAndProperties angleArmPointsAndProperties markableAndProperties divisibleAndProperties chordAndProperties arcProperties
+%type <plottables> constructibleAndProperties lineSegmentAndProperties lineAndProperties arcAndProperties circleAndProperties angleAndProperties rayAndProperties perpendicularBisectorAndProperties bisectorAndProperties perpendicularAndProperties parallelAndProperties genericAngleAndProperties rightAngleAndProperties bisectableAndProperties cuttableAndProperties angleArmPointsAndProperties markableAndProperties divisibleAndProperties chordAndProperties arcProperties
 
-%type <LineSegment> addressLineSegment divisibleObject addressChord
+%type <lineSegment> addressLineSegment divisibleObject addressChord
 
 %type < vecLineSegments > addressChords addressPerpendicularBisectableObjects
 
-%type <Length> lineSegmentProperties radiusClause
+%type <length> lineSegmentProperties radiusClause
 %type <vecLengths> radiiClause
 
 %type <vecString> addressPointPairs
 
-%type <Line> addressLine
+%type <line> addressLine
 
-%type <Condition> conditions condition
+%type <condition> conditions condition
 
-%type <Point> addressPoint originClause centerClause passingThroughClause arcConditionClause
+%type <point> addressPoint originClause centerClause passingThroughClause arcConditionClause
 %type < vecPoints > centersClause mutualIntersectionClause
 
 
-%type <Circle> addressCircle
-%type <Arc> addressArc
+%type <circle> addressCircle
+%type <vecArcs> addressArc
 
-%type <Object> objects intersectableObjects object intersectableObject addressIndefinitePreviousObjects addressPreviousObjects addressIntersectablePreviousObjects adjectivePrevious
+%type <object> objects intersectableObjects object intersectableObject addressIndefinitePreviousObjects addressPreviousObjects adjectivePrevious
 
-%type <Cut> fromClause atPoints
-%type <Intersection> labelable pointAndPropertiesNotOnCase pointAndPropertiesOnCase pointAndProperties addressIntersectableObject intersectionPointsAndProperties intersectionClause
+%type <cut> fromClause atPoints
+%type <intersection> labelable pointAndPropertiesNotOnCase pointAndPropertiesOnCase pointAndProperties addressIntersectableObject intersectionPointsAndProperties intersectionClause addressIntersectingObject addressIntersectablePreviousObjects
 
-%type <Parallelization> parallelConditionClause parallelToClause
+%type <parallelization> parallelConditionClause parallelToClause
 
-%type <Perpendicularization> perpendicularConditionClause perpendicularToClause
+%type <perpendicularization> perpendicularConditionClause perpendicularToClause
 
 
-%type <Location> markConditionClause
+%type <location> markConditionClause
 
-%type <void*> LENGTH TIMES CM GREATERTHAN LESSTHAN TWICE THRICE HALF GIVENTHAT CONSTRUCT addressFreeObject ANGLE ANY ARC ARCS ARM AT BISECT BISECTOR BISECTORS CENTER CENTERS CHORD CHORDS CIRCLE CIRCLES CUT DEGREES DIAMETER DISTANCE DISTANCEFROM DIVIDE EACHOTHER EQUALS FREEVARIABLE FROM INTERSECTING INTERSECTIONPOINTS INTO IT ITS JOIN LINE LINES LINESEGMENT LINESEGMENTS MARK NOTON ON ORIGIN PARALLEL PARTS PASSINGTHROUGH PERPENDICULAR PERPENDICULARBISECTOR PERPENDICULARBISECTORS POINT POINTS PREVIOUS previousDegree previousLength RADIUS RAY RAYS RIGHT THEIR THEM THESE THIS THOSE VERTEX DIFFERENCE SUM
+%type <voidPtr> LENGTH TIMES CM GREATERTHAN LESSTHAN TWICE THRICE HALF GIVENTHAT CONSTRUCT addressFreeObject ANGLE ANY ARC ARCS ARM AT BISECT BISECTOR BISECTORS CENTER CENTERS CHORD CHORDS CIRCLE CIRCLES CUT DEGREES DIAMETER DISTANCE DISTANCEFROM DIVIDE EACHOTHER EQUALS FREEVARIABLE FROM INTERSECTING INTERSECTIONPOINTS INTO IT ITS JOIN LINE LINES LINESEGMENT LINESEGMENTS MARK NOTON ON ORIGIN PARALLEL PARTS PASSINGTHROUGH PERPENDICULAR PERPENDICULARBISECTOR PERPENDICULARBISECTORS POINT POINTS PREVIOUS previousDegree previousLength RADIUS RAY RAYS RIGHT THEIR THEM THESE THIS THOSE VERTEX DIFFERENCE SUM
 
 
 %%	
@@ -87,32 +125,32 @@ addressLength :
 addressLength1 :
     REAL CM         {
                       Length* length = new Length();
-                      length->setLength($1.dval);
-                      return length;
+                      length->setLength(yylval.dval);
+                      $$ = length;
                     }
   | REAL            {
                       Length* length = new Length();
-                      length->setLength($1.dval);
-                      return length;                      
+                      length->setLength(yylval.dval);
+                      $$ = length;                      
                     }
   | FREEVARIABLE    {
                       Length* length = new Length();
                       length->setLength(4); //generate random length
-                      return length;                                            
+                      $$ = length;                                            
                     }
   | previousLength  {
                       Length* length = new Length();
                       Length ll = context.getLastLength();
                       length->setLength(ll.getLength()); //resolve from the context
-                      return length;
+                      $$ = length;
                     }
   | LENGTH addressLineSegment
                     {
-                      assert(context.existsLineSegment($1->getName()));                      
+                      assert(context.existsLineSegment($2->getName()));                      
                       Length* length = new Length();
                       double l = $2->getLength();
                       length->setLength(l);
-                      return length;
+                      $$ = length;
                     }
   | addressLineSegment
                     {
@@ -120,7 +158,7 @@ addressLength1 :
                       Length* length = new Length();     
                       double l = $1->getLength();
                       length->setLength(l);
-                      return length;
+                      $$ = length;
                     }
 ;
 
@@ -128,44 +166,44 @@ addressLength2 :
     GREATERTHAN addressLength1
                     {
                       Length* length = new Length();
-                      length->setLength(epsilon + $2->getAbsoluteLength());
-                      return length;
+                      length->setLength(epsilon + $2->getLength());
+                      $$ = length;
                     }    
   | LESSTHAN addressLength1
                     {
                       Length* length = new Length();
-                      length->setLength(- epsilon + $2->getAbsoluteLength());
-                      return length;
+                      length->setLength(- epsilon + $2->getLength());
+                      $$ = length;
                     }    
   | TWICE addressLength1
                     {
                       Length* length = new Length();
-                      length->setLength(2*($2->getAbsoluteLength()));
-                      return length;
+                      length->setLength(2*($2->getLength()));
+                      $$ = length;
                     }      
   | THRICE addressLength1
                     {
                       Length* length = new Length();
-                      length->setLength(3*($2->getAbsoluteLength()));
-                      return length;
+                      length->setLength(3*($2->getLength()));
+                      $$ = length;
                     }      
   | REAL TIMES addressLength1
                     {
                       Length* length = new Length();
-                      length->setLength($1.dval*($2->getAbsoluteLength()));
-                      return length;
+                      length->setLength(yylval.dval*($3->getLength()));
+                      $$ = length;
                     }        
   | HALF addressLength1
                     {
                       Length* length = new Length();
-                      length->setLength(0.5*($2->getAbsoluteLength()));
-                      return length;
+                      length->setLength(0.5*($2->getLength()));
+                      $$ = length;
                     }        
   | operation addressLength1 addressLength1
                     {
                       double result = $1->getResult($2->getLength(), $3->getLength());
                       Length* length = new Length(result);
-                      return length;
+                      $$ = length;
                     }
 ;
 
@@ -173,44 +211,44 @@ addressLength3 :
     GREATERTHAN addressLength2
                     {
                       Length* length = new Length();
-                      length->setLength(epsilon + $2->getAbsoluteLength());
-                      return length;
+                      length->setLength(epsilon + $2->getLength());
+                      $$ = length;
                     }    
   | LESSTHAN addressLength2
                     {
                       Length* length = new Length();
-                      length->setLength(- epsilon + $2->getAbsoluteLength());
-                      return length;
+                      length->setLength(- epsilon + $2->getLength());
+                      $$ = length;
                     }    
   | TWICE addressLength2
                     {
                       Length* length = new Length();
-                      length->setLength(2*($2->getAbsoluteLength()));
-                      return length;
+                      length->setLength(2*($2->getLength()));
+                      $$ = length;
                     }      
   | THRICE addressLength2
                     {
                       Length* length = new Length();
-                      length->setLength(3*($2->getAbsoluteLength()));
-                      return length;
+                      length->setLength(3*($2->getLength()));
+                      $$ = length;
                     }      
   | REAL TIMES addressLength2
                     {
                       Length* length = new Length();
-                      length->setLength($1.dval*($2->getAbsoluteLength()));
-                      return length;
+                      length->setLength(yylval.dval * ($3->getLength()));
+                      $$ = length;
                     }        
   | HALF addressLength2
                     {
                       Length* length = new Length();
-                      length->setLength(0.5*($2->getAbsoluteLength()));
-                      return length;
+                      length->setLength(0.5*($2->getLength()));
+                      $$ = length;
                     }        
   | operation addressLength2 addressLength2
                     {
                       double result = $1->getResult($2->getLength(), $3->getLength());
                       Length* length = new Length(result);
-                      return length;
+                      $$ = length;
                     }
 ;
 
@@ -224,61 +262,61 @@ addressDegree :
 
 addressDegree1 :
     REAL DEGREES    {
-                      Degree *degree = new Degree($1);
-                      return degree;
+                      Degree *degree = new Degree(yylval.dval);
+                      $$ = degree;
                     }
   | REAL            {
-                      Degree *degree = new Degree($1);
-                      return degree;
+                      Degree *degree = new Degree(yylval.dval);
+                      $$ = degree;
                     }
   | FREEVARIABLE    {
                       double random_double = 30;
                       Degree *degree = new Degree(random_double);
-                      return degree;
+                      $$ = degree;
                     }
   | previousDegree  {
                       assert(context.existsLastAngle());
                       Angle la = context.getLastAngle();
                       Degree *degree = new Degree(la.getDegree());
-                      return degree;
+                      $$ = degree;
                     }
   | addressAngle    {
-                      assert(existsAngle($1->getName()));
-                      Degree *degree = new Degree($1.getDegree());
-                      return degree;
+                      assert(context.existsAngle($1->getName()));
+                      Degree *degree = new Degree($1->getDegree());
+                      $$ = degree;
                     }
 ;
 
 addressDegree2 :
     GREATERTHAN addressDegree1
                     {
-                      Degree* degree = new Degree(epsilon + $2->getAbsoluteDegree());
-                      return degree;
+                      Degree* degree = new Degree(epsilon + $2->getDegree());
+                      $$ = degree;
                     }        
   | LESSTHAN addressDegree1
                     {
-                      Degree* degree = new Degree(-epsilon + $2->getAbsoluteDegree());
-                      return degree;
+                      Degree* degree = new Degree(-epsilon + $2->getDegree());
+                      $$ = degree;
                     }        
   | TWICE addressDegree1
                     {
-                      Degree* degree = new Degree(2*($2->getAbsoluteDegree()));
-                      return degree;
+                      Degree* degree = new Degree(2*($2->getDegree()));
+                      $$ = degree;
                     }          
   | THRICE addressDegree1
                     {
-                      Degree* degree = new Degree(3*($2->getAbsoluteDegree()));
-                      return degree;
+                      Degree* degree = new Degree(3*($2->getDegree()));
+                      $$ = degree;
                     }            
   | REAL TIMES addressDegree1
                     {
-                      Degree* degree = new Degree($1.dval*($3->getAbsoluteDegree()));
-                      return degree;
+                      Degree* degree = new Degree(yylval.dval*($3->getDegree()));
+                      $$ = degree;
                     }          
   | HALF addressDegree1
                     {
-                      Degree* degree = new Degree(0.5*($2->getAbsoluteDegree()));
-                      return degree;
+                      Degree* degree = new Degree(0.5*($2->getDegree()));
+                      $$ = degree;
                     }          
   
   | operation addressDegree1 addressDegree1
@@ -286,40 +324,40 @@ addressDegree2 :
                       Degree* degree = new Degree(
                         $1->getResult($2->getDegree(), $3->getDegree())
                       );
-                      return degree;
+                      $$ = degree;
                     }
 ;
 
 addressDegree3 :
     GREATERTHAN addressDegree2
                     {
-                      Degree* degree = new Degree(epsilon + $2->getAbsoluteDegree());
-                      return degree;
+                      Degree* degree = new Degree(epsilon + $2->getDegree());
+                      $$ = degree;
                     }        
   | LESSTHAN addressDegree2
                     {
-                      Degree* degree = new Degree(-epsilon + $2->getAbsoluteDegree());
-                      return degree;
+                      Degree* degree = new Degree(-epsilon + $2->getDegree());
+                      $$ = degree;
                     }        
   | TWICE addressDegree2
                     {
-                      Degree* degree = new Degree(2*($2->getAbsoluteDegree()));
-                      return degree;
+                      Degree* degree = new Degree(2*($2->getDegree()));
+                      $$ = degree;
                     }          
   | THRICE addressDegree2
                     {
-                      Degree* degree = new Degree(3*($2->getAbsoluteDegree()));
-                      return degree;
+                      Degree* degree = new Degree(3*($2->getDegree()));
+                      $$ = degree;
                     }            
   | REAL TIMES addressDegree2
                     {
-                      Degree* degree = new Degree($1.dval*($3->getAbsoluteDegree()));
-                      return degree;
+                      Degree* degree = new Degree(yylval.dval*($3->getDegree()));
+                      $$ = degree;
                     }          
   | HALF addressDegree2
                     {
-                      Degree* degree = new Degree(0.5*($2->getAbsoluteDegree()));
-                      return degree;
+                      Degree* degree = new Degree(0.5*($2->getDegree()));
+                      $$ = degree;
                     }          
   
   | operation addressDegree2 addressDegree2
@@ -327,7 +365,7 @@ addressDegree3 :
                       Degree* degree = new Degree(
                         $1->getResult($2->getDegree(), $3->getDegree())
                       );
-                      return degree;
+                      $$ = degree;
                     }
 ;
 
@@ -359,8 +397,8 @@ command :
 constructCommand : 
   CONSTRUCT constructibleAndProperties
                       {
-                        Command *command = new Command($2);
-                        return command;
+                        Command *command = new Command(*$2);
+                        $$ = command;
                       }
 ;
 
@@ -390,35 +428,33 @@ lineSegmentAndProperties :
         string addressedLineSegment = $4->getAddressedLineSegment();
         string thisLineSegment = $2->getName();
         if(addressedLineSegment.compare(thisLineSegment) != 0){
-          sstringstream error;
-          error<<"Line segment "<<addressedLineSegment<<" in the condition does not match "
-            <<thisLineSegment<<" in context"<<endl;
+          string error = (string)"Line segment " + (string)addressedLineSegment + (string)" in the condition does not match " + (string)thisLineSegment + (string)" in context";
           spitError(error);
         }
         
         $2->setLength($4->getStatedLength());
         
-        p->updatePlottables($2);
-        return p;
+        p->updatePlottables(*$2);
+        $$ = p;
       }
   | LINESEGMENT addressLineSegment lineSegmentProperties
       {
         Plottables *p = new Plottables(); 
         $2->setLength($3->getLength());
-        p->updatePlottables($2);
-        return p;
+        p->updatePlottables(*$2);
+        $$ = p;
       }
   | LINESEGMENT addressLineSegment perpendicularToClause perpendicularConditionClause
       {
         Plottables *p = new Plottables();
         //not implemented now
-        return p;
+        $$ = p;
       }
   | LINESEGMENT addressLineSegment parallelToClause parallelConditionClause
       {
         Plottables *p = new Plottables();
         //not implemented now
-        return p;
+        $$ = p;
       }
 ;
 
@@ -444,10 +480,10 @@ condition :
         Condition *c = new Condition();
         if($2->getDegree() != 0){
           c->setAngle(*$3);
-          c->setDegree($2->getDegrees());
+          c->setDegree($2->getDegree());
         } else {
           c->setAngle(*$2);
-          c->setDegree($3->getDegrees());        
+          c->setDegree($3->getDegree());        
         }
       }  
 ;
@@ -478,38 +514,38 @@ addressLineSegment :
     LINESEGMENT POINTPAIR
       {
         LineSegment* ls;
-        if(context.existsLineSegment($2.sval)){
-          *ls = context.getLineSegment($2.sval);
+        if(context.existsLineSegment(*(yylval.sval))){
+          *ls = context.getLineSegment(*(yylval.sval));
         } else {
-          ls = new LineSegment($2.sval);
+          ls = new LineSegment(*(yylval.sval));
         }
-        return ls;
+        $$ = ls;
       }
   | POINTPAIR
       {
         LineSegment* ls;
-        if(context.existsLineSegment($1.sval)){
-          *ls = context.getLineSegment($1.sval);
+        if(context.existsLineSegment(*(yylval.sval))){
+          *ls = context.getLineSegment(*(yylval.sval));
         } else {
-          ls = new LineSegment($1.sval);
+          ls = new LineSegment(*(yylval.sval));
         }
-        return ls;
+        $$ = ls;
       }
   | adjectivePrevious LINESEGMENT
       {
         assert(context.existsLastLineSegment());
         LineSegment ls = context.getLastLineSegment();
-        //TODO: return the last segment present in the context
-        LineSegment *l = new LineSegment(*ls);
-        return l;
+        //TODO: $$ = the last segment present in the context
+        LineSegment *l = new LineSegment(ls);
+        $$ = l;
       }  
   | addressFreeObject
       {
         assert(context.existsLastLineSegment());
         LineSegment ls = context.getLastLineSegment();
-        //TODO: return the last segment present in the context
-        LineSegment *l = new LineSegment(*ls);
-        return l;
+        //TODO: $$ = the last segment present in the context
+        LineSegment *l = new LineSegment(ls);
+        $$ = l;
       }  
 ;
 
@@ -522,31 +558,30 @@ genericAngleAndProperties :
     ANGLE VERTEX addressPoint addressDegree
       {
         Plottables *p = new Plottables();
-        double degrees = $4->getDegrees();
+        double degrees = $4->getDegree();
         Point vertex, leftVertex, rightVertex;
         char c1 = context.reserveNextPointLabel();
         char c2 = context.reserveNextPointLabel();
-        if(context.existsPoint($3)){
-          vertex = context.getPoint(
-          Angle a(
-        }
+        //INCOMPLETE
+
+        $$ = p;
       
       }
     
   | ANGLE addressAngle addressDegree
       {
-        return new Plottable();
+        $$ = new Plottables();
       }
 ;
 
 rightAngleAndProperties :
     RIGHT ANGLE VERTEX addressPoint
       {
-        return new Plottable();
+        $$ = new Plottables();
       }    
   | RIGHT ANGLE addressAngle
       {
-        return new Plottable();
+        $$ = new Plottables();
       }  
 ;
 
@@ -565,23 +600,23 @@ ANGLE :
 addressAngle :
     ANGLE POINTTRIPLET
       {
-        return new Angle();
+        $$ = new Angle();
       }    
   | ANGLE POINTSINGLET
       {
-        return new Angle();
+        $$ = new Angle();
       }      
   | POINTTRIPLET
       {
-        return new Angle();
+        $$ = new Angle();
       }      
   | POINTSINGLET
       {
-        return new Angle();
+        $$ = new Angle();
       }      
   | adjectivePrevious ANGLE
       {
-        return new Angle();
+        $$ = new Angle();
       }      
 ;
 
@@ -593,19 +628,19 @@ DEGREES :
 circleAndProperties : 
     CIRCLE CENTER addressPoint RADIUS addressLength
       {
-        return new Plottable();
+        $$ = new Plottables();
       }        
   | CIRCLE CENTER addressPoint DIAMETER addressLength
       {
-        return new Plottable();
+        $$ = new Plottables();
       }      
   | CIRCLE RADIUS addressLength
       {
-        return new Plottable();
+        $$ = new Plottables();
       }      
   | CIRCLE DIAMETER addressLength
       {
-        return new Plottable();
+        $$ = new Plottables();
       }    
 ;
 
@@ -620,22 +655,22 @@ LINE :
 lineAndProperties : 
     LINE [a-z] perpendicularToClause perpendicularConditionClause
       {
-        return new Plottable();
+        $$ = new Plottables();
       }    
   | LINE [a-z] parallelToClause parallelConditionClause
       {
-        return new Plottable();
+        $$ = new Plottables();
       }    
   | LINE [a-z]
       {
-        return new Plottable();
+        $$ = new Plottables();
       }      
 ;
 
 arcAndProperties :
   ARC arcProperties
       {
-        $$ = $1;
+        $$ = $2;
       }    
   
 ;
@@ -647,37 +682,37 @@ ARC :
 arcProperties :
     centersClause radiiClause mutualIntersectionClause
       {
-	return new Plottable();
+	$$ = new Plottables();
       }
   | centerClause radiusClause arcConditionClause
       {
-	return new Plottable();
+	$$ = new Plottables();
       }
   | centerClause arcConditionClause
       {
-	return new Plottable();
+	$$ = new Plottables();
       }
   | centerClause radiusClause
       {
-	return new Plottable();
+	$$ = new Plottables();
       }
 ;
 
 arcConditionClause :
     intersectionClause
       {
-	return new Point();
+	$$ = new Point();
       }    
   | passingThroughClause
       {
-	return new Point();
+	$$ = new Point();
       }  
 ;
 
 passingThroughClause :
     PASSINGTHROUGH addressPoint
       {
-	return new Point();
+	$$ = new Point();
       }    
 ;
 
@@ -689,88 +724,88 @@ PASSINGTHROUGH :
 mutualIntersectionClause :
     INTERSECTING EACHOTHER AT POINTSINGLET POINTSINGLET
       {
-	return new vector<Point>();
+	$$ = new vector<Point>();
       }    
   | INTERSECTING AT POINTSINGLET POINTSINGLET
       {
-	return new vector<Point>();
+	$$ = new vector<Point>();
       }    
   | INTERSECTING EACHOTHER AT POINTSINGLET
       {
-	return new vector<Point>();
+	$$ = new vector<Point>();
       }      
   | INTERSECTING AT POINTSINGLET
       {
-	return new vector<Point>();
+	$$ = new vector<Point>();
       }      
 ;
 
 centerClause :
     CENTER POINTSINGLET
       {
-	return new Point();
+	$$ = new Point();
       }        
 ;
 
 centersClause :
     CENTERS POINTSINGLET POINTSINGLET
       {
-	return new vector<Point>();
+	$$ = new vector<Point>();
       }        
 ;
 
 radiusClause :
     RADIUS addressLength
       {
-	return new Length();
+	$$ = new Length();
       }        
 ;
 
 radiiClause :
     RADIUS addressLength addressLength
       {
-	return new vector<Length>();
+	$$ = new vector<Length>();
       }        
 ;
 
 intersectionClause :
     INTERSECTING addressIntersectableObject AT POINTSINGLET POINTSINGLET
       {
-	return $2;
+	$$ = $2;
       }        
   | INTERSECTING addressIntersectableObject AT POINTSINGLET
       {
-	return $2;
+	$$ = $2;
       }      
 ;
 
 addressIntersectableObject :
     addressLineSegment
       {
-	return new Intersection();
+	$$ = new Intersection();
       }          
   | addressLine
       {
-	return new Intersection();
+	$$ = new Intersection();
       }        
   | addressArc
       {
-	return new Intersection();
+	$$ = new Intersection();
       }        
   | addressCircle
       {
-	return new Intersection();
+	$$ = new Intersection();
       }        
   | addressAngleRays
       {
-	return new Intersection();
+	$$ = new Intersection();
       }        
 ;
 
 addressAngleRays :
     RAYS ANGLE addressAngle
       {
-	return new Angle();
+	$$ = new Angle();
       }          
 ;
 
@@ -809,26 +844,26 @@ AT :
 rayAndProperties :
     RAY POINTPAIR originClause
       {
-	return new Plottables();
+	$$ = new Plottables();
       }          
   | RAYS POINTPAIR POINTPAIR originClause
       {
-	return new Plottables();
+	$$ = new Plottables();
       }          
   | RAY POINTPAIR
       {
-	return new Plottables();
+	$$ = new Plottables();
       }            
   | RAYS POINTPAIR POINTPAIR
       {
-	return new Plottables();
+	$$ = new Plottables();
       }            
 ;
 
 originClause :
     ORIGIN addressPoint
       {
-	return new Point();
+	$$ = new Point();
       }              
 ;
 
@@ -882,14 +917,14 @@ addressPerpendicularBisectableObjects :
 addressChord :
     adjectivePrevious CHORD
       {
-	return new LineSegment();
+	$$ = new LineSegment();
       }
 ;
 
 addressChords :
     adjectivePrevious CHORDS
       {
-	return new vector<LineSegment>();
+	$$ = new vector<LineSegment>();
       }
 ;
 
@@ -900,44 +935,44 @@ PERPENDICULARBISECTOR :
 bisectorAndProperties :
     BISECTOR addressLineSegment
       {
-	return new Plottables();
+	$$ = new Plottables();
       }
   | BISECTOR addressAngle
       {
-	return new Plottables();
+	$$ = new Plottables();
       }  
   | BISECTOR addressIndefinitePreviousObjects
       {
-	return new Plottables();
+	$$ = new Plottables();
       }  
 ;
 
 parallelToClause :
     PARALLEL addressLineSegment
       {
-	return new Parallelization();
+	$$ = new Parallelization();
       }    
   | PARALLEL addressLine
       {
-	return new Parallelization();
+	$$ = new Parallelization();
       }      
 ;
 
 perpendicularToClause :
     PERPENDICULAR addressLineSegment
       {
-	return new Perpendicularization();
+	$$ = new Perpendicularization();
       }
-    PERPENDICULAR addressLine
+  | PERPENDICULAR addressLine
       {
-	return new Perpendicularization();
+	$$ = new Perpendicularization();
       }
 ;
 
 perpendicularAndProperties :
     perpendicularToClause perpendicularConditionClause
       {
-        return new Plottables();
+        $$ = new Plottables();
       }
 ;
 
@@ -949,38 +984,38 @@ PERPENDICULAR :
 perpendicularConditionClause :
     AT addressPoint
       {
-	return new Perpendicularization();
+	$$ = new Perpendicularization();
       }
   | passingThroughClause
       {
-	return new Perpendicularization();
+	$$ = new Perpendicularization();
       }  
 ;
 
 chordAndProperties :
     CHORD addressCircle
       {
-	return new Plottables();
+	$$ = new Plottables();
       }
   | CHORD addressCircle distanceFromCenterClause
       {
-	return new Plottables();
+	$$ = new Plottables();
       }
   | CHORDS addressCircle numChords
       {
-	return new Plottables();  
+	$$ = new Plottables();  
       }
   | CHORD addressIndefinitePreviousObjects
       {
-	return new Plottables();  
+	$$ = new Plottables();  
       }  
   | CHORD addressIndefinitePreviousObjects distanceFromCenterClause
       {
-	return new Plottables();  
+	$$ = new Plottables();  
       }  
   | CHORDS addressIndefinitePreviousObjects numChords
       {
-	return new Plottables();  
+	$$ = new Plottables();  
       }  
 ;
 
@@ -996,7 +1031,7 @@ DISTANCE :
 ;
 
 numChords :
-    INTEGER			{ $$ = $1.ival; }
+    INTEGER			{ $$ = yylval.ival; }
 ;
 
 PARALLEL :
@@ -1006,25 +1041,25 @@ PARALLEL :
 parallelAndProperties :
     parallelToClause parallelConditionClause
       {
-        return new Plottables();
+        $$ = new Plottables();
       }
 ;
 
 parallelConditionClause :
     AT addressPoint
       {
-	return new Parallelization();
+	$$ = new Parallelization();
       }    
   | passingThroughClause
       {
-	return new Parallelization();
+	$$ = new Parallelization();
       }  
 ;
 
 divideCommand :
     DIVIDE divisibleAndProperties
       {
-	return new Command();
+	$$ = new Command();
       }
 ;
 
@@ -1035,7 +1070,7 @@ DIVIDE :
 divisibleAndProperties :
     divisibleObject INTO INTEGER PARTS
       {
-	return new Plottables();
+	$$ = new Plottables();
       }
 ;
 
@@ -1050,18 +1085,18 @@ INTO :
 divisibleObject :
     addressLineSegment
       {
-	return new LineSegment();
+	$$ = new LineSegment();
       }
   | addressIndefinitePreviousObjects
       {
-	return new LineSegment();
+	$$ = new LineSegment();
       }  
 ;
 
 joinCommand : 
   JOIN addressPointPairs
       {
-	return new Command();
+	$$ = new Command();
       }  
 ;
 
@@ -1072,26 +1107,26 @@ JOIN :
 addressPointPairs : 
     POINTPAIR
       {
-	return new vector<string>();
+	$$ = new vector<string>();
       }    
   | POINTPAIR POINTPAIR
       {
-	return new vector<string>();
+	$$ = new vector<string>();
       }    
   | POINTPAIR POINTPAIR POINTPAIR
       {
-	return new vector<string>();
+	$$ = new vector<string>();
       }      
   | adjectivePrevious POINTS
       {
-	return new vector<string>();
+	$$ = new vector<string>();
       }      
 ;
 
 markCommand :
     MARK markableAndProperties
       {
-	return new Command();
+	$$ = new Command();
       }        
 ;
 
@@ -1104,22 +1139,22 @@ MARK :
 markableAndProperties :
     pointAndProperties
       {
-	return new Plottables();
+	$$ = new Plottables();
       }        
   | intersectionPointsAndProperties
       {
-	return new Plottables();
+	$$ = new Plottables();
       }        
   | angleArmPointsAndProperties
       {
-	return new Plottables();
+	$$ = new Plottables();
       }          
 ;
 
 angleArmPointsAndProperties :
     POINT POINTSINGLET ON ARM addressAngle POINTSINGLET ON ARM addressAngle
       {
-	return new Plottables();
+	$$ = new Plottables();
       }            
 ;
 
@@ -1130,15 +1165,15 @@ ARM :
 intersectionPointsAndProperties : 
     INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint addressPoint
       {
-	return new Intersection();
+	$$ = new Intersection();
       }            
   | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
 ;
 
@@ -1152,57 +1187,57 @@ INTERSECTIONPOINTS :
 addressIntersectingObject : 
     addressArc
       {
-	return new Intersection();
+	$$ = new Intersection();
       }                
   | addressCircle
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
   | addressLine
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
   | addressLineSegment
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
   | addressPreviousObjects
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
 ;
 
 pointAndProperties : 
     POINT POINTSINGLET pointAndPropertiesNotOnCase
       {
-	return new Intersection();
+	$$ = new Intersection();
       }                
   | POINT POINTSINGLET pointAndPropertiesOnCase markConditionClause
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
   | POINT POINTSINGLET pointAndPropertiesOnCase  
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
   | POINTSINGLET pointAndPropertiesNotOnCase
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
   | POINTSINGLET pointAndPropertiesOnCase markConditionClause
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
   | POINTSINGLET pointAndPropertiesOnCase
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
 ;
 
 markConditionClause :
     DISTANCEFROM addressPoint addressLength
       {
-	return new Location();
+	$$ = new Location();
       }                
 ;
 
@@ -1213,14 +1248,14 @@ DISTANCEFROM :
 pointAndPropertiesOnCase :
     ON labelable
       {
-	return new Intersection();
+	$$ = new Intersection();
       }                
 ;
 
 pointAndPropertiesNotOnCase :
     NOTON labelable
       {
-	return new Intersection();
+	$$ = new Intersection();
       }                
 ;
 
@@ -1236,153 +1271,153 @@ NOTON :
 labelable :
     addressLineSegment
       {
-	return new Intersection();
+	$$ = new Intersection();
       }                
   | addressArc
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
   | addressLine
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
   | addressPreviousObjects
       {
-	return new Intersection();
+	$$ = new Intersection();
       }              
 ;
 
 addressLine :
     LINELABEL
       {
-	return new Line();
+	$$ = new Line();
       }                  
   | LINE LINELABEL
       {
-	return new Line();
+	$$ = new Line();
       }               
   | adjectivePrevious LINE
       {
-	return new Line();
+	$$ = new Line();
       }                 
   | addressFreeObject
       {
-	return new Line();
+	$$ = new Line();
       }                 
 ;
 
 addressArc :
     adjectivePrevious ARC
       {
-	return new vector<Arc>();
+	$$ = new vector<Arc>();
       }                 
   | adjectivePrevious ARCS
       {
-	return new vector<Arc>();
+	$$ = new vector<Arc>();
       }                   
 ;
 
 adjectivePrevious :
     THIS		
       {
-	return new Object();
+	$$ = new Object();
       }
   | THESE
       {
-	return new Object();
+	$$ = new Object();
       }  
   | PREVIOUS
       {
-	return new Object();
+	$$ = new Object();
       }
   | THOSE
       {
-	return new Object();
+	$$ = new Object();
       }  
 ;
 
 addressIntersectablePreviousObjects :
     THIS intersectableObject
       {
-	return new Intersection();
+	$$ = new Intersection();
       }
   | THESE intersectableObjects
       {
-	return new Intersection();
+	$$ = new Intersection();
       }
   | PREVIOUS intersectableObject
       {
-	return new Intersection();
+	$$ = new Intersection();
       }  
   | PREVIOUS intersectableObjects
       {
-	return new Intersection();
+	$$ = new Intersection();
       }  
   | THOSE intersectableObjects
       {
-	return new Intersection();
+	$$ = new Intersection();
       }  
   | addressIndefinitePreviousObjects
       {
-	return new Intersection();
+	$$ = new Intersection();
       }  
 ;
 
 addressPreviousObjects :
     THIS object
       {
-	return new Object();
+	$$ = new Object();
       }      
   | THESE objects
       {
-	return new Object();
+	$$ = new Object();
       }        
   | PREVIOUS object
       {
-	return new Object();
+	$$ = new Object();
       }      
   | PREVIOUS objects
       {
-	return new Object();
+	$$ = new Object();
       }        
   | THOSE objects
       {
-	return new Object();
+	$$ = new Object();
       }        
   | addressIndefinitePreviousObjects
       {
-	return new Object();
+	$$ = new Object();
       }        
 ;
 
 addressIndefinitePreviousObjects :
     THIS	
       {
-	return new Object();
+	$$ = new Object();
       }
   | THESE	
       {
-	return new Object();
+	$$ = new Object();
       }
   | IT
       {
-	return new Object();
+	$$ = new Object();
       }  
   | ITS
       {
-	return new Object();
+	$$ = new Object();
       }  
   | THEM
       {
-	return new Object();
+	$$ = new Object();
       }  
   | THOSE
       {
-	return new Object();
+	$$ = new Object();
       }  
   | THEIR
       {
-	return new Object();
+	$$ = new Object();
       }  
 ;
 
@@ -1421,81 +1456,81 @@ THOSE :
 intersectableObject :
     LINESEGMENT
       {
-	return new Object();
+	$$ = new Object();
       }    
   | LINE
       {
-	return new Object();
+	$$ = new Object();
       }  
   | CIRCLE
       {
-	return new Object();
+	$$ = new Object();
       }  
   | ARC
       {
-	return new Object();
+	$$ = new Object();
       }  
   | PERPENDICULARBISECTOR
       {
-	return new Object();
+	$$ = new Object();
       }  
   | BISECTOR
       {
-	return new Object();
+	$$ = new Object();
       }  
   | CHORD
       {
-	return new Object();
+	$$ = new Object();
       }  
   | RAY
       {
-	return new Object();
+	$$ = new Object();
       }  
 ;
 
 object : 
     intersectableObject
       {
-	return new Object();
+	$$ = new Object();
       }    
   | POINT
       {
-	return new Object();
+	$$ = new Object();
       }      
 ;
 
 intersectableObjects :
     LINESEGMENTS
       {
-	return new Object();
+	$$ = new Object();
       }        
   | LINES
       {
-	return new Object();
+	$$ = new Object();
       }      
   | CIRCLES
       {
-	return new Object();
+	$$ = new Object();
       }      
   | ARCS
       {
-	return new Object();
+	$$ = new Object();
       }      
   | PERPENDICULARBISECTORS
       {
-	return new Object();
+	$$ = new Object();
       }      
   | BISECTORS
       {
-	return new Object();
+	$$ = new Object();
       }      
   | CHORDS
       {
-	return new Object();
+	$$ = new Object();
       }      
   | RAYS
       {
-	return new Object();
+	$$ = new Object();
       }      
 ;
 
@@ -1530,11 +1565,11 @@ CHORD :
 objects :
     intersectableObjects
       {
-	return new Object();
+	$$ = new Object();
       }        
   | POINTS
       {
-	return new Object();
+	$$ = new Object();
       }      
 ;
 
@@ -1549,7 +1584,7 @@ ARCS :
 cutCommand :
   CUT cuttableAndProperties
       {
-	return new Command();
+	$$ = new Command();
       }      
 ;
 
@@ -1560,19 +1595,19 @@ CUT :
 addressPoint :
     POINTSINGLET
       {
-	return new Point();
+	$$ = new Point();
       }        
   | POINT POINTSINGLET
       {
-	return new Point();
+	$$ = new Point();
       }          
   | adjectivePrevious POINT
       {
-	return new Point();
+	$$ = new Point();
       }          
   | addressFreeObject
       {
-	return new Point();
+	$$ = new Point();
       }          
 ;
 
@@ -1595,68 +1630,68 @@ POINTS :
 cuttableAndProperties :
     addressLineSegment addressLength fromClause
       {
-	return new Plottables();
+	$$ = new Plottables();
       }            
   | addressLineSegment conditions
       {
-	return new Plottables();
+	$$ = new Plottables();
       }              
   | addressLine atPoints
       {
-	return new Plottables();
+	$$ = new Plottables();
       }              
   | addressArc atPoints
       {
-	return new Plottables();
+	$$ = new Plottables();
       }              
   | addressCircle atPoints
       {
-	return new Plottables();
+	$$ = new Plottables();
       }              
 ;
 
 atPoints :
     AT addressPoint
       {
-	return new Cut();
+	$$ = new Cut();
       }                
   | AT addressPoint addressPoint
       {
-	return new Cut();
+	$$ = new Cut();
       }                  
 ;
 
 fromClause :
     FROM addressLineSegment
       {
-	return new Cut();
+	$$ = new Cut();
       }                    
   | FROM addressLine
       {
-	return new Cut();
+	$$ = new Cut();
       }                  
   | FROM addressPreviousObjects
       {
-	return new Cut();
+	$$ = new Cut();
       }                
 ;
 
 addressCircle : 
     CIRCLE AT POINTSINGLET
       {
-	return new Circle();
+	$$ = new Circle();
       }                
   | CIRCLE CENTER POINTSINGLET
       {
-	return new Circle();
+	$$ = new Circle();
       }                  
   | adjectivePrevious CIRCLE
       {
-	return new Circle();
+	$$ = new Circle();
       }                  
   | addressFreeObject
       {
-	return new Circle();
+	$$ = new Circle();
       }                  
 ;
 
@@ -1690,11 +1725,11 @@ previousDegree :
 operation :
     DIFFERENCE
       {
-	return new Operation();
+	$$ = new Operation();
       }                    
   | SUM
       {
-	return new Operation();
+	$$ = new Operation();
       }                  
 ;
 
@@ -1715,7 +1750,7 @@ FREEVARIABLE :
 bisectCommand :
     BISECT bisectableAndProperties
       {
-	return new Command();
+	$$ = new Command();
       }                    
 ;
 
@@ -1726,15 +1761,15 @@ BISECT :
 bisectableAndProperties :
     addressLineSegment
       {
-	return new Plottables();
+	$$ = new Plottables();
       }                    
   | addressAngle
       {
-	return new Plottables();
+	$$ = new Plottables();
       }                      
   | addressIndefinitePreviousObjects
       {
-	return new Plottables();
+	$$ = new Plottables();
       }                      
 ;
 

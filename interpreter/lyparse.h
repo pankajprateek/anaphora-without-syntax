@@ -3,6 +3,7 @@
 #include<vector>
 #include<string>
 #include<cmath>
+#include<iostream>
 
 using namespace std;
 
@@ -10,6 +11,10 @@ class Length{
   double length;
   
   public:
+
+    Length(){
+      length = 0;
+    }
 
     Length(double l){
       this->length = l;
@@ -28,6 +33,10 @@ class Degree{
 public:
     double degree;
     
+    Degree(){
+      
+    }
+    
     Degree(double d){
       this->degree = d;
     }
@@ -45,6 +54,10 @@ class Point{
   public:
     char label;
     double x, y;
+
+    char getLabel(){
+      return label;
+    }
 
     void setLabel(char c){
       label = c;
@@ -114,6 +127,10 @@ class Angle{
     return s;
   }
   
+  Angle(){
+    
+  }
+  
   bool compare(Angle X) {
     if(X.degree == this->degree and X.vertex.compare(this->vertex) and X.leftVertex.compare(this->leftVertex) and X.rightVertex.compare(this->rightVertex))
       return true;
@@ -141,6 +158,10 @@ class Arc{
       this->center.y = P.y;
       this->radius = rad;
     }
+    
+    Arc(){
+      
+    }
 };
 
 class Line{
@@ -150,13 +171,25 @@ class Line{
     Line(char s) {
       this->label = s;
     }
+    
+    Line(){
+      
+    }
 };
 
 class LineSegment{
   public:
     Point A, B;
+    double length;
+    
+    double setLength(double l){
+      length = l;
+    }
     
     double getLength(){
+      if(length != 0.0){
+        return length;
+      }
       double dx = B.x - A.x;
       double dy = B.y - A.y;
       return sqrt(dx*dx + dy*dy);
@@ -186,6 +219,10 @@ class LineSegment{
       A.setLabel(pointPair[0]);
       B.setLabel(pointPair[1]);
     }
+    
+    LineSegment(){
+      
+    }
 };
 
 class Circle{
@@ -206,6 +243,10 @@ class Circle{
     
     Point getCenter(){
       return center;
+    }
+    
+    Circle(){
+      
     }
 };
 
@@ -323,6 +364,10 @@ class Condition{
     double getStatedDegree(){
       return absMeasure;
     }
+    
+    Condition(){
+      
+    }
 };
 
 class Location{
@@ -340,13 +385,18 @@ class Operation{
       }
     }
   
+    Operation(){
+      
+    }
+  
 };
 
 class Ray	{
   
 };
 
-typedef vector<LineSegment> vecLineSegments;
-typedef vector<Length> vecLengths;
-typedef vector<string> vecStrings;
-typedef vector<Point> vecPoints;
+
+void spitError(string error){
+  cout<<error<<endl;
+  exit(1);
+}

@@ -1,12 +1,13 @@
 %{
-#include <limits.h>
-#include "y.tab.h"
+
 #include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <vector>
-#define DEBUG 0							//prints all lexical phase information
-#define SHOWTOKENS 0
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include "y.tab.h"
+#define TDEBUG 0							//prints all lexical phase information
+using namespace std;
 extern "C"								//g++ compiler needs the defination declared[ not required by gcc]
 {
 	int yylex(void);
@@ -18,46 +19,46 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
  
 
 %%
-{KEYWORD}   {
-              if(DEBUG) cout<<"KEYWORD "<<yytext<<endl;
+KEYWORD     {
+              if(TDEBUG) cout<<"KEYWORD "<<yytext<<endl;
               return yytext;
             }
 
 [A-Z][A-Z][A-Z]
             {
-              yylval.sval = string(yytext);
-              if(DEBUG) cout<<"POINTTRIPLET "<<yytext<<endl;
+              string yylval.sval = new string(yytext);
+              if(TDEBUG) cout<<"POINTTRIPLET "<<yytext<<endl;
               return POINTTRIPLET;
             }
 
 [A-Z][A-Z]  {
-              yylval.sval = string(yytext);
-              if(DEBUG) cout<<"POINTPAIR "<<yytext<<endl;
+              yylval.sval = new string(yytext);
+              if(TDEBUG) cout<<"POINTPAIR "<<yytext<<endl;
               return POINTPAIR;
             }
 
 [A-Z]       {
-              yylval.sval = string(yytext);
-              if(DEBUG) cout<<"POINTSINGLET "<<yytext<<endl;
+              yylval.sval = new string(yytext);
+              if(TDEBUG) cout<<"POINTSINGLET "<<yytext<<endl;
               return POINTSINGLET;
             }
 
 [a-z]       {
-              yylval.sval = string(yytext);
-              if(DEBUG) cout<<"LINELABEL "<<yytext<<endl;
+              yylval.sval = new string(yytext);
+              if(TDEBUG) cout<<"LINELABEL "<<yytext<<endl;
               return LINELABEL;
             }
 
 [0-9]+(.[0-9]+)
             {
-              yylval.dval = atod(yytext);
-              if(DEBUG) cout<<"REAL "<<yylval.dval<<endl;
+              double yylval.dval = atod(yytext);
+              if(TDEBUG) cout<<"REAL "<<yylval.dval<<endl;
               return REAL;
             }
 
 [0-9]+      {
               yylval.ival = atoi(yytext);
-              if(DEBUG) cout<<"INTEGER "<<yylval.ival<<endl;
+              if(TDEBUG) cout<<"INTEGER "<<yylval.ival<<endl;
               return INTEGER;
             }
 
