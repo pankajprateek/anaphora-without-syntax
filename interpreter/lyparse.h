@@ -1,3 +1,7 @@
+#include<vector>
+#include<string>
+#include<cmath>
+
 class Length{
   double length;
   
@@ -21,61 +25,21 @@ public:
     }
 };
 
-class Command{
-  Plottables plottables;
-  
+class Point{
   public:
-    Command(Plottables plottables){
-      this->plottables = plottables;
-    }
-  
-    string getString(){
-      
-    }
-};
-
-class Plottables{
-  public:
-    vector<Point> points;
-    vector<LineSegment> lineSegment,
-    vector<Arc> arcs;
-    vector<Line> lines;
-    vecotr<Circle> circles;
-    vector<Angle> angles;
+    char label;
+    double x, y;
     
-    void updatePlottables(Point p);
-    void updatePlottables(LineSegment ls);
-    void updatePlottables(Arc a);
-    void updatePlottables(Line l);
-    void updatePlottables(Circle c);
-    void updatePlottables(Angle a);
-    
-};
-
-class Condition{
-  public:
-    LineSegment ls;
-    double absLength;
-    
-    string getAddressedLineSegment(){
-      return ls.getName();
+    Point(char c){
+      this->label = c;
+      this->x = this->y = 0.0;
     }
     
-    double getStatedLength(){
-      return absLength;
+    Point(char c, double x, double y){
+      this->label = c;
+      this->x = x;
+      this->y = y;
     }
-    
-    Angle a;
-    double absMeasure;
-    
-    string getAddressedAngle(){
-      return a.getName();
-    }
-    
-    double getStatedMeasure(){
-      return absMeasure;
-    }
-    
 };
 
 class Angle{
@@ -118,21 +82,61 @@ class LineSegment{
     }
 };
 
-class Point{
+class Plottables{
   public:
-    char label;
-    double x, y;
+    vector<Point> points;
+    vector<LineSegment> lineSegment,
+    vector<Arc> arcs;
+    vector<Line> lines;
+    vecotr<Circle> circles;
+    vector<Angle> angles;
     
-    Point(char c){
-      this->label = c;
-      this->x = this->y = 0.0;
+    void updatePlottables(Point p);
+    void updatePlottables(LineSegment ls);
+    void updatePlottables(Arc a);
+    void updatePlottables(Line l);
+    void updatePlottables(Circle c);
+    void updatePlottables(Angle a);
+    
+};
+
+class Command{
+  Plottables plottables;
+  
+  public:
+    Command(Plottables plottables){
+      this->plottables = plottables;
+    }
+  
+    string getString(){
+      
+    }
+};
+
+class Condition{
+  public:
+    LineSegment ls;
+    double absLength;
+    
+    string getAddressedLineSegment(){
+      return ls.getName();
     }
     
-    Point(char c, double x, double y){
-      this->label = c;
-      this->x = x;
-      this->y = y;
+    double getStatedLength(){
+      return absLength;
     }
+    
+    Angle a;
+    double absMeasure;
+    
+    string getAddressedAngle(){
+      return a.getName();
+    }
+    
+    double getStatedMeasure(){
+      return absMeasure;
+    }
+    
 };
 
 class Location{
