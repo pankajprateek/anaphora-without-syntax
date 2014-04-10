@@ -481,12 +481,25 @@ addressLineSegment :
 ;
 
 angleAndProperties :
-    genericAngleAndProperties
-  | rightAngleAndProperties
+    genericAngleAndProperties   { $$ = $1; }
+  | rightAngleAndProperties     { $$ = $1; }
 ;
 
 genericAngleAndProperties :
     ANGLE VERTEX addressPoint addressDegree
+      {
+        Plottables *p = new Plottables();
+        double degrees = $4->getDegrees();
+        Point vertex, leftVertex, rightVertex;
+        char c1 = context.reserveNextPointLabel();
+        char c2 = context.reserveNextPointLabel();
+        if(context.existsPoint($3)){
+          vertex = context.getPoint(
+          Angle a(
+        }
+      
+      }
+    
   | ANGLE addressAngle addressDegree
 ;
 
