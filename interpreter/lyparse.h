@@ -56,6 +56,13 @@ class Point{
       this->x = x;
       this->y = y;
     }
+    
+    bool compare(Point X) {
+      if(X.label == this->label and X.x == this->x and X.y == this.y)
+	return true;
+      else
+	return false;
+    }
 };
 
 class Angle{
@@ -77,6 +84,13 @@ class Angle{
     
   double getDegree(){
     return this->degree;
+  }
+  
+  bool compare(Angle X) {
+    if(X.degree == this->degree and X.vertex.compare(this->vertex) and X.leftVertex.compare(this->leftVertex) and X.rightVertex.compare(this->rightVertex))
+      return true;
+    else
+      return false;
   }
 };
 
