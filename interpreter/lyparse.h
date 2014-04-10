@@ -171,21 +171,28 @@ class Angle{
     Point vertex, leftVertex, rightVertex;
     double degree;
 
-  Point getVertex(){
-    return vertex;
-  }
-  
-  Point getLeftVertex(){
-    return leftVertex;
-  }
+    Angle(Point v, Point lv, Point rv, double d = 0){
+      vertex = v;
+      leftVertex = lv;
+      rightVertex = rv;
+      degree = d;
+    }
+
+    Point getVertex(){
+      return vertex;
+    }
     
-  Point getRightVertex(){
-    return rightVertex;
-  }
-    
-  double getDegree(){
-    return this->degree;
-  }
+    Point getLeftVertex(){
+      return leftVertex;
+    }
+      
+    Point getRightVertex(){
+      return rightVertex;
+    }
+      
+    double getDegree(){
+      return this->degree;
+    }
 }
 
 class Arc{
