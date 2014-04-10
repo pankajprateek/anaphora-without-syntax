@@ -1,39 +1,77 @@
 %debug
 %{	
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <string.h>
-	#define PDEBUG 0
-	extern "C"	//g++ compiler needs the definations declared[ not required by gcc]
-	{
-		int yyparse(void);
-		int yylex(void);
-		int yyerror(char* s){		//Print the error as it is on the stderr
-			error_count++;
-			fprintf(stderr, "%s at line %d\n",s, line_number);
-		}
-	}
-%}
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <cassert>
+#define PDEBUG 0
+  extern "C"	//g++ compiler needs the definations declared[ not required by gcc]
+  {
+    int yyparse(void);
+    int yylex(void);
+    int yyerror(char* s){		//Print the error as it is on the stderr
+      error_count++;
+      fprintf(stderr, "%s at line %d\n",s, line_number);
+    }
+  }
+  %}
 
 %union{		//union declared to store the return value of tokens
-	int ival;
-	double dval;
+  int ival;
+  double dval;
   string sval;
-}
+ }
 //tokentypes for different tokens
 %token <ival> INTEGER
 %token <dval> REAL
-%token <sval> POINTSINGLET, POINTPAIR, POINTTRIPLET, LINELABEL
+%token <sval> POINTSINGLET POINTPAIR POINTTRIPLET LINELABEL
 
+%type <int> numChords;
 %start command
-%type <Length> addressLength addressLength1 addressLength2 addressLength3
+%type <Length> addressLength addressLength1 addressLength2 addressLength3 distanceFromCenterClause
 %type <Degree> addressDegree addressDegree1 addressDegree2 addressDegree3
-%type <Angle> addressAngle
-%type <Operation> operation DIFFERENCE SUM
+%type <Angle> addressAngle addressAngleRays
+%type <Operation> operation
 %type <Command> command constructCommand markCommand cutCommand joinCommand divideCommand bisectCommand
-%type <Plottable> constructibleAndProperties lineSegmentAndProperties lineAndProperties arcAndProperties circleAndProperties angleAndProperties rayAndProperties perpendicularBisectorAndProperties bisectorAndProperties perpendicularAndProperties chordAndProperties parallelAndProperties
 
-%%
+%type <Plottables> constructibleAndProperties lineSegmentAndProperties lineAndProperties arcAndProperties circleAndProperties angleAndProperties rayAndProperties perpendicularBisectorAndProperties bisectorAndProperties perpendicularAndProperties parallelAndProperties genericAngleAndProperties rightAngleAndProperties bisectableAndProperties cuttableAndProperties angleArmPointsAndProperties markableAndProperties divisibleAndProperties chordAndProperties arcProperties
+
+%type <LineSegment> addressLineSegment divisibleObject addressChord
+
+%type < vecLineSegments > addressChords addressPerpendicularBisectableObjects
+
+%type <Length> lineSegmentProperties radiusClause
+%type <vecLengths> radiiClause
+
+%type <vecString> addressPointPairs
+
+%type <Line> addressLine
+
+%type <Condition> conditions condition
+
+%type <Point> addressPoint originClause centerClause passingThroughClause arcConditionClause
+%type < vecPoints > centersClause mutualIntersectionClause
+
+
+%type <Circle> addressCircle
+%type <Arc> addressArc
+
+%type <Object> objects intersectableObjects object intersectableObject addressIndefinitePreviousObjects addressPreviousObjects addressIntersectablePreviousObjects adjectivePrevious
+
+%type <Cut> fromClause atPoints
+%type <Intersection> labelable pointAndPropertiesNotOnCase pointAndPropertiesOnCase pointAndProperties addressIntersectableObject intersectionPointsAndProperties intersectionClause
+
+%type <Parallelization> parallelConditionClause parallelToClause
+
+%type <Perpendicularization> perpendicularConditionClause perpendicularToClause
+
+
+%type <Location> markConditionClause
+
+%type <void*> LENGTH TIMES CM GREATERTHAN LESSTHAN TWICE THRICE HALF GIVENTHAT CONSTRUCT addressFreeObject ANGLE ANY ARC ARCS ARM AT BISECT BISECTOR BISECTORS CENTER CENTERS CHORD CHORDS CIRCLE CIRCLES CUT DEGREES DIAMETER DISTANCE DISTANCEFROM DIVIDE EACHOTHER EQUALS FREEVARIABLE FROM INTERSECTING INTERSECTIONPOINTS INTO IT ITS JOIN LINE LINES LINESEGMENT LINESEGMENTS MARK NOTON ON ORIGIN PARALLEL PARTS PASSINGTHROUGH PERPENDICULAR PERPENDICULARBISECTOR PERPENDICULARBISECTORS POINT POINTS PREVIOUS previousDegree previousLength RADIUS RAY RAYS RIGHT THEIR THEM THESE THIS THOSE VERTEX DIFFERENCE SUM
+
+
+%%	
 addressLength :
     addressLength3  {
                       $$ = $1;
@@ -80,7 +118,7 @@ addressLength1 :
                     {
                       assert(context.existsLineSegment($1->getName()));
                       Length* length = new Length();     
-                      double l = $2->getLength();
+                      double l = $1->getLength();
                       length->setLength(l);
                       return length;
                     }
@@ -294,24 +332,19 @@ addressDegree3 :
 ;
 
 TIMES :
-    "times"
+    "times"   { $$ = NULL;  }
 ;
 
 HALF :
-    "half"
+    "half"    { $$ = NULL;  }
 ;
 
 GREATERTHAN :
-    "greater" "than"
+    "greater" "than"  { $$ = NULL;  }
 ;
 
 LESSTHAN :
-    "less" "than"
-;
-
-commands :
-    commands command
-  | command
+    "less" "than"     { $$ = NULL;  }
 ;
 
 command :
@@ -332,8 +365,8 @@ constructCommand :
 ;
 
 CONSTRUCT :
-    "construct"
-  | "draw"
+    "construct"       { $$ = NULL;  }
+  | "draw"            { $$ = NULL;  }
 ;
 
 constructibleAndProperties : 
@@ -420,12 +453,12 @@ condition :
 ;
 
 GIVENTHAT :
-    "given" "that"
-  | "given"
+    "given" "that"    { $$ = NULL;  }
+  | "given"           { $$ = NULL;  }
 ;
 
 LINESEGMENT :
-  "line" "segment"
+  "line" "segment"    { $$ = NULL;  }
 ;
 
 lineSegmentProperties : 
@@ -434,11 +467,11 @@ lineSegmentProperties :
 ;
 
 LENGTH :
-  "length"
+  "length"            { $$ = NULL;  }
 ;
 
 CM :
-  "cm"
+  "cm"                { $$ = NULL;  }
 ;
 
 addressLineSegment :
@@ -501,666 +534,1208 @@ genericAngleAndProperties :
       }
     
   | ANGLE addressAngle addressDegree
+      {
+        return new Plottable();
+      }
 ;
 
 rightAngleAndProperties :
     RIGHT ANGLE VERTEX addressPoint
+      {
+        return new Plottable();
+      }    
   | RIGHT ANGLE addressAngle
+      {
+        return new Plottable();
+      }  
 ;
 
 RIGHT :
-    "right"
-;
+    "right"               { $$ = NULL;  }
+; 
 
 VERTEX :
-    "vertex"
+    "vertex"              { $$ = NULL;  }
 ;
 
 ANGLE :
-    "angle"
+    "angle"               { $$ = NULL;  }
 ;
 
 addressAngle :
     ANGLE POINTTRIPLET
+      {
+        return new Angle();
+      }    
   | ANGLE POINTSINGLET
+      {
+        return new Angle();
+      }      
   | POINTTRIPLET
+      {
+        return new Angle();
+      }      
   | POINTSINGLET
+      {
+        return new Angle();
+      }      
   | adjectivePrevious ANGLE
+      {
+        return new Angle();
+      }      
 ;
 
 DEGREES :
-    "degree"
-  | "degrees"
-;
+    "degree"              { $$ = NULL;  }
+  | "degrees"             { $$ = NULL;  }
+; 
 
 circleAndProperties : 
     CIRCLE CENTER addressPoint RADIUS addressLength
+      {
+        return new Plottable();
+      }        
   | CIRCLE CENTER addressPoint DIAMETER addressLength
+      {
+        return new Plottable();
+      }      
   | CIRCLE RADIUS addressLength
+      {
+        return new Plottable();
+      }      
   | CIRCLE DIAMETER addressLength
+      {
+        return new Plottable();
+      }    
 ;
 
 CIRCLE :
-  "circle"
+  "circle"                  { $$ = NULL;  }
 ;
 
 LINE :
-    "line"
+    "line"                  { $$ = NULL;  }
 ;
 
 lineAndProperties : 
     LINE [a-z] perpendicularToClause perpendicularConditionClause
+      {
+        return new Plottable();
+      }    
   | LINE [a-z] parallelToClause parallelConditionClause
+      {
+        return new Plottable();
+      }    
   | LINE [a-z]
+      {
+        return new Plottable();
+      }      
 ;
 
 arcAndProperties :
   ARC arcProperties
+      {
+        $$ = $1;
+      }    
+  
 ;
 
 ARC :
-    "arc"
+    "arc"                     { $$ = NULL;  }
 ;
 
 arcProperties :
     centersClause radiiClause mutualIntersectionClause
+      {
+	return new Plottable();
+      }
   | centerClause radiusClause arcConditionClause
+      {
+	return new Plottable();
+      }
   | centerClause arcConditionClause
+      {
+	return new Plottable();
+      }
   | centerClause radiusClause
+      {
+	return new Plottable();
+      }
 ;
 
 arcConditionClause :
     intersectionClause
+      {
+	return new Point();
+      }    
   | passingThroughClause
+      {
+	return new Point();
+      }  
 ;
 
 passingThroughClause :
     PASSINGTHROUGH addressPoint
+      {
+	return new Point();
+      }    
 ;
 
 PASSINGTHROUGH :
-    "passing" "through"
-  | "through"
+    "passing" "through"         { $$ = NULL;  }
+  | "through"                   { $$ = NULL;  }
 ;
 
 mutualIntersectionClause :
     INTERSECTING EACHOTHER AT POINTSINGLET POINTSINGLET
+      {
+	return new vector<Point>();
+      }    
   | INTERSECTING AT POINTSINGLET POINTSINGLET
+      {
+	return new vector<Point>();
+      }    
   | INTERSECTING EACHOTHER AT POINTSINGLET
+      {
+	return new vector<Point>();
+      }      
   | INTERSECTING AT POINTSINGLET
+      {
+	return new vector<Point>();
+      }      
 ;
 
 centerClause :
     CENTER POINTSINGLET
+      {
+	return new Point();
+      }        
 ;
 
 centersClause :
     CENTERS POINTSINGLET POINTSINGLET
+      {
+	return new vector<Point>();
+      }        
 ;
 
 radiusClause :
     RADIUS addressLength
+      {
+	return new Length();
+      }        
 ;
 
 radiiClause :
     RADIUS addressLength addressLength
+      {
+	return new vector<Length>();
+      }        
 ;
 
 intersectionClause :
     INTERSECTING addressIntersectableObject AT POINTSINGLET POINTSINGLET
+      {
+	return $2;
+      }        
   | INTERSECTING addressIntersectableObject AT POINTSINGLET
+      {
+	return $2;
+      }      
 ;
 
 addressIntersectableObject :
     addressLineSegment
+      {
+	return new Intersection();
+      }          
   | addressLine
+      {
+	return new Intersection();
+      }        
   | addressArc
+      {
+	return new Intersection();
+      }        
   | addressCircle
+      {
+	return new Intersection();
+      }        
   | addressAngleRays
+      {
+	return new Intersection();
+      }        
 ;
 
 addressAngleRays :
     RAYS ANGLE addressAngle
+      {
+	return new Angle();
+      }          
 ;
 
 CENTER :
-  "center"
+  "center"                  { $$ = NULL;  }
 ;
 
 RADIUS :
-  "radius"
+  "radius"                  { $$ = NULL;  }
 ;
 
 DIAMETER :
-  "diameter"
+  "diameter"                  { $$ = NULL;  }
 ;
 
 INTERSECTING :
-    "intersecting"
-  | "cutting"
-  | "cut"
-  | "intersect"
+    "intersecting"                  { $$ = NULL;  }
+  | "cutting"                  { $$ = NULL;  }
+  | "cut"                  { $$ = NULL;  }
+  | "intersect"                  { $$ = NULL;  }
 ;
 
 EACHOTHER :
-    "eachother"
-  | "each" "other"
+    "eachother"                  { $$ = NULL;  }
+  | "each" "other"                  { $$ = NULL;  }
 ;
 
 CENTERS :
-    "centers"
+    "centers"                  { $$ = NULL;  }
 ;
 
 AT :
-    "at"
+    "at"                  { $$ = NULL;  }
 ;
 
 rayAndProperties :
     RAY POINTPAIR originClause
+      {
+	return new Plottables();
+      }          
   | RAYS POINTPAIR POINTPAIR originClause
+      {
+	return new Plottables();
+      }          
   | RAY POINTPAIR
+      {
+	return new Plottables();
+      }            
   | RAYS POINTPAIR POINTPAIR
+      {
+	return new Plottables();
+      }            
 ;
 
 originClause :
     ORIGIN addressPoint
+      {
+	return new Point();
+      }              
 ;
 
 ORIGIN :
-    "origin"
-  | "initial" "point"
+    "origin"                  { $$ = NULL;  }
+  | "initial" "point"                  { $$ = NULL;  }
 ;
 
 RAY :
-    "ray"
+    "ray"                  { $$ = NULL;  }
 ;
 
 RAYS :
-    "rays"
+    "rays"                  { $$ = NULL;  }
 ;
 
 perpendicularBisectorAndProperties :
     PERPENDICULARBISECTOR addressPerpendicularBisectableObjects
+      {
+	$$ = new Plottables();
+      }
   | PERPENDICULARBISECTORS addressPerpendicularBisectableObjects addressPerpendicularBisectableObjects
+      {
+	$$ = new Plottables();
+      }
   | PERPENDICULARBISECTOR addressIndefinitePreviousObjects
+      {
+	$$ = new Plottables();
+      }  
   | PERPENDICULARBISECTORS addressIndefinitePreviousObjects
+      {
+	$$ = new Plottables();
+      }  
 ;
 
 addressPerpendicularBisectableObjects :
     addressLineSegment
-  | addressLine
+      {
+	$$ = new vector<LineSegment>();      
+      }
   | addressChord
+    {
+	$$ = new vector<LineSegment>();      
+    }
   | addressChords
+    {
+	$$ = $1;
+    }  
 ;
 
 addressChord :
     adjectivePrevious CHORD
+      {
+	return new LineSegment();
+      }
 ;
 
 addressChords :
     adjectivePrevious CHORDS
+      {
+	return new vector<LineSegment>();
+      }
 ;
 
 PERPENDICULARBISECTOR :
-    "perpendicular" "bisector"
+    "perpendicular" "bisector"                  { $$ = NULL;  }
 ;
 
 bisectorAndProperties :
     BISECTOR addressLineSegment
+      {
+	return new Plottables();
+      }
   | BISECTOR addressAngle
+      {
+	return new Plottables();
+      }  
   | BISECTOR addressIndefinitePreviousObjects
+      {
+	return new Plottables();
+      }  
 ;
 
 parallelToClause :
     PARALLEL addressLineSegment
+      {
+	return new Parallelization();
+      }    
   | PARALLEL addressLine
+      {
+	return new Parallelization();
+      }      
 ;
 
 perpendicularToClause :
     PERPENDICULAR addressLineSegment
+      {
+	return new Perpendicularization();
+      }
     PERPENDICULAR addressLine
+      {
+	return new Perpendicularization();
+      }
 ;
 
 perpendicularAndProperties :
     perpendicularToClause perpendicularConditionClause
+      {
+        return new Plottables();
+      }
 ;
 
 PERPENDICULAR :
-    "perpendicular"
-  | "orthogonal"
+    "perpendicular"                  { $$ = NULL;  }
+  | "orthogonal"                  { $$ = NULL;  }
 ;
 
 perpendicularConditionClause :
     AT addressPoint
+      {
+	return new Perpendicularization();
+      }
   | passingThroughClause
+      {
+	return new Perpendicularization();
+      }  
 ;
 
 chordAndProperties :
     CHORD addressCircle
+      {
+	return new Plottables();
+      }
   | CHORD addressCircle distanceFromCenterClause
+      {
+	return new Plottables();
+      }
   | CHORDS addressCircle numChords
+      {
+	return new Plottables();  
+      }
   | CHORD addressIndefinitePreviousObjects
+      {
+	return new Plottables();  
+      }  
   | CHORD addressIndefinitePreviousObjects distanceFromCenterClause
+      {
+	return new Plottables();  
+      }  
   | CHORDS addressIndefinitePreviousObjects numChords
+      {
+	return new Plottables();  
+      }  
 ;
 
 distanceFromCenterClause :
     DISTANCE addressLength FROM CENTER
+      {	
+	$$ = $2;
+      }
 ;
 
 DISTANCE :
-    "distance"
+    "distance"                  { $$ = NULL;  }
 ;
 
 numChords :
-    INTEGER
+    INTEGER			{ $$ = $1.ival; }
 ;
 
 PARALLEL :
-    "parallel"
+    "parallel"                  { $$ = NULL;  }
 ;
 
 parallelAndProperties :
     parallelToClause parallelConditionClause
+      {
+        return new Plottables();
+      }
 ;
 
 parallelConditionClause :
     AT addressPoint
+      {
+	return new Parallelization();
+      }    
   | passingThroughClause
+      {
+	return new Parallelization();
+      }  
 ;
 
 divideCommand :
     DIVIDE divisibleAndProperties
+      {
+	return new Command();
+      }
 ;
 
 DIVIDE :
-    "divide"
+    "divide"                  { $$ = NULL;  }
 ;
 
 divisibleAndProperties :
     divisibleObject INTO INTEGER PARTS
+      {
+	return new Plottables();
+      }
 ;
 
 PARTS :
-  "parts"
+  "parts"                  { $$ = NULL;  }
 ;
 
 INTO :
-  "into"
+  "into"                  { $$ = NULL;  }
 ;
 
 divisibleObject :
     addressLineSegment
+      {
+	return new LineSegment();
+      }
   | addressIndefinitePreviousObjects
+      {
+	return new LineSegment();
+      }  
 ;
 
 joinCommand : 
   JOIN addressPointPairs
+      {
+	return new Command();
+      }  
 ;
 
 JOIN :
-  "join"
+  "join"                  { $$ = NULL;  }
 ;
 
 addressPointPairs : 
     POINTPAIR
+      {
+	return new vector<string>();
+      }    
   | POINTPAIR POINTPAIR
+      {
+	return new vector<string>();
+      }    
   | POINTPAIR POINTPAIR POINTPAIR
+      {
+	return new vector<string>();
+      }      
   | adjectivePrevious POINTS
-;
-
-POINTTRIPLET :
-  [A-Z][A-Z][A-Z]
+      {
+	return new vector<string>();
+      }      
 ;
 
 markCommand :
     MARK markableAndProperties
+      {
+	return new Command();
+      }        
 ;
 
 MARK : 
-    "mark"
-  | "draw"
-  | "label"
+    "mark"                  { $$ = NULL;  }
+  | "draw"                  { $$ = NULL;  }
+  | "label"                  { $$ = NULL;  }
 ;
 
 markableAndProperties :
     pointAndProperties
+      {
+	return new Plottables();
+      }        
   | intersectionPointsAndProperties
+      {
+	return new Plottables();
+      }        
   | angleArmPointsAndProperties
+      {
+	return new Plottables();
+      }          
 ;
 
 angleArmPointsAndProperties :
     POINT POINTSINGLET ON ARM addressAngle POINTSINGLET ON ARM addressAngle
+      {
+	return new Plottables();
+      }            
 ;
 
 ARM :
-  "arm"
+  "arm"                  { $$ = NULL;  }
 ;
 
 intersectionPointsAndProperties : 
     INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint addressPoint
+      {
+	return new Intersection();
+      }            
   | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
+      {
+	return new Intersection();
+      }              
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint
+      {
+	return new Intersection();
+      }              
 ;
 
 INTERSECTIONPOINTS :
-    "intersection" "points"
-  | "intersection" "point"
-  | "intersection"
-  | "intersections"
+    "intersection" "points"                  { $$ = NULL;  }
+  | "intersection" "point"                  { $$ = NULL;  }
+  | "intersection"                  { $$ = NULL;  }
+  | "intersections"                  { $$ = NULL;  }
 ;
 
 addressIntersectingObject : 
     addressArc
+      {
+	return new Intersection();
+      }                
   | addressCircle
+      {
+	return new Intersection();
+      }              
   | addressLine
+      {
+	return new Intersection();
+      }              
   | addressLineSegment
+      {
+	return new Intersection();
+      }              
   | addressPreviousObjects
+      {
+	return new Intersection();
+      }              
 ;
 
 pointAndProperties : 
     POINT POINTSINGLET pointAndPropertiesNotOnCase
+      {
+	return new Intersection();
+      }                
   | POINT POINTSINGLET pointAndPropertiesOnCase markConditionClause
+      {
+	return new Intersection();
+      }              
   | POINT POINTSINGLET pointAndPropertiesOnCase  
+      {
+	return new Intersection();
+      }              
   | POINTSINGLET pointAndPropertiesNotOnCase
+      {
+	return new Intersection();
+      }              
   | POINTSINGLET pointAndPropertiesOnCase markConditionClause
+      {
+	return new Intersection();
+      }              
   | POINTSINGLET pointAndPropertiesOnCase
+      {
+	return new Intersection();
+      }              
 ;
 
 markConditionClause :
     DISTANCEFROM addressPoint addressLength
+      {
+	return new Location();
+      }                
 ;
 
 DISTANCEFROM :
-    "distance" "from"
+    "distance" "from"                  { $$ = NULL;  }
 ;
 
 pointAndPropertiesOnCase :
     ON labelable
+      {
+	return new Intersection();
+      }                
 ;
 
 pointAndPropertiesNotOnCase :
     NOTON labelable
+      {
+	return new Intersection();
+      }                
 ;
 
 ON :
-  "on"
+  "on"                  { $$ = NULL;  }
 ;
 
 NOTON :
-    "not" "on"
-  | "outside"
+    "not" "on"                  { $$ = NULL;  }
+  | "outside"                  { $$ = NULL;  }
 ;
 
 labelable :
     addressLineSegment
+      {
+	return new Intersection();
+      }                
   | addressArc
+      {
+	return new Intersection();
+      }              
   | addressLine
+      {
+	return new Intersection();
+      }              
   | addressPreviousObjects
+      {
+	return new Intersection();
+      }              
 ;
 
 addressLine :
     LINELABEL
+      {
+	return new Line();
+      }                  
   | LINE LINELABEL
+      {
+	return new Line();
+      }               
   | adjectivePrevious LINE
+      {
+	return new Line();
+      }                 
   | addressFreeObject
+      {
+	return new Line();
+      }                 
 ;
 
 addressArc :
-  | adjectivePrevious ARC
+    adjectivePrevious ARC
+      {
+	return new vector<Arc>();
+      }                 
   | adjectivePrevious ARCS
+      {
+	return new vector<Arc>();
+      }                   
 ;
 
 adjectivePrevious :
-    THIS
+    THIS		
+      {
+	return new Object();
+      }
   | THESE
+      {
+	return new Object();
+      }  
   | PREVIOUS
+      {
+	return new Object();
+      }
   | THOSE
+      {
+	return new Object();
+      }  
 ;
 
 addressIntersectablePreviousObjects :
     THIS intersectableObject
+      {
+	return new Intersection();
+      }
   | THESE intersectableObjects
+      {
+	return new Intersection();
+      }
   | PREVIOUS intersectableObject
+      {
+	return new Intersection();
+      }  
   | PREVIOUS intersectableObjects
+      {
+	return new Intersection();
+      }  
   | THOSE intersectableObjects
+      {
+	return new Intersection();
+      }  
   | addressIndefinitePreviousObjects
+      {
+	return new Intersection();
+      }  
 ;
 
 addressPreviousObjects :
     THIS object
+      {
+	return new Object();
+      }      
   | THESE objects
+      {
+	return new Object();
+      }        
   | PREVIOUS object
+      {
+	return new Object();
+      }      
   | PREVIOUS objects
+      {
+	return new Object();
+      }        
   | THOSE objects
+      {
+	return new Object();
+      }        
   | addressIndefinitePreviousObjects
+      {
+	return new Object();
+      }        
 ;
 
 addressIndefinitePreviousObjects :
-    THIS
-  | THESE
+    THIS	
+      {
+	return new Object();
+      }
+  | THESE	
+      {
+	return new Object();
+      }
   | IT
+      {
+	return new Object();
+      }  
   | ITS
+      {
+	return new Object();
+      }  
   | THEM
+      {
+	return new Object();
+      }  
   | THOSE
+      {
+	return new Object();
+      }  
   | THEIR
+      {
+	return new Object();
+      }  
 ;
 
 THEIR :
-    "their"
+    "their"                  { $$ = NULL;  }
 ;
 
 ITS :
-    "its"
+    "its"                  { $$ = NULL;  }
 ;
 
 THIS :
-  "this"
+  "this"                  { $$ = NULL;  }
 ;
 
 THESE :
-    "these"
+    "these"                  { $$ = NULL;  }
 ;
 
 PREVIOUS :
-  "previous"
+  "previous"                  { $$ = NULL;  }
 ;
 
 IT :
-  "it"
+  "it"                  { $$ = NULL;  }
 ;
 
 THEM :
-  "them"
+  "them"                  { $$ = NULL;  }
 ;
 
 THOSE :
-  "those"
+  "those"                  { $$ = NULL;  }
 ;
 
 intersectableObject :
     LINESEGMENT
+      {
+	return new Object();
+      }    
   | LINE
+      {
+	return new Object();
+      }  
   | CIRCLE
+      {
+	return new Object();
+      }  
   | ARC
+      {
+	return new Object();
+      }  
   | PERPENDICULARBISECTOR
+      {
+	return new Object();
+      }  
   | BISECTOR
+      {
+	return new Object();
+      }  
   | CHORD
+      {
+	return new Object();
+      }  
   | RAY
+      {
+	return new Object();
+      }  
 ;
 
 object : 
     intersectableObject
+      {
+	return new Object();
+      }    
   | POINT
+      {
+	return new Object();
+      }      
 ;
 
 intersectableObjects :
     LINESEGMENTS
+      {
+	return new Object();
+      }        
   | LINES
+      {
+	return new Object();
+      }      
   | CIRCLES
+      {
+	return new Object();
+      }      
   | ARCS
+      {
+	return new Object();
+      }      
   | PERPENDICULARBISECTORS
+      {
+	return new Object();
+      }      
   | BISECTORS
+      {
+	return new Object();
+      }      
   | CHORDS
+      {
+	return new Object();
+      }      
   | RAYS
+      {
+	return new Object();
+      }      
 ;
 
 LINESEGMENTS :
-    "line" "segments"
+    "line" "segments"                  { $$ = NULL;  }
 ;
 
 LINES :
-    "lines"
+    "lines"                  { $$ = NULL;  }
 ;
 
 CIRCLES :
-    "circles"
+    "circles"                  { $$ = NULL;  }
 ;
 
 PERPENDICULARBISECTORS :
-    "perpendicular" "bisectors"
+    "perpendicular" "bisectors"                  { $$ = NULL;  }
 ;
 
 BISECTORS :
-    "bisectors"
+    "bisectors"                  { $$ = NULL;  }
 ;
 
 CHORDS :
-    "chords"
+    "chords"                  { $$ = NULL;  }
 ;
 
 CHORD :
-    "chord"
+    "chord"                  { $$ = NULL;  }
 ;
 
 objects :
     intersectableObjects
+      {
+	return new Object();
+      }        
   | POINTS
+      {
+	return new Object();
+      }      
 ;
 
 BISECTOR :
-    "bisector"
+    "bisector"                  { $$ = NULL;  }
 ;
 
 ARCS :
-    "arcs"
+    "arcs"                  { $$ = NULL;  }
 ;
 
 cutCommand :
   CUT cuttableAndProperties
+      {
+	return new Command();
+      }      
 ;
 
 CUT :
-  "cut"
+  "cut"                  { $$ = NULL;  }
 ;
 
 addressPoint :
     POINTSINGLET
+      {
+	return new Point();
+      }        
   | POINT POINTSINGLET
+      {
+	return new Point();
+      }          
   | adjectivePrevious POINT
+      {
+	return new Point();
+      }          
   | addressFreeObject
+      {
+	return new Point();
+      }          
 ;
 
 addressFreeObject :
-    "ANY"
+    ANY                  { $$ = NULL;  }
 ;
 
 ANY :
-  "any"
+  "any"                  { $$ = NULL;  }
 ;
 
 POINT :
-    "point"
+    "point"                  { $$ = NULL;  }
 ;
 
 POINTS :
-    "points"
+    "points"                  { $$ = NULL;  }
 ;
 
 cuttableAndProperties :
     addressLineSegment addressLength fromClause
+      {
+	return new Plottables();
+      }            
   | addressLineSegment conditions
+      {
+	return new Plottables();
+      }              
   | addressLine atPoints
+      {
+	return new Plottables();
+      }              
   | addressArc atPoints
+      {
+	return new Plottables();
+      }              
   | addressCircle atPoints
+      {
+	return new Plottables();
+      }              
 ;
 
 atPoints :
     AT addressPoint
+      {
+	return new Cut();
+      }                
   | AT addressPoint addressPoint
+      {
+	return new Cut();
+      }                  
 ;
 
 fromClause :
     FROM addressLineSegment
+      {
+	return new Cut();
+      }                    
   | FROM addressLine
+      {
+	return new Cut();
+      }                  
   | FROM addressPreviousObjects
+      {
+	return new Cut();
+      }                
 ;
 
 addressCircle : 
     CIRCLE AT POINTSINGLET
+      {
+	return new Circle();
+      }                
   | CIRCLE CENTER POINTSINGLET
+      {
+	return new Circle();
+      }                  
   | adjectivePrevious CIRCLE
+      {
+	return new Circle();
+      }                  
   | addressFreeObject
+      {
+	return new Circle();
+      }                  
 ;
 
 FROM :
-  "from"
+  "from"                  { $$ = NULL;  }
 ;
 
 TWICE :
-  "twice"
+  "twice"                  { $$ = NULL;  }
 ;
 
 THRICE :
-  "thrice"
+  "thrice"                  { $$ = NULL;  }
 ;
 
 EQUALS :
-    "equals"
-  | "equal"
-  | "is"
-  | "has"
+    "equals"                  { $$ = NULL;  }
+  | "equal"                  { $$ = NULL;  }
+  | "is"                  { $$ = NULL;  }
+  | "has"                  { $$ = NULL;  }
 ;
 
 previousLength :
-    "same"
+    "same"                  { $$ = NULL;  }
 ;
 
 previousDegree :
-    "same"
+    "same"                  { $$ = NULL;  }
 ;
 
 operation :
     DIFFERENCE
+      {
+	return new Operation();
+      }                    
   | SUM
+      {
+	return new Operation();
+      }                  
 ;
 
 DIFFERENCE :
-    "minus"
-  | "difference"
+    "minus"                  { $$ = NULL;  }
+  | "difference"                  { $$ = NULL;  }
 ;
 
 SUM :
-    "sum"
+    "sum"                  { $$ = NULL;  }
 ;
 
 FREEVARIABLE :
-    "any"
-  | "convenient"
+    "any"                  { $$ = NULL;  }
+  | "convenient"                  { $$ = NULL;  }
 ;
 
 bisectCommand :
     BISECT bisectableAndProperties
+      {
+	return new Command();
+      }                    
 ;
 
 BISECT :
-    "bisect"
+    "bisect"                  { $$ = NULL;  }
 ;
 
 bisectableAndProperties :
     addressLineSegment
+      {
+	return new Plottables();
+      }                    
   | addressAngle
+      {
+	return new Plottables();
+      }                      
   | addressIndefinitePreviousObjects
+      {
+	return new Plottables();
+      }                      
 ;
 
 %%

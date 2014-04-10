@@ -1,6 +1,9 @@
+#pragma once
+
 #include<vector>
 #include<string>
 #include<cmath>
+
 using namespace std;
 
 class Length{
@@ -180,7 +183,6 @@ class LineSegment{
     }
     
     LineSegment(string pointPair){
-      assert(!context.existsLineSegment(pointPair));
       A.setLabel(pointPair[0]);
       B.setLabel(pointPair[1]);
     }
@@ -339,3 +341,12 @@ class Operation{
     }
   
 };
+
+class Ray	{
+  
+};
+
+typedef vector<LineSegment> vecLineSegments;
+typedef vector<Length> vecLengths;
+typedef vector<string> vecStrings;
+typedef vector<Point> vecPoints;
