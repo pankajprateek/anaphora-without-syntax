@@ -1,6 +1,7 @@
 #include<vector>
 #include<string>
 #include<cmath>
+using namespace std;
 
 class Length{
   double length;
@@ -56,9 +57,9 @@ class Point{
       this->x = x;
       this->y = y;
     }
-    
+
     bool compare(Point X) {
-      if(X.label == this->label and X.x == this->x and X.y == this.y)
+      if(X.label == this->label and X.x == this->x and X.y == this->y)
 	return true;
       else
 	return false;
@@ -84,6 +85,14 @@ class Angle{
     
   double getDegree(){
     return this->degree;
+  }
+
+  string getName() {
+    string s = "ABC";
+    s[0] = leftVertex.label;
+    s[1] = vertex.label;
+    s[2] = rightVertex.label;
+    return s;
   }
   
   bool compare(Angle X) {
@@ -135,11 +144,32 @@ class LineSegment{
     Point getSecondPoint(){
       return B;
     }
+
+    string getName() {
+      string s = "AB";
+      s[0] = A.label;
+      s[1] = B.label;
+      return s;
+    }
     
     LineSegment(string pointPair){
-      assert(!context.existsLineSegment(pointPait));
+      assert(!context.existsLineSegment(pointPair));
       A.setLabel(pointPair[0]);
       B.setLabel(pointPair[1]);
+    }
+};
+
+class Circle{
+  public:
+    Point center;
+    double radius;
+    
+    double getRadius(){
+      return radius;
+    }
+    
+    Point getCenter(){
+      return center;
     }
 };
 
@@ -149,8 +179,9 @@ class Plottables{
     vector<LineSegment> lineSegments;
     vector<Arc> arcs;
     vector<Line> lines;
-    vecotr<Circle> circles;
+    vector<Circle> circles;
     vector<Angle> angles;
+    vector<Length> lengths;
     
     void updatePlottables(Point p){
       Point *np = new Point(p);
@@ -188,9 +219,9 @@ class Plottables{
     void updatePlottables(Angle a){
       Point *p1 = new Point(a.getVertex());
       points.push_back(*p1);
-      Point *p1 = new Point(a.getLeftVertex());
+      Point *p2 = new Point(a.getLeftVertex());
       points.push_back(*p2);
-      Point *p1 = new Point(a.getRightVertex());
+      Point *p3 = new Point(a.getRightVertex());
       points.push_back(*p3);
       
       Angle *na = new Angle(a);
@@ -204,7 +235,7 @@ class Plottables{
         && arcs.empty()
         && lines.empty()
         && circles.empty()
-        && angle.empty();
+        && angles.empty();
     }
     
 };
@@ -218,9 +249,9 @@ class Command{
     }
   
     void executeCommand(){
-      assert(!this->plottables.empty());
-      context.writeDiff(p);
-      context.updateContext(p);
+      assert(!this->plottables.isEmpty());
+      context.writeDiff(plottables);
+      context.updateContext(plottables);
       context.writeContext();
     }
 };
@@ -290,20 +321,6 @@ class Operation{
       }
     }
   
-};
-
-class Circle{
-  public:
-    Point center;
-    double radius;
-    
-    double getRadius(){
-      return radius;
-    }
-    
-    Point getCenter(){
-      return center;
-    }
 };
 
 Context context;

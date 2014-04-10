@@ -251,7 +251,7 @@ class Context{
     }
 
     void writeContext() {
-      fstream f(contextFilename, ios::out);
+      ifstream f(contextFilename, ios::out);
       f<<"~POINTS"<<endl;
       int l = (int)points.size();
       for(int i=0;i<l;i++) {
@@ -280,7 +280,7 @@ class Context{
       f<<"~CIRCLE"<<endl;
       l = (int)circles.size();
       for(int i=0;i<l;i++) {
-	f<< circles[i].center <<" "<< circles[i].radius <<endl;
+	f<< circles[i].center.label <<" "<< circles[i].radius <<endl;
       }
       f.close();
     }
@@ -348,7 +348,7 @@ class Context{
     Angle getAngle(char[] name) {
       int l = (int)angles.size();
       for(int i=0;i<l;i++) {
-	if( (angles[i].vertex.label == name[1]) and ( (angles[i].rightVertex == name[0] and angles[i].leftVertex == name[2]) or (angles[i].leftVertex==name[2] and angles[i].rightVertex==name[0]) ) )
+	if( (angles[i].vertex.label == name[1]) and ( (angles[i].rightVertex == name[0] and angles[i].leftVertex == name[2]) or (angles[i].leftVertex == name[2] and angles[i].rightVertex == name[0]) ) )
 	  return angles[i];
       }
     }
@@ -370,7 +370,7 @@ class Context{
       return lines[(int)lines.size()-1];
     }
 
-    Arc* getLastArc(){
+    Arc getLastArc(){
       return getArcAtPosition(0);
     }
 
