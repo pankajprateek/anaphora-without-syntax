@@ -71,6 +71,19 @@ class Angle{
     Point vertex, leftVertex, rightVertex;
     double degree;
 
+    Angle(Point V, Point LV, Point RV, double deg) {
+      this->vertex.label = V.label;
+      this->vertex.x = V.x;
+      this->vertex.y = V.y;
+      this->rightVertex.label = RV.label;
+      this->rightVertex.x = RV.x;
+      this->rightVertex.y = RV.y;
+      this->leftVertex.label = LV.label;
+      this->leftVertex.x = LV.x;
+      this->leftVertex.y = LV.y;
+      this->degree = deg;
+    }
+    
   Point getVertex(){
     return vertex;
   }
@@ -115,11 +128,22 @@ class Arc{
     Point getCenter(){
       return center;
     }
+    
+    Arc(Point P, double rad) {
+      this->center.label = P.label;
+      this->center.x = P.x;
+      this->center.y = P.y;
+      this->radius = rad;
+    }
 };
 
 class Line{
   public:
     char label;
+  
+    Line(char s) {
+      this->label = s;
+    }
 };
 
 class LineSegment{
@@ -163,6 +187,13 @@ class Circle{
   public:
     Point center;
     double radius;
+    
+    Circle(Point C, double rad) {
+      this->center.label = C.label;
+      this->center.x = C.x;
+      this->center.y = C.y;
+      this->radius = rad;
+    }
     
     double getRadius(){
       return radius;

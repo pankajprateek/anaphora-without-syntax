@@ -14,8 +14,8 @@ class Context{
   vector <Angle> angles;
   vector <Length> lengths;
   
-  const string contextFilename = "./context.txt";
-  const string diffFilename = "./diff.txt";
+  // const string contextFilename = "./context.txt";
+  // const string diffFilename = "./diff.txt";
   
   public:
     double stod(string str) {
@@ -39,7 +39,7 @@ class Context{
     }
     
     vector<string> &split(const string &s, char delim, vector<string> &elems) {
-      stringstream ss(s);
+      ostringstream ss;
       string item;
       while (getline(ss, item, delim)) {
         elems.push_back(item);
@@ -56,7 +56,7 @@ class Context{
     void readContext(){
       //read the context file here
       string line;
-      ifstream f(contextFilename);
+      ifstream f("./context.txt");
       if(f.is_open()) {
 	getline(f,line);
 	while(getline(f,line)) {
@@ -64,33 +64,21 @@ class Context{
 	    break;
 	  //parse and update point
 	  vector<string> vec_line = split(line, ':');
-	  POINT X;
-	  X.label = vec_line[0];
-	  X.x = stod(vec_line[1]);
-	  X.y = stod(vec_line[2]);
+	  Point X(vec_line[0][0], stod(vec_line[1]), stod(vec_line[2]));
 	  points.push_back(X);
 	}
 	while(getline(f,line)) {
 	  if(line.compare("~LINES") == 0)
 	    break;
 	  //parse and update linesegments
-	  LINESEGMENT X;
-	  POINT A = getPoint(line[0]);
-	  X.A.label = A.label;
-	  X.A.x = A.x;
-	  X.A.y = A.y;
-	  POINT B = getPoint(line[2]);
-	  X.B.label = B.label;
-	  X.B.x = B.x;
-	  X.B.y = B.y;
+	  LineSegment X(getPoint(line[0]), getPoint(line[1]));
 	  lineSegments.push_back(X);
 	}
 	while(getline(f,line)) {
 	  if(line.compare("~ARCS") == 0)
 	    break;
 	  //parse and update lines
-	  LINE X;
-	  X.label = line[0];
+	  Line X(line[0]);
 	  lines.push_back(X);
 	}
 	while(getline(f,line)) {
@@ -98,12 +86,7 @@ class Context{
 	    break;
 	  //parse and update arcs
 	  vector<string> vec_line = split(line, ':');
-	  ARC X;
-	  POINT C = getPoint(vec_line[0][0]);
-	  X.center.label = C.label;
-	  X.center.x = C.x;
-	  X.center.y = C.y;
-	  X.radius = stod(vec_line[1]);
+	  Arc X(getPoint(vec_line[0][0]), stod(vec_line[1]));
 	  arcs.push_back(X);
 	}
 	while(getline(f,line)) {
@@ -111,31 +94,13 @@ class Context{
 	    break;
 	  //parse and update angles
 	  vector<string> vec_line = split(line, ':');
-	  ANGLE X;
-	  POINT V = getPoint(vec_line[0][0]);
-	  X.vertex.label = V.label;
-	  X.vertex.x = V.x;
-	  X.vertex.y = V.y;
-	  POINT LV = getPoint(vec_line[1][0]);
-	  X.leftvertex.label = LV.label;
-	  X.leftvertex.x = LV.x;
-	  X.leftvertex.y = LV.y;
-	  POINT RV = getPoint(vec_line[2][0]);
-	  X.rightvertex.label = RV.label;
-	  X.rightvertex.x = RV.x;
-	  X.rightvertex.y = RV.y;
-	  X.degree = stod(vec_line[3]);
+	  Angle X(getPoint(vec_line[0][0]), getPoint(vec_line[1][0]), getPoint(vec_line[2][0]), stod(vec_line[3]));
 	  angles.push_back(X);
 	}
 	while(getline(f,line)) {
 	  //parse and update circles
 	  vector<string> vec_line = split(line, ':');
-	  CIRCLE X;
-	  POINT C = getPoint(vec_line[0][0]);
-	  X.center.label = C.label;
-	  X.center.x = C.x;
-	  X.center.y = C.y;
-	  X.radius = stod(vec_line[1]);
+	  Circle X(getPoint(vec_line[0][0]), stod(vec_line[1]));
 	  circles.push_back(X);
 	}
       }
@@ -155,8 +120,8 @@ class Context{
 	}
       }
 
-      vector<LineSegment> updateLineSegments = p.lineSegment;
-      int l = (int)updateLineSegments.size();
+      vector<LineSegment> updateLineSegments = p.lineSegments;
+      l = (int)updateLineSegments.size();
       for(int i=0;i<l;i++) {
 	if(existsLineSegment(updateLineSegments[i].A.label, updateLineSegments[i].B.label)) {
 	  ; // do nothing
@@ -167,7 +132,7 @@ class Context{
       }
 
       vector<Arc> updateArcs = p.arcs;
-      int l = (int)updateArcs.size();
+      l = (int)updateArcs.size();
       for(int i=0;i<l;i++) {
 	// no need to check in arcs
 	// there can be many arcs with the same center
@@ -178,7 +143,7 @@ class Context{
       }
 
       vector<Line> updateLines = p.lines;
-      int l = (int)updateLines.size();
+      l = (int)updateLines.size();
       for(int i=0;i<l;i++) {
 	if(existsLine(updateLines[i].label)) {
 	  // Line has only a label, if label exists
@@ -191,7 +156,7 @@ class Context{
       }
 
       vector<Circle> updateCircle = p.circles;
-      int l = (int)updateCircle.size();
+      l = (int)updateCircle.size();
       for(int i=0;i<l;i++) {
 	// Similar to arcs, no need to check in circles
 	Circle X = updateCircle[i];
@@ -199,12 +164,12 @@ class Context{
       }
 
       vector<Angle> updateAngles = p.angles;
-      int l = (int)updateAngles.size();
+      l = (int)updateAngles.size();
       for(int i=0;i<l;i++) {
 	char angle[3];
-	angle[0] = updateAngles[i].vertex;
-	angle[1] = updateAngles[i].leftVertex;
-	angle[2] = updateAngles[i].rightVertex;
+	angle[0] = updateAngles[i].vertex.label;
+	angle[1] = updateAngles[i].leftVertex.label;
+	angle[2] = updateAngles[i].rightVertex.label;
 	if(existsAngle(angle)) {
 	  Angle X = getAngle(angle);
 	  assert(X.compare(updateAngles[i]));
@@ -215,17 +180,17 @@ class Context{
       }
     }
 
-    writeDiff(Plottable p) {
-      fstream f(diffFilename, ios::out);
+    void writeDiff(Plottables p) {
+      ofstream f("./diff.txt", ios::out);
       f<<"~POINTS"<<endl;
       int l = (int)p.points.size();
       for(int i=0;i<l;i++) {
 	f<< p.points[i].label <<" "<< p.points[i].x <<" "<< p.points[i].y <<endl;
       }
       f<<"~LINESEGMENTS"<<endl;
-      l = (int)p.lineSegment.size();
+      l = (int)p.lineSegments.size();
       for(int i=0;i<l;i++) {
-	f<< p.lineSegment[i].A.label <<" "<< p.lineSegment[i].B.label <<endl;
+	f<< p.lineSegments[i].A.label <<" "<< p.lineSegments[i].B.label <<endl;
       }
       f<<"~LINES"<<endl;
       l = (int)p.lines.size();
@@ -240,27 +205,27 @@ class Context{
       f<<"~ANGLE"<<endl;
       l = (int)p.angles.size();
       for(int i=0;i<l;i++) {
-	f<< p.angles[i].vertex <<" " << p.angles[i].leftVertex <<" "<< p.angles[i].rightVertex <<" "<< p.angles[i].degree <<endl;
+	f<< p.angles[i].vertex.label <<" "<< p.angles[i].leftVertex.label <<" "<< p.angles[i].rightVertex.label <<" "<< p.angles[i].degree <<endl;
       }
       f<<"~CIRCLE"<<endl;
       l = (int)p.circles.size();
       for(int i=0;i<l;i++) {
-	f<< p.circles[i].center <<" "<< p.circles[i].radius <<endl;
+	f<< p.circles[i].center.label <<" "<< p.circles[i].radius <<endl;
       }
       f.close();
     }
 
     void writeContext() {
-      ifstream f(contextFilename, ios::out);
+      ofstream f("./context.txt", ios::out);
       f<<"~POINTS"<<endl;
       int l = (int)points.size();
       for(int i=0;i<l;i++) {
 	f<< points[i].label <<" "<< points[i].x <<" "<< points[i].y <<endl;
       }
       f<<"~LINESEGMENTS"<<endl;
-      l = (int)lineSegment.size();
+      l = (int)lineSegments.size();
       for(int i=0;i<l;i++) {
-	f<< lineSegment[i].A.label <<" "<< lineSegment[i].B.label <<endl;
+	f<< lineSegments[i].A.label <<" "<< lineSegments[i].B.label <<endl;
       }
       f<<"~LINES"<<endl;
       l = (int)lines.size();
@@ -275,7 +240,7 @@ class Context{
       f<<"~ANGLE"<<endl;
       l = (int)angles.size();
       for(int i=0;i<l;i++) {
-	f<< angles[i].vertex <<" " << angles[i].leftVertex <<" "<< angles[i].rightVertex <<" "<< angles[i].degree <<endl;
+	f<< angles[i].vertex.label <<" " << angles[i].leftVertex.label <<" "<< angles[i].rightVertex.label <<" "<< angles[i].degree <<endl;
       }
       f<<"~CIRCLE"<<endl;
       l = (int)circles.size();
@@ -312,10 +277,10 @@ class Context{
       return false;
     }
 
-    bool exixtsAngle(char[] name) {
+    bool existsAngle(char name[]) {
       int l = (int)angles.size();
       for(int i=0;i<l;i++) {
-	if( (angles[i].vertex.label == name[1]) and ( (angles[i].rightVertex == name[0] and angles[i].leftVertex == name[2]) or (angles[i].leftVertex==name[2] and angles[i].rightVertex==name[0]) ) )
+	if( (angles[i].vertex.label == name[1]) and ( (angles[i].rightVertex.label == name[0] and angles[i].leftVertex.label == name[2]) or (angles[i].leftVertex.label == name[2] and angles[i].rightVertex.label == name[0]) ) )
 	  return true;
       }
       return false;
@@ -345,10 +310,10 @@ class Context{
       }
     }
 
-    Angle getAngle(char[] name) {
+    Angle getAngle(char name[]) {
       int l = (int)angles.size();
       for(int i=0;i<l;i++) {
-	if( (angles[i].vertex.label == name[1]) and ( (angles[i].rightVertex == name[0] and angles[i].leftVertex == name[2]) or (angles[i].leftVertex == name[2] and angles[i].rightVertex == name[0]) ) )
+	if( (angles[i].vertex.label == name[1]) and ( (angles[i].rightVertex.label == name[0] and angles[i].leftVertex.label == name[2]) or (angles[i].leftVertex.label == name[2] and angles[i].rightVertex.label == name[0]) ) )
 	  return angles[i];
       }
     }
@@ -395,4 +360,4 @@ class Context{
     Length getLastLength() {
       return lengths[(int)lengths.size()-1];
     }
-}
+};
