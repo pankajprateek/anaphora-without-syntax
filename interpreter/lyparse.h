@@ -47,6 +47,9 @@ class Point{
       label = c;
     }
     
+    Point() {
+    }
+
     Point(char c){
       this->label = c;
       this->x = this->y = 0.0;
