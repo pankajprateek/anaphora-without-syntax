@@ -3,7 +3,6 @@
 #include<iostream>
 #include<vector>
 #include "lyparse.h"
-#include <boost/algorithm/string.hpp>
 using namespace std;
 
 class Context{
@@ -39,6 +38,21 @@ class Context{
       return n;
     }
     
+    vector<string> &split(const string &s, char delim, vector<string> &elems) {
+      stringstream ss(s);
+      string item;
+      while (getline(ss, item, delim)) {
+        elems.push_back(item);
+      }
+      return elems;
+    }
+    
+    vector<string> split(const string &s, char delim) {
+      vector<string> elems;
+      split(s, delim, elems);
+      return elems;
+    }
+
     void readContext(){
       //read the context file here
       string line;
@@ -49,8 +63,7 @@ class Context{
 	  if(line.compare("~LINESEGMENTS") == 0)
 	    break;
 	  //parse and update point
-	  vector<string> vec_line;
-	  boost::split(strs, vec_line, boost::is_any_of("\t "));
+	  vector<string> vec_line = split(line, ':');
 	  POINT X;
 	  X.label = vec_line[0];
 	  X.x = stod(vec_line[1]);
@@ -84,8 +97,7 @@ class Context{
 	  if(line.compare("~ANGLE") == 0)
 	    break;
 	  //parse and update arcs
-	  vector<string> vec_line;
-	  boost::split(strs, vec_line, boost::is_any_of("\t "));
+	  vector<string> vec_line = split(line, ':');
 	  ARC X;
 	  POINT C = getPoint(vec_line[0][0]);
 	  X.center.label = C.label;
@@ -98,8 +110,7 @@ class Context{
 	  if(line.compare("~CIRCLE") == 0)
 	    break;
 	  //parse and update angles
-	  vector<string> vec_line;
-	  boost::split(strs, vec_line, boost::is_any_of("\t "));
+	  vector<string> vec_line = split(line, ':');
 	  ANGLE X;
 	  POINT V = getPoint(vec_line[0][0]);
 	  X.vertex.label = V.label;
@@ -118,8 +129,7 @@ class Context{
 	}
 	while(getline(f,line)) {
 	  //parse and update circles
-	  vector<string> vec_line;
-	  boost::split(strs, vec_line, boost::is_any_of("\t "));
+	  vector<string> vec_line = split(line, ':');
 	  CIRCLE X;
 	  POINT C = getPoint(vec_line[0][0]);
 	  X.center.label = C.label;
