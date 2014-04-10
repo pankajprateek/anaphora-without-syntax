@@ -362,3 +362,21 @@ class Context{
       return lengths[(int)lengths.size()-1];
     }
 };
+
+Context context;
+
+class Command{
+  Plottables plottables;
+  
+  public:
+    Command(Plottables plottables){
+      this->plottables = plottables;
+    }
+  
+    void executeCommand(){
+      assert(!this->plottables.isEmpty());
+      context.writeDiff(plottables);
+      context.updateContext(plottables);
+      context.writeContext();
+    }
+};

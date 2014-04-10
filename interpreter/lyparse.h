@@ -274,22 +274,6 @@ class Plottables{
     
 };
 
-class Command{
-  Plottables plottables;
-  
-  public:
-    Command(Plottables plottables){
-      this->plottables = plottables;
-    }
-  
-    void executeCommand(){
-      assert(!this->plottables.isEmpty());
-      context.writeDiff(plottables);
-      context.updateContext(plottables);
-      context.writeContext();
-    }
-};
-
 class Condition{
   public:
     LineSegment ls;
@@ -356,5 +340,3 @@ class Operation{
     }
   
 };
-
-Context context;
