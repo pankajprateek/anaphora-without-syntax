@@ -1,3 +1,8 @@
+#include<vector>
+#include<string>
+#include<cmath>
+using namespace std;
+
 class Length{
   double length;
   
@@ -13,9 +18,8 @@ class Length{
   
     double getLength(){
       return this->length;
-    }
-    
-}
+    }    
+};
 
 class Degree{
 public:
@@ -32,23 +36,176 @@ public:
     double getDegree(){
       return this->degree;
     }
-}
+};
 
-class Command{
-  Plottables plottables;
-  
+class Point{
   public:
-    Command(Plottables plottables){
-      this->plottables = plottables;
+    char label;
+    double x, y;
+
+    void setLabel(char c){
+      label = c;
     }
+    
+    Point() {
+    }
+
+    Point(char c){
+      this->label = c;
+      this->x = this->y = 0.0;
+    }
+    
+    Point(char c, double x, double y){
+      this->label = c;
+      this->x = x;
+      this->y = y;
+    }
+
+    bool compare(Point X) {
+      if(X.label == this->label and X.x == this->x and X.y == this->y)
+	return true;
+      else
+	return false;
+    }
+};
+
+class Angle{
+  public:
+    Point vertex, leftVertex, rightVertex;
+    double degree;
+
+    Angle(Point V, Point LV, Point RV, double deg) {
+      this->vertex.label = V.label;
+      this->vertex.x = V.x;
+      this->vertex.y = V.y;
+      this->rightVertex.label = RV.label;
+      this->rightVertex.x = RV.x;
+      this->rightVertex.y = RV.y;
+      this->leftVertex.label = LV.label;
+      this->leftVertex.x = LV.x;
+      this->leftVertex.y = LV.y;
+      this->degree = deg;
+    }
+    
+  Point getVertex(){
+    return vertex;
+  }
   
-    void executeCommand(){
-      assert(!this->plottables.empty());
-      context.writeDiff(p);
-      context.updateContext(p);
-      context.writeContext();
+  Point getLeftVertex(){
+    return leftVertex;
+  }
+    
+  Point getRightVertex(){
+    return rightVertex;
+  }
+    
+  double getDegree(){
+    return this->degree;
+  }
+
+  string getName() {
+    string s = "ABC";
+    s[0] = leftVertex.label;
+    s[1] = vertex.label;
+    s[2] = rightVertex.label;
+    return s;
+  }
+  
+  bool compare(Angle X) {
+    if(X.degree == this->degree and X.vertex.compare(this->vertex) and X.leftVertex.compare(this->leftVertex) and X.rightVertex.compare(this->rightVertex))
+      return true;
+    else
+      return false;
+  }
+};
+
+class Arc{
+  public:
+    Point center;
+    double radius;
+    
+    double getRadius(){
+      return radius;
     }
-}
+    
+    Point getCenter(){
+      return center;
+    }
+    
+    Arc(Point P, double rad) {
+      this->center.label = P.label;
+      this->center.x = P.x;
+      this->center.y = P.y;
+      this->radius = rad;
+    }
+};
+
+class Line{
+  public:
+    char label;
+  
+    Line(char s) {
+      this->label = s;
+    }
+};
+
+class LineSegment{
+  public:
+    Point A, B;
+    
+    double getLength(){
+      double dx = B.x - A.x;
+      double dy = B.y - A.y;
+      return sqrt(dx*dx + dy*dy);
+    }
+    
+    LineSegment(Point p1, Point p2){
+      this->A = p1;
+      this->B = p2;
+    }
+    
+    Point getFirstPoint(){
+      return A;
+    }
+    
+    Point getSecondPoint(){
+      return B;
+    }
+
+    string getName() {
+      string s = "AB";
+      s[0] = A.label;
+      s[1] = B.label;
+      return s;
+    }
+    
+    LineSegment(string pointPair){
+      assert(!context.existsLineSegment(pointPair));
+      A.setLabel(pointPair[0]);
+      B.setLabel(pointPair[1]);
+    }
+};
+
+class Circle{
+  public:
+    Point center;
+    double radius;
+    
+    Circle(Point C, double rad) {
+      this->center.label = C.label;
+      this->center.x = C.x;
+      this->center.y = C.y;
+      this->radius = rad;
+    }
+    
+    double getRadius(){
+      return radius;
+    }
+    
+    Point getCenter(){
+      return center;
+    }
+};
 
 class Plottables{
   public:
@@ -56,8 +213,9 @@ class Plottables{
     vector<LineSegment> lineSegments;
     vector<Arc> arcs;
     vector<Line> lines;
-    vecotr<Circle> circles;
+    vector<Circle> circles;
     vector<Angle> angles;
+    vector<Length> lengths;
     
     void updatePlottables(Point p){
       Point *np = new Point(p);
@@ -95,9 +253,9 @@ class Plottables{
     void updatePlottables(Angle a){
       Point *p1 = new Point(a.getVertex());
       points.push_back(*p1);
-      Point *p1 = new Point(a.getLeftVertex());
+      Point *p2 = new Point(a.getLeftVertex());
       points.push_back(*p2);
-      Point *p1 = new Point(a.getRightVertex());
+      Point *p3 = new Point(a.getRightVertex());
       points.push_back(*p3);
       
       Angle *na = new Angle(a);
@@ -111,10 +269,10 @@ class Plottables{
         && arcs.empty()
         && lines.empty()
         && circles.empty()
-        && angle.empty();
+        && angles.empty();
     }
     
-}
+};
 
 class Condition{
   public:
@@ -163,111 +321,11 @@ class Condition{
     double getStatedDegree(){
       return absMeasure;
     }
-    
-}
-
-class Angle{
-  public:
-    Point vertex, leftVertex, rightVertex;
-    double degree;
-
-    Angle(Point v, Point lv, Point rv, double d = 0){
-      vertex = v;
-      leftVertex = lv;
-      rightVertex = rv;
-      degree = d;
-    }
-
-    Point getVertex(){
-      return vertex;
-    }
-    
-    Point getLeftVertex(){
-      return leftVertex;
-    }
-      
-    Point getRightVertex(){
-      return rightVertex;
-    }
-      
-    double getDegree(){
-      return this->degree;
-    }
-}
-
-class Arc{
-  public:
-    Point center;
-    double radius;
-    
-    double getRadius(){
-      return radius;
-    }
-    
-    Point getCenter(){
-      return center;
-    }
-}
-
-class Line{
-  public:
-    char label;
-}
-
-class LineSegment{
-  public:
-    Point A, B;
-    
-    double getLength(){
-      double dx = B.x - A.x;
-      double dy = B.y - A.y;
-      return sqrt(dx*dx + dy*dy);
-    }
-    
-    LineSegment(Point p1, Point p2){
-      this->A = p1;
-      this->B = p2;
-    }
-    
-    Point getFirstPoint(){
-      return A;
-    }
-    
-    Point getSecondPoint(){
-      return B;
-    }
-    
-    LineSegment(string pointPair){
-      assert(!context.existsLineSegment(pointPait));
-      A.setLabel(pointPair[0]);
-      B.setLabel(pointPair[1]);
-    }
-}
-
-class Point{
-  public:
-    char label;
-    double x, y;
-
-    void setLabel(char c){
-      label = c;
-    }
-    
-    Point(char c){
-      this->label = c;
-      this->x = this->y = 0.0;
-    }
-    
-    Point(char c, double x, double y){
-      this->label = c;
-      this->x = x;
-      this->y = y;
-    }
-}
+};
 
 class Location{
   
-}
+};
 
 class Operation{
   public:
@@ -280,20 +338,4 @@ class Operation{
       }
     }
   
-}
-
-class Circle{
-  public:
-    Point center;
-    double radius;
-    
-    double getRadius(){
-      return radius;
-    }
-    
-    Point getCenter(){
-      return center;
-    }
-}
-
-Context context;
+};
