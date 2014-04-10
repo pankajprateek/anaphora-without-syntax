@@ -3,6 +3,7 @@
 #include<iostream>
 #include<vector>
 #include "lyparse.h"
+
 class Context{
   vector <Point> points;
   vector <LineSegment> lineSegments;
