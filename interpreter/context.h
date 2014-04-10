@@ -3,6 +3,8 @@
 #include<iostream>
 #include<vector>
 #include "lyparse.h"
+#include <boost/algorithm/string.hpp>
+using namespace std;
 
 class Context{
   vector <Point> points;
@@ -17,11 +19,119 @@ class Context{
   const string diffFilename = "./diff.txt";
   
   public:
+    double stod(string str) {
+      bool decimal = false;
+      double n = 0;
+      double power = 1;
+      for(int i=0;i<str.length();i++) {
+	if(str[i] == '.') {
+	  decimal = true;
+	  power = 10;
+	  continue;
+	}
+	if(decimal) {
+	  n = n + (str[i] - '0')/power;
+	  power = power*10;
+	} else {
+	  n = n*10 + (str[i] - '0');
+	}
+      }
+      return n;
+    }
+    
     void readContext(){
       //read the context file here
+      string line;
+      ifstream f(contextFilename);
+      if(f.is_open()) {
+	getline(f,line);
+	while(getline(f,line)) {
+	  if(line.compare("~LINESEGMENTS") == 0)
+	    break;
+	  //parse and update point
+	  vector<string> vec_line;
+	  boost::split(strs, vec_line, boost::is_any_of("\t "));
+	  POINT X;
+	  X.label = vec_line[0];
+	  X.x = stod(vec_line[1]);
+	  X.y = stod(vec_line[2]);
+	  points.push_back(X);
+	}
+	while(getline(f,line)) {
+	  if(line.compare("~LINES") == 0)
+	    break;
+	  //parse and update linesegments
+	  LINESEGMENT X;
+	  POINT A = getPoint(line[0]);
+	  X.A.label = A.label;
+	  X.A.x = A.x;
+	  X.A.y = A.y;
+	  POINT B = getPoint(line[2]);
+	  X.B.label = B.label;
+	  X.B.x = B.x;
+	  X.B.y = B.y;
+	  lineSegments.push_back(X);
+	}
+	while(getline(f,line)) {
+	  if(line.compare("~ARCS") == 0)
+	    break;
+	  //parse and update lines
+	  LINE X;
+	  X.label = line[0];
+	  lines.push_back(X);
+	}
+	while(getline(f,line)) {
+	  if(line.compare("~ANGLE") == 0)
+	    break;
+	  //parse and update arcs
+	  vector<string> vec_line;
+	  boost::split(strs, vec_line, boost::is_any_of("\t "));
+	  ARC X;
+	  POINT C = getPoint(vec_line[0][0]);
+	  X.center.label = C.label;
+	  X.center.x = C.x;
+	  X.center.y = C.y;
+	  X.radius = stod(vec_line[1]);
+	  arcs.push_back(X);
+	}
+	while(getline(f,line)) {
+	  if(line.compare("~CIRCLE") == 0)
+	    break;
+	  //parse and update angles
+	  vector<string> vec_line;
+	  boost::split(strs, vec_line, boost::is_any_of("\t "));
+	  ANGLE X;
+	  POINT V = getPoint(vec_line[0][0]);
+	  X.vertex.label = V.label;
+	  X.vertex.x = V.x;
+	  X.vertex.y = V.y;
+	  POINT LV = getPoint(vec_line[1][0]);
+	  X.leftvertex.label = LV.label;
+	  X.leftvertex.x = LV.x;
+	  X.leftvertex.y = LV.y;
+	  POINT RV = getPoint(vec_line[2][0]);
+	  X.rightvertex.label = RV.label;
+	  X.rightvertex.x = RV.x;
+	  X.rightvertex.y = RV.y;
+	  X.degree = stod(vec_line[3]);
+	  angles.push_back(X);
+	}
+	while(getline(f,line)) {
+	  //parse and update circles
+	  vector<string> vec_line;
+	  boost::split(strs, vec_line, boost::is_any_of("\t "));
+	  CIRCLE X;
+	  POINT C = getPoint(vec_line[0][0]);
+	  X.center.label = C.label;
+	  X.center.x = C.x;
+	  X.center.y = C.y;
+	  X.radius = stod(vec_line[1]);
+	  circles.push_back(X);
+	}
+      }
+      f.close();
     }
 
-    // FIXME : Implement compare for point, line, linesegment, circle and arcs
     void updateContext(Plottables p) {
       vector<Point> updatePoints = p.points;
       int l = (int)updatePoints.size();
