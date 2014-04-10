@@ -1,4 +1,5 @@
 #include<fstream>
+#include<sstream>
 #include<cassert>
 #include<iostream>
 #include<vector>
@@ -39,7 +40,7 @@ class Context{
     }
     
     vector<string> &split(const string &s, char delim, vector<string> &elems) {
-      ostringstream ss;
+      stringstream ss(s);
       string item;
       while (getline(ss, item, delim)) {
         elems.push_back(item);
