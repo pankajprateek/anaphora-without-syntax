@@ -11,7 +11,7 @@ class Length{
       return this->length;
     }
     
-}
+};
 
 class Degree{
 public:
@@ -19,7 +19,7 @@ public:
     double getAbsoluteDegree(){
       return absDegree;
     }
-}
+};
 
 class Command{
   Plottables plottables;
@@ -32,7 +32,7 @@ class Command{
     string getString(){
       
     }
-}
+};
 
 class Plottables{
   public:
@@ -50,7 +50,7 @@ class Plottables{
     void updatePlottables(Circle c);
     void updatePlottables(Angle a);
     
-}
+};
 
 class Condition{
   public:
@@ -76,24 +76,24 @@ class Condition{
       return absMeasure;
     }
     
-}
+};
 
 class Angle{
   public:
     Point vertex, leftVertex, rightVertex;
     double degree;
-}
+};
 
 class Arc{
   public:
     Point center;
     double radius;
-}
+};
 
 class Line{
   public:
     char label;
-}
+};
 
 class LineSegment{
   public:
@@ -116,7 +116,7 @@ class LineSegment{
       this->A.label = pointPair[0];
       this->B.label = pointPair[1];
     }
-}
+};
 
 class Point{
   public:
@@ -133,11 +133,11 @@ class Point{
       this->x = x;
       this->y = y;
     }
-}
+};
 
 class Location{
   
-}
+};
 
 class Operation{
   public:
@@ -150,4 +150,4 @@ class Operation{
       }
     }
   
-}
+};
