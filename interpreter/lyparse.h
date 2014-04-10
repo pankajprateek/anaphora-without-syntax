@@ -64,12 +64,46 @@ class Plottables{
       points.push_back(*np);
     }
     void updatePlottables(LineSegment ls){
+      Point *p1 = new Point(ls.getFirstPoint());
+      Point *p2 = new Point(ls.getSecondPoint());
+      points.push_back(*p1);
+      points.push_back(*p2);
+      
+      LineSegment *l = new LineSegment(ls);
+      lineSegments.push_back(*l);
+    }
+    void updatePlottables(Arc a){
+      Point *p = new Point(a.getCenter());
+      Length *l = new Length(a.getRadius());
+      Arc *na = new Arc(a);
+      arcs.push_back(*na);
+      points.push_back(*p);
+      lengths.push_back(*l);
+    }
+    void updatePlottables(Line l){
+      Line *nl = new Line(l);
+      lines.push_back(*nl);
+    }
+    void updatePlottables(Circle c){
+      Point *p = new Point(c.getCenter());
+      points.push_back(*p);
+      Length *l = new Length(c.getRadius());
+      lengths.push_back(*l);
+      Circle *nc = new Circle(c);
+      circles.push_back(*nc);
+    }
+    void updatePlottables(Angle a){
+      Point *p1 = new Point(a.getVertex());
+      points.push_back(*p1);
+      Point *p1 = new Point(a.getLeftVertex());
+      points.push_back(*p2);
+      Point *p1 = new Point(a.getRightVertex());
+      points.push_back(*p3);
+      
+      Angle *na = new Angle(a);
+      angles.push_back(*na);
       
     }
-    void updatePlottables(Arc a);
-    void updatePlottables(Line l);
-    void updatePlottables(Circle c);
-    void updatePlottables(Angle a);
     
     bool isEmpty(){
       return points.empty()
@@ -136,6 +170,18 @@ class Angle{
   public:
     Point vertex, leftVertex, rightVertex;
     double degree;
+
+  Point getVertex(){
+    return vertex;
+  }
+  
+  Point getLeftVertex(){
+    return leftVertex;
+  }
+    
+  Point getRightVertex(){
+    return rightVertex;
+  }
     
   double getDegree(){
     return this->degree;
@@ -146,6 +192,14 @@ class Arc{
   public:
     Point center;
     double radius;
+    
+    double getRadius(){
+      return radius;
+    }
+    
+    Point getCenter(){
+      return center;
+    }
 }
 
 class Line{
@@ -168,11 +222,18 @@ class LineSegment{
       this->B = p2;
     }
     
+    Point getFirstPoint(){
+      return A;
+    }
+    
+    Point getSecondPoint(){
+      return B;
+    }
+    
     LineSegment(string pointPair){
-      //Assume doesn't exist in the context
-      //TODO don't create new point if already exists in the context
-      this->A.label = pointPair[0];
-      this->B.label = pointPair[1];
+      assert(!context.existsLineSegment(pointPait));
+      A.setLabel(pointPair[0]);
+      B.setLabel(pointPair[1]);
     }
 }
 
@@ -180,6 +241,10 @@ class Point{
   public:
     char label;
     double x, y;
+
+    void setLabel(char c){
+      label = c;
+    }
     
     Point(char c){
       this->label = c;
@@ -208,6 +273,20 @@ class Operation{
       }
     }
   
+}
+
+class Circle{
+  public:
+    Point center;
+    double radius;
+    
+    double getRadius(){
+      return radius;
+    }
+    
+    Point getCenter(){
+      return center;
+    }
 }
 
 Context context;
