@@ -65,12 +65,18 @@ class Context{
 	  // Then line exists, do nothing
 	  ;
 	} else {
-	  Point X = updateLines[i];
+	  Line X = updateLines[i];
 	  lines.push_back(X);
 	}
       }
 
-      // FIXME Implement class circles and the update function
+      vector<Circle> updateCircle = p.circles;
+      int l = (int)updateCircle.size();
+      for(int i=0;i<l;i++) {
+	// Similar to arcs, no need to check in circles
+	Circle X = updateCircle[i];
+	circles.push_back(X);
+      }
 
       vector<Angle> updateAngles = p.angles;
       int l = (int)updateAngles.size();
@@ -94,33 +100,106 @@ class Context{
       f<<"~POINTS"<<endl;
       int l = (int)p.points.size();
       for(int i=0;i<l;i++) {
-	cout<< p.points[i].label <<" "<< p.points[i].x <<" "<< p.points[i].y <<endl;
+	f<< p.points[i].label <<" "<< p.points[i].x <<" "<< p.points[i].y <<endl;
       }
       f<<"~LINESEGMENTS"<<endl;
       l = (int)p.lineSegment.size();
       for(int i=0;i<l;i++) {
-	cout<< p.lineSegment[i].A.label <<" "<< p.lineSegment[i].B.label <<endl;
+	f<< p.lineSegment[i].A.label <<" "<< p.lineSegment[i].B.label <<endl;
       }
       f<<"~LINES"<<endl;
       l = (int)p.lines.size();
       for(int i=0;i<l;i++) {
-	cout<< p.lines[i].label <<endl;
+	f<< p.lines[i].label <<endl;
       }
       f<<"~ARCS"<<endl;
       l = (int)p.arcs.size();
       for(int i=0;i<l;i++) {
-	cout<< p.arcs[i].center.label <<" "<< p.arcs[i].radius <<endl;
+	f<< p.arcs[i].center.label <<" "<< p.arcs[i].radius <<endl;
       }
       f<<"~ANGLE"<<endl;
       l = (int)p.angles.size();
       for(int i=0;i<l;i++) {
-	//FIXME
+	f<< p.angles[i].vertex <<" " << p.angles[i].leftVertex <<" "<< p.angles[i].rightVertex <<" "<< p.angles[i].degree <<endl;
       }
+      f<<"~CIRCLE"<<endl;
+      l = (int)p.circles.size();
+      for(int i=0;i<l;i++) {
+	f<< p.circles[i].center <<" "<< p.circles[i].radius <<endl;
+      }
+      f.close();
     }
 
-    void writeContext();
+    void writeContext() {
+      fstream f(contextFilename, ios::out);
+      f<<"~POINTS"<<endl;
+      int l = (int)points.size();
+      for(int i=0;i<l;i++) {
+	f<< points[i].label <<" "<< points[i].x <<" "<< points[i].y <<endl;
+      }
+      f<<"~LINESEGMENTS"<<endl;
+      l = (int)lineSegment.size();
+      for(int i=0;i<l;i++) {
+	f<< lineSegment[i].A.label <<" "<< lineSegment[i].B.label <<endl;
+      }
+      f<<"~LINES"<<endl;
+      l = (int)lines.size();
+      for(int i=0;i<l;i++) {
+	f<< lines[i].label <<endl;
+      }
+      f<<"~ARCS"<<endl;
+      l = (int)arcs.size();
+      for(int i=0;i<l;i++) {
+	f<< arcs[i].center.label <<" "<< arcs[i].radius <<endl;
+      }
+      f<<"~ANGLE"<<endl;
+      l = (int)angles.size();
+      for(int i=0;i<l;i++) {
+	f<< angles[i].vertex <<" " << angles[i].leftVertex <<" "<< angles[i].rightVertex <<" "<< angles[i].degree <<endl;
+      }
+      f<<"~CIRCLE"<<endl;
+      l = (int)circles.size();
+      for(int i=0;i<l;i++) {
+	f<< circles[i].center <<" "<< circles[i].radius <<endl;
+      }
+      f.close();
+    }
 
-    //Exists function for all 
+    bool existsPoint(char label) {
+      int l=(int)points.size();
+      for(int i=0;i<l;i++) {
+	if(points[i].label == label)
+	  return true;
+      }
+      return false;
+    }
+
+    bool existsLineSegment(char point1Label, char point2Label) {
+      int l=(int)lineSegments.size();
+      for(int i=0;i<l;i++) {
+	if( (lineSegments[i].A.label == point1Label and lineSegments[i].B.label == point2Label) or (lineSegments[i].A.label == point2Label and lineSegments[i].B.label == point1Label) )
+	  return true;
+      }
+      return false;
+    }
+
+    bool existsLine(char name) {
+      int l = (int)lines.size();
+      for(int i=0;i<l;i++) {
+	if(lines[i].label == name)
+	  return true;
+      }
+      return false;
+    }
+
+    bool exixtsAngle(char[] name) {
+      int l = (int)angles.size();
+      for(int i=0;i<l;i++) {
+	if( (angles[i].vertex.label == name[1]) and ( (angles[i].rightVertex == name[0] and angles[i].leftVertex == name[2]) or (angles[i].leftVertex==name[2] and angles[i].rightVertex==name[0]) ) )
+	  return true;
+      }
+      return false;
+    }
 
     Point getPoint(char label) {
       int l=(int)points.size();
