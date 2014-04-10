@@ -3,7 +3,6 @@
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include <string.h>
-	#include "./lylib.h"
 	#define PDEBUG 0
 	extern "C"	//g++ compiler needs the definations declared[ not required by gcc]
 	{
@@ -65,66 +64,69 @@ addressLength1 :
                     }
   | previousLength  {
                       Length* length = new Length();
-                      
-                      length->setLength(5); //resolve from the context
+                      Length ll = context.getLastLength();
+                      length->setLength(ll.getLength()); //resolve from the context
                       return length;
                     }
   | LENGTH addressLineSegment
                     {
+                      assert(context.existsLineSegment($1->getName()));                      
                       Length* length = new Length();
-                      length->absLength = 5; //resolve from the context
+                      double l = $2->getLength();
+                      length->setLength(l);
                       return length;
                     }
   | addressLineSegment
                     {
-                      Length* length = new Length();
-                      length->absLength = 5; //resolve from the context
+                      assert(context.existsLineSegment($1->getName()));
+                      Length* length = new Length();     
+                      double l = $2->getLength();
+                      length->setLength(l);
                       return length;
-                    }  
+                    }
 ;
 
 addressLength2 :
     GREATERTHAN addressLength1
                     {
                       Length* length = new Length();
-                      length->absLength = epsilon + $2->getAbsoluteLength(); //resolve from the context
+                      length->setLength(epsilon + $2->getAbsoluteLength());
                       return length;
                     }    
   | LESSTHAN addressLength1
                     {
                       Length* length = new Length();
-                      length->absLength = - epsilon + $2->getAbsoluteLength(); //resolve from the context
+                      length->setLength(- epsilon + $2->getAbsoluteLength());
                       return length;
                     }    
   | TWICE addressLength1
                     {
                       Length* length = new Length();
-                      length->absLength = 2*($2->getAbsoluteLength()); //resolve from the context
+                      length->setLength(2*($2->getAbsoluteLength()));
                       return length;
                     }      
   | THRICE addressLength1
                     {
                       Length* length = new Length();
-                      length->absLength = 3*($2->getAbsoluteLength()); //resolve from the context
+                      length->setLength(3*($2->getAbsoluteLength()));
                       return length;
                     }      
   | REAL TIMES addressLength1
                     {
                       Length* length = new Length();
-                      length->absLength = $1.dval*($2->getAbsoluteLength()); //resolve from the context
+                      length->setLength($1.dval*($2->getAbsoluteLength()));
                       return length;
                     }        
   | HALF addressLength1
                     {
                       Length* length = new Length();
-                      length->absLength = 0.5*($2->getAbsoluteLength()); //resolve from the context
+                      length->setLength(0.5*($2->getAbsoluteLength()));
                       return length;
                     }        
   | operation addressLength1 addressLength1
                     {
-                      double result = $1->getResult($2->getAbsoluteLength(), $3->getAbsoluteLength());
-                      Length* length = new Length();
-                      length->absLength = result;
+                      double result = $1->getResult($2->getLength(), $3->getLength());
+                      Length* length = new Length(result);
                       return length;
                     }
 ;
@@ -133,46 +135,47 @@ addressLength3 :
     GREATERTHAN addressLength2
                     {
                       Length* length = new Length();
-                      length->absLength = epsilon + $2->getAbsoluteLength(); //resolve from the context
+                      length->setLength(epsilon + $2->getAbsoluteLength());
                       return length;
                     }    
   | LESSTHAN addressLength2
                     {
                       Length* length = new Length();
-                      length->absLength = - epsilon + $2->getAbsoluteLength(); //resolve from the context
+                      length->setLength(- epsilon + $2->getAbsoluteLength());
                       return length;
                     }    
   | TWICE addressLength2
                     {
                       Length* length = new Length();
-                      length->absLength = 2*($2->getAbsoluteLength()); //resolve from the context
+                      length->setLength(2*($2->getAbsoluteLength()));
                       return length;
                     }      
   | THRICE addressLength2
                     {
                       Length* length = new Length();
-                      length->absLength = 3*($2->getAbsoluteLength()); //resolve from the context
+                      length->setLength(3*($2->getAbsoluteLength()));
                       return length;
                     }      
   | REAL TIMES addressLength2
                     {
                       Length* length = new Length();
-                      length->absLength = $1.dval*($2->getAbsoluteLength()); //resolve from the context
+                      length->setLength($1.dval*($2->getAbsoluteLength()));
                       return length;
                     }        
   | HALF addressLength2
                     {
                       Length* length = new Length();
-                      length->absLength = 0.5*($2->getAbsoluteLength()); //resolve from the context
+                      length->setLength(0.5*($2->getAbsoluteLength()));
                       return length;
                     }        
   | operation addressLength2 addressLength2
                     {
-                      double result = $1->getResult($2->getAbsoluteLength(), $3->getAbsoluteLength());
-                      Length* length = new Length();
-                      length->absLength = result;
+                      double result = $1->getResult($2->getLength(), $3->getLength());
+                      Length* length = new Length(result);
                       return length;
                     }
+;
+
 ;
 
 addressDegree :
@@ -183,28 +186,27 @@ addressDegree :
 
 addressDegree1 :
     REAL DEGREES    {
-                      Degree *degree = new Degree();
-                      degree->absDegree = $1;
+                      Degree *degree = new Degree($1);
                       return degree;
                     }
   | REAL            {
-                      Degree *degree = new Degree();
-                      degree->absDegree = $1;
+                      Degree *degree = new Degree($1);
                       return degree;
                     }
   | FREEVARIABLE    {
-                      Degree *degree = new Degree();
-                      degree->absDegree = 30; //generate random
+                      double random_double = 30;
+                      Degree *degree = new Degree(random_double);
                       return degree;
                     }
   | previousDegree  {
-                      Degree *degree = new Degree();
-                      degree->absDegree = 30; //resolve from context
+                      assert(context.existsLastAngle());
+                      Angle la = context.getLastAngle();
+                      Degree *degree = new Degree(la.getDegree());
                       return degree;
                     }
   | addressAngle    {
-                      Degree *degree = new Degree();
-                      degree->absDegree = $1->getAbsoluteDegree();
+                      assert(existsAngle($1->getName()));
+                      Degree *degree = new Degree($1.getDegree());
                       return degree;
                     }
 ;
@@ -212,45 +214,40 @@ addressDegree1 :
 addressDegree2 :
     GREATERTHAN addressDegree1
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = epsilon + $2->getAbsoluteDegree(); //generate random epsilon
+                      Degree* degree = new Degree(epsilon + $2->getAbsoluteDegree());
                       return degree;
                     }        
   | LESSTHAN addressDegree1
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = -epsilon + $2->getAbsoluteDegree(); //generate random epsilon
+                      Degree* degree = new Degree(-epsilon + $2->getAbsoluteDegree());
                       return degree;
                     }        
   | TWICE addressDegree1
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = 2*($2->getAbsoluteDegree()); //generate random epsilon
+                      Degree* degree = new Degree(2*($2->getAbsoluteDegree()));
                       return degree;
                     }          
   | THRICE addressDegree1
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = 3*($2->getAbsoluteDegree()); //generate random epsilon
+                      Degree* degree = new Degree(3*($2->getAbsoluteDegree()));
                       return degree;
                     }            
   | REAL TIMES addressDegree1
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = $1.dval*($3->getAbsoluteDegree()); //generate random epsilon
+                      Degree* degree = new Degree($1.dval*($3->getAbsoluteDegree()));
                       return degree;
                     }          
   | HALF addressDegree1
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = 0.5*($2->getAbsoluteDegree()); //generate random epsilon
+                      Degree* degree = new Degree(0.5*($2->getAbsoluteDegree()));
                       return degree;
                     }          
   
   | operation addressDegree1 addressDegree1
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = $1->getResult($2->getAbsoluteDegree, $3->getAbsoluteDegree);
+                      Degree* degree = new Degree(
+                        $1->getResult($2->getDegree(), $3->getDegree())
+                      );
                       return degree;
                     }
 ;
@@ -258,45 +255,40 @@ addressDegree2 :
 addressDegree3 :
     GREATERTHAN addressDegree2
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = epsilon + $2->getAbsoluteDegree(); //generate random epsilon
+                      Degree* degree = new Degree(epsilon + $2->getAbsoluteDegree());
                       return degree;
                     }        
   | LESSTHAN addressDegree2
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = -epsilon + $2->getAbsoluteDegree(); //generate random epsilon
+                      Degree* degree = new Degree(-epsilon + $2->getAbsoluteDegree());
                       return degree;
                     }        
   | TWICE addressDegree2
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = 2*($2->getAbsoluteDegree()); //generate random epsilon
+                      Degree* degree = new Degree(2*($2->getAbsoluteDegree()));
                       return degree;
                     }          
   | THRICE addressDegree2
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = 3*($2->getAbsoluteDegree()); //generate random epsilon
+                      Degree* degree = new Degree(3*($2->getAbsoluteDegree()));
                       return degree;
                     }            
   | REAL TIMES addressDegree2
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = $1.dval*($3->getAbsoluteDegree()); //generate random epsilon
+                      Degree* degree = new Degree($1.dval*($3->getAbsoluteDegree()));
                       return degree;
                     }          
   | HALF addressDegree2
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = 0.5*($2->getAbsoluteDegree()); //generate random epsilon
+                      Degree* degree = new Degree(0.5*($2->getAbsoluteDegree()));
                       return degree;
                     }          
   
   | operation addressDegree2 addressDegree2
                     {
-                      Degree* degree = new Degree();
-                      degree->absDegree = $1->getResult($2->getAbsoluteDegree, $3->getAbsoluteDegree);
+                      Degree* degree = new Degree(
+                        $1->getResult($2->getDegree(), $3->getDegree())
+                      );
                       return degree;
                     }
 ;
@@ -323,12 +315,12 @@ commands :
 ;
 
 command :
-    constructCommand  { $$ = $1;  }
-  | markCommand       { $$ = $1;  } 
-  | cutCommand        { $$ = $1;  }
-  | joinCommand       { $$ = $1;  }
-  | divideCommand     { $$ = $1;  }
-  | bisectCommand     { $$ = $1;  }
+    constructCommand  { $$ = $1; $1->executeCommand(); }
+  | markCommand       { $$ = $1; $1->executeCommand(); }
+  | cutCommand        { $$ = $1; $1->executeCommand(); }
+  | joinCommand       { $$ = $1; $1->executeCommand(); }
+  | divideCommand     { $$ = $1; $1->executeCommand(); }
+  | bisectCommand     { $$ = $1; $1->executeCommand(); }
 ;
 
 constructCommand : 
@@ -361,7 +353,7 @@ constructibleAndProperties :
 lineSegmentAndProperties : 
     LINESEGMENT addressLineSegment GIVENTHAT conditions
       {
-        Plottables *p = new Plottables;
+        Plottables *p = new Plottables();
         string addressedLineSegment = $4->getAddressedLineSegment();
         string thisLineSegment = $2->getName();
         if(addressedLineSegment.compare(thisLineSegment) != 0){
@@ -378,7 +370,7 @@ lineSegmentAndProperties :
       }
   | LINESEGMENT addressLineSegment lineSegmentProperties
       {
-        Plottables *p = new Plottables; 
+        Plottables *p = new Plottables(); 
         $2->setLength($3->getLength());
         p->updatePlottables($2);
         return p;
@@ -386,15 +378,13 @@ lineSegmentAndProperties :
   | LINESEGMENT addressLineSegment perpendicularToClause perpendicularConditionClause
       {
         Plottables *p = new Plottables();
-        //need to search through context
-        //hence not implemented now
+        //not implemented now
         return p;
       }
   | LINESEGMENT addressLineSegment parallelToClause parallelConditionClause
       {
         Plottables *p = new Plottables();
-        //need to search through context
-        //hence not implemented now
+        //not implemented now
         return p;
       }
 ;
@@ -407,24 +397,24 @@ condition :
     EQUALS LENGTH addressLineSegment addressLength
       {
         Condition *c = new Condition();
-        c->ls = $3;
-        c->absLength = $4->getLength();
+        c->setLineSegment(*$3);
+        c->setLength($4->getLength());
       }
   | EQUALS addressLineSegment addressLength
       {
         Condition *c = new Condition();
-        c->ls = $2;
-        c->absLength = $4->getLength();
+        c->setLineSegment(*$2);
+        c->setLength($3->getLength());
       }
   | EQUALS addressAngle addressAngle
       {
         Condition *c = new Condition();
-        if($2->getDegrees() != 0){
-          c->angle = $3;
-          c->absLength = $2->getDegrees();
+        if($2->getDegree() != 0){
+          c->setAngle(*$3);
+          c->setDegree($2->getDegrees());
         } else {
-          c->angle = $2;
-          c->absLength = $3->getDegrees();        
+          c->setAngle(*$2);
+          c->setDegree($3->getDegrees());        
         }
       }  
 ;
@@ -454,28 +444,40 @@ CM :
 addressLineSegment :
     LINESEGMENT POINTPAIR
       {
-        //TODO: If already exists in the context, need not create new one
-        LineSegment *ls = new LineSegment($2.sval);
+        LineSegment* ls;
+        if(context.existsLineSegment($2.sval)){
+          *ls = context.getLineSegment($2.sval);
+        } else {
+          ls = new LineSegment($2.sval);
+        }
         return ls;
       }
   | POINTPAIR
       {
-        //TODO: If already exists in the context, need not create new one
-        LineSegment *ls = new LineSegment($1.sval);
+        LineSegment* ls;
+        if(context.existsLineSegment($1.sval)){
+          *ls = context.getLineSegment($1.sval);
+        } else {
+          ls = new LineSegment($1.sval);
+        }
         return ls;
-      }  
+      }
   | adjectivePrevious LINESEGMENT
       {
+        assert(context.existsLastLineSegment());
+        LineSegment ls = context.getLastLineSegment();
         //TODO: return the last segment present in the context
-        LineSegment *ls = new LineSegment(POINTPAIR);
-        return ls;
+        LineSegment *l = new LineSegment(*ls);
+        return l;
       }  
   | addressFreeObject
       {
+        assert(context.existsLastLineSegment());
+        LineSegment ls = context.getLastLineSegment();
         //TODO: return the last segment present in the context
-        LineSegment *ls = new LineSegment(POINTPAIR);
-        return ls;
-      }
+        LineSegment *l = new LineSegment(*ls);
+        return l;
+      }  
 ;
 
 angleAndProperties :
@@ -1151,6 +1153,7 @@ bisectableAndProperties :
 %%
 int lymain()
 {
+  context.readContext();
 	yydebug=1;
 	if(PDEBUG){
 		printf("main()");

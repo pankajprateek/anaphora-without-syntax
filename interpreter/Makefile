@@ -24,7 +24,7 @@ hindi:
 interpret.out: main.cpp $(OBJECTS) $(HEADERS)
 	$(CC) -g -o $@ $^
 	rm *.o
-	./interpret.out < jeetesh_temp_english.txt > temp.txt
+	#./interpret.out < jeetesh_temp_english.txt > temp.txt
 
 interpret1.out: $(OBJECTS1) $(HEADERS1)
 	rm *.o
