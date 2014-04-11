@@ -85,3 +85,7 @@ public:
   LineSegment *ls;
   Line *l;
 };
+
+class String{
+  char* str;
+};

@@ -7,396 +7,169 @@
 
 using namespace std;
 
-class Length{
+typedef struct _Length{
   double length;
-  
-  public:
+} Length;
 
-    Length(){
-      length = 0;
-    }
+Length* newLength(){
+  return (Length*)malloc(sizeof(Length));
+}
 
-    Length(double l){
-      this->length = l;
-    }
-   
-    void setLength(double l){
-      this->length = l;
-    }
-  
-    double getLength(){
-      return this->length;
-    }    
-};
+typedef struct _Degree{
+  double degree;
 
-class Degree{
-public:
-    double degree;
-    
-    Degree(){
-      
-    }
-    
-    Degree(double d){
-      this->degree = d;
-    }
-    
-    void setDegree(double d){
-      this->degree = d;
-    }
-    
-    double getDegree(){
-      return this->degree;
-    }
-};
+} Degree;
 
-class Point{
-  public:
+Degree* newDegree(){
+  return (Degree*)malloc(sizeof(Degree));
+}
+
+typedef struct _Point{
+  char label;
+  double x, y;
+} Point;
+
+Point* newPoint(){
+  return (Point*)malloc(sizeof(Point));
+}
+
+
+typedef struct _Angle{
+  Point vertex, leftVertex, rightVertex;
+  double degree;
+} Angle;
+
+Angle* newAngle(){
+  return (Angle*)malloc(sizeof(Angle));
+}
+
+typedef struct _Arc{
+  Point center;
+  double radius;
+} Arc;
+
+Arc* newArc(){
+  return (Arc*)malloc(sizeof(Arc));
+}
+
+
+typedef struct _Line{
     char label;
-    double x, y;
+} Line;
 
-    char getLabel(){
-      return label;
-    }
+Line* newLine(){
+  return (Line*)malloc(sizeof(Line));
+}
 
-    void setLabel(char c){
-      label = c;
-    }
-    
-    Point() {
-    }
-
-    Point(char c){
-      this->label = c;
-      this->x = this->y = 0.0;
-    }
-    
-    Point(char c, double x, double y){
-      this->label = c;
-      this->x = x;
-      this->y = y;
-    }
-
-    bool compare(Point X) {
-      if(X.label == this->label and X.x == this->x and X.y == this->y)
-	return true;
-      else
-	return false;
-    }
-};
-
-class Angle{
-  public:
-    Point vertex, leftVertex, rightVertex;
-    double degree;
-
-    Angle(Point V, Point LV, Point RV, double deg) {
-      this->vertex.label = V.label;
-      this->vertex.x = V.x;
-      this->vertex.y = V.y;
-      this->rightVertex.label = RV.label;
-      this->rightVertex.x = RV.x;
-      this->rightVertex.y = RV.y;
-      this->leftVertex.label = LV.label;
-      this->leftVertex.x = LV.x;
-      this->leftVertex.y = LV.y;
-      this->degree = deg;
-    }
-    
-  Point getVertex(){
-    return vertex;
-  }
-  
-  Point getLeftVertex(){
-    return leftVertex;
-  }
-    
-  Point getRightVertex(){
-    return rightVertex;
-  }
-    
-  double getDegree(){
-    return this->degree;
-  }
-
-  string getName() {
-    string s = "ABC";
-    s[0] = leftVertex.label;
-    s[1] = vertex.label;
-    s[2] = rightVertex.label;
-    return s;
-  }
-  
-  Angle(){
-    
-  }
-  
-  bool compare(Angle X) {
-    if(X.degree == this->degree and X.vertex.compare(this->vertex) and X.leftVertex.compare(this->leftVertex) and X.rightVertex.compare(this->rightVertex))
-      return true;
-    else
-      return false;
-  }
-};
-
-class Arc{
-  public:
-    Point center;
-    double radius;
-    
-    double getRadius(){
-      return radius;
-    }
-    
-    Point getCenter(){
-      return center;
-    }
-    
-    Arc(Point P, double rad) {
-      this->center.label = P.label;
-      this->center.x = P.x;
-      this->center.y = P.y;
-      this->radius = rad;
-    }
-    
-    Arc(){
-      
-    }
-};
-
-class Line{
-  public:
-    char label;
-  
-    Line(char s) {
-      this->label = s;
-    }
-    
-    Line(){
-      
-    }
-};
-
-class LineSegment{
-  public:
-    Point A, B;
+typedef struct _LineSegment{
+    Point pA, pB;
     double length;
-    
-    double setLength(double l){
-      length = l;
-    }
-    
-    double getLength(){
-      if(length != 0.0){
-        return length;
-      }
-      double dx = B.x - A.x;
-      double dy = B.y - A.y;
-      return sqrt(dx*dx + dy*dy);
-    }
-    
-    LineSegment(Point p1, Point p2){
-      this->A = p1;
-      this->B = p2;
-    }
-    
-    Point getFirstPoint(){
-      return A;
-    }
-    
-    Point getSecondPoint(){
-      return B;
-    }
+} LineSegment;
 
-    string getName() {
-      string s = "AB";
-      s[0] = A.label;
-      s[1] = B.label;
-      return s;
-    }
-    
-    LineSegment(string pointPair){
-      A.setLabel(pointPair[0]);
-      B.setLabel(pointPair[1]);
-    }
-    
-    LineSegment(){
-      
-    }
-};
+LineSegment* newLineSegment(){
+  return (LineSegment*)malloc(sizeof(LineSegment));
+}
 
-class Circle{
-  public:
-    Point center;
-    double radius;
-    
-    Circle(Point C, double rad) {
-      this->center.label = C.label;
-      this->center.x = C.x;
-      this->center.y = C.y;
-      this->radius = rad;
-    }
-    
-    double getRadius(){
-      return radius;
-    }
-    
-    Point getCenter(){
-      return center;
-    }
-    
-    Circle(){
-      
-    }
-};
+typedef struct _Circle{
+  Point center;
+  double radius;
+} Circle;
 
-class Plottables{
-  public:
-    vector<Point> points;
-    vector<LineSegment> lineSegments;
-    vector<Arc> arcs;
-    vector<Line> lines;
-    vector<Circle> circles;
-    vector<Angle> angles;
-    vector<Length> lengths;
-    
-    void updatePlottables(Point p){
-      Point *np = new Point(p);
-      points.push_back(*np);
-    }
-    void updatePlottables(LineSegment ls){
-      Point *p1 = new Point(ls.getFirstPoint());
-      Point *p2 = new Point(ls.getSecondPoint());
-      points.push_back(*p1);
-      points.push_back(*p2);
-      
-      LineSegment *l = new LineSegment(ls);
-      lineSegments.push_back(*l);
-    }
-    void updatePlottables(Arc a){
-      Point *p = new Point(a.getCenter());
-      Length *l = new Length(a.getRadius());
-      Arc *na = new Arc(a);
-      arcs.push_back(*na);
-      points.push_back(*p);
-      lengths.push_back(*l);
-    }
-    void updatePlottables(Line l){
-      Line *nl = new Line(l);
-      lines.push_back(*nl);
-    }
-    void updatePlottables(Circle c){
-      Point *p = new Point(c.getCenter());
-      points.push_back(*p);
-      Length *l = new Length(c.getRadius());
-      lengths.push_back(*l);
-      Circle *nc = new Circle(c);
-      circles.push_back(*nc);
-    }
-    void updatePlottables(Angle a){
-      Point *p1 = new Point(a.getVertex());
-      points.push_back(*p1);
-      Point *p2 = new Point(a.getLeftVertex());
-      points.push_back(*p2);
-      Point *p3 = new Point(a.getRightVertex());
-      points.push_back(*p3);
-      
-      Angle *na = new Angle(a);
-      angles.push_back(*na);
-      
-    }
-    
-    bool isEmpty(){
-      return points.empty()
-        && lineSegments.empty()
-        && arcs.empty()
-        && lines.empty()
-        && circles.empty()
-        && angles.empty();
-    }
-    
-};
+Circle* newCircle(){
+  return (Circle*)malloc(sizeof(Circle));
+}
 
-class Condition{
-  public:
-    LineSegment ls;
-    double absLength;
-    
-    void setLineSegment(LineSegment l){
-      this->ls = l;
-    }
-    
-    LineSegment getLineSegment(){
-      return this->ls;
-    }
-    
-    string getAddressedLineSegment(){
-      return ls.getName();
-    }
-    
-    void setLength(double l){
-      this->absLength = l;
-    }
-      
-    double getStatedLength(){
-      return absLength;
-    }
-    
-    Angle a;
-    double absMeasure;
-    
-    void setAngle(Angle an){
-      this->a = an;
-    }
-    
-    Angle getAngle(){
-      return this->a;
-    }
-    
-    string getAddressedAngle(){
-      return a.getName();
-    }
-    
-    void setDegree(double a){
-      this->absMeasure = a;
-    }
-    
-    double getStatedDegree(){
-      return absMeasure;
-    }
-    
-    Condition(){
-      
-    }
-};
-
-class Location{
+typedef struct _Plottables{
   
-};
+  int ip, ils, ia, iln, ic, ia, ilg;
+  Point points[MAX_PLOTTABLES];
+  LineSegment lineSegments[MAX_PLOTTABLES];
+  Arc arcs[MAX_PLOTTABLES];
+  Line lines[MAX_PLOTTABLES];
+  Circle circles[MAX_PLOTTABLES];
+  Angle angles[MAX_PLOTTABLES];
+  Length lengths[MAX_PLOTTABLES];
+} Plottables;
 
-class Operation{
-  public:
-    char operation;
-    double getResult(double a, double b){
-      switch(operation){
-        case '+': return a+b; break;
-        case '-': return abs(a-b); break;
-        default: assert(false); break;
-      }
-    }
+Plottables* newPlottables(){
+  return (Plottables*)malloc(sizeof(Plottables));
+}
+
+void updatePlottables(Plottables* p, Point pn){
+  p->points[p->ip++] = pn;
+}
+
+void updatePlottables(Plottables* p, LineSegment ls){
+  p->points[p->ip++] = ls->pA;
+  p->points[p->ip++] = ls->pB;
+  p->lineSegments[ils++] = ls;
+}
   
-    Operation(){
-      
-    }
+void updatePlottables(Plottables* p, Arc a){
+  p->points[p->ip++] = a->center;
+  p->lengths[p->ilg++] = a->radius;
+  //TODO
+}
+
+void updatePlottables(Plottables* p, Line l){
+  p->lines[p->iln++] = l;
+}
+
+void updatePlottables(Plottables *p, Circle c){
+  p->points[p->ip++] = c->center;
+  p->lengths[p->ilg++] = c->radius;
+  p->circles[p->ic++] = c;
+}
+void updatePlottables(Plottables *p, Angle a){
+  p->angles[p->ia++] = a;
+  p->points[p->ip++] = a->vertex;
+  p->points[p->ip++] = a->leftVertex;
+  p->points[p->ip++] = a->rightVertex;
+}
+
+typedef struct _Condition{
+  LineSegment ls;
+  double absLength;
+} Condition;
+
+Condition* newCondition(){
+  return (Condition*)malloc(sizeof(Condition));
+}
+
+typedef struct _Location{
   
-};
+} Location;
 
-class Ray	{
+Location* newLocation(){
+  return (Location*)malloc(sizeof(Location));
+}
+
+typedef struct _Operation{
+  char operation;
+} Operation;
+
+Operation* newOperation(){
+  return (Operation*)malloc(sizeof(Operation));
+}
+
+double getResult(Operation* op, double a, double b){
+  char l = opn->label;
+  switch(l){
+    case '+': return a+b; break;
+    case '-': return abs(a-b); break;
+    default: assert(false); break;
+  }
+}
+
+typedef struct _Ray	{
   
-};
+} Ray;
 
+Ray* newRay(){
+  return (Ray*)malloc(sizeof(Ray));
+}
 
-void spitError(string error){
-  cout<<error<<endl;
+void spitError(char* error){
+  printf("%s\n", error);
   exit(1);
 }

@@ -39,8 +39,8 @@ image: interpret
 
 lyparser.out: tokenize.l lyparse.y
 	flex tokenize.l
-	yacc lyparse.y
-	$(CC) -g -o $@ y.tab.c lex.yy.c -w -std=c++0x
+	yacc lyparse.y -Wall -k  --report=all -g -x -d -t
+	$(CC) lex.yy.c y.tab.c -o lexer -pg -w -std=c++0x
 
 listkeywords:
 	python listKeywords.py < target.vcb > keywords.txt
