@@ -26,7 +26,7 @@ interpret.out: main.cpp $(OBJECTS) $(HEADERS)
 	#./interpret.out < jeetesh_temp_english.txt > temp.txt
 
 interpret1.out: $(OBJECTS1) $(HEADERS1)
-	rm *.o
+	rm -f *.o
 	$(CC) -g -o $@ $^
 
 image: interpret
@@ -49,4 +49,4 @@ clean:
 	rm -f drawing_instructions.txt
 	#rm -f ./source.vcb ./target.vcb ./alignment.txt
 	rm -f interpret.out *.o
-	rm lex.yy.c y.tab.c lyparser.out
+	rm -f lex.yy.c y.tab.c lyparser.out
