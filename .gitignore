@@ -16,5 +16,8 @@
 lex.yy.c
 y.tab.c
 y.tab.h
+rt.aux
+*.blg
+*.log
 *~
 interpreter/interpret
