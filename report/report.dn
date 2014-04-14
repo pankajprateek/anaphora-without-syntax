@@ -16,23 +16,24 @@
 \setlength{\parskip}{0.2cm}
 \topskip 0.0in
 
-\title{Interpreter for Geometric Constructions}
+\title{Handling Anaphora in multiple languages in framework of Geometry Constructions}
 \author{Jeetesh Mangwani \& Pankaj Prateek\\
 	Advisor: Dr. Amitabh Mukherjee\\
         Dept. of Computer Science and Engineering\\
 	Indian Institute of Technology, Kanpur, India\\
 	\{jeeteshm, pratikkr, amit\} @ cse.iitk.ac.in}
-\date{November 14, 2013}
+\date{April 17, 2014}
 
 \begin{document}
 \maketitle
 \begin{center}{\b \em ABSTRACT}\end{center}
-{\em In this project, we take up the problem of designing and implementing a language-independent interpreter for drawing geometric diagrams, focusing mainly on ruler and compass based construction problems. We start with the use cases and motivations on why such a system would be useful and what places deploying it would be fruitful. We give a brief tabulated summary review of related research work done on geometry related problems and point out the common trait that they lack the ability to decipher any problem/constraint expressed in a natural language. We, then, move to describing the design of the interpreter and the usage of cross-lingual technique to provide language-independent interpretation ability. We briefly mention how is the alignment model exploited to realize the powerful translation feature. This is followed by accounts about the work done during this semester, results obtained, difficulties faced and plan for the next semester.}
+{\em In this project, we take up the problem of handling anaphora in multiple languages in the context of a language-independent interpreter for drawing geometric diagrams. We focus on ruler and compass based construction problems. We start with use cases and motivations on why such a system would be useful and what places deploying it would be fruitful. We give a brief tabulated summary review of related research work done on geometry related problems and point out the common trait that they lack the ability to decipher any problem/constraint expressed in a natural language. We, then, move to describe the design of the interpreter and the usage of cross-lingual technique to provide language-independent interpretation ability. We briefly mention how is the alignment model utilised to realize the powerful translation feature. This is followed by the results obtained, difficulties faced and future work.}
 
 \section{Objective}
 To design and implement interpreter that
 \begin{itemize}
 	\item is language-independent (works for English, Hindi at present)
+  \item is capable of handling anaphoras
 	\item Receives steps for a geometric construction as input e.g. "Draw a line segment AB of length 4 cm", "{\dn ke.mdra} B {\dn aura trijyA} 5 {\dn semI lekara eka cApa khI.mcie jo pahale khI.mcI cApa ko} C {\dn para kA.tatA ho}" etc
 	\item Outputs the geometric figure obtained on executing the given sequence of steps 
 \end{itemize}
@@ -46,8 +47,6 @@ In order to save these resources required in drawing geometric diagrams as well 
 One of the most common techniques today to perform effective parsing is to use Part-of-Speech tagged language banks. Only few languages (about 8-10 of the 600+ languages in wide use) have the privilege of being resource-rich in the sense of having Penn-tree banks and other large-sized standardised corpus. An important observation is that fixed grammars, POS tags etc used in traditional parsers are not always the best way to break up a language. Taking a note of these shortcomings, we take a statistical approach to learn a language.\\
 
 There has been a significant amount of work done on solving geometry construction problems. Gulwani et. al. \cite{gulwani2011synthesizing} propose a method that uses goal-based heuristic to simulate backward deduction to solve a problem expressed in a predefined logical construct. Schreck et. al. \cite{schreck2012geometric} talk about the same problem but use CAD methods to deal with constraints. At the same time, Itzhaky et. al. \cite{itzhaky2012solving} use the number of nondeterministic choices as a measure of a good solution. Ahmed, Umair et. al. \cite{ahmed2012can} look more into using domain-specific measures to minimize parser errors and augment the geometry problem solver, GeoSynth. All these papers have provided us with valuable insights into selecting important and expressive constructs for our intermediate language.
-
-
 
 We summarize our observations in terms of following 3 parameters:
 \begin{itemize}
@@ -87,10 +86,18 @@ Unlike all previous attempts, we do not assume that the logical forms of the sen
 % \subsection{Solving geometry problems using a combination of symbolic and numerical reasoning\cite{itzhaky2012solving}}
 
 \section{Design}
-The interpreter consists of two main components:
+The interpreter consists of the following components:
 \begin{itemize}
-\item Aligner
-\item Metalanguage Interpreter
+\item Aligner (training)
+\item Grammar
+\item Natural Language (NL) Interpreter
+  \begin{itemize}
+    \item NL to Metalanguage Mapper
+    \item Heuristics-based Parser
+    \item Semantics Analyser
+    \item Plotter  
+  \end{itemize}
+\item Using Context to handle Anaphora
 \end{itemize}
 
 \subsection{Aligner}
@@ -98,8 +105,35 @@ Cross-lingual alignment is the heart of the learning mechanism in this project. 
 
 We have used GIZA++ \cite{och2003systematic} as the cross-lingual aligner. GIZA++ is a statical machine translation toolkit that is used to train IBM Models 1-5 and an HMM word alignment model.\\
 
-\subsection{Metalanguage Interpreter}
-The interpreter component exploits the alignment model obtained from the Aligner component. Given a sentence expressed in a natural language, we use the alignment model to get statistically most probable interpretation in L0. A command in L0 is then used to output the desired figure.
+\subsection{Grammar}
+The grammar has been carefully designed to capture the underlying structure of the conventional (imperative) geometry construction steps\\
+
+\subsection{Natural Language (NL) Interpreter}
+
+\subsubsection{NL to Metalanguage Mapper}
+The interpreter component exploits the alignment model obtained from the Aligner component. Given a sentence expressed in a natural language, we use the alignment model to get the statistically most probable mapping of the NL sentence to a list of words in the language defined by the grammar. This list of words need not conform to a sentence in the language defined by the grammar but still captures some essence of the NL sentence, and hence is partially ordered.\\
+
+\subsubsection{Heuristics-based Parser}
+At this stage, the parser takes the partially ordered set of words generated in the previous step and tries to map it to a sentence formed by the grammar using some heuristics as defined below:
+\begin{enumerate}
+\item{Proximity}
+
+\item{Type system}
+
+\item{Validity of the output}
+
+\end{enumerate}
+
+\subsubsection{Semantics Analyser}
+This stage of the parser uses Lex-Yacc to generate a set of primitive objects like points, lines, arcs etc. which need to be plotted in this construction step. All coordinates, radii, lengths and angles are determined in this step. Anaphora are also resolved in this stage.
+
+\subsubsection{Plotter}
+The plotter receives the list of primitive objects from the semantic extractor and plots them on the canvas.
+
+\subsection{Using Context to handle Anaphora}
+The semantics analyser uses the context (a list of objects which were plotted in the previous construction steps and objects derivable from them) to resolve the anaphora. For example,
+``Mark a point M on it''.
+Here ``it'' would refer to the most recently plotted markable object (objects on which a point can be marked like lines, line segments, arcs, circles etc.). We fetch such markable object from the context to resolve the anaphora.
 
 \section{Cross-Lingual alignment}
 Cross-Lingual alignment is a technique to statistically align the words of a given pair of languages. It is close to translating one language into another, without any syntactic or semantic knowledge of any of the languages. As an example, for a pair of langauges, given sufficiently many sentences as illustrated in the table 2, a cross-lingual alignment assigns probabilities to the event that a particular source-language token is mapped to a target-language token.\\
