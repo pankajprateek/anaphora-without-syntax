@@ -232,14 +232,14 @@ For both of these translations, we obtain the same parse tree, which is illustra
     \includegraphics[scale=0.5]{parsetree.png}
   \end{center}
   \caption{Sample Parse Tree}
-  \label{fig:pspic}
+  \label{}
 \end{figure}
 \begin{figure}[H]
   \begin{center}
     \includegraphics[scale=0.5]{workflow.png}
   \end{center}
   \caption{Work Flow}
-  \label{fig:pspic}
+  \label{}
 \end{figure}
 
 This approach has been shown to work for simple construction steps. Output diagram for the steps above is shown in Figure 2.
@@ -251,6 +251,9 @@ This approach has been shown to work for simple construction steps. Output diagr
   \caption{Graphical visualization of the sample alignment}
   \label{fig:pspic}
 \end{figure}
+
+\subsection{Language-Independence}
+Given a corpus in the specified format, the system generates a probabilistic mapping between the words in the language and the words in the meta language using cross-lingual alignment. This is then used in later stages to convert the presented sentence in the language to the meta language. After this conversion, the system behaves the same independent of the natutal language specified.
 
 % \begin{enumerate}
 % \item English-to-Metalanguage and Hindi-to-Metalanguage sentence pairs have been collected from NCERT textbooks to be used in bootstrap corpus.
@@ -283,16 +286,19 @@ Metalanguage & 110+\\
 \caption{Unique tokens in different languages}
 \end{center}
 \end{table}
+
+\item The implementation demonstrates the performance of the system for atomic construction statements like "construct a line segment AB of length 5 cm" etc. Complex statements like "Construct an equilateral triangle of side length 5 cm" have not been implemented.
 \end{enumerate}
 
 \subsection{Difficulties}
 \begin{itemize}
 \item {\bf Anaphoras}
-Dealing with anaphoras like ``this'', ``it'', ``previous'', ``last'' etc in sentences like ``Mark any point M on it'', ``{\dn eka suvidhAjanaka trijyA lekara pichale cara.na vAle cApa ko bindu} A {\dn para kA.te.m|}'' etc
+Dealing with anaphoras like ``this'', ``it'', ``previous'', ``last'' etc in sentences like ``Mark any point M on it'', ``{\dn eka suvidhAjanaka trijyA lekara pichale cara.na vAle cApa ko bindu} A {\dn para kA.te.m|}'' etc.\\ Anaphora are resolved by using the context (set of objects drawn in the previous steps).
 \item {\bf Underspecified Parameters}
-We also need to provide for unspecified radii, lengths and anlge measures e.g. ``With A and B as centers and a suitable radius, draw two arcs interseting eachother at point C''
+We also need to provide for unspecified radii, lengths and anlge measures e.g. ``With A and B as centers and a suitable radius, draw two arcs interseting eachother at point C''. \\
+Radii, lengths etc. are supplied randomly in such cases, obeying the constraints which might have been put on such values in this or the previous step (e.g. ``Construct a line segment with length greater than length of AB")
 \item {\bf Probabilistic Mapping}
-Since the mapping is statistical in nature, there might be various close alignments for the same source-language word. This forces us to resort to try out different possible alignments and look for the one that fits e.g. for the sentence ``Construct AB of length 7.8cm'', we get the following alignments with their corresponding probabilites (we assume that probabilites of word-wise alignment are independent of eachother)
+Since the mapping is statistical in nature, there might be various close alignments for the same source-language word. This forces us to resort to try out different possible alignments and look for the one that fits e.g. for the sentence ``Construct AB of length 7.8cm'', we get the following alignments with their corresponding probabilites (we assume that probabilites of word-wise alignment are independent of eachother)\\
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{lc}
@@ -307,6 +313,7 @@ construct AB center length 7.8cm & 1.90645e-06\\
 \caption{Map to possible metalanguage sentences alongwith their probabilities}
 \end{center}
 \end{table}
+After incorporating the assumption that the every word in the sentence should map to either a word in the meta language or some null word, the mappings are very strong. Even less frequent words like "equilateral", "trapezium" etc. map with very high probabilities with thier meta langauge counterparts. This gives increased confidence in the meta langauge sentence produced from a given natural language sentence.
 \end{itemize}
 
 \section{What needs to be done}
