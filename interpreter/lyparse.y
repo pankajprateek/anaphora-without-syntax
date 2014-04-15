@@ -13,7 +13,6 @@
 
 using namespace std;
 #define PDEBUG 0
-
   
   extern "C"	//g++ compiler needs the definations declared[ not required by gcc]
   {
@@ -138,7 +137,7 @@ addressLength1 :
                     }
   | FREEVARIABLE    {
                       Length* length = newLength();
-                      length->length = 4;
+                      length->length = 4;//generate random number here
                       $$ = length;                                            
                     }
   | previousLength  {
