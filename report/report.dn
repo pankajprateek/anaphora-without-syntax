@@ -33,8 +33,8 @@
 To design and implement interpreter that
 \begin{itemize}
 	\item is language-independent (works for English, Hindi at present)
-  \item is capable of handling anaphoras
 	\item Receives steps for a geometric construction as input e.g. "Draw a line segment AB of length 4 cm", "{\dn ke.mdra} B {\dn aura trijyA} 5 {\dn semI lekara eka cApa khI.mcie jo pahale khI.mcI cApa ko} C {\dn para kA.tatA ho}" etc
+  \item is capable of handling anaphoras  
 	\item Outputs the geometric figure obtained on executing the given sequence of steps 
 \end{itemize}
 
@@ -97,7 +97,7 @@ The interpreter consists of the following components:
     \item Semantics Analyser
     \item Plotter  
   \end{itemize}
-\item Using Context to handle Anaphora
+\item Using Context to handle Anaphoras
 \end{itemize}
 
 \subsection{Aligner}
@@ -106,7 +106,7 @@ Cross-lingual alignment is the heart of the learning mechanism in this project. 
 We have used GIZA++ \cite{och2003systematic} as the cross-lingual aligner. GIZA++ is a statical machine translation toolkit that is used to train IBM Models 1-5 and an HMM word alignment model.\\
 
 \subsection{Grammar}
-The grammar has been carefully designed to capture the underlying structure of the conventional (imperative) geometry construction steps. Note that there is a mild constraint on the grammar, which is a direct consequence of the assumption that the parameters of the object to be plotted occur near to parameter name in the input sentence. Hence the rules have been designed such that for each production rule, the leftmost non-terminal guides the search for the remaining non-terminals. [see section~Proximity]
+The grammar has been carefully designed to capture the underlying structure of the conventional (imperative) geometry construction steps. Note that there is a mild constraint on the grammar, which is a direct consequence of the assumption that the parameters of the object to be plotted occur near to parameter name in the input sentence. Hence the rules have been designed such that for each production rule, the leftmost non-terminal guides the search for the remaining non-terminals. [see section on Proximity]
 
 \subsection{Natural Language (NL) Interpreter}
 
@@ -114,21 +114,21 @@ The grammar has been carefully designed to capture the underlying structure of t
 The interpreter component exploits the alignment model obtained from the Aligner component. Given a sentence expressed in a natural language, we use the alignment model to get the statistically most probable mapping of the NL sentence to a list of words in the language defined by the grammar. This list of words need not conform to a sentence in the language defined by the grammar but still carries some intent of the NL sentence, and hence can be called a partially ordered list of metalanguage words.\\
 
 \subsubsection{Heuristics-based Parser}
-At this stage, the parser takes the partially ordered set of words generated in the previous step and tries to map it to a sentence formed by the grammar. This is done by doing a DFS on the grammar and trying to fit every token in the set with some grammar terminal. Given any production rule, our DFS-based algorithm recursively expands the leftmost unexpanded nonterminal in the rule; on encountering a terminal, it tries to fit the terminal to some token near its parent's/left sibling's token. The subtrees which are not satisfied are pruned and search resumes with the next available production rule. The search progress by using some heuristics as defined below:
+At this stage, the parser takes the partially ordered set of words generated in the previous step and tries to map it to a sentence formed by the grammar. This is done by performing a DFS on the grammar tree and trying to fit every token in the set with some grammar terminal. Given any production rule, our DFS-based algorithm recursively expands the leftmost unexpanded nonterminal in the rule; on encountering a terminal, it tries to fit the terminal to some token near its parent's/left sibling's token. The subtrees which are not satisfied are pruned and search resumes with the next available production rule. The search is aided by the following heuristics:
 \begin{enumerate}
 \item \textbf{Proximity}\label{sec:proximity}\\
-Proximity plays an important role in the parsing. We have assumed that the object that needs to be constructed would be near the ``construct'' word, and the length of a line segment would be near its name. Consider, as an example, "Construct a line segment AB of length 5 cm". Here, using our assumption we start searching for the object to be constructed near the ``construct'' word; it comes out to be the line segment AB. Note that we have to search on both the sides the keyword (Give a hindi sentence as an example). This assumption is justified by the structure of the sentences in the natural languages, and specifically the geometry construction steps. This reduces the parsing complexity many-fold. As an another example, "Construct a line segment AB such that length of AB is equal to the difference of the length of CD and length of EF". Here, only those parse trees which demand the construction of AB are retained (as AB is nearer to construct than CD and EF); remaining trees which involve the construction of CD or EF are pruned.
+Proximity plays an important role in our parsing method e.g. we have assumed that the object that needs to be constructed would be near the ``construct'' word, and the length of a line segment would be near its name. Consider, as an example, "Construct a line segment AB of length 5 cm". Here, using our assumption we start searching for the object to be constructed near the ``construct'' word; it comes out to be the line segment AB. Note that we have to search on both the sides of the keyword (Give a hindi sentence as an example). This assumption is justified by the structure of the sentences in the natural languages, and specifically the geometry construction steps. This reduces the parsing complexity many-fold. As an another example, "Construct a line segment AB such that length of AB is equal to the difference of the length of CD and length of EF". Here, only those parse trees which demand the construction of AB are retained (as AB is nearer to ``construct'' than CD and EF); remaining trees which involve the construction of CD or EF are pruned.
 
 \item \textbf{Type system}\\
-The type system plays an important role in the parsing. The system is implicitly type-defined. For example, consider a statement like  ``Mark a point A on it''. Here ``it'' can be a line, line segment, circle etc. but not a point, as marking a point on a point is not permitted. Also, point pairs like AB would define a line segment or a ray, ABC would define an arc, 'l' would define a line (according to the conventions in the existing geometry texts). The grammar and the semantic analyser together form the type system.
+The system is implicitly type-defined. For example, consider a statement like  ``Mark a point A on it''. Here ``it'' can be a line, line segment, circle etc. but not a point, as marking a point on a point is not permitted. Also, point pairs like AB would define a line segment or a ray, ABC would define an arc, 'l' would define a line (according to the conventions in the existing geometry texts). The grammar and the semantic analyser together form the type system.
 
 \item \textbf{Validity of the output}\\
-The search is also guided by the output produced at this stage. If the output produced seems correct, i.e., it uses most of the tokens in the set and fits to some sentence generated by the grammar, it is passed to the semantic analyser. The semantic analyser then checks whether the output represents a valid intent to draw, i.e., a valid plottable object can be drawn out of it. If not, the parser tries to correct the parse tree starting from the rightmost leaf; this procedure is repeated until either we either obtain something plottable or exhaust all the possibilities.
+The search is also guided by the output produced at this stage. If the output produced seems correct, i.e., it uses most of the tokens in the set and conforms to some sentence generated by the grammar, it is passed to the semantic analyser. The semantic analyser then checks whether the output represents a valid intent to draw, i.e., a valid plottable object can be inferred out of it. If not, the parser tries to correct the parse tree starting from the rightmost leaf; this procedure is repeated until either we obtain something plottable or exhaust all the possibilities.
 
 \end{enumerate}
 
 \subsubsection{Semantics Analyser}
-This stage of the parser uses Lex-Yacc to generate a set of primitive objects like points, lines, arcs etc. which need to be plotted in this construction step. All coordinates, radii, lengths and angles are resolved in this step. Anaphora are also resolved in this stage. This is detailed in the later sections.
+This stage of the parser uses Lex-Yacc to generate a set of primitive objects like points, lines, arcs etc. which need to be plotted in the last input construction step. All coordinates, radii, lengths and angles are resolved in this step. Anaphora are also resolved in this stage. This is detailed in the later sections.
 
 \subsubsection{Plotter}
 For each input construction step, the plotter receives a list of primitive objects from the semantic analyser and plots them on the canvas.
@@ -209,7 +209,7 @@ exterior & \texttt{exterior} & 0.20\\
 
 \section{What has been done}
 \subsection{Corpus}
-The corpus contains around 350 sentences from the geometry construction field in both the languages. These were collected from the NCERT textbooks of standards ${6^{th}}$ to ${9^{th}}$. English-to-Metalanguage and Hindi-to-Metalanguage sentence maps were generated manually which were then used to train the cross lingual alignment software
+The corpus contains around 350 sentences from the geometry construction field in both the languages. These were collected from the NCERT textbooks of standards ${6^{th}}$ to ${9^{th}}$. English-Metalanguage and Hindi-Metalanguage sentence pairs were generated manually which were then used to train the cross lingual alignment software
 
 The corpus has been formatted as follows:\\
 For every sentence in natural language, 
@@ -223,7 +223,7 @@ The corpus is available at \cite{corpus}
 To get an almost perfect probabilistic map between the parallel corpus, we impose a mild constraint: let the map be from language A to B; we design the corpus such that every word of the language A either maps to exactly one word of language B or to the empty word. Note that this is not necessary. It has been done so as to obtain the best possible map for a given corpus size under corss-lingual alignment. Poorer quality of map leads to considerable increase in the possible translations that the parser would have to parse.
 
 \subsection{Parser}
-Suppose the input sentence is "Construct a line segment AB of length 7 cm". Using the English-to-Metalanguage map, we translate this sentence tokenwise to "construct line segment AB length 7 cm" where ``A'' and ``of'' map to empty words. Similarly, for the input sentence ``7 {\dn semI lambAI kA eka rekhAkha.n.da} AB {\dn khI.mcie}'', using the Hindi-to-Metalanguage map, we obtain the translation ``7 cm length line segment construct'', where ``{\dn kA}'' and ``{\dn eka}'' map to empty word.\\
+Suppose the input sentence is "Construct a line segment AB of length 7 cm". Using the English-to-Metalanguage map, we translate this sentence tokenwise to "construct line segment AB length 7 cm" where ``a'' and ``of'' map to empty words. Similarly, for the input sentence ``7 {\dn semI lambAI kA eka rekhAkha.n.da} AB {\dn khI.mcie}'', using the Hindi-to-Metalanguage map, we obtain the translation ``7 cm length line segment construct'', where ``{\dn kA}'' and ``{\dn eka}'' map to empty word.\\
 
 For both of these translations, we obtain the same parse tree, which is illustrated below:
 
