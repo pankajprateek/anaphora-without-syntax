@@ -27,7 +27,7 @@
 \begin{document}
 \maketitle
 \begin{center}{\b \em ABSTRACT}\end{center}
-{\em In this project, we take up the problem of handling anaphora in multiple languages in the context of a language-independent interpreter for drawing geometric diagrams. We focus on ruler and compass based construction problems. We start with use cases and motivations on why such a system would be useful and what places deploying it would be fruitful. We give a brief tabulated summary review of related research work done on geometry related problems and point out the common trait that they lack the ability to decipher any problem/constraint expressed in a natural language. We, then, move to describe the design of the interpreter and the usage of cross-lingual technique to provide language-independent interpretation ability. We briefly mention how is the alignment model utilised to realize the powerful translation feature. This is followed by the results obtained, difficulties faced and future work.}
+{\em In this project, we take up the problem of handling anaphora in multiple languages in the context of a language-independent interpreter for drawing geometric diagrams. We focus on ruler and compass based construction problems. We start with use cases and motivations on why such a system would be useful and what places deploying it would be fruitful. We give a brief tabulated summary review of related research work done on geometry related problems and point out the common trait that they lack the ability to decipher any problem/constraint expressed in a natural language. We, then, move to describe the design of the interpreter and the usage of cross-lingual technique to provide language-independent interpretation ability. We briefly mention how the alignment model is utilised to realize the powerful translation feature. This is followed by a detailed account on handling anaphoras while extracting semantics from the translated sentences. We conclude with comprehensive results, difficulties faced and future work.}
 
 \section{Objective}
 To design and implement interpreter that
@@ -61,11 +61,11 @@ We summarize our observations in terms of following 3 parameters:
 \begin{tabular}{p{0.35\textwidth}p{0.20\textwidth}p{0.20\textwidth}p{0.20\textwidth}}
 \hline
 \bf{\small Paper} & \bf{\small Uses other linguistic/domain knowledge} & \bf{\small Assumes linguistic clues already traslated into logical forms} & \bf{\small Uses parse knowledge}\\[0.2cm]\hline
-Geometric Construction Problem Solving in Computer-Aided Learning\cite{schreck2012geometric} & \texttt{YES} & \texttt{YES} & \texttt{NA}\\\\
-Synthesizing geometry constructions\cite{gulwani2011synthesizing} & \texttt{YES} & \texttt{YES} & \texttt{NA}\\\\
-Solving geometry problems using a combination of symbolic and numerical reasoning\cite{itzhaky2012solving} & \texttt{YES} & \texttt{YES} & \texttt{NA}\\\\
-Can modern statistical parsers lead to better natural language understanding for education?\cite{ahmed2012can} & \texttt{YES} & \texttt{NO} & \texttt{YES}\\\\
-Learning to map sentences to logical form: Structured classification with probabilistic categorial grammars\cite{zettlemoyer2012learning} & \texttt{YES} & \texttt{NO} & \texttt{YES}\\
+Schreck et. al.\cite{schreck2012geometric} & \texttt{YES} & \texttt{YES} & \texttt{NA}\\\\
+Gulwani et. al.\cite{gulwani2011synthesizing} & \texttt{YES} & \texttt{YES} & \texttt{NA}\\\\
+Itzhaky et. al.\cite{itzhaky2012solving} & \texttt{YES} & \texttt{YES} & \texttt{NA}\\\\
+Ahmed et. al.\cite{ahmed2012can} & \texttt{YES} & \texttt{NO} & \texttt{YES}\\\\
+Zettlemoyer et. al.\cite{zettlemoyer2012learning} & \texttt{YES} & \texttt{NO} & \texttt{YES}\\
 \hline
 \end{tabular}
 \caption{Related Works}
@@ -298,7 +298,7 @@ Dealing with anaphoras like ``this'', ``it'', ``previous'', ``last'' etc in sent
 We also need to provide for unspecified radii, lengths and anlge measures e.g. ``With A and B as centers and a suitable radius, draw two arcs interseting eachother at point C''. \\
 Radii, lengths etc. are supplied randomly in such cases, obeying the constraints which might have been put on such values in this or the previous step (e.g. ``Construct a line segment with length greater than length of AB")
 \item {\bf Probabilistic Mapping}
-Since the mapping is statistical in nature, there might be various close alignments for the same source-language word. This forces us to resort to try out different possible alignments and look for the one that fits e.g. for the sentence ``Construct AB of length 7.8cm'', we get the following alignments with their corresponding probabilites (we assume that probabilites of word-wise alignment are independent of eachother)\\
+Since the mapping is statistical in nature, there might be various close alignments for the same source-language word. This forces us to resort to try out different possible alignments and look for the one that fits e.g. for the sentence ``Construct AB of length 7.8cm'', we get the following alignments with their corresponding probabilites (we assume that word-wise alignments are independent of eachother)\\
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{lc}
@@ -313,7 +313,7 @@ construct AB center length 7.8cm & 1.90645e-06\\
 \caption{Map to possible metalanguage sentences alongwith their probabilities}
 \end{center}
 \end{table}
-After incorporating the assumption that the every word in the sentence should map to either a word in the meta language or some null word, the mappings are very strong. Even less frequent words like "equilateral", "trapezium" etc. map with very high probabilities with thier meta langauge counterparts. This gives increased confidence in the meta langauge sentence produced from a given natural language sentence.
+After incorporating the assumption that the every word in the sentence should map to either a word in the meta language or some null word, the map comes out to be nearly perfect. Even less frequent words like "equilateral", "trapezium" etc. map with very high probabilities with their meta langauge counterparts. This gives increased confidence in the correctness of meta langauge sentence produced from a given natural language sentence.
 \end{itemize}
 
 \section{What needs to be done}
@@ -329,7 +329,6 @@ After incorporating the assumption that the every word in the sentence should ma
 \nocite{ahmed2012can}
 \nocite{itzhaky2012solving}
 \nocite{zettlemoyer2012learning}
-\nocite{och2003systematic}
 
 \bibliography{report}{}
 \bibliographystyle{plain-annote}
