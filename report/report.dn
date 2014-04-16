@@ -130,8 +130,7 @@ Zettlemoyer et. al.\cite{zettlemoyer2012learning} & \texttt{YES} & \texttt{NO} &
 \end{center}
 \end{table}
 
-Unlike all previous attempts, we do not assume that the logical forms of the sentences are available, nor we assume the availability of a parser. We use cross-lingual alignment to map the given sentence in natural language to metalanguage. It is therefore applicable to a large range of languages. We demonstrate this for two widely known languages belonging to very different families - Hindi and English.
-
+Unlike all previous attempts, we do not assume that the logical forms of the sentences are available, nor we assume the availability of a parser. We use cross-lingual alignment to map the given sentence in natural language to metalanguage. It is therefore applicable to a large range of languages. We demonstrate this for two widely known languages belonging to very different families: Hindi and English.
 
 % \subsection{Learning to map sentences to logical form: Structured classification with probabilistic categorical grammars\cite{zettlemoyer2012learning}}
 % 
@@ -249,6 +248,27 @@ The grammar has been carefully designed to capture the underlying structure of t
 \subsubsection{NL to Metalanguage Mapper}
 The interpreter component exploits the alignment model obtained from the Aligner component. Given a sentence expressed in a natural language, we use the alignment model to get the statistically most probable mapping of the NL sentence to a list of words in the language defined by the grammar. This list of words need not conform to a sentence in the language defined by the grammar but still carries some intent of the NL sentence, and hence can be called a partially ordered list of metalanguage words.\\
 
+For example, in our problem, we obtain the following partially ordered set of words for the 6 steps in English:
+
+\begin{enumerate}
+\item ``construct line segment BC length 6 cm''
+\item``B center construct arc radius 5 cm''
+\item``C center construct arc radius 7 cm''
+\item``mark intersection point these arcs A''
+\item``join AB''
+\item``join AC''
+\end{enumerate}
+
+Similarly, following is the set for the 6 steps expressed in Hindi:
+\begin{enumerate}
+\item ``6 cm length line segment BC construct''
+\item ``B center 5 cm radius arc construct''
+\item ``C center 7 cm radius arc construct''
+\item ``these arcs intersection point A mark''
+\item ``AB join''
+\item ``AC join''
+\end{enumerate}
+
 \subsubsection{Heuristics-based Parser}
 At this stage, the parser takes the partially ordered set of words generated in the previous step and tries to map it to a sentence formed by the grammar. This is done by performing a DFS on the grammar tree and trying to fit every token in the set with some grammar terminal. Given any production rule, our DFS-based algorithm recursively expands the leftmost unexpanded nonterminal in the rule; on encountering a terminal, it tries to fit the terminal to some token near its parent's/left sibling's token. The subtrees which are not satisfied are pruned and search resumes with the next available production rule. The search is aided by the following heuristics:
 \begin{enumerate}
@@ -263,8 +283,35 @@ The search is also guided by the output produced at this stage. If the output pr
 
 \end{enumerate}
 
+For example, in our problem, the output sentences in the language defined by the grammar would be
+\begin{enumerate}
+\item ``construct line segment BC length 6 cm''
+\item ``construct arc center B radius 5 cm''
+\item ``construct arc center C radius 7 cm''
+\item ``mark intersection point these arcs A''
+\item ``join AB''
+\item ``join AC''
+\end{enumerate}
+
+Note that, the output sentences for the hindi sentences would be the same, as the underlying grammar in which the parser tries to fit the sentences is the same.
+
 \subsubsection{Semantics Analyser}
 This stage of the parser uses Lex-Yacc to generate a set of primitive objects like points, lines, arcs etc. which need to be plotted in the last input construction step. All coordinates, radii, lengths and angles are resolved in this step. Anaphora are also resolved in this stage. This is detailed in the later sections.
+
+The semantics analyser maintains two lists of plottables, one corresponding to the ``context'' (which is derived from the objects which were plotted in the previous construction steps) and ``diff'', which is generated from the current construction step and stores the objects which are to be plotted at this stage. At the end of the plotting step, the ``diff'' is appended to the ``context''. We put a restriction that is an object requires some primitive objects to be plotted, we require that such objects are either in the running context or in the ``diff'' list, e.g., a line segment construction would require the two points, which determine the line segment, to be plotted first. So these points with their coordinates are also stored in the ``diff'' list.\\
+
+In the running example, after the first step, the generated diff list would be as follows:\\
+Points=\{B(0,0), C(6,0)\}, line segments=\{BC\}\\
+
+Similarly before the fifth step, the context would be:\\
+points=\{B(0,0), C(6,0), A(1,$\surd{24}$)\}, line segments=\{BC\}, arcs=\{(B,5), (C,7)\}\\
+and the diff would be\\
+line segments=\{AB\}\\
+The updated context after the fifth step would be\\
+points=\{B(0,0), C(6,0), A(1,$\surd{24}$)\}, line segments=\{BC, AB\}, arcs=\{(B,5), (C,7)\}
+
+The objects are arranged in the ``context'' and the ``diff'' list such that the last plotted object is at the end of the respective list.
+For a point which occurs for the first time in the construction step, and is independent of the running context, we assign a coordinate randomly.
 
 \subsubsection{Plotter}
 For each input construction step, the plotter receives a list of primitive objects from the semantic analyser and plots them on the canvas.
