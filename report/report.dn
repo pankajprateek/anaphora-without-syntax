@@ -157,6 +157,15 @@ The interpreter consists of the following components:
 \item Using Context to handle Anaphoras
 \end{itemize}
 
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale=0.5]{workflow.png}
+  \end{center}
+  \caption{Work Flow}
+  \label{}
+\end{figure}
+
+
 \subsection{Aligner}
 Cross-lingual alignment is the heart of the learning mechanism in this project. It is used to obtain mapping/alignment between a natural language and our carefully designed and structured imperative metalanguage, L0. Since this alignment can be obtained for any natural language, the application is scalable to any number of natural languages.\\
 
@@ -317,17 +326,47 @@ For a point which occurs for the first time in the construction step, and is ind
 For each input construction step, the plotter receives a list of primitive objects from the semantic analyser and plots them on the canvas.
 
 \subsection{Using Task Context to handle Anaphora}
+An anaphora is a word or phrase which points back to a previously referred linguistic or semantic object.  Thus the anaphora and its antecedent both corefer to the same referent.\\
 The semantics analyser uses the context (a list of objects which were plotted in the previous construction steps) to resolve the anaphoras. For example,
 ``Mark a point M on it''.
 Here ``it'' would refer to the most recently plotted markable object (objects on which a point can be marked e.g. lines, line segments, arcs, circles etc.). We fetch such markable object from the context to resolve the anaphora.
 
+In case of the problem we consider, suppose we combine the fourth, fifth and the sixth step into ``With B and C as centers and radii 5 and 7 cm, draw two arcs intersecting eachother at A''. Here, ``arcs'' is the antecedent and ``eachother'' is the anaphora, both corefering to the same referent i.e. the arcs being drawn. Since the arcs have not been constructed yet, they are not in the task context. In this case, the semantic analyser comes to our rescue by providing for such sentences in the grammar.\\
+
+At the same time, in the original fourth step, ``mark intersection point these arcs A'', the words ``these arcs'' guide us to fetch the last drawn arcs. The ''intersection point'' applied on ``these arcs'' yields us a markable object, which when combined with ``mark'' completes the parse.\\
+
+By the fourth step, we obtain the following plot (Note that the dotted circles represent arcs):\\
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale=0.5]{step4.png}
+  \end{center}
+  \caption{Plot obtained after interpreting first four steps}
+  \label{}
+\end{figure}
+
+If we join the fifth and the sixth step into ``Join AB and AC'', we get a case of ellipsis: the intent is to join AC too. Such cases are not handled here and are planned to be done in future.\\
+
+By the sixth and the final step, we obtain the following plot:\\
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[scale=0.5]{step6.png}
+  \end{center}
+  \caption{Plot obtained after interpreting all the steps}
+  \label{}
+\end{figure}
+
+
+
 \subsection{Language Independence}
 Given a corpus in the specified format, the system generates a probabilistic mapping between the words in the language and the words in the meta language using cross-lingual alignment. This is then used in later stages to convert the presented sentence in the language to the meta language. After this conversion, the system behaves the same independent of the natutal language specified.
 
-\section{Parsing the Metalanguage to generate drawing output}
-Suppose the input sentence is "Construct a line segment AB of length 7 cm". Using the English-to-Metalanguage map, we translate this sentence tokenwise to "construct line segment AB length 7 cm" where ``a'' and ``of'' map to empty words. Similarly, for the input sentence ``7 {\dn semI lambAI kA eka rekhAkha.n.da} AB {\dn khI.mcie}'', using the Hindi-to-Metalanguage map, we obtain the translation ``7 cm length line segment construct'', where ``{\dn kA}'' and ``{\dn eka}'' map to empty word.\\
+\section{Parsing metalanguage to generate plot}
 
-For both of these translations, we obtain the same parse tree, which is illustrated below:
+The first input sentence in the English version of our problem is "Construct a line segment BC of length 6 cm". Using the English-to-Metalanguage map, we translate this sentence tokenwise to "construct line segment AB length 7 cm" where ``a'' and ``of'' map to empty words. Similarly, for the Hindi input sentence ``7 {\dn semI lambAI kA eka rekhAkha.n.da} AB {\dn khI.mcie}'', using the Hindi-to-Metalanguage map, we obtain the translation ``7 cm length line segment construct'', where ``{\dn kA}'' and ``{\dn eka}'' map to empty word.\\
+
+Using heuristics-based parsing, we obtain the same parse tree for both of these translations:
 
 \begin{figure}[H]
   \begin{center}
@@ -336,15 +375,14 @@ For both of these translations, we obtain the same parse tree, which is illustra
   \caption{Sample Parse Tree}
   \label{}
 \end{figure}
-\begin{figure}[H]
-  \begin{center}
-    \includegraphics[scale=0.5]{workflow.png}
-  \end{center}
-  \caption{Work Flow}
-  \label{}
-\end{figure}
 
-This approach has been shown to work for simple construction steps. Output diagram for the steps above is shown in Figure 2.
+The semantic analyser, which is, in reality, a lex-yacc parser, when presented with pre-order string of this parse tree, outputs a list of primitive objects to be plotted:\\
+
+points=\{B(0,0), C(6,0)\}, line segments=\{BC\}\\
+
+The plotter is a simple program which plots these geometric objects\\
+
+This approach has been shown to work for simple construction steps.\\
 
 \section{Corpus Collection and Testing}
 
@@ -365,21 +403,22 @@ To get an almost perfect probabilistic map between the parallel corpus, we impos
 % \begin{enumerate}
 % \item English-to-Metalanguage and Hindi-to-Metalanguage sentence pairs have been collected from NCERT textbooks to be used in bootstrap corpus.
 % \item The approach has been shown to work for simple construction steps. Output diagram for the steps above is shown in Figure 1.
-\begin{figure}[H]
-  \begin{center}
-    \includegraphics[scale=0.5]{triangle.png}
-  \end{center}
-  \caption{Constructed Triangle}
-  \label{fig:pspic}
-\end{figure}
+%\begin{figure}[H]
+%  \begin{center}
+%    \includegraphics[scale=0.5]{triangle.png}
+%  \end{center}
+%  \caption{Constructed Triangle}
+%  \label{fig:pspic}
+%\end{figure}
 %\end{enumerate}
 
 \section{Results}
 \begin{enumerate}
 \item Number of sentences in the corpus: 360 each in English-to-Metalanguage and Hindi-to-Metalanguage corpus 
-\item A sample prototype implementation that demonstrates the performance of the system for simple construction steps of drawing line segments and arcs.
-\item Number of unique tokens in each of the three languages:\\
-\begin{table}[h]
+\item Number of unique tokens in each of the three languages are given below
+
+\begin{table}[H]
+\label{table:tokens}
 \smallskip
 \begin{center}
 \begin{tabular}{cc}
@@ -394,16 +433,56 @@ Metalanguage & 110+\\
 \end{center}
 \end{table}
 
-\item The implementation demonstrates the performance of the system for atomic construction statements like "construct a line segment AB of length 5 cm" etc. Complex statements like "Construct an equilateral triangle of side length 5 cm" have not been implemented.
+
+\item The implementation demonstrates the performance of the system for atomic construction statements like "construct a line segment AB of length 5 cm" etc. Statements like "Construct an equilateral triangle of side length 5 cm", which involve more than one atomic step, have not been implemented.\\
+
+The chapter on Geometry from CBSE NCERT Mathematics textbook for $6^{th}$ standard contains only the atomic construction steps, while chapters from $7^{th}$, $8^{th}$ and $9^{th}$ standard contain construction steps which require two or more applications of simple ruler-compass based (atomic) construction step.\\
+
+Tabulated below is the performance of curent implementation. We are confident that the accuracy is bound to increase once the grammar and implementation is full-fledged.\\
+
+\begin{table}[H]
+\label{table:accuracy}
+\smallskip
+\begin{center}
+\begin{tabular}{cccc}
+\hline
+\bf{Standard/Grade} & \bf{Corpus Size} & \bf{Number of successful parses} & \bf{Percentage}\\[0.2cm]\hline
+$6^{th}$ & 84 & 77 & 91.67 \%\\
+$6^{th}$ to $9^{th}$ & 225 & 172 & 76.44 \%\\
+\hline
+\end{tabular}
+\caption{Unique tokens in different languages}
+\end{center}
+\end{table}
+
+
+
+
 \end{enumerate}
 
-\subsection{Difficulties}
+\subsection{Failure Cases}
+
+\begin{enumerate}
+
+\item It is evident that sentences which are forbidden by the grammar can not be handled by the interpreter. This shortcoming can be easily removed by making the grammar more expressive, keeping in mind that it doesn't become ambiguous.
+
+\item In cases such as ``With A and B as centers, and radius as 4 and 5 cm, draw two arcs intersecting eachother at C'', we see the ``B'' is nearer to the paramter ``centers'', while ``4'' is nearer to the parameter ``radius''. This guides the heuristics-based parser to draw two arcs with centers B and A and radius as 4 and 5 cm respectively; but the intent is to draw two arcs with centers A and B and radius as 4 and 5 cm respectively.
+
+Clearly, if the sentence were ``With centers as A and B, and radius as 4 and 5 cm, draw two arcs intersecting eachother at C'', we would have captured the correct intent\\
+
+\end{enumerate}
+
+
+
+\subsection{Difficulties \& Resolutions}
 \begin{itemize}
+
 \item {\bf Anaphoras}
 Dealing with anaphoras like ``this'', ``it'', ``previous'', ``last'' etc in sentences like ``Mark any point M on it'', ``{\dn eka suvidhAjanaka trijyA lekara pichale cara.na vAle cApa ko bindu} A {\dn para kA.te.m|}'' etc.\\ Anaphora are resolved by using the context (set of objects drawn in the previous steps).
 \item {\bf Underspecified Parameters}
 We also need to provide for unspecified radii, lengths and anlge measures e.g. ``With A and B as centers and a suitable radius, draw two arcs interseting eachother at point C''. \\
 Radii, lengths etc. are supplied randomly in such cases, obeying the constraints which might have been put on such values in this or the previous step (e.g. ``Construct a line segment with length greater than length of AB")
+
 \item {\bf Probabilistic Mapping}
 Since the mapping is statistical in nature, there might be various close alignments for the same source-language word. This forces us to resort to try out different possible alignments and look for the one that fits e.g. for the sentence ``Construct AB of length 7.8cm'', we get the following alignments with their corresponding probabilites (we assume that word-wise alignments are independent of eachother)\\
 \begin{table}[H]
@@ -423,9 +502,9 @@ construct AB center length 7.8cm & 1.90645e-06\\
 After incorporating the assumption that the every word in the sentence should map to either a word in the meta language or some null word, the map comes out to be nearly perfect. Even less frequent words like "equilateral", "trapezium" etc. map with very high probabilities with their meta langauge counterparts. This gives increased confidence in the correctness of meta langauge sentence produced from a given natural language sentence.
 \end{itemize}
 
-\subsection{What needs to be done}
+\subsection{Future Work}
 \begin{enumerate}
-\item Enrich the corpus to cover larger domains of expressions e.g. having larger number of primitive steps, providing for higher-level primitives, specifying relative distances, dealing with anaphoras and references
+\item Enrich the corpus as well as grammar to cover larger domains of expressions e.g. having larger number of primitive steps, providing for higher-level primitives, specifying relative distances, dealing with anaphoras and references
 \item Expand the functionality of the system to work for all kinds of construction steps claimed so far
 \item Deploy the system on a webserver to demonstrate its functionality and work towards making it more robust
 \item In order to capture colloquial (non-academic) ways of expressing construction steps, we need to develop a user interface that augments the corpus with input sentences
