@@ -1,3 +1,5 @@
+#pragma once
+
 #include "lyparse.h"
 
 typedef struct _ArcProperties{
