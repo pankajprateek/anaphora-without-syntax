@@ -1,36 +1,28 @@
 %{	
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <cassert>
-#include <sstream>
+#include <assert.h>
 
 #include "./aux.h"
 #include "./lyparse.h"
 #include "./context.h"
 
-using namespace std;
 #define PDEBUG 0
   
-  extern "C"	//g++ compiler needs the definations declared[ not required by gcc]
-  {
-    int yyerror(char* s){
-      cout<<"ERROR: "<<s<<endl;
-      return 0;
-    }
-    int yyparse(void);
-    int yylex(void);
-
+  int yyerror(char* s){
+    printf("ERROR: %s\n", s);
+    return 0;
   }
-double epsilon = 1.0;
+  int yyparse(void);
+  int yylex(void);
+
+  double epsilon = 1.0;
 
 %}
 
 %union{		//union declared to store the $$ = value of tokens
   int ival;
-  string *sval;
+  String *sval;
   double dval;
   Command* command;
   Plottables* plottables;
@@ -448,20 +440,20 @@ lineSegmentAndProperties :
       }
   | LINESEGMENT addressLineSegment lineSegmentProperties
       {
-        Plottables *p = new Plottables(); 
+        Plottables *p = newPlottables(); 
         $2->setLength($3->getLength());
         p->updatePlottables(*$2);
         $$ = p;
       }
   | LINESEGMENT addressLineSegment perpendicularToClause perpendicularConditionClause
       {
-        Plottables *p = new Plottables();
+        Plottables *p = newPlottables();
         //not implemented now
         $$ = p;
       }
   | LINESEGMENT addressLineSegment parallelToClause parallelConditionClause
       {
-        Plottables *p = new Plottables();
+        Plottables *p = newPlottables();
         //not implemented now
         $$ = p;
       }
@@ -476,7 +468,7 @@ condition :
       {
         Condition *c = newCondition();
 	setLineSegment(c, *$3);
-	setLength(c, getLength($4);
+	setLength(c, getLength($4));
         /* c->setLineSegment(*$3); */
         /* c->setLength($4->getLength()); */
       }
@@ -484,7 +476,7 @@ condition :
       {
         Condition *c = newCondition();
 	setLineSegment(c, *$2);
-	setLength(c, getLength($3);
+	setLength(c, getLength($3));
         /* c->setLineSegment(*$2); */
         /* c->setLength($3->getLength()); */
       }
@@ -534,8 +526,8 @@ addressLineSegment :
     LINESEGMENT POINTPAIR
       {
         LineSegment* ls;
-        if(existsLineSegment(context, *(yylval.sval))){
-          *ls = getLineSegment(context, *(yylval.sval));
+        if(existsLineSegment(*(yylval.sval))){
+          *ls = getLineSegment(*(yylval.sval));
         } else {
           ls = newLineSegment();
 	  setLength(ls, *(yylval.sval));
@@ -545,8 +537,8 @@ addressLineSegment :
   | POINTPAIR
       {
         LineSegment* ls;
-        if(existsLineSegment(context, *(yylval.sval))){
-          *ls = getLineSegment(context, *(yylval.sval));
+        if(existsLineSegment(*(yylval.sval))){
+          *ls = getLineSegment(*(yylval.sval));
         } else {
           ls = newLineSegment();
 	  setLength(ls, *(yylval.sval));
@@ -555,8 +547,8 @@ addressLineSegment :
       }
   | adjectivePrevious LINESEGMENT
       {
-        assert(existsLastLineSegment(context));
-        LineSegment ls = getLastLineSegment(context);
+        assert(existsLastLineSegment());
+        LineSegment ls = getLastLineSegment();
         //TODO: $$ = the last segment present in the context
         LineSegment *l = newLineSegment();
 	// Copies attributes from ls to *l
@@ -565,8 +557,8 @@ addressLineSegment :
       }  
   | addressFreeObject
       {
-        assert(existsLastLineSegment(context));
-        LineSegment ls = getLastLineSegment(context);
+        assert(existsLastLineSegment());
+        LineSegment ls = getLastLineSegment();
         //TODO: $$ = the last segment present in the context
         LineSegment *l = newLineSegment();
 	LineSegmentCopy(ls, *l);
@@ -585,8 +577,8 @@ genericAngleAndProperties :
         Plottables *p = newPlottables();
         double degrees = getDegree($4);
         Point vertex, leftVertex, rightVertex;
-        char c1 = reserveNextPointLabel(context);
-        char c2 = reserveNextPointLabel(context);
+        char c1 = reserveNextPointLabel();
+        char c2 = reserveNextPointLabel();
         //INCOMPLETE
 
         $$ = p;
@@ -1801,10 +1793,10 @@ bisectableAndProperties :
 %%
 int lymain()
 {
-  context.readContext();
-	if(PDEBUG){
-		printf("main()");
-	}
-	yyparse();
-	return 0;
+  readContext();
+  if(PDEBUG){
+    printf("main()");
+  }
+  yyparse();
+  return 0;
 }

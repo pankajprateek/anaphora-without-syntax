@@ -42,7 +42,8 @@ lyparser.out: tokenize.l lyparse.y
 	yacc lyparse.y -Wall -k  --report=all -g -x -d -t
 	gcc -g -c lyparse.c -o lyparse.o
 	gcc -g -c aux.c -o aux.o
-	$(CC) lex.yy.c y.tab.c aux.o lyparse.o -o lexer -pg -w -std=c++0x
+	gcc -g -c context.c -o context.o
+	gcc aux.o lyparse.o context.o lex.yy.c y.tab.c -o lexer -pg -w -std=c++0x
 
 listkeywords:
 	python listKeywords.py < target.vcb > keywords.txt

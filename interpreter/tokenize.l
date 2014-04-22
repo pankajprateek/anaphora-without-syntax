@@ -1,18 +1,11 @@
 %{
 #include <string.h>
 #include <math.h>
-#include <vector>
-#include <iostream>
-#include <string>
-#include <cstdlib>
+#include <stdlib.h>
 #include "./y.tab.h"
 
 #define TDEBUG 0							//prints all lexical phase information
 using namespace std;
-extern "C"								//g++ compiler needs the defination declared[ not required by gcc]
-{
-	int yylex(void);
-}
 
 %}
 		
