@@ -404,21 +404,11 @@ const char* Context::contextFilename = "./context.txt";
 const char*  Context::diffFilename = "./diff.txt";
 
 
-class Command{
+typedef struct _Command{
   Plottables plottables;
-  
- public:
-  Command(){
-  }
+} Command;
 
-  Command(Plottables plottables){
-    this->plottables = plottables;
-  }
-  
-  void executeCommand(){
-    assert(!this->plottables.isEmpty());
-    context.writeDiff(plottables);
-    context.updateContext(plottables);
-    context.writeContext();
-  }
-};
+
+/* Functions */
+Command* newCommand();
+void executeCommand(Context context, Command command);
