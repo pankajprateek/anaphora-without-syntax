@@ -3,6 +3,7 @@
 #include<string>
 #include "interpreter.h"
 #include "grammar.h"
+#define MDEBUG false
 
 using namespace std;
 grammar_t grammar;
@@ -15,7 +16,8 @@ int main(){
   while(getline(cin, cmd)) {
     cout<<cmd<<endl;
     string interpretation = getInterpretation(cmd);
-    cout<<interpretation;
+    if(MDEBUG)
+      cout<<interpretation;
   }
 
   return 0;

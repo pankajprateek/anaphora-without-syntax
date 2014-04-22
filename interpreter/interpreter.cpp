@@ -1,10 +1,12 @@
 #include<iostream>
 #include<vector>
 #include<string>
+#include<fstream>
 #include "interpreter.h"
 #include "mapper.h"
 #include "action.h"
 #define MAX_TRANSLATIONS 10
+#define FileDebug true
 
 string getInterpretation(string parse){
   if(DEBUG) cout<<"Interpreting \""<<parse<<"\"..."<<endl;
@@ -15,9 +17,21 @@ string getInterpretation(string parse){
     cout<<mappings[i].first<<"\t ->"<<mappings[i].second<<endl;
   }
   */
+
+  if(FileDebug) {
+    ofstream file("testing.txt", ios::out|ios::app);
+    file<<"\nParse String:"<<endl<<parse<<endl;
+    file.close();
+  }
+
   Action *action = new Action();
 
   if(DEBUG) cout<<"No. of possibilities " <<mappings.size()<<endl;
+  if(mappings.size()==0 and FileDebug) {
+    ofstream file("testing.txt", ios::out|ios::app);
+    file<<"No mappings generated"<<endl;
+    file.close();
+  }
 
   int numTranslations = mappings.size() < MAX_TRANSLATIONS ? mappings.size() : MAX_TRANSLATIONS;
   for(int i=0; i < numTranslations ; ++i){
@@ -29,6 +43,14 @@ string getInterpretation(string parse){
     if(parseTree.isEmpty()){
       if(DEBUG) cout<<"Could not parse "<<i+1<<"th possibility \""
         <<mappings[i].first<<"\""<<endl;
+      if(numTranslations == i+1 and DEBUG) {
+	cout<<"All possibilities parsed. No parse tree found"<<endl;
+	if(FileDebug) {
+	  ofstream file("testing.txt", ios::out|ios::app);
+	  file<<"All possibilities parsed. No parse tree found"<<endl;
+	  file.close();
+	}
+      }
       continue;
     }
     
@@ -37,7 +59,12 @@ string getInterpretation(string parse){
 
     string preOrder = parseTree.preOrder();
     cout<< "PreOrder Traversal of Tree:" <<endl<< preOrder <<endl;
-
+    if(FileDebug) {
+      ofstream file("testing.txt", ios::out|ios::app);
+      file<<"Parse Successful. PreOrder Traversal:"<<endl<<preOrder<<endl;
+      file.close();
+    }
+    
     //return action->toString();
     if(DEBUG) cout<<"HERE"<<endl;
     

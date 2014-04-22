@@ -65,6 +65,15 @@ double stod(string str) {
   return n;
 }
 
+bool isLine(string str) {
+  if(str.length()!=1)
+    return false;
+  if(str[0] >=97 and str[0] <=122)
+    return true;
+  else
+    return false;
+}
+
 // int main() {
 //   string str = "a";
 //   cout<<isNumber("9.1")<<endl;
