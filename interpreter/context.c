@@ -535,3 +535,75 @@ double getLength(Length l) {
 void setLength(Condition *c, double l) {
   c->absLength = l;
 }
+
+void printPlottable(Plottables p) {
+  printf("----------Plottable Begin---------\n");
+  int i;
+  printf("Points: ");
+  for(i=0;i<p.ip;i++) {
+    printf("%c(%lf,%lf) ", p.points[i].label, p.points[i].x, p.points[i].y);
+  }
+  printf("\n");
+  printf("LineSegments: ");
+  for(i=0;i<p.ils;i++) {
+    printf("%c%c ", p.lineSegments[i].pA.label, p.lineSegments[i].pB.label);
+  }
+  printf("\n");
+  printf("Angles: ");
+  for(i=0;i<p.ian;i++) {
+    printf("%c%c%c(%lf) ", p.angles[i].leftVertex.label, p.angles[i].vertex.label, p.angles[i].rightVertex.label, p.angles[i].degree);
+  }
+  printf("\n");
+  printf("Arcs: ");
+  for(i=0;i<p.ia;i++) {
+    printf("%c(%lf) ", p.arcs[i].center.label, p.arcs[i].radius);
+  }
+  printf("\n");
+  printf("Lines: ");
+  for(i=0;i<p.iln;i++) {
+    printf("%c ", p.lines[i].label);
+  }
+  printf("\n");
+  printf("Circles: ");
+  for(i=0;i<p.ia;i++) {
+    printf("%c(%lf) ", p.circles[i].center.label, p.circles[i].radius);
+  }
+  printf("\n");
+  printf("----------Plottable End---------\n");
+}
+
+void printContext() {
+  printf("----------Context Begin---------\n");
+  int i;
+  printf("Points: ");
+  for(i=0;i<context.ip;i++) {
+    printf("%c(%lf,%lf) ", context.points[i].label, context.points[i].x, context.points[i].y);
+  }
+  printf("\n");
+  printf("LineSegments: ");
+  for(i=0;i<context.ils;i++) {
+    printf("%c%c ", context.lineSegments[i].pA.label, context.lineSegments[i].pB.label);
+  }
+  printf("\n");
+  printf("Angles: ");
+  for(i=0;i<context.ian;i++) {
+    printf("%c%c%c(%lf) ", context.angles[i].leftVertex.label, context.angles[i].vertex.label, context.angles[i].rightVertex.label, context.angles[i].degree);
+  }
+  printf("\n");
+  printf("Arcs: ");
+  for(i=0;i<context.ia;i++) {
+    printf("%c(%lf) ", context.arcs[i].center.label, context.arcs[i].radius);
+  }
+  printf("\n");
+  printf("Lines: ");
+  for(i=0;i<context.iln;i++) {
+    printf("%c ", context.lines[i].label);
+  }
+  printf("\n");
+  printf("Circles: ");
+  for(i=0;i<context.ia;i++) {
+    printf("%c(%lf) ", context.circles[i].center.label, context.circles[i].radius);
+  }
+  printf("\n");
+  printf("----------Context End---------\n");
+}

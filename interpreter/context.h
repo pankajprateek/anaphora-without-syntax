@@ -63,3 +63,5 @@ void setLength(Condition *c, double l);
 bool isEmpty(Plottables p);
 bool comparePoint(Point A, Point B);
 bool compareAngles(Angle A, Angle B);
+void printPlottable(Plottables p);
+void printContext();
