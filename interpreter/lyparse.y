@@ -33,14 +33,14 @@
   struct _Angle* angle;
   struct _Operation* operation;
   struct _LineSegment* lineSegment;
-  struct _LineSegment* vecLineSegments;
-  struct _Length* vecLengths;
+  struct _VecLineSegment* vecLineSegments;
+  struct _VecLength* vecLengths;
   struct _Line* line;
   struct _Condition* condition;
   struct _Point* point;
-  struct _Point* vecPoints;
+  struct _VecPoint* vecPoints;
   struct _Arc* vecArcs;
-  struct _String* vecString;
+  struct _VecString* vecString;
   struct _Circle * circle;
   struct _Object * object;
   struct _Cut *cut;
@@ -193,9 +193,15 @@ addressLength2 :
   | REAL TIMES addressLength1
                     {
                       Length* length = newLength();
-                      length->length = $3->length * $1;
+                      length->length = $3->length * yylval.dval;
                       $$ = length;
                     }        
+  | INTEGER TIMES addressLength1
+                    {
+                      Length* length = newLength();
+                      length->length = $3->length * yylval.ival;
+                      $$ = length;
+                    }
   | HALF addressLength1
                     {
                       Length* length = newLength();
@@ -205,7 +211,8 @@ addressLength2 :
   | operation addressLength1 addressLength1
                     {
                       double result = getResult($1, $2->length, $3->length);
-                      Length* length = newLength(result);
+                      Length* length = newLength();
+                      length->length = result;
                       $$ = length;
                     }
 ;
@@ -237,7 +244,13 @@ addressLength3 :
   | REAL TIMES addressLength2
                     {
                       Length* length = newLength();
-                      length->length = $3->length * $1;
+                      length->length = $3->length * yylval.dval;
+                      $$ = length;
+                    }        
+  | INTEGER TIMES addressLength2
+                    {
+                      Length* length = newLength();
+                      length->length = $3->length * yylval.ival;
                       $$ = length;
                     }        
   | HALF addressLength2
@@ -249,7 +262,8 @@ addressLength3 :
   | operation addressLength2 addressLength2
                     {
                       double result = getResult($1, $2->length, $3->length);
-                      Length* length = newLength(result);
+                      Length* length = newLength();
+                      length->length = result;
                       $$ = length;
                     }
 ;
@@ -263,14 +277,24 @@ addressDegree :
 addressDegree1 :
     REAL DEGREES    {
                       Degree *degree = newDegree();
-                      degree->degree = $1;
+                      degree->degree = yylval.dval;
                       $$ = degree;
                     }
   | REAL            {
                       Degree *degree = newDegree();
-                      degree->degree = $1;
+                      degree->degree = yylval.dval;
                       $$ = degree;
                     }
+  | INTEGER         {
+                      Degree *degree = newDegree();
+                      degree->degree = yylval.ival;
+                      $$ = degree;
+                    }
+  | INTEGER DEGREES {
+                      Degree *degree = newDegree();
+                      degree->degree = yylval.ival;
+                      $$ = degree;
+                    }                    
   | FREEVARIABLE    {
                       Degree *degree = newDegree();
                       degree->degree = 30;
