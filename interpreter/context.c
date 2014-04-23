@@ -467,12 +467,19 @@ Circle getCircleAtPosition(int i) {
   return context.circles[i];
 }
     
-Angle getLastAngle() {
-  return context.angles[context.ian-1];
+Angle* getLastAngle() {
+  Angle *an = (Angle*)malloc(sizeof(Angle));
+  an->vertex = context.angles[context.ian-1].vertex;
+  an->leftVertex = context.angles[context.ian-1].leftVertex;
+  an->rightVertex = context.angles[context.ian-1].rightVertex;
+  an->degree = context.angles[context.ian-1].degree;
+  return an;
 }
     
-Length getLastLength() {
-  return context.lengths[context.ilg-1];
+Length* getLastLength() {
+  Length *ls = (Length*)malloc(sizeof(Length));
+  ls->length = context.lengths[context.ilg-1].length;
+  return ls;
 }
   
 bool existsLastLineSegment(){

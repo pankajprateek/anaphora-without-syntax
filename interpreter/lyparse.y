@@ -22,31 +22,31 @@
 
 %union{		//union declared to store the $$ = value of tokens
   int ival;
-  String *sval;
+  char* sval;
   double dval;
-  Command* command;
-  Plottables* plottables;
+  struct _Command* command;
+  struct _Plottables* plottables;
   struct _Length* length;
-  Degree* degree;
-  Angle* angle;
-  Operation* operation;
-  LineSegment* lineSegment;
-  LineSegment* vecLineSegments;
-  Length* vecLengths;
-  Line* line;
-  Condition* condition;
-  Point* point;
-  Point* vecPoints;
-  Arc* vecArcs;
-  String* vecString;
-  Circle * circle;
-  Object * object;
-  Cut *cut;
-  Arc *arc;
-  Intersection *intersection;
-  Parallelization *parallelization;
-  Perpendicularization *perpendicularization;
-  Location *location;
+  struct _Degree* degree;
+  struct _Angle* angle;
+  struct _Operation* operation;
+  struct _LineSegment* lineSegment;
+  struct _LineSegment* vecLineSegments;
+  struct _Length* vecLengths;
+  struct _Line* line;
+  struct _Condition* condition;
+  struct _Point* point;
+  struct _Point* vecPoints;
+  struct _Arc* vecArcs;
+  struct _String* vecString;
+  struct _Circle * circle;
+  struct _Object * object;
+  struct _Cut *cut;
+  struct _Arc *arc;
+  struct _Intersection *intersection;
+  struct _Parallelization *parallelization;
+  struct _Perpendicularization *perpendicularization;
+  struct _Location *location;
   void* voidPtr;
   
  }
@@ -140,14 +140,14 @@ addressLength1 :
                     }
   | LENGTH addressLineSegment
                     {
-                      assert(existsLineSegment($2->pA->label, $2->pB->label));                      
+                      assert(existsLineSegmentLabel($2->pA.label, $2->pB.label));                      
                       Length* length = newLength();
                       length->length = $2->length;
                       $$ = length;
                     }
   | addressLineSegment
                     {
-                      assert(existsLineSegment($1->pA->label, $1->pB->label));                      
+                      assert(existsLineSegmentLabel($1->pA.label, $1->pB.label));
                       Length* length = newLength();
                       length->length = $1->length;
                       $$ = length;
@@ -181,7 +181,7 @@ addressLength2 :
   | REAL TIMES addressLength1
                     {
                       Length* length = newLength();
-                      length->length = $2->length * $1;
+                      length->length = $3->length * $1;
                       $$ = length;
                     }        
   | HALF addressLength1
@@ -193,7 +193,7 @@ addressLength2 :
   | operation addressLength1 addressLength1
                     {
                       double result = getResult($1, $2->length, $3->length);
-                      Length* length = new Length(result);
+                      Length* length = newLength(result);
                       $$ = length;
                     }
 ;
@@ -225,7 +225,7 @@ addressLength3 :
   | REAL TIMES addressLength2
                     {
                       Length* length = newLength();
-                      length->length = $2->length * $1;
+                      length->length = $3->length * $1;
                       $$ = length;
                     }        
   | HALF addressLength2
@@ -237,7 +237,7 @@ addressLength3 :
   | operation addressLength2 addressLength2
                     {
                       double result = getResult($1, $2->length, $3->length);
-                      Length* length = new Length(result);
+                      Length* length = newLength(result);
                       $$ = length;
                     }
 ;
@@ -272,7 +272,11 @@ addressDegree1 :
                       $$ = degree;
                     }
   | addressAngle    {
-                      assert(existsAngle($1->name));
+		      char name[3];
+		      name[0] = $1->leftVertex.label;
+		      name[1] = $1->vertex.label;
+		      name[2] = $1->rightVertex.label;
+		      assert(existsAngle(name));
                       Degree *degree = newDegree();
                       degree->degree = $1->degree;
                       $$ = degree;
@@ -307,7 +311,7 @@ addressDegree2 :
   | REAL TIMES addressDegree1
                     {
                       Degree* degree = newDegree();
-                      degree->degree = $2->degree * $1;
+                      degree->degree = $3->degree * $1;
                       $$ = degree;
                     }          
   | HALF addressDegree1
@@ -318,8 +322,8 @@ addressDegree2 :
                     }          
   | operation addressDegree1 addressDegree1
                     {
-                      Degree* degree = newDegree()
-                      degree ->degree = getResult($1, $2->degree, $3->degree);
+                      Degree* degree = newDegree();
+                      degree->degree = getResult($1, $2->degree, $3->degree);
                       $$ = degree;
                     }
 ;
@@ -352,7 +356,7 @@ addressDegree3 :
   | REAL TIMES addressDegree2
                     {
                       Degree* degree = newDegree();
-                      degree->degree = $2->degree * $1;
+                      degree->degree = $3->degree * $1;
                       $$ = degree;
                     }          
   | HALF addressDegree2
@@ -363,8 +367,8 @@ addressDegree3 :
                     }          
   | operation addressDegree2 addressDegree2
                     {
-                      Degree* degree = newDegree()
-                      degree ->degree = getResult($1, $2->degree, $3->degree);
+                      Degree* degree = newDegree();
+                      degree->degree = getResult($1, $2->degree, $3->degree);
                       $$ = degree;
                     }
 ;
@@ -386,19 +390,19 @@ LESSTHAN :
 ;
 
 command :
-    constructCommand  { $$ = $1; executeCommand($1); }
-  | markCommand       { $$ = $1; executeCommand($1); }
-  | cutCommand        { $$ = $1; executeCommand($1); }
-  | joinCommand       { $$ = $1; executeCommand($1); }
-  | divideCommand     { $$ = $1; executeCommand($1); }
-  | bisectCommand     { $$ = $1; executeCommand($1); }
+    constructCommand  { $$ = $1; executeCommand(*$1); }
+  | markCommand       { $$ = $1; executeCommand(*$1); }
+  | cutCommand        { $$ = $1; executeCommand(*$1); }
+  | joinCommand       { $$ = $1; executeCommand(*$1); }
+  | divideCommand     { $$ = $1; executeCommand(*$1); }
+  | bisectCommand     { $$ = $1; executeCommand(*$1); }
 ;
 
 constructCommand : 
   CONSTRUCT constructibleAndProperties
                       {
-                        Command *command = new Command();
-                        command->plottables = $2;
+                        Command *command = newCommand();
+                        command->plottables = *$2;
                         $$ = command;
                       }
 ;
@@ -432,7 +436,7 @@ lineSegmentAndProperties :
           spitError("line segment not same");
         }
         
-        $2->length = $4->length;
+        $2->length = $4->absLength;
         
         updatePlottables(p, *$2);
         $$ = p;
@@ -441,8 +445,8 @@ lineSegmentAndProperties :
   | LINESEGMENT addressLineSegment lineSegmentProperties
       {
         Plottables *p = newPlottables(); 
-        $2->setLength($3->getLength());
-        p->updatePlottables(*$2);
+        setLength($2, getLength(*$3));
+        updatePlottables(p, *$2);
         $$ = p;
       }
   | LINESEGMENT addressLineSegment perpendicularToClause perpendicularConditionClause

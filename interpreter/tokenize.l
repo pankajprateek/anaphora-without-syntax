@@ -1,11 +1,22 @@
 %{
-#include <string.h>
-#include <math.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+#include<stdlib.h>
 #include "./y.tab.h"
 
 #define TDEBUG 0							//prints all lexical phase information
-using namespace std;
+
+char *strdump(char* str) {
+  char *ret = (char*)malloc(sizeof(char)*1000);
+  int i=0;
+  while(str[i]!='\0') {
+    ret[i] = str[i];
+    i++;
+  }
+  ret[i] = '\0';
+  return ret;
+}
 
 %}
 		
@@ -107,39 +118,41 @@ angles 				return ANGLES_T;
 
 [A-Z][A-Z][A-Z]
             {
-              yylval.sval = new string(yytext);
-              if(TDEBUG) cout<<"POINTTRIPLET "<<yytext<<endl;
+              yylval.sval = (char*)malloc(strlen(yytext)*sizeof(char));
+              strncpy(yylval.sval, yytext, strlen(yytext)-1);
+              yylval.sval[strlen(yytext)-1] = '\0';
+              if(TDEBUG) printf("POINTTRIPLET %s\n", yytext);
               return POINTTRIPLET;
             }
 
 [A-Z][A-Z]  {
-              yylval.sval = new string(yytext);
-              if(TDEBUG) cout<<"POINTPAIR "<<yytext<<endl;
+              yylval.sval = strdump(yytext);
+              if(TDEBUG) printf("POINTPAIR %s\n", yytext);
               return POINTPAIR;
             }
 
 [A-Z]       {
-              yylval.sval = new string(yytext);
-              if(TDEBUG) cout<<"POINTSINGLET "<<yytext<<endl;
+              yylval.sval = strdump(yytext);
+              if(TDEBUG) printf("POINTSINGLET %s\n", yytext);
               return POINTSINGLET;
             }
 
 [a-z]       {
-              yylval.sval = new string(yytext);
-              if(TDEBUG) cout<<"LINELABEL "<<yytext<<endl;
+              yylval.sval = strdump(yytext);
+              if(TDEBUG) printf("LINELABEL %s\n", yytext);
               return LINELABEL;
             }
 
 [0-9]+(.[0-9]+)
             {
               yylval.dval = atod(yytext);
-              if(TDEBUG) cout<<"REAL "<<yylval.dval<<endl;
+              if(TDEBUG) printf("REAL %lf\n", yylval.dval);
               return REAL;
             }
 
 [0-9]+      {
               yylval.ival = atoi(yytext);
-              if(TDEBUG) cout<<"INTEGER "<<yylval.ival<<endl;
+              if(TDEBUG) printf("INTEGER %d\n", yylval.ival);
               return INTEGER;
             }
 
