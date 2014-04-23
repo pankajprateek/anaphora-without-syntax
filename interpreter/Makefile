@@ -38,12 +38,14 @@ image: interpret
 	$(CC) -g -c $< -o $@
 
 lyparser.out: tokenize.l lyparse.y
-	flex tokenize.l
 	yacc lyparse.y -Wall -k  --report=all -g -x -d -t
-	gcc -g -c lyparse.c -o lyparse.o
-	gcc -g -c aux.c -o aux.o
-	gcc -g -c context.c -o context.o
-	gcc aux.o lyparse.o context.o lex.yy.c y.tab.c -o lexer -pg -w -std=c++0x
+	flex tokenize.l
+	gcc -g -lm -c lyparse.c -o lyparse.o
+	gcc -g -lm -c aux.c -o aux.o
+	gcc -g -lm -c context.c -o context.o
+	gcc -g -lm -c lex.yy.c -o lex.yy.o
+	gcc -g -lm -c y.tab.c -o y.tab.o
+	gcc -lm aux.o lyparse.o context.o lex.yy.o y.tab.o -o lexer -pg -w -std=c++0x
 
 listkeywords:
 	python listKeywords.py < target.vcb > keywords.txt
