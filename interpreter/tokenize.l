@@ -25,97 +25,97 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
  
 
 %%
-"construct" 				return CONSTRUCT_T;
-length 				return LENGTH_T;
-cm 				return CM_T;
-from 				return FROM_T;
-this 				return THIS_T;
-cut 				return CUT_T;
-given 				return GIVEN_T;
-that 				return THAT_T;
-twice 				return TWICE_T;
-equals 				return EQUALS_T;
-line 				return LINE_T;
-segment 				return SEGMENT_T;
-difference 				return DIFFERENCE_T;
-and 				return AND_T;
-center 				return CENTER_T;
-any 				return ANY_T;
-radius 				return RADIUS_T;
-arc 				return ARC_T;
-intersecting 				return INTERSECTING_T;
-at 				return AT_T;
-two 				return TWO_T;
-points 				return POINTS_T;
-centers 				return CENTERS_T;
-greater 				return GREATER_T;
-than 				return THAN_T;
-arcs 				return ARCS_T;
-cutting 				return CUTTING_T;
-eachother 				return EACHOTHER_T;
-join 				return JOIN_T;
-same 				return SAME_T;
-point 				return POINT_T;
-on 				return ON_T;
-other 				return OTHER_T;
-side 				return SIDE_T;
-draw 				return DRAW_T;
-mark 				return MARK_T;
-it 				return IT_T;
-not 				return NOT_T;
-circle 				return CIRCLE_T;
-half 				return HALF_T;
-its 				return ITS_T;
-intersection 				return INTERSECTION_T;
-previous 				return PREVIOUS_T;
-bisector 				return BISECTOR_T;
-divide 				return DIVIDE_T;
-into 				return INTO_T;
-parts 				return PARTS_T;
-diameter 				return DIAMETER_T;
-angle 				return ANGLE_T;
-vertex 				return VERTEX_T;
-arm 				return ARM_T;
-their 				return THEIR_T;
-rays 				return RAYS_T;
-origin 				return ORIGIN_T;
-passing 				return PASSING_T;
-through 				return THROUGH_T;
-measure 				return MEASURE_T;
-degrees 				return DEGREES_T;
-right 				return RIGHT_T;
-bisect 				return BISECT_T;
-perpendicular 				return PERPENDICULAR_T;
-to 				return TO_T;
-chord 				return CHORD_T;
-bisectors 				return BISECTORS_T;
-chords 				return CHORDS_T;
-these 				return THESE_T;
-outside 				return OUTSIDE_T;
-parallel 				return PARALLEL_T;
-distance 				return DISTANCE_T;
-triangle 				return TRIANGLE_T;
-equilateral 				return EQUILATERAL_T;
-isosceles 				return ISOSCELES_T;
-equal 				return EQUAL_T;
-sides 				return SIDES_T;
-between 				return BETWEEN_T;
-them 				return THEM_T;
-angled 				return ANGLED_T;
-degree 				return DEGREE_T;
-hypotenuse 				return HYPOTENUSE_T;
-firstLeg 				return FIRSTLEG_T;
-ray 				return RAY_T;
-sum 				return SUM_T;
-base 				return BASE_T;
-along 				return ALONG_T;
-quadrilateral 				return QUADRILATERAL_T;
-square 				return SQUARE_T;
-as 				return AS_T;
-making 				return MAKING_T;
-each 				return EACH_T;
-of 				return OF_T;
-angles 				return ANGLES_T;
+"construct" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return CONSTRUCT_T;}
+"length" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return LENGTH_T;}
+"cm" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return CM_T;}
+"from" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return FROM_T;}
+"this" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return THIS_T;}
+"cut" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return CUT_T;}
+"given" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return GIVEN_T;}
+"that"				{if(TDEBUG) printf("Keyword %s\n", yytext); return THAT_T;}
+"twice" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return TWICE_T;}
+"equals" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return EQUALS_T;}
+"line" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return LINE_T;}
+"segment" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return SEGMENT_T;}
+"difference" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return DIFFERENCE_T;}
+"and" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return AND_T;}
+"center" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return CENTER_T;}
+"any" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ANY_T;}
+"radius" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return RADIUS_T;}
+"arc" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ARC_T;}
+"intersecting" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return INTERSECTING_T;}
+"at" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return AT_T;}
+"two" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return TWO_T;}
+"points" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return POINTS_T;}
+"centers" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return CENTERS_T;}
+"greater" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return GREATER_T;}
+"than" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return THAN_T;}
+"arcs" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ARCS_T;}
+"cutting" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return CUTTING_T;}
+"eachother" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return EACHOTHER_T;}
+"join" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return JOIN_T;}
+"same" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return SAME_T;}
+"point" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return POINT_T;}
+"on" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ON_T;}
+"other" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return OTHER_T;}
+"side" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return SIDE_T;}
+"draw" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return DRAW_T;}
+"mark" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return MARK_T;}
+"it" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return IT_T;}
+"not" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return NOT_T;}
+"circle" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return CIRCLE_T;}
+"half" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return HALF_T;}
+"its" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ITS_T;}
+"intersection" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return INTERSECTION_T;}
+"previous" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return PREVIOUS_T;}
+"bisector" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return BISECTOR_T;}
+"divide" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return DIVIDE_T;}
+"into" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return INTO_T;}
+"parts" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return PARTS_T;}
+"diameter" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return DIAMETER_T;}
+"angle" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ANGLE_T;}
+"vertex" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return VERTEX_T;}
+"arm" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ARM_T;}
+"their" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return THEIR_T;}
+"rays" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return RAYS_T;}
+"origin" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ORIGIN_T;}
+"passing" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return PASSING_T;}
+"through" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return THROUGH_T;}
+"measure" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return MEASURE_T;}
+"degrees" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return DEGREES_T;}
+"right" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return RIGHT_T;}
+"bisect" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return BISECT_T;}
+"perpendicular" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return PERPENDICULAR_T;}
+"to" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return TO_T;}
+"chord" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return CHORD_T;}
+"bisectors" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return BISECTORS_T;}
+"chords" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return CHORDS_T;}
+"these" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return THESE_T;}
+"outside" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return OUTSIDE_T;}
+"parallel" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return PARALLEL_T;}
+"distance" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return DISTANCE_T;}
+"triangle" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return TRIANGLE_T;}
+"equilateral" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return EQUILATERAL_T;}
+"isosceles" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ISOSCELES_T;}
+"equal" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return EQUAL_T;}
+"sides" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return SIDES_T;}
+"between" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return BETWEEN_T;}
+"them" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return THEM_T;}
+"angled" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ANGLED_T;}
+"degree" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return DEGREE_T;}
+"hypotenuse" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return HYPOTENUSE_T;}
+"firstLeg" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return FIRSTLEG_T;}
+"ray" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return RAY_T;}
+"sum" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return SUM_T;}
+"base" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return BASE_T;}
+"along" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ALONG_T;}
+"quadrilateral" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return QUADRILATERAL_T;}
+"square" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return SQUARE_T;}
+"as" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return AS_T;}
+"making" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return MAKING_T;}
+"each" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return EACH_T;}
+"of" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return OF_T;}
+"angles" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ANGLES_T;}
 
 [A-Z][A-Z][A-Z]   {
                     yylval.sval = (char*)malloc(strlen(yytext)*sizeof(char));
