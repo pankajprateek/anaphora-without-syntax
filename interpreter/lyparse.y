@@ -2,11 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-
 #include "./aux.h"
 #include "./lyparse.h"
-#include "./context.h"
-
+#include "./context.h
 #define PDEBUG 0
   
   int yyerror(char* s){
@@ -26,19 +24,19 @@
   double dval;
   Command* command;
   Plottables* plottables;
-  struct _Length* length;
+  Length* length;
   Degree* degree;
   Angle* angle;
   Operation* operation;
   LineSegment* lineSegment;
-  LineSegment* vecLineSegments;
-  Length* vecLengths;
+  VecLineSegments* vecLineSegments;
+  VecLengths* vecLengths;
   Line* line;
   Condition* condition;
   Point* point;
-  Point* vecPoints;
-  Arc* vecArcs;
-  String* vecString;
+  VecPoints* vecPoints;
+  VecArcs* vecArcs;
+  VecStrings* vecString;
   Circle * circle;
   Object * object;
   Cut *cut;

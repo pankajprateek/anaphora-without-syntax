@@ -104,16 +104,25 @@ void spitError(char* error){
   exit(1);
 }
 
-LineSegment* newVectorLineSegment() {
-  return (LineSegment*)malloc(sizeof(LineSegment)*VECT_SIZE);
+VecLineSegments* newVectorLineSegment() {
+  VecLineSegments* vls = (VecLineSegments*)malloc(sizeof(VecLineSegments));
+  vls->lineSegments = (LineSegment*)malloc(sizeof(LineSegment)*VECT_SIZE);
+  vls->n = 0;
+  return vls;
 }
 
-Length* newVectorLength() {
-  return (Length*)malloc(sizeof(Length)*VECT_SIZE);
+VecLengths* newVectorLength() {
+  VecLengths* vl = (VecLengths*)malloc(sizeof(VecLengths));
+  vl->lengths = (Length*)malloc(sizeof(Length)*VECT_SIZE);
+  vl->n = 0;
+  return vl;
 }
 
-Arc* newVectorArc() {
-  return (Arc*)malloc(sizeof(Arc)*VECT_SIZE);
+VecArcs* newVectorArc() {
+  VecArcs* va = (VecArcs*)malloc(sizeof(VecArcs));
+  va->arcs = (Arc*)malloc(sizeof(Arc)*VECT_SIZE);
+  va->n=0;
+  return va;
 }
 
 Point* newVectorPoint() {

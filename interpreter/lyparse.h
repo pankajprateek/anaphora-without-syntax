@@ -11,6 +11,11 @@ typedef struct _Length{
   double length;
 } Length;
 
+typedef struct _VecLengths{
+  Length* lengths;
+  int n;
+} VecLengths;
+
 typedef struct _Degree{
   double degree;
 } Degree;
@@ -19,6 +24,11 @@ typedef struct _Point{
   char label;
   double x, y;
 } Point;
+
+typedef struct _VecPoints{
+  Point* lengths;
+  int n;
+} VecPoints;
 
 typedef struct _Angle{
   Point vertex, leftVertex, rightVertex;
@@ -30,6 +40,11 @@ typedef struct _Arc{
   double radius;
 } Arc;
 
+typedef struct _VecArcs{
+  Arc* arcs;
+  int n;
+} VecArcs;
+
 typedef struct _Line{
     char label;
 } Line;
@@ -38,6 +53,11 @@ typedef struct _LineSegment{
     Point pA, pB;
     double length;
 } LineSegment;
+
+typedef struct _VecLineSegments{
+  LineSegment* lineSegments;
+  int n;
+} VecLineSegments;
 
 typedef struct _Circle{
   Point center;
@@ -75,6 +95,11 @@ typedef struct _Ray	{
 typedef struct _String{
   char* str;
 } String;
+
+typedef struct _VecString{
+  String* strings;
+  int n;
+} VecString;
 
 /* Functions */
 Length* newLength();
