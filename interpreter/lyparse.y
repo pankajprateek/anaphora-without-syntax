@@ -6,6 +6,8 @@
 #include "./aux.h"
 #include "./lyparse.h"
 #include "./context.h"
+#define true 1
+#define false 0
 
 #define PDEBUG 0
   
@@ -401,7 +403,7 @@ LESSTHAN :
 ;
 
 command :
-    constructCommand  { $$ = $1; executeCommand(*$1); }
+constructCommand      { $$ = $1; executeCommand(*$1); printContext();}
   | markCommand       { $$ = $1; executeCommand(*$1); }
   | cutCommand        { $$ = $1; executeCommand(*$1); }
   | joinCommand       { $$ = $1; executeCommand(*$1); }
@@ -459,6 +461,7 @@ lineSegmentAndProperties :
 	$2->length = $3->length;
         updatePlottablesLineSegment(p, *$2);
         $$ = p;
+	printPlottable(*p);
       }
   | LINESEGMENT addressLineSegment perpendicularToClause perpendicularConditionClause
       {
@@ -550,7 +553,20 @@ addressLineSegment :
           ls = newLineSegment();
 	  ls->pA.label = lineSeg[0];
 	  ls->pB.label = lineSeg[1];
-	  //FIXME
+	  bool existA=false, existB=false;
+	  if(existsPoint(ls->pA)) {
+	    Point X = getPoint(ls->pA.label);
+	    ls->pA.x = X.x;
+	    ls->pA.y = X.y;
+	    existA = true;
+	  } 
+	  if(existsPoint(ls->pB)) {
+	    Point X = getPoint(ls->pB.label);
+	    ls->pB.x = X.x;
+	    ls->pB.y = X.y;
+	    existB = true;
+	  }
+	  //FIXME: Add Point Coordinates when not exist
         }
         $$ = ls;
       }
@@ -566,7 +582,20 @@ addressLineSegment :
           ls = newLineSegment();
 	  ls->pA.label = lineSeg[0];
 	  ls->pB.label = lineSeg[1];
-	  //FIXME
+	  bool existA=false, existB=false;
+	  if(existsPoint(ls->pA)) {
+	    Point X = getPoint(ls->pA.label);
+	    ls->pA.x = X.x;
+	    ls->pA.y = X.y;
+	    existA = true;
+	  } 
+	  if(existsPoint(ls->pB)) {
+	    Point X = getPoint(ls->pB.label);
+	    ls->pB.x = X.x;
+	    ls->pB.y = X.y;
+	    existB = true;
+	  }
+	  //FIXME: Add Point Coordinates when points do not exist
         }
         $$ = ls;
       }

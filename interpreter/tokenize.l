@@ -118,33 +118,33 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
 "angles" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ANGLES_T;}
 
 [A-Z][A-Z][A-Z]   {
-                    yylval.sval = (char*)malloc(strlen(yytext)*sizeof(char));
-                    strncpy(yylval.sval, yytext, strlen(yytext)-1);
-                    yylval.sval[strlen(yytext)-1] = '\0';
+                    yylval.sval = (char*)malloc((strlen(yytext)+1)*sizeof(char));
+                    strncpy(yylval.sval, yytext, strlen(yytext));
+                    yylval.sval[strlen(yytext)] = '\0';
                     if(TDEBUG) printf("POINTTRIPLET %s\n", yytext);
                     return POINTTRIPLET;
                   }
 
 [A-Z][A-Z]  {
-              yylval.sval = (char*)malloc(strlen(yytext)*sizeof(char));
-              strncpy(yylval.sval, yytext, strlen(yytext)-1);
-              yylval.sval[strlen(yytext)-1] = '\0';
+              yylval.sval = (char*)malloc((strlen(yytext)+1)*sizeof(char));
+              strncpy(yylval.sval, yytext, strlen(yytext));
+              yylval.sval[strlen(yytext)] = '\0';
               if(TDEBUG) printf("POINTPAIR %s\n", yytext);
               return POINTPAIR;
             }
 
 [A-Z]       {
-              yylval.sval = (char*)malloc(strlen(yytext)*sizeof(char));
-              strncpy(yylval.sval, yytext, strlen(yytext)-1);
-              yylval.sval[strlen(yytext)-1] = '\0';
+              yylval.sval = (char*)malloc((strlen(yytext)+1)*sizeof(char));
+              strncpy(yylval.sval, yytext, strlen(yytext));
+              yylval.sval[strlen(yytext)] = '\0';
               if(TDEBUG) printf("POINTSINGLET %s\n", yytext);
               return POINTSINGLET;
             }
 
 [a-z]       {
-              yylval.sval = (char*)malloc(strlen(yytext)*sizeof(char));
-              strncpy(yylval.sval, yytext, strlen(yytext)-1);
-              yylval.sval[strlen(yytext)-1] = '\0';
+              yylval.sval = (char*)malloc((strlen(yytext)+1)*sizeof(char));
+              strncpy(yylval.sval, yytext, strlen(yytext));
+              yylval.sval[strlen(yytext)] = '\0';
               if(TDEBUG) printf("LINELABEL %s\n", yytext);
               return LINELABEL;
             }
