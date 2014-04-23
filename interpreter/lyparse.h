@@ -58,6 +58,8 @@ typedef struct _Plottables{
 typedef struct _Condition{
   LineSegment ls;
   double absLength;
+  Angle a;
+  double degree;
 } Condition;
 
 typedef struct _Location{
@@ -105,3 +107,6 @@ Point* newVectorPoint();
 String* newVectorString();
 String* newString();
 double getDegree(Angle *an);
+bool areSameLineSegment(LineSegment l1, LineSegment l2);
+void setLineSegment(Condition *c, LineSegment l);
+void setAngle(Condition *c, Angle a);

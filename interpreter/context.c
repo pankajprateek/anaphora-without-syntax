@@ -2,8 +2,36 @@
 #include "aux.h"
 #include "context.h"
 #include<stdlib.h>
+#include<math.h>
 #define false 0
 #define true 1
+
+bool isEmpty(Plottables p) {
+  if(p.ip == 0 && p.ils == 0 && p.ia == 0 && p.iln == 0 && p.ic==0 && p.ian==0 && p.ilg == 0)
+    return true;
+  else
+    return false;
+}
+
+bool comparePoint(Point A, Point B) {
+  if(A.label == B.label && A.x == B.x && A.y == B.y)
+    return true;
+  else
+    return false;
+}
+
+bool compareAngles(Angle A, Angle B) {
+  if(comparePoint(A.vertex, B.vertex) && ( (comparePoint(A.leftVertex, B.leftVertex) && comparePoint(A.rightVertex, B.rightVertex)) || (comparePoint(A.leftVertex, B.rightVertex) && comparePoint(A.rightVertex, B.leftVertex)) ) && A.degree == B.degree)
+    return true;
+  else
+    return false;
+}
+
+double getLsLength(LineSegment l) {
+  double x = l.pA.x - l.pB.x;
+  double y = l.pA.y - l.pB.y;
+  return sqrt(x*x + y*y);
+}
 
 Command* newCommand() {
   return (Command*)malloc(sizeof(Command));
@@ -488,4 +516,22 @@ bool existsLastLineSegment(){
   
 char reserveNextPointLabel(){
   return 'j';
+}
+
+void LineSegmentCopy(LineSegment ls, LineSegment *l) {
+  l->pA.label = ls.pA.label;
+  l->pA.x = ls.pA.x;
+  l->pA.y = ls.pA.y;
+  l->pB.label = ls.pB.label;
+  l->pB.x = ls.pB.x;
+  l->pB.y = ls.pB.y;
+  l->length = ls.length;
+}
+
+double getLength(Length l) {
+  return l.length;
+}
+
+void setLength(Condition *c, double l) {
+  c->absLength = l;
 }

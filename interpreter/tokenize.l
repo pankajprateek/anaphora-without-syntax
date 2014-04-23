@@ -5,7 +5,8 @@
 #include<stdlib.h>
 #include "./y.tab.h"
 
-#define TDEBUG 0							//prints all lexical phase information
+//prints all lexical phase information
+#define TDEBUG 1
 
 char *strdump(char* str) {
   char *ret = (char*)malloc(sizeof(char)*1000);
@@ -24,7 +25,7 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
  
 
 %%
-construct 				return CONSTRUCT_T;
+"construct" 				return CONSTRUCT_T;
 length 				return LENGTH_T;
 cm 				return CM_T;
 from 				return FROM_T;
@@ -116,39 +117,43 @@ each 				return EACH_T;
 of 				return OF_T;
 angles 				return ANGLES_T;
 
-[A-Z][A-Z][A-Z]
-            {
+[A-Z][A-Z][A-Z]   {
+                    yylval.sval = (char*)malloc(strlen(yytext)*sizeof(char));
+                    strncpy(yylval.sval, yytext, strlen(yytext)-1);
+                    yylval.sval[strlen(yytext)-1] = '\0';
+                    if(TDEBUG) printf("POINTTRIPLET %s\n", yytext);
+                    return POINTTRIPLET;
+                  }
+
+[A-Z][A-Z]  {
               yylval.sval = (char*)malloc(strlen(yytext)*sizeof(char));
               strncpy(yylval.sval, yytext, strlen(yytext)-1);
               yylval.sval[strlen(yytext)-1] = '\0';
-              if(TDEBUG) printf("POINTTRIPLET %s\n", yytext);
-              return POINTTRIPLET;
-            }
-
-[A-Z][A-Z]  {
-              yylval.sval = strdump(yytext);
               if(TDEBUG) printf("POINTPAIR %s\n", yytext);
               return POINTPAIR;
             }
 
 [A-Z]       {
-              yylval.sval = strdump(yytext);
+              yylval.sval = (char*)malloc(strlen(yytext)*sizeof(char));
+              strncpy(yylval.sval, yytext, strlen(yytext)-1);
+              yylval.sval[strlen(yytext)-1] = '\0';
               if(TDEBUG) printf("POINTSINGLET %s\n", yytext);
               return POINTSINGLET;
             }
 
 [a-z]       {
-              yylval.sval = strdump(yytext);
+              yylval.sval = (char*)malloc(strlen(yytext)*sizeof(char));
+              strncpy(yylval.sval, yytext, strlen(yytext)-1);
+              yylval.sval[strlen(yytext)-1] = '\0';
               if(TDEBUG) printf("LINELABEL %s\n", yytext);
               return LINELABEL;
             }
 
-[0-9]+(.[0-9]+)
-            {
-              yylval.dval = atod(yytext);
-              if(TDEBUG) printf("REAL %lf\n", yylval.dval);
-              return REAL;
-            }
+[0-9]+(.[0-9]+)  {
+                   yylval.dval = stod(yytext);
+                   if(TDEBUG) printf("REAL %lf\n", yylval.dval);
+                   return REAL;
+                 }
 
 [0-9]+      {
               yylval.ival = atoi(yytext);

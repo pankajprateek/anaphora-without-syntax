@@ -438,15 +438,15 @@ lineSegmentAndProperties :
         
         $2->length = $4->absLength;
         
-        updatePlottables(p, *$2);
+        updatePlottablesLineSegment(p, *$2);
         $$ = p;
         //RESUME FROM HERE
       }
   | LINESEGMENT addressLineSegment lineSegmentProperties
       {
         Plottables *p = newPlottables(); 
-        setLength($2, getLength(*$3));
-        updatePlottables(p, *$2);
+	$2->length = $3->length;
+        updatePlottablesLineSegment(p, *$2);
         $$ = p;
       }
   | LINESEGMENT addressLineSegment perpendicularToClause perpendicularConditionClause
@@ -472,7 +472,7 @@ condition :
       {
         Condition *c = newCondition();
 	setLineSegment(c, *$3);
-	setLength(c, getLength($4));
+	c->absLength = $4->length;
         /* c->setLineSegment(*$3); */
         /* c->setLength($4->getLength()); */
       }
@@ -480,7 +480,7 @@ condition :
       {
         Condition *c = newCondition();
 	setLineSegment(c, *$2);
-	setLength(c, getLength($3));
+	c->absLength = $3->length;
         /* c->setLineSegment(*$2); */
         /* c->setLength($3->getLength()); */
       }
@@ -489,10 +489,10 @@ condition :
         Condition *c = newCondition();
 	if(getDegree($2) != 0) {
 	  setAngle(c, *$3);
-	  setDegree(c, getDegree($2));
+	  c->degree = $2->degree;
 	} else {
 	  setAngle(c, *$2);
-	  setDegree(c, getDegree($3));
+	  c->degree = $3->degree;
 	}
         /* if($2->getDegree() != 0){ */
         /*   c->setAngle(*$3); */
@@ -530,22 +530,32 @@ addressLineSegment :
     LINESEGMENT POINTPAIR
       {
         LineSegment* ls;
-        if(existsLineSegment(*(yylval.sval))){
-          *ls = getLineSegment(*(yylval.sval));
+	char lineSeg[2];
+	lineSeg[0] = yylval.sval[0];
+	lineSeg[1] = yylval.sval[1];
+        if(existsLineSegment(lineSeg)){
+          *ls = getLineSegment(lineSeg);
         } else {
           ls = newLineSegment();
-	  setLength(ls, *(yylval.sval));
+	  ls->pA.label = lineSeg[0];
+	  ls->pB.label = lineSeg[1];
+	  //FIXME
         }
         $$ = ls;
       }
   | POINTPAIR
       {
         LineSegment* ls;
-        if(existsLineSegment(*(yylval.sval))){
-          *ls = getLineSegment(*(yylval.sval));
+	char lineSeg[2];
+	lineSeg[0] = yylval.sval[0];
+	lineSeg[1] = yylval.sval[1];
+        if(existsLineSegment(lineSeg)){
+          *ls = getLineSegment(lineSeg);
         } else {
           ls = newLineSegment();
-	  setLength(ls, *(yylval.sval));
+	  ls->pA.label = lineSeg[0];
+	  ls->pB.label = lineSeg[1];
+	  //FIXME
         }
         $$ = ls;
       }
@@ -556,7 +566,7 @@ addressLineSegment :
         //TODO: $$ = the last segment present in the context
         LineSegment *l = newLineSegment();
 	// Copies attributes from ls to *l
-	LineSegmentCopy(ls, *l);
+	LineSegmentCopy(ls, l);
         $$ = l;
       }  
   | addressFreeObject
@@ -565,7 +575,7 @@ addressLineSegment :
         LineSegment ls = getLastLineSegment();
         //TODO: $$ = the last segment present in the context
         LineSegment *l = newLineSegment();
-	LineSegmentCopy(ls, *l);
+	LineSegmentCopy(ls, l);
         $$ = l;
       }  
 ;
@@ -579,7 +589,7 @@ genericAngleAndProperties :
     ANGLE VERTEX addressPoint addressDegree
       {
         Plottables *p = newPlottables();
-        double degrees = getDegree($4);
+        double degrees = $4->degree;
         Point vertex, leftVertex, rightVertex;
         char c1 = reserveNextPointLabel();
         char c2 = reserveNextPointLabel();
@@ -1795,7 +1805,7 @@ bisectableAndProperties :
 ;
 
 %%
-int lymain()
+int main()
 {
   readContext();
   if(PDEBUG){
