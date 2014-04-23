@@ -149,17 +149,17 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
               return LINELABEL;
             }
 
-[0-9]+(.[0-9]+)  {
-                   yylval.dval = stod(yytext);
-                   if(TDEBUG) printf("REAL %lf\n", yylval.dval);
-                   return REAL;
-                 }
-
 [0-9]+      {
               yylval.ival = atoi(yytext);
               if(TDEBUG) printf("INTEGER %d\n", yylval.ival);
               return INTEGER;
             }
+
+[0-9]+(.[0-9]+)  {
+                   yylval.dval = stod(yytext);
+                   if(TDEBUG) printf("REAL %lf\n", yylval.dval);
+                   return REAL;
+                 }
 
 %%
 int yywrap(){return 1;}

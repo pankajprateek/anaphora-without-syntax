@@ -15,6 +15,7 @@
   }
   int yyparse(void);
   int yylex(void);
+  int yydebug = 0;
 
   double epsilon = 1.0;
 
@@ -125,6 +126,16 @@ addressLength1 :
   | REAL            {
                       Length* length = newLength();
                       length->length = yylval.dval;
+                      $$ = length;                      
+                    }
+  | INTEGER CM      {
+                      Length* length = newLength();
+                      length->length = (double)yylval.ival;
+                      $$ = length;
+                    }
+  | INTEGER         {
+                      Length* length = newLength();
+                      length->length = (double)yylval.ival;
                       $$ = length;                      
                     }
   | FREEVARIABLE    {
