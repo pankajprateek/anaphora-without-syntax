@@ -347,7 +347,13 @@ addressDegree2 :
   | REAL TIMES addressDegree1
                     {
                       Degree* degree = newDegree();
-                      degree->degree = $3->degree * $1;
+                      degree->degree = $3->degree * yylval.dval;
+                      $$ = degree;
+                    }          
+  | INTEGER TIMES addressDegree1
+                    {
+                      Degree* degree = newDegree();
+                      degree->degree = $3->degree * yylval.ival;
                       $$ = degree;
                     }          
   | HALF addressDegree1
@@ -392,9 +398,15 @@ addressDegree3 :
   | REAL TIMES addressDegree2
                     {
                       Degree* degree = newDegree();
-                      degree->degree = $3->degree * $1;
+                      degree->degree = $3->degree * yylval.dval;
                       $$ = degree;
-                    }          
+                    }   
+  | INTEGER TIMES addressDegree2
+                    {
+                      Degree* degree = newDegree();
+                      degree->degree = $3->degree * yylval.ival;
+                      $$ = degree;
+                    }                               
   | HALF addressDegree2
                     {
                       Degree* degree = newDegree();
@@ -426,7 +438,7 @@ LESSTHAN :
 ;
 
 command :
-constructCommand      { $$ = $1; executeCommand(*$1); printContext();}
+    constructCommand  { $$ = $1; executeCommand(*$1); printContext();}
   | markCommand       { $$ = $1; executeCommand(*$1); }
   | cutCommand        { $$ = $1; executeCommand(*$1); }
   | joinCommand       { $$ = $1; executeCommand(*$1); }
@@ -468,7 +480,7 @@ lineSegmentAndProperties :
         Plottables *p = newPlottables();
         LineSegment addressedLineSegment = $4->ls;
         LineSegment thisLineSegment = *$2;
-        if(areSameLineSegment(addressedLineSegment, thisLineSegment)){
+        if(!areSameLineSegment(addressedLineSegment, thisLineSegment)){
           spitError("line segment not same");
         }
         
@@ -481,10 +493,10 @@ lineSegmentAndProperties :
   | LINESEGMENT addressLineSegment lineSegmentProperties
       {
         Plottables *p = newPlottables(); 
-	$2->length = $3->length;
+        $2->length = $3->length;
         updatePlottablesLineSegment(p, *$2);
         $$ = p;
-	printPlottable(*p);
+        printPlottable(*p);
       }
   | LINESEGMENT addressLineSegment perpendicularToClause perpendicularConditionClause
       {
@@ -508,36 +520,25 @@ condition :
     EQUALS LENGTH addressLineSegment addressLength
       {
         Condition *c = newCondition();
-	setLineSegment(c, *$3);
-	c->absLength = $4->length;
-        /* c->setLineSegment(*$3); */
-        /* c->setLength($4->getLength()); */
+        c->ls = *$3;
+        c->length = $4->length;
       }
   | EQUALS addressLineSegment addressLength
       {
         Condition *c = newCondition();
-	setLineSegment(c, *$2);
-	c->absLength = $3->length;
-        /* c->setLineSegment(*$2); */
-        /* c->setLength($3->getLength()); */
+	c->ls = *$2;
+	c->length = $3->length;
       }
   | EQUALS addressAngle addressAngle
       {
         Condition *c = newCondition();
-	if(getDegree($2) != 0) {
-	  setAngle(c, *$3);
+	if($2->degree != 0) {
+	  c->angle = *$3;
 	  c->degree = $2->degree;
 	} else {
-	  setAngle(c, *$2);
+	  c->angle = *$2;
 	  c->degree = $3->degree;
 	}
-        /* if($2->getDegree() != 0){ */
-        /*   c->setAngle(*$3); */
-        /*   c->setDegree($2->getDegree()); */
-        /* } else { */
-        /*   c->setAngle(*$2); */
-        /*   c->setDegree($3->getDegree());         */
-        /* } */
       }  
 ;
 
@@ -590,6 +591,7 @@ addressLineSegment :
 	    existB = true;
 	  }
 	  //FIXME: Add Point Coordinates when not exist
+	  //TIP: Let's do that in the lineSegmentAndProperties rule
         }
         $$ = ls;
       }
@@ -619,6 +621,7 @@ addressLineSegment :
 	    existB = true;
 	  }
 	  //FIXME: Add Point Coordinates when points do not exist
+	  //Let's do this in the lineSegmentAndProperties rule
         }
         $$ = ls;
       }
@@ -629,16 +632,20 @@ addressLineSegment :
         //TODO: $$ = the last segment present in the context
         LineSegment *l = newLineSegment();
 	// Copies attributes from ls to *l
+	//According to internet sources, assignming struct to another
+	//struct copies all members automatically, so we don't need
+	//functions like LineSegmentCopy()
 	LineSegmentCopy(ls, l);
         $$ = l;
       }  
   | addressFreeObject
       {
         assert(existsLastLineSegment());
-        LineSegment ls = getLastLineSegment();
+        //LineSegment ls = getLastLineSegment();
         //TODO: $$ = the last segment present in the context
         LineSegment *l = newLineSegment();
-	LineSegmentCopy(ls, l);
+	//LineSegmentCopy(ls, l);
+	//This does not mean the last drawn line segment
         $$ = l;
       }  
 ;

@@ -77,8 +77,8 @@ typedef struct _Plottables{
 
 typedef struct _Condition{
   LineSegment ls;
-  double absLength;
-  Angle a;
+  double length;
+  Angle angle;
   double degree;
 } Condition;
 
