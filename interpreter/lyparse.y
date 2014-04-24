@@ -7,7 +7,6 @@
 #include "./context.h"
 #define true 1
 #define false 0
-
 #define PDEBUG 0
   
   int yyerror(char* s){
@@ -486,15 +485,46 @@ lineSegmentAndProperties :
         }
         
         $2->length = $4->length;
-        
+	if(!existsPoint($2->pA)){
+	  if(!existsPoint($2->pB)){
+	    //default position is (0,0)
+	    $2->pA.x = $2->pA.y = 0.0;
+	    $2->pB.x = $2->length;
+	    $2->pB.y = 0.0;
+	  } else {
+	    $2->pA.x = $2->pB.x - $2->length;
+	    $2->pA.y = $2->pB.y;
+	  }
+	} else {
+	  if(!existsPoint($2->pB)){
+	    $2->pB.x = $2->pA.x + $2->length;
+	    $2->pB.y = $2->pA.y;
+	  }	  
+	}
         updatePlottablesLineSegment(p, *$2);
         $$ = p;
-        //RESUME FROM HERE
       }
   | LINESEGMENT addressLineSegment lineSegmentProperties
       {
         Plottables *p = newPlottables(); 
         $2->length = $3->length;
+        
+	if(!existsPoint($2->pA)){
+	  if(!existsPoint($2->pB)){
+	    //default position is (0,0)
+	    $2->pA.x = $2->pA.y = 0.0;
+	    $2->pB.x = $2->length;
+	    $2->pB.y = 0.0;
+	  } else {
+	    $2->pA.x = $2->pB.x - $2->length;
+	    $2->pA.y = $2->pB.y;
+	  }
+	} else {
+	  if(!existsPoint($2->pB)){
+	    $2->pB.x = $2->pA.x + $2->length;
+	    $2->pB.y = $2->pA.y;
+	  }	  
+	}
         updatePlottablesLineSegment(p, *$2);
         $$ = p;
         printPlottable(*p);
@@ -657,19 +687,94 @@ genericAngleAndProperties :
     ANGLE VERTEX addressPoint addressDegree
       {
         Plottables *p = newPlottables();
-        double degrees = $4->degree;
-        Point vertex, leftVertex, rightVertex;
+
         char c1 = reserveNextPointLabel();
         char c2 = reserveNextPointLabel();
-        //INCOMPLETE
 
+	assert(!existsPoint(*$3));
+	Angle* angle = newAngle();
+	angle->vertex = *$3;
+	angle->leftVertex.label = c1;
+	angle->rightVertex.label = c2;
+	angle->degree = $4->degree;
+
+	//command is like "construct angle O of 34 degrees"
+	//default position is origin
+	angle->vertex.x = angle->vertex.y = 0.0;
+	angle->rightVertex.x = 0.0 + DEFAULT_ANGLE_ARM_LENGTH;
+	angle->rightVertex.y = 0.0;
+
+	angle->leftVertex.x = DEFAULT_ANGLE_ARM_LENGTH*cos((angle->degree)*DEGREES_TO_RADIANS);
+	angle->rightVertex.y = DEFAULT_ANGLE_ARM_LENGTH*sin((angle->degree)*DEGREES_TO_RADIANS);
+
+	updatePlottablesAngle(p, *angle);
         $$ = p;
       
       }
     
   | ANGLE addressAngle addressDegree
       {
-        $$ = newPlottables();
+        Plottables *p = newPlottables();
+	//e.g. angle ABC
+
+	if(!existsPoint($2->vertex)){
+	  //default place is origin
+	  $2->vertex.x = $2->vertex.y = 0.0;
+	}
+
+	$2->degree = $3->degree;
+	if(!existsPoint($2->leftVertex) && existsPoint($2->rightVertex)){
+	  //A doesn't exist but C exists
+	  double deltax = $2->rightVertex.x - $2->vertex.x;
+	  double deltay = $2->rightVertex.y - $2->vertex.y;
+	  double base_slope;//angle subtended by BA on X-axis
+	  if(abs(deltax) <= FLOAT_EPSILON){//avoid division by zero
+	    if(deltay >= FLOAT_EPSILON){
+	      base_slope = 90.0 * DEGREES_TO_RADIANS;
+	    }else{
+	      base_slope = -90.0 * DEGREES_TO_RADIANS;
+	    }
+	  }else{
+	    base_slope = atan2(deltay, deltax);
+	  }
+
+	  double this_slope = base_slope + ($2->degree) * DEGREES_TO_RADIANS ;
+	  $2->rightVertex.x = $2->vertex.x + DEFAULT_ANGLE_ARM_LENGTH * cos(this_slope);
+	  $2->rightVertex.y = $2->vertex.y + DEFAULT_ANGLE_ARM_LENGTH * sin(this_slope);
+	}else if(existsPoint($2->leftVertex) && !existsPoint($2->rightVertex)){
+	  //C doesn't exist but A exists
+	  double deltax = $2->leftVertex.x - $2->vertex.x;
+	  double deltay = $2->leftVertex.y - $2->vertex.y;
+	  double base_slope;//angle subtended by BA on X-axis
+	  if(abs(deltax) <= FLOAT_EPSILON){//avoid division by zero
+	    if(deltay >= FLOAT_EPSILON){
+	      base_slope = 90.0 * DEGREES_TO_RADIANS;
+	    }else{
+	      base_slope = -90.0 * DEGREES_TO_RADIANS;
+	    }
+	  }else{
+	    base_slope = atan2(deltay, deltax);
+	  }
+
+	  double this_slope = base_slope - ($2->degree) * DEGREES_TO_RADIANS ;
+	  $2->rightVertex.x = $2->vertex.x + DEFAULT_ANGLE_ARM_LENGTH * cos(this_slope);
+	  $2->rightVertex.y = $2->vertex.y + DEFAULT_ANGLE_ARM_LENGTH * sin(this_slope);
+
+	}else if(!existsPoint($2->leftVertex) && !existsPoint($2->rightVertex)){
+	  //Both A and C don't exist
+	  double base_slope = 0.0 * DEGREES_TO_RADIANS;//angle subtended by BA on X-axis
+	  $2->rightVertex.x = $2->vertex.x + DEFAULT_ANGLE_ARM_LENGTH;
+	  $2->rightVertex.y = $2->vertex.y;
+
+	  double this_slope = base_slope + ($2->degree) * DEGREES_TO_RADIANS ;
+	  $2->leftVertex.x = $2->vertex.x + DEFAULT_ANGLE_ARM_LENGTH * cos(this_slope);
+	  $2->leftVertex.y = $2->vertex.y + DEFAULT_ANGLE_ARM_LENGTH * sin(this_slope);
+	}else{
+	  //all vertices exist, may be fishy
+	}
+
+	updatePlottablesAngle(p, *$2);
+        $$ = p;
       }
 ;
 
@@ -699,20 +804,110 @@ ANGLE :
 addressAngle :
     ANGLE POINTTRIPLET
       {
-        $$ = newAngle();
+	Angle* na = newAngle();
+	char leftVertex = yylval.sval[0],
+	  vertex = yylval.sval[1],
+	  rightVertex = yylval.sval[2];
+
+	na->leftVertex.label = leftVertex;
+	na->vertex.label = vertex;
+	na->rightVertex.label = rightVertex;
+	
+	bool leftVertexExists = false, rightVertexExists = false,
+	  vertexExists = false;
+	if(existsPointLabel(leftVertex)){
+	  na->leftVertex = getPoint(leftVertex);
+	  leftVertexExists = true;
+	}
+	if(existsPointLabel(vertex)){
+	  na->vertex = getPoint(vertex);
+	  vertexExists = true;
+	}
+	if(existsPointLabel(rightVertex)){
+	  na->rightVertex = getPoint(rightVertex);
+	  rightVertexExists = true;
+	}
+
+	if(leftVertexExists && rightVertexExists && vertexExists){
+	  double ldeltax = na->leftVertex.x - na->vertex.x;
+	  double ldeltay = na->leftVertex.y - na->vertex.y;
+	  double lv_slope;
+	  if(abs(ldeltax) <= FLOAT_EPSILON){
+	    if(ldeltay >= FLOAT_EPSILON) lv_slope = 90.0 * DEGREES_TO_RADIANS;
+	    else lv_slope = -90.0 * DEGREES_TO_RADIANS;
+	  } else {
+	    lv_slope = atan2(ldeltax, ldeltay);
+	  }
+
+	  double rdeltax = na->rightVertex.x - na->vertex.x;
+	  double rdeltay = na->rightVertex.y - na->vertex.y;
+	  double rv_slope;
+	  if(abs(rdeltax) <= FLOAT_EPSILON){
+	    if(rdeltay >= FLOAT_EPSILON) rv_slope = 90.0 * DEGREES_TO_RADIANS;
+	    else rv_slope = -90.0 * DEGREES_TO_RADIANS;
+	  } else {
+	    rv_slope = atan2(rdeltax, rdeltay);
+	  }
+
+	  na->degree = (lv_slope - rv_slope) * RADIANS_TO_DEGREES;
+
+	}
+
+        $$ = na;
       }    
-  | ANGLE POINTSINGLET
-      {
-        $$ = newAngle();
-      }      
   | POINTTRIPLET
       {
-        $$ = newAngle();
-      }      
-  | POINTSINGLET
-      {
-        $$ = newAngle();
-      }      
+	Angle* na = newAngle();
+	char leftVertex = yylval.sval[0],
+	  vertex = yylval.sval[1],
+	  rightVertex = yylval.sval[2];
+
+	na->leftVertex.label = leftVertex;
+	na->vertex.label = vertex;
+	na->rightVertex.label = rightVertex;
+	
+	bool leftVertexExists = false, rightVertexExists = false,
+	  vertexExists = false;
+	if(existsPointLabel(leftVertex)){
+	  na->leftVertex = getPoint(leftVertex);
+	  leftVertexExists = true;
+	}
+	if(existsPointLabel(vertex)){
+	  na->vertex = getPoint(vertex);
+	  vertexExists = true;
+	}
+	if(existsPointLabel(rightVertex)){
+	  na->rightVertex = getPoint(rightVertex);
+	  rightVertexExists = true;
+	}
+
+	if(leftVertexExists && rightVertexExists && vertexExists){
+	  double ldeltax = na->leftVertex.x - na->vertex.x;
+	  double ldeltay = na->leftVertex.y - na->vertex.y;
+	  double lv_slope;
+	  if(abs(ldeltax) <= FLOAT_EPSILON){
+	    if(ldeltay >= FLOAT_EPSILON) lv_slope = 90.0 * DEGREES_TO_RADIANS;
+	    else lv_slope = -90.0 * DEGREES_TO_RADIANS;
+	  } else {
+	    lv_slope = atan2(ldeltax, ldeltay);
+	  }
+
+	  double rdeltax = na->rightVertex.x - na->vertex.x;
+	  double rdeltay = na->rightVertex.y - na->vertex.y;
+	  double rv_slope;
+	  if(abs(rdeltax) <= FLOAT_EPSILON){
+	    if(rdeltay >= FLOAT_EPSILON) rv_slope = 90.0 * DEGREES_TO_RADIANS;
+	    else rv_slope = -90.0 * DEGREES_TO_RADIANS;
+	  } else {
+	    rv_slope = atan2(rdeltax, rdeltay);
+	  }
+
+	  na->degree = (lv_slope - rv_slope) * RADIANS_TO_DEGREES;
+
+	}
+
+        $$ = na;
+      }
   | adjectivePrevious ANGLE
       {
         $$ = newAngle();

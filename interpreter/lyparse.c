@@ -73,6 +73,15 @@ void updatePlottablesAngle(Plottables *p, Angle a){
   p->points[p->ip++] = a.vertex;
   p->points[p->ip++] = a.leftVertex;
   p->points[p->ip++] = a.rightVertex;
+  
+  LineSegment lv, rv;
+  lv.pA = a.leftVertex;
+  lv.pB = a.vertex;
+  rv.pA = a.rightVertex;
+  rv.pB = a.vertex;
+  
+  p->lineSegments[p->ils++] = lv;
+  p->lineSegments[p->ils++] = rv;
 }
 
 Condition* newCondition(){

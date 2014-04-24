@@ -5,6 +5,7 @@
 #include <math.h>
 #define false 0
 #define true 1
+#define CDEBUG 1
 
 bool isEmpty(Plottables p) {
   if(p.ip == 0 && p.ils == 0 && p.ia == 0 && p.iln == 0 && p.ic==0 && p.ian==0 && p.ilg == 0)
@@ -14,6 +15,10 @@ bool isEmpty(Plottables p) {
 }
 
 bool comparePoint(Point A, Point B) {
+  if(CDEBUG){
+    printf("Comparing points: %c %c %lf %lf %lf %lf\n", A.label, B.label,
+    A.x, B.x, A.y, B.y);
+  }
   if(A.label == B.label && A.x == B.x && A.y == B.y)
     return true;
   else
@@ -378,11 +383,14 @@ bool existsPoint(Point p){
 bool existsPointLabel(char label) {
   int i;
   int l = context.ip;
+  bool found=false;
   for(i=0;i<l;i++) {
-    if(context.points[i].label == label)
-      return true;
+    if(context.points[i].label == label){
+      found = true;
+      break;
+    }
   }
-  return false;
+  return found;
 }
 
 bool existsLineSegment(char pointpair[]){

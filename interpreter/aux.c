@@ -15,11 +15,15 @@ Bisector* newBisector() {
 }
 
 Parallelization* newParallelization() {
-  return (Parallelization*)malloc(sizeof(Parallelization));
+  Parallelization* par = (Parallelization*)malloc(sizeof(Parallelization));
+  par->passingThroughPoint = NULL;
+  return par;
 }
 
 Perpendicularization* newPerpendicularization() {
-  return (Perpendicularization*)malloc(sizeof(Perpendicularization));
+  Perpendicularization* per = (Perpendicularization*)malloc(sizeof(Perpendicularization));
+  per->atPoint = per->passingThroughPoint = NULL;
+  return per;
 }
 
 Cut* newCut() {

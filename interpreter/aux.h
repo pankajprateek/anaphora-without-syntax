@@ -1,6 +1,10 @@
 #pragma once
 
 #include "lyparse.h"
+#define DEFAULT_ANGLE_ARM_LENGTH 4
+#define DEGREES_TO_RADIANS ((2.0 * 3.14) / 360.0)
+#define RADIANS_TO_DEGREES (360.0 / (2 * 3.14))
+#define FLOAT_EPSILON 0.0000001
 
 typedef struct _ArcProperties{
   Point center1, center2;
@@ -39,6 +43,7 @@ typedef struct _Bisector{
 typedef struct _Parallelization{
   LineSegment* ls;
   Line *l;
+  Point* passingThroughPoint;  
 } Parallelization;
 
 typedef struct _Perpendicularization{
