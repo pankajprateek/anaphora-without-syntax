@@ -33,14 +33,15 @@
   struct _Angle* angle;
   struct _Operation* operation;
   struct _LineSegment* lineSegment;
-  struct _VecLineSegment* vecLineSegments;
-  struct _VecLength* vecLengths;
+  struct _VecLineSegments* vecLineSegments;
+  struct _VecLengths* vecLengths;
   struct _Line* line;
   struct _Condition* condition;
   struct _Point* point;
-  struct _VecPoint* vecPoints;
-  struct _Arc* vecArcs;
-  struct _VecString* vecString;
+  struct _VecPoints* vecPoints;
+  struct _VecArcs* vecArcs;
+  struct _VecStrings* vecStrings;
+  struct _String* string;
   struct _Circle * circle;
   struct _Object * object;
   struct _Cut *cut;
@@ -76,7 +77,7 @@
 %type <length> lineSegmentProperties radiusClause
 %type <vecLengths> radiiClause
 
-%type <vecString> addressPointPairs
+%type <vecStrings> addressPointPairs
 
 %type <line> addressLine
 
@@ -484,7 +485,7 @@ lineSegmentAndProperties :
           spitError("line segment not same");
         }
         
-        $2->length = $4->absLength;
+        $2->length = $4->length;
         
         updatePlottablesLineSegment(p, *$2);
         $$ = p;
@@ -520,13 +521,13 @@ condition :
     EQUALS LENGTH addressLineSegment addressLength
       {
         Condition *c = newCondition();
-        c->ls = *$3;
+        setLineSegment(c, *$3);
         c->length = $4->length;
       }
   | EQUALS addressLineSegment addressLength
       {
         Condition *c = newCondition();
-	c->ls = *$2;
+	setLineSegment(c, *$2);
 	c->length = $3->length;
       }
   | EQUALS addressAngle addressAngle
@@ -632,9 +633,6 @@ addressLineSegment :
         //TODO: $$ = the last segment present in the context
         LineSegment *l = newLineSegment();
 	// Copies attributes from ls to *l
-	//According to internet sources, assignming struct to another
-	//struct copies all members automatically, so we don't need
-	//functions like LineSegmentCopy()
 	LineSegmentCopy(ls, l);
         $$ = l;
       }  
@@ -825,19 +823,19 @@ PASSINGTHROUGH :
 mutualIntersectionClause :
     INTERSECTING EACHOTHER AT POINTSINGLET POINTSINGLET
       {
-	$$ = newVectorPoint();
+	$$ = newVectorPoints();
       }    
   | INTERSECTING AT POINTSINGLET POINTSINGLET
       {
-	$$ = newVectorPoint();
+	$$ = newVectorPoints();
       }    
   | INTERSECTING EACHOTHER AT POINTSINGLET
       {
-	$$ = newVectorPoint();
+	$$ = newVectorPoints();
       }      
   | INTERSECTING AT POINTSINGLET
       {
-	$$ = newVectorPoint();
+	$$ = newVectorPoints();
       }      
 ;
 
@@ -851,7 +849,7 @@ centerClause :
 centersClause :
     CENTERS POINTSINGLET POINTSINGLET
       {
-	$$ = newVectorPoint();
+	$$ = newVectorPoints();
       }        
 ;
 
@@ -865,7 +863,7 @@ radiusClause :
 radiiClause :
     RADIUS addressLength addressLength
       {
-	$$ = newVectorLength();
+	$$ = newVectorLengths();
       }        
 ;
 
@@ -1003,11 +1001,11 @@ perpendicularBisectorAndProperties :
 addressPerpendicularBisectableObjects :
     addressLineSegment
       {
-	$$ = newVectorLineSegment();      
+	$$ = newVectorLineSegments();      
       }
   | addressChord
     {
-	$$ = newVectorLineSegment();
+	$$ = newVectorLineSegments();
     }
   | addressChords
     {
@@ -1025,7 +1023,7 @@ addressChord :
 addressChords :
     adjectivePrevious CHORDS
       {
-	$$ = newVectorLineSegment();
+	$$ = newVectorLineSegments();
       }
 ;
 
@@ -1208,19 +1206,19 @@ JOIN :
 addressPointPairs : 
     POINTPAIR
       {
-	$$ = newVectorString();
+	$$ = newVectorStrings();
       }    
   | POINTPAIR POINTPAIR
       {
-	$$ = newVectorString();
+	$$ = newVectorStrings();
       }    
   | POINTPAIR POINTPAIR POINTPAIR
       {
-	$$ = newVectorString();
+	$$ = newVectorStrings();
       }      
   | adjectivePrevious POINTS
       {
-	$$ = newVectorString();
+	$$ = newVectorStrings();
       }      
 ;
 
@@ -1410,11 +1408,11 @@ addressLine :
 addressArc :
     adjectivePrevious ARC
       {
-	$$ = newVectorArc();
+	$$ = newVectorArcs();
       }                 
   | adjectivePrevious ARCS
       {
-	$$ = newVectorArc();
+	$$ = newVectorArcs();
       }                   
 ;
 

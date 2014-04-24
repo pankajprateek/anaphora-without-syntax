@@ -105,33 +105,39 @@ void spitError(char* error){
   exit(1);
 }
 
-VecLineSegments* newVectorLineSegment() {
+VecLineSegments* newVectorLineSegments() {
   VecLineSegments* vls = (VecLineSegments*)malloc(sizeof(VecLineSegments));
   vls->lineSegments = (LineSegment*)malloc(sizeof(LineSegment)*VECT_SIZE);
   vls->n = 0;
   return vls;
 }
 
-VecLengths* newVectorLength() {
+VecLengths* newVectorLengths() {
   VecLengths* vl = (VecLengths*)malloc(sizeof(VecLengths));
   vl->lengths = (Length*)malloc(sizeof(Length)*VECT_SIZE);
   vl->n = 0;
   return vl;
 }
 
-VecArcs* newVectorArc() {
+VecArcs* newVectorArcs() {
   VecArcs* va = (VecArcs*)malloc(sizeof(VecArcs));
   va->arcs = (Arc*)malloc(sizeof(Arc)*VECT_SIZE);
   va->n=0;
   return va;
 }
 
-Point* newVectorPoint() {
-  return (Point*)malloc(sizeof(Point)*VECT_SIZE);
+VecPoints* newVectorPoints() {
+  VecPoints* vp = (VecPoints*)malloc(sizeof(VecPoints));
+  vp->points = (Point*)malloc(sizeof(Point)*VECT_SIZE);
+  vp->n=0;
+  return vp;
 }
 
-String* newVectorString() {
-  return (String*)malloc(sizeof(String)*VECT_SIZE);
+VecStrings* newVectorStrings() {
+  VecStrings* vs = (VecStrings*)malloc(sizeof(VecStrings));
+  vs->strings = (String*)malloc(sizeof(String)*VECT_SIZE);
+  vs->n=0;
+  return vs;
 }
 
 double getDegree(Angle *an) {
@@ -152,18 +158,18 @@ void setLineSegment(Condition *c, LineSegment l) {
   c->ls.pB.label = l.pB.label;
   c->ls.pB.x = l.pB.x;
   c->ls.pB.y = l.pB.y;
-  c->absLength = getLsLength(l);
+  c->length = getLsLength(l);
 }
 
 void setAngle(Condition *c, Angle a) {
-  c->a.vertex.label = a.vertex.label;
-  c->a.vertex.x = a.vertex.x;
-  c->a.vertex.y = a.vertex.y;
-  c->a.leftVertex.label = a.leftVertex.label;
-  c->a.leftVertex.x = a.leftVertex.x;
-  c->a.leftVertex.y = a.leftVertex.y;
-  c->a.rightVertex.label = a.rightVertex.label;
-  c->a.rightVertex.x = a.rightVertex.x;
-  c->a.rightVertex.y = a.rightVertex.y;
+  c->angle.vertex.label = a.vertex.label;
+  c->angle.vertex.x = a.vertex.x;
+  c->angle.vertex.y = a.vertex.y;
+  c->angle.leftVertex.label = a.leftVertex.label;
+  c->angle.leftVertex.x = a.leftVertex.x;
+  c->angle.leftVertex.y = a.leftVertex.y;
+  c->angle.rightVertex.label = a.rightVertex.label;
+  c->angle.rightVertex.x = a.rightVertex.x;
+  c->angle.rightVertex.y = a.rightVertex.y;
   c->degree = a.degree;
 }

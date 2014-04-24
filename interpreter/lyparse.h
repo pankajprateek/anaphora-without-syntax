@@ -26,7 +26,7 @@ typedef struct _Point{
 } Point;
 
 typedef struct _VecPoints{
-  Point* lengths;
+  Point* points;
   int n;
 } VecPoints;
 
@@ -98,10 +98,10 @@ typedef struct _String{
   char* str;
 } String;
 
-typedef struct _VecString{
+typedef struct _VecStrings{
   String* strings;
   int n;
-} VecString;
+} VecStrings;
 
 /* Functions */
 Length* newLength();
@@ -125,11 +125,11 @@ Operation* newOperation();
 double getResult(Operation* op, double a, double b);
 Ray* newRay();
 void spitError(char* error);
-LineSegment* newVectorLineSegment();
-Length* newVectorLength();
-Arc* newVectorArc();
-Point* newVectorPoint();
-String* newVectorString();
+VecLineSegments* newVectorLineSegments();
+VecLengths* newVectorLengths();
+VecArcs* newVectorArcs();
+VecPoints* newVectorPoints();
+VecStrings* newVectorStrings();
 String* newString();
 double getDegree(Angle *an);
 bool areSameLineSegment(LineSegment l1, LineSegment l2);

@@ -1,8 +1,8 @@
 #include "lyparse.h"
 #include "aux.h"
 #include "context.h"
-#include<stdlib.h>
-#include<math.h>
+#include <stdlib.h>
+#include <math.h>
 #define false 0
 #define true 1
 
@@ -533,7 +533,7 @@ double getLength(Length l) {
 }
 
 void setLength(Condition *c, double l) {
-  c->absLength = l;
+  c->length = l;
 }
 
 void printPlottable(Plottables p) {
