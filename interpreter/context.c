@@ -421,6 +421,11 @@ bool existsLastAngle(){
   return context.ian != 0 ? true : false;
 }
 
+bool existsLastPoint(){
+  return context.ip != 0 ? true : false;
+}
+
+
 bool existsAngle(char name[]) {
   int i;
   int l = context.ian;

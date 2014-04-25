@@ -985,7 +985,10 @@ addressAngle :
       }
   | adjectivePrevious ANGLE
       {
-        $$ = newAngle();
+	if(!existsLastAngle()){
+	  spitError("No previous angle");
+	}
+        $$ = getLastAngle();
       }      
 ;
 
@@ -1964,19 +1967,32 @@ CUT :
 addressPoint :
     POINTSINGLET
       {
-	$$ = newPoint();
+	Point *p = newPoint();
+	p->label = yylval.sval[0];
+	if(existsPoint(*p)) *p = getPoint(p->label);
+	$$ = p;
       }        
   | POINT POINTSINGLET
       {
-	$$ = newPoint();
+	Point *p = newPoint();
+	p->label = yylval.sval[0];
+	if(existsPoint(*p)) *p = getPoint(p->label);
+	$$ = p;
       }          
   | adjectivePrevious POINT
       {
-	$$ = newPoint();
+	if(!existsLastPoint()){
+	  spitError("No previous points exist\n");
+	}
+	Point *p = newPoint();
+	*p = getLastPoint();
+	$$ = p;
       }          
   | addressFreeObject
       {
-	$$ = newPoint();
+	Point *p = newPoint();
+	p->label = reserveNextPointLabel();
+	$$ = p;
       }          
 ;
 
