@@ -1000,19 +1000,51 @@ DEGREES :
 circleAndProperties : 
     CIRCLE CENTER addressPoint RADIUS addressLength
       {
-        $$ = newPlottables();
+	Plottables *p = newPlottables();
+	Circle c;
+	c.center = *$3;
+	if(!existsPoint(c.center)){
+	  c.center.x = c.center.y = 0.0;
+	}
+	c.radius = $5->length;
+	updatePlottablesCircle(p, c);
+
+        $$ = p;
       }        
   | CIRCLE CENTER addressPoint DIAMETER addressLength
       {
-        $$ = newPlottables();
+	Plottables *p = newPlottables();
+	Circle c;
+	c.center = *$3;
+	if(!existsPoint(c.center)){
+	  c.center.x = c.center.y = 0.0;
+	}
+	c.radius = 0.5 * ($5->length);
+	updatePlottablesCircle(p, c);
+
+        $$ = p;	
       }      
   | CIRCLE RADIUS addressLength
       {
-        $$ = newPlottables();
+	Plottables *p = newPlottables();
+	Circle c;
+	c.center.label = reserveNextPointLabel();
+	c.center.x = c.center.y = 0.0;
+	c.radius = ($3->length);
+	updatePlottablesCircle(p, c);
+
+        $$ = p;	
       }      
   | CIRCLE DIAMETER addressLength
       {
-        $$ = newPlottables();
+	Plottables *p = newPlottables();
+	Circle c;
+	c.center.label = reserveNextPointLabel();
+	c.center.x = c.center.y = 0.0;
+	c.radius = 0.5 * ($3->length);
+	updatePlottablesCircle(p, c);
+
+        $$ = p;	
       }    
 ;
 
