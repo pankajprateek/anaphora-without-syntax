@@ -66,3 +66,6 @@ Bisector* newBisector();
 Parallelization* newParallelization();
 Perpendicularization* newPerpendicularization();
 Cut* newCut();
+Point getCircleCircleIntersectionPoint(Circle a, Circle b, bool above);
+Point getArcArcIntersectionPoint(Arc a, Arc b, bool above);
+

@@ -198,13 +198,9 @@ ARC =
 
 arcProperties =
     centersClause radiiClause mutualIntersectionClause
-  | centerClause radiusClause arcConditionClause
-  | centerClause arcConditionClause
+  | centerClause radiusClause intersectionClause
+  | centerClause radiusClause passingThroughClause
   | centerClause radiusClause
-
-arcConditionClause =
-    intersectionClause
-  | passingThroughClause
 
 passingThroughClause =
     PASSINGTHROUGH addressPoint

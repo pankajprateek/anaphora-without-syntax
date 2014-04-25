@@ -94,12 +94,8 @@ typedef struct _Ray	{
   
 } Ray;
 
-typedef struct _String{
-  char* str;
-} String;
-
 typedef struct _VecStrings{
-  String* strings;
+  char** strings;
   int n;
 } VecStrings;
 
@@ -130,7 +126,7 @@ VecLengths* newVectorLengths();
 VecArcs* newVectorArcs();
 VecPoints* newVectorPoints();
 VecStrings* newVectorStrings();
-String* newString();
+char* newString(char *s);
 double getDegree(Angle *an);
 bool areSameLineSegment(LineSegment l1, LineSegment l2);
 void setLineSegment(Condition *c, LineSegment l);

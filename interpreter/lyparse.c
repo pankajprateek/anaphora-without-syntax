@@ -1,6 +1,7 @@
 #include "lyparse.h"
 #include<assert.h>
 #include<stdlib.h>
+#include <string.h>
 
 /* Do not touch */
 #define false 0
@@ -37,6 +38,12 @@ LineSegment* newLineSegment(){
 
 Circle* newCircle(){
   return (Circle*)malloc(sizeof(Circle));
+}
+
+char* newString(char *s){
+  char *d = (char*)malloc((strlen(s)+1)*sizeof(char));
+  strcpy(d, s);
+  return d;
 }
 
 Plottables* newPlottables(){
@@ -146,7 +153,7 @@ VecPoints* newVectorPoints() {
 
 VecStrings* newVectorStrings() {
   VecStrings* vs = (VecStrings*)malloc(sizeof(VecStrings));
-  vs->strings = (String*)malloc(sizeof(String)*VECT_SIZE);
+  vs->strings = (char**)malloc(sizeof(char*)*VECT_SIZE);
   vs->n=0;
   return vs;
 }
