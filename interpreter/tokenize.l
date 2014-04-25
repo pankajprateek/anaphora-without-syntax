@@ -122,7 +122,7 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
                     strncpy(yylval.sval, yytext, strlen(yytext));
                     yylval.sval[strlen(yytext)] = '\0';
                     if(TDEBUG) printf("POINTTRIPLET %s\n", yytext);
-                    return POINTTRIPLET;
+                    return POINTTRIPLET_T;
                   }
 
 [A-Z][A-Z]  {
@@ -130,7 +130,7 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
               strncpy(yylval.sval, yytext, strlen(yytext));
               yylval.sval[strlen(yytext)] = '\0';
               if(TDEBUG) printf("POINTPAIR %s\n", yytext);
-              return POINTPAIR;
+              return POINTPAIR_T;
             }
 
 [A-Z]       {
@@ -138,7 +138,7 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
               strncpy(yylval.sval, yytext, strlen(yytext));
               yylval.sval[strlen(yytext)] = '\0';
               if(TDEBUG) printf("POINTSINGLET %s\n", yytext);
-              return POINTSINGLET;
+              return POINTSINGLET_T;
             }
 
 [a-z]       {
@@ -146,19 +146,19 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
               strncpy(yylval.sval, yytext, strlen(yytext));
               yylval.sval[strlen(yytext)] = '\0';
               if(TDEBUG) printf("LINELABEL %s\n", yytext);
-              return LINELABEL;
+              return LINELABEL_T;
             }
 
 [0-9]+      {
               yylval.ival = atoi(yytext);
               if(TDEBUG) printf("INTEGER %d\n", yylval.ival);
-              return INTEGER;
+              return INTEGER_T;
             }
 
 [0-9]+(.[0-9]+)  {
                    yylval.dval = stod(yytext);
                    if(TDEBUG) printf("REAL %lf\n", yylval.dval);
-                   return REAL;
+                   return REAL_T;
                  }
 
 %%

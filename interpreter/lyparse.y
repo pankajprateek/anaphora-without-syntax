@@ -53,9 +53,13 @@
   
  }
 //tokentypes for different tokens
-%token <ival> INTEGER KEYWORD
-%token <dval> REAL
-%token <sval> POINTSINGLET POINTPAIR POINTTRIPLET LINELABEL
+%token <ival> INTEGER_T KEYWORD_T
+%token <dval> REAL_T
+%token <sval> POINTSINGLET_T POINTPAIR_T POINTTRIPLET_T LINELABEL_T
+
+%type <sval> POINTSINGLET POINTPAIR POINTTRIPLET LINELABEL
+%type <ival> INTEGER
+%type <dval> REAL
 
 %token <voidPtr> CONSTRUCT_T LENGTH_T CM_T FROM_T THIS_T CUT_T GIVEN_T THAT_T TWICE_T EQUALS_T LINE_T SEGMENT_T DIFFERENCE_T AND_T CENTER_T ANY_T RADIUS_T ARC_T INTERSECTING_T AT_T TWO_T POINTS_T CENTERS_T GREATER_T THAN_T ARCS_T CUTTING_T EACHOTHER_T JOIN_T SAME_T POINT_T ON_T OTHER_T SIDE_T DRAW_T MARK_T IT_T NOT_T CIRCLE_T HALF_T ITS_T INTERSECTION_T PREVIOUS_T BISECTOR_T DIVIDE_T INTO_T PARTS_T DIAMETER_T ANGLE_T VERTEX_T ARM_T THEIR_T RAYS_T ORIGIN_T PASSING_T THROUGH_T MEASURE_T DEGREES_T RIGHT_T BISECT_T PERPENDICULAR_T TO_T CHORD_T BISECTORS_T CHORDS_T THESE_T OUTSIDE_T PARALLEL_T DISTANCE_T TRIANGLE_T EQUILATERAL_T ISOSCELES_T EQUAL_T SIDES_T BETWEEN_T THEM_T ANGLED_T DEGREE_T HYPOTENUSE_T FIRSTLEG_T RAY_T SUM_T BASE_T ALONG_T QUADRILATERAL_T SQUARE_T AS_T MAKING_T EACH_T OF_T ANGLES_T CIRCLES_T CONVENIENT_T DIVITDE_T HAS_T INITIAL_T INTERSECTIONS_T INTERSECT_T IS_T LABEL_T LESS_T LINES_T MINUS_T ORTHOGONAL_T SEGMENTS_T THOSE_T THRICE_T TIMES_T
 
@@ -121,22 +125,22 @@ addressLength :
 addressLength1 :
     REAL CM         {
                       Length* length = newLength();
-                      length->length = yylval.dval;
+                      length->length = $1;
                       $$ = length;
                     }
   | REAL            {
                       Length* length = newLength();
-                      length->length = yylval.dval;
+                      length->length = $1;
                       $$ = length;                      
                     }
   | INTEGER CM      {
                       Length* length = newLength();
-                      length->length = (double)yylval.ival;
+                      length->length = (double)$1;
                       $$ = length;
                     }
   | INTEGER         {
                       Length* length = newLength();
-                      length->length = (double)yylval.ival;
+                      length->length = (double)$1;
                       $$ = length;                      
                     }
   | FREEVARIABLE    {
@@ -193,13 +197,13 @@ addressLength2 :
   | REAL TIMES addressLength1
                     {
                       Length* length = newLength();
-                      length->length = $3->length * yylval.dval;
+                      length->length = $3->length * $1;
                       $$ = length;
                     }        
   | INTEGER TIMES addressLength1
                     {
                       Length* length = newLength();
-                      length->length = $3->length * yylval.ival;
+                      length->length = $3->length * $1;
                       $$ = length;
                     }
   | HALF addressLength1
@@ -244,13 +248,13 @@ addressLength3 :
   | REAL TIMES addressLength2
                     {
                       Length* length = newLength();
-                      length->length = $3->length * yylval.dval;
+                      length->length = $3->length * $1;
                       $$ = length;
                     }        
   | INTEGER TIMES addressLength2
                     {
                       Length* length = newLength();
-                      length->length = $3->length * yylval.ival;
+                      length->length = $3->length * $1;
                       $$ = length;
                     }        
   | HALF addressLength2
@@ -277,22 +281,22 @@ addressDegree :
 addressDegree1 :
     REAL DEGREES    {
                       Degree *degree = newDegree();
-                      degree->degree = yylval.dval;
+                      degree->degree = $1;
                       $$ = degree;
                     }
   | REAL            {
                       Degree *degree = newDegree();
-                      degree->degree = yylval.dval;
+                      degree->degree = $1;
                       $$ = degree;
                     }
   | INTEGER         {
                       Degree *degree = newDegree();
-                      degree->degree = yylval.ival;
+                      degree->degree = $1;
                       $$ = degree;
                     }
   | INTEGER DEGREES {
                       Degree *degree = newDegree();
-                      degree->degree = yylval.ival;
+                      degree->degree = $1;
                       $$ = degree;
                     }                    
   | FREEVARIABLE    {
@@ -347,13 +351,13 @@ addressDegree2 :
   | REAL TIMES addressDegree1
                     {
                       Degree* degree = newDegree();
-                      degree->degree = $3->degree * yylval.dval;
+                      degree->degree = $3->degree * $1;
                       $$ = degree;
                     }          
   | INTEGER TIMES addressDegree1
                     {
                       Degree* degree = newDegree();
-                      degree->degree = $3->degree * yylval.ival;
+                      degree->degree = $3->degree * $1;
                       $$ = degree;
                     }          
   | HALF addressDegree1
@@ -398,13 +402,13 @@ addressDegree3 :
   | REAL TIMES addressDegree2
                     {
                       Degree* degree = newDegree();
-                      degree->degree = $3->degree * yylval.dval;
+                      degree->degree = $3->degree * $1;
                       $$ = degree;
                     }   
   | INTEGER TIMES addressDegree2
                     {
                       Degree* degree = newDegree();
-                      degree->degree = $3->degree * yylval.ival;
+                      degree->degree = $3->degree * $1;
                       $$ = degree;
                     }                               
   | HALF addressDegree2
@@ -1086,99 +1090,202 @@ ARC :
 arcProperties :
     centersClause radiiClause mutualIntersectionClause
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	Arc a,b;
+	
+	a.center = $1->points[0];
+	a.radius = $2->lengths[0].length;
+
+	updatePlottablesArc(p, a);
+
+	b.center = $1->points[1];
+	b.radius = $2->lengths[1].length;
+
+	updatePlottablesArc(p, b);
+
+	Point pA = getArArccIntersectionPoint(a,b,true);
+
+	pA.label = $3->points[0].label;
+	updatePlottablesPoint(p, pA);
+	if($3->n >= 2){
+	  //if both the intersection points are to be marked
+	  Point pB = getArcArcIntersectionPoint(a,b,false);
+	  pB.label = $3->points[1].label;
+	  updatePlottablesPoint(p, pB);
+	}
+
+	$$ = p;
       }
-  | centerClause radiusClause arcConditionClause
+  | centerClause radiusClause intersectionClause
       {
-	$$ = newPlottables();
-      }
-  | centerClause arcConditionClause
-      {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	Arc a;
+	a.center = *$1;
+	a.radius = *$2;
+	updatePlottablesArc(p, a);
+	Point in = getArcIntersectableIntersection(a, *$3, true);
+	in.label = $3->p1->label;
+	updatePlottablesPoint(p, in);
+
+	if($3->p2 != NULL){
+	  //the other intersection point is also to be marked
+	  Point in2 = getArcIntersectableIntersection(a, *$3, false);
+	  in2.label = $3->p2->label;
+	  updatePlottables(p, in2);
+	}
+
+	$$ = p;
       }
   | centerClause radiusClause
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	Arc a;
+	a.center = *$1;
+	a.radius = *$2;
+	updatePlottables(p, a);
+	$$ = p;
       }
-;
-
-arcConditionClause :
-    intersectionClause
-      {
-	$$ = newPoint();
-      }    
-  | passingThroughClause
-      {
-	$$ = newPoint();
-      }  
 ;
 
 passingThroughClause :
     PASSINGTHROUGH addressPoint
       {
-	$$ = newPoint();
+	$$ = $2;
       }    
 ;
 
 PASSINGTHROUGH :
-    "passing" "through"         { $$ = NULL;  }
-  | "through"                   { $$ = NULL;  }
+    PASSING_T THROUGH_T         { $$ = NULL;  }
+  | THROUGH_T                   { $$ = NULL;  }
 ;
 
 mutualIntersectionClause :
     INTERSECTING EACHOTHER AT POINTSINGLET POINTSINGLET
       {
-	$$ = newVectorPoints();
+	assert(!existsPointLabel($4[0]));
+	assert(!existsPointLabel($5[0]));
+	VecPoint *vec = newVectorPoints();
+
+	Point a,b;
+	a.label = $4[0];
+	b.label = $5[0];
+	vec->points[vec->n++] = a;
+	vec->points[vec->n++] = b;
+	
+	$$ = vec;
       }    
   | INTERSECTING AT POINTSINGLET POINTSINGLET
       {
-	$$ = newVectorPoints();
+	assert(!existsPointLabel($3[0]));
+	assert(!existsPointLabel($4[0]));
+	VecPoint *vec = newVectorPoints();
+
+	Point a,b;
+	a.label = $3[0];
+	b.label = $4[0];
+	vec->points[vec->n++] = a;
+	vec->points[vec->n++] = b;
+	
+	$$ = vec;
       }    
   | INTERSECTING EACHOTHER AT POINTSINGLET
       {
-	$$ = newVectorPoints();
+	assert(!existsPointLabel($4[0]));
+
+	VecPoint *vec = newVectorPoints();
+	Point a;
+	a.label = $4[0];
+	vec->points[vec->n++] = a;
+	$$ = vec;
       }      
   | INTERSECTING AT POINTSINGLET
       {
-	$$ = newVectorPoints();
+	assert(!existsPointLabel($3[0]));
+
+	VecPoint *vec = newVectorPoints();
+	Point a;
+	a.label = $3[0];
+	vec->points[vec->n++] = a;
+	$$ = vec;
       }      
 ;
 
 centerClause :
     CENTER POINTSINGLET
       {
-	$$ = newPoint();
+	Point *p = newPoint();
+	p->label = $2[0];
+	if(existsPoint(p)){
+	  p = getPoint(p->label);
+	} else {
+	  p->x = p->y = 0.0;
+	}
+	$$ = p;
       }        
 ;
 
 centersClause :
     CENTERS POINTSINGLET POINTSINGLET
       {
-	$$ = newVectorPoints();
+	VecPoints *vec = newVectorPoints();
+	Point a,b;
+	a.label = $2[0];
+	if(existsPoint(a)){
+	  a = getPointLabel(a.label);
+	} else {
+	  spiError("No such point(s) exist(s)\n");
+	}
+
+	b.label = $3[0];
+	if(existsPoint(b)){
+	  b = getPointLabel(b.label);
+	} else {
+	  spiError("No such point(s) exist(s)\n");
+	}
+
+	vec->points[vec->n++]= a;
+	vec->points[vec->n++]= a;
+        $$ = vec;
       }        
 ;
 
 radiusClause :
     RADIUS addressLength
       {
-	$$ = newLength();
+	$$ = $2;
       }        
 ;
 
 radiiClause :
     RADIUS addressLength addressLength
       {
-	$$ = newVectorLengths();
+	VecLengths *vec = newVectorLengths();
+	
+	vec->lengths[vec->n] = *$2;
+	vec->n++;
+	vec->lengths[vec->n] = *$3;
+	vec->n++;
+
+	$$ = vec;
       }        
 ;
 
 intersectionClause :
     INTERSECTING addressIntersectableObject AT POINTSINGLET POINTSINGLET
       {
+	Point *pA = newPoint(),
+	  *pB = newPoint();
+	pA->label = $4[0];
+	pB->label = $5[0];
+	$2->p1 = pA;
+	$2->p2 = pB;
 	$$ = $2;
       }        
   | INTERSECTING addressIntersectableObject AT POINTSINGLET
       {
+	Point *pA = newPoint();
+	pA->label = $4[0];
+	$2->p1 = pA;
 	$$ = $2;
       }      
 ;
@@ -1186,30 +1293,40 @@ intersectionClause :
 addressIntersectableObject :
     addressLineSegment
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->ls1 = $1;
+	$$ = i;
       }          
   | addressLine
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->l1 = $1;
+	$$ = i;
       }        
   | addressArc
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->a1 = $1;
+	$$ = i;
       }        
   | addressCircle
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->c1 = $1;
+	$$ = i;
       }        
   | addressAngleRays
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->r1 = $1;
+	$$ = i;
       }        
 ;
 
 addressAngleRays :
     RAYS ANGLE addressAngle
       {
-	$$ = newAngle();
+	$$ = $3;
       }          
 ;
 
@@ -2188,6 +2305,48 @@ bisectableAndProperties :
       {
 	$$ = newPlottables();
       }                      
+;
+
+POINTSINGLET :
+    POINTSINGLET_T
+      {
+	$$ = newString(yylval.sval);
+      }
+;
+
+POINTPAIR :
+    POINTPAIR_T
+      {
+	$$ = newString(yylval.sval);
+      }
+;
+
+POINTTRIPLET :
+    POINTTRIPLET_T
+      {
+	$$ = newString(yylval.sval);
+      }
+;
+
+LINELABEL :
+    LINELABEL_T
+      {
+	$$ = newString(yylval.sval);
+      }
+;
+
+INTEGER :
+    INTEGER_T
+      {
+	$$ = yylval.ival;
+      }
+;
+
+REAL :
+    REAL_T
+      {
+	return yylval.dval;
+      }
 ;
 
 %%
