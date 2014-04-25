@@ -40,7 +40,9 @@ Circle* newCircle(){
 }
 
 Plottables* newPlottables(){
-  return (Plottables*)malloc(sizeof(Plottables));
+  Plottables *p = (Plottables*)malloc(sizeof(Plottables));
+  p->ip = p->ils = p->ia = p->iln = p->ic = p->ian = p->ilg = 0;
+  return p;
 }
 
 void updatePlottablesPoint(Plottables* p, Point pn){
@@ -69,7 +71,7 @@ void updatePlottablesCircle(Plottables *p, Circle c){
   p->circles[p->ic++] = c;
 }
 void updatePlottablesAngle(Plottables *p, Angle a){
-  p->angles[p->ia++] = a;
+  p->angles[p->ian++] = a;
   p->points[p->ip++] = a.vertex;
   p->points[p->ip++] = a.leftVertex;
   p->points[p->ip++] = a.rightVertex;
