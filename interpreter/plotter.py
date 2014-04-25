@@ -21,6 +21,8 @@ class App:
         self.diffArcs = {}
         self.diffAngles = {}
         self.diffCircles = {}
+        self.var = IntVar()
+        self.NL = True
         
         frame = Frame(master)
         frame.pack()
@@ -41,6 +43,14 @@ class App:
         self.entry.pack()
         frame2 = Frame(frame13, height=40, width=50)
         frame2.pack()
+        frame31 = Frame(frame2, height=20, width=50)
+        frame31.pack()
+        self.radio1 = Radiobutton(frame31, text="NL", variable=self.var, value=1, command=self.select)
+        self.radio1.pack(side=LEFT, padx=10, pady=2.5)
+        self.radio2 = Radiobutton(frame31, text="Meta", variable=self.var, value=2, command=self.select)
+        self.radio2.pack(side=LEFT, padx=10, pady=2.5)
+        self.var.set(1)
+
         self.submit = Button(frame2, text="Submit", fg="black", command = self.submit_token)
         self.submit.pack(side=LEFT, padx=10, pady=2.5)
         self.clean = Button(frame2, text="Clean Canvas", fg="black", command = self.clean)
@@ -48,6 +58,12 @@ class App:
 
         self.w = Canvas(frame12, width=800, height=600)
         self.w.pack()
+
+    def select(self):
+        if self.var.get() == 1:
+            self.NL = True
+        else:
+            self.NL = False
 
     def clean(self):
         self.w.delete("all")
@@ -67,12 +83,21 @@ class App:
         else:
             sys_exec("rm -f drawing.txt")
             sys_exec("rm -f triangle.txt")
-            f=open("triangle.txt", "w")
-            f.write(strg.encode('utf8').strip())
-            f.close()
-            #print sys_exec("./interpret1 < triangle.in")
-            sys_exec("./interpret.out < triangle.txt")
-            sys_exec("./lyparser.out < triangle.txt")
+            sys_exec("rm -f preOrder.txt")
+            if self.NL:
+                print "NL Parsing"
+                f=open("triangle.txt", "w")
+                f.write(strg.encode('utf8').strip())
+                f.close()
+                print sys_exec("./interpret.out < triangle.txt")
+                sys_exec("./interpret.out < triangle.txt")
+                # Writes preOrder String to preOrder.txt
+            else:
+                f=open("preOrder.txt", "w")
+                f.write(strg.encode('utf8').strip())
+                f.close()
+            print sys_exec("./lyparser.out < preOrder.txt")
+            sys_exec("./lyparser.out < preOrder.txt")
             self.readContext()
             self.readDiff()
             self.updateContext()
