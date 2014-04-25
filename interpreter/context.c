@@ -521,9 +521,13 @@ Length* getLastLength() {
 bool existsLastLineSegment(){
   return context.iln!=0 ?true :false;
 }
-  
+
+char nextAvailablePointLabel = 'A';
+
 char reserveNextPointLabel(){
-  return 'j';
+  char label = nextAvailablePointLabel;
+  nextAvailablePointLabel++;
+  return label;
 }
 
 void LineSegmentCopy(LineSegment ls, LineSegment *l) {

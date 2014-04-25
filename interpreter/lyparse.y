@@ -668,7 +668,7 @@ addressLineSegment :
       }  
   | addressFreeObject
       {
-        assert(existsLastLineSegment());
+        //assert(existsLastLineSegment());
         //LineSegment ls = getLastLineSegment();
         //TODO: $$ = the last segment present in the context
         LineSegment *l = newLineSegment();
@@ -781,11 +781,86 @@ genericAngleAndProperties :
 rightAngleAndProperties :
     RIGHT ANGLE VERTEX addressPoint
       {
-        $$ = newPlottables();
+	Plottables *p = newPlottables();
+
+	Angle *a = newAngle();
+	a->vertex = *$4;
+	a->vertex.x = a->vertex.y = 0.0;
+	a->leftVertex.x = 0.0;
+	a->leftVertex.y = DEFAULT_ANGLE_ARM_LENGTH;
+	a->rightVertex.x = DEFAULT_ANGLE_ARM_LENGTH;
+	a->rightVertex.y = 0.0;
+	a->leftVertex.label = reserveNextPointLabel();
+	a->rightVertex.label = reserveNextPointLabel();
+	a->degree = 90.0;
+
+	updatePlottablesAngle(p, *a);
+
+        $$ = p;
       }    
   | RIGHT ANGLE addressAngle
       {
-        $$ = newPlottables();
+	Plottables *p = newPlottables();
+	
+	bool existsLeftVertex = existsPoint($3->leftVertex),
+	  existsRightVertex = existsPoint($3->rightVertex);
+
+	$3->degree = 90.0;
+	if(!existsPoint($3->vertex)){
+	  $3->vertex.x = $3->vertex.y = 0.0;
+	} else {
+	  $3->vertex = getPoint($3->vertex.label);
+	}
+
+	if(!existsLeftVertex && !existsRightVertex){
+	  $3->rightVertex.x = $3->vertex.x + DEFAULT_ANGLE_ARM_LENGTH;
+	  $3->rightVertex.y = $3->vertex.y;
+	  existsRightVertex = true;
+	}
+
+	if(existsLeftVertex && !existsRightVertex){
+	  double ldeltax = $3->leftVertex.x - $3->vertex.x,
+	    ldeltay = $3->leftVertex.y - $3->vertex.y;
+	  double lvslope;
+	  if(abs(ldeltax) <= FLOAT_EPSILON){
+	    if(ldeltay >= FLOAT_EPSILON) lvslope = 90.0;
+	    else lvslope = -90.0;
+	  } else {
+	    lvslope = atan2(ldeltay, ldeltax) * RADIANS_TO_DEGREES;
+	  }
+
+	  double rvslope = lvslope - 90.0;
+
+	  $3->rightVertex.x = $3->vertex.x
+	    + DEFAULT_ANGLE_ARM_LENGTH*cos(rvslope * DEGREES_TO_RADIANS);
+	  $3->rightVertex.y = $3->vertex.y
+	    + DEFAULT_ANGLE_ARM_LENGTH*sin(rvslope * DEGREES_TO_RADIANS);
+
+	} else if(!existsLeftVertex && existsRightVertex){
+	  double rdeltax = $3->rightVertex.x - $3->vertex.x,
+	    rdeltay = $3->rightVertex.y - $3->vertex.y;
+	  double rvslope;
+	  if(abs(rdeltax) <= FLOAT_EPSILON){
+	    if(rdeltay >= FLOAT_EPSILON) rvslope = 90.0;
+	    else rvslope = -90.0;
+	  } else {
+	    rvslope = atan2(rdeltay, rdeltax) * RADIANS_TO_DEGREES;
+	  }
+
+	  double lvslope = rvslope + 90.0;
+
+	  $3->leftVertex.x = $3->vertex.x
+	    + DEFAULT_ANGLE_ARM_LENGTH*cos(lvslope * DEGREES_TO_RADIANS);
+	  $3->leftVertex.y = $3->vertex.y
+	    + DEFAULT_ANGLE_ARM_LENGTH*sin(lvslope * DEGREES_TO_RADIANS);
+	  
+	} else {
+	  //both points exist, may be fishy
+	}
+	
+	updatePlottablesAngle(p, *$3);
+	$$ = p;
+
       }  
 ;
 
