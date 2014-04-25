@@ -1108,6 +1108,7 @@ arcProperties :
 	pA.label = $3->points[0].label;
 	updatePlottablesPoint(p, pA);
 	if($3->n >= 2){
+	  //if both the intersection points are to be marked
 	  Point pB = getArcArcIntersectionPoint(a,b,false);
 	  pB.label = $3->points[1].label;
 	  updatePlottablesPoint(p, pB);
@@ -1121,18 +1122,28 @@ arcProperties :
 	Arc a;
 	a.center = *$1;
 	a.radius = *$2;
-	Point in = getArcIntersectableIntersection(a, *$3);
 	updatePlottablesArc(p, a);
+	Point in = getArcIntersectableIntersection(a, *$3, true);
+	in.label = $3->p1->label;
 	updatePlottablesPoint(p, in);
-	$$ = newPlottables();
-      }
-  | centerClause radiusClause passingThroughClause
-      {
-	$$ = newPlottables();
+
+	if($3->p2 != NULL){
+	  //the other intersection point is also to be marked
+	  Point in2 = getArcIntersectableIntersection(a, *$3, false);
+	  in2.label = $3->p2->label;
+	  updatePlottables(p, in2);
+	}
+
+	$$ = p;
       }
   | centerClause radiusClause
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	Arc a;
+	a.center = *$1;
+	a.radius = *$2;
+	updatePlottables(p, a);
+	$$ = p;
       }
 ;
 
@@ -1262,10 +1273,19 @@ radiiClause :
 intersectionClause :
     INTERSECTING addressIntersectableObject AT POINTSINGLET POINTSINGLET
       {
+	Point *pA = newPoint(),
+	  *pB = newPoint();
+	pA->label = $4[0];
+	pB->label = $5[0];
+	$2->p1 = pA;
+	$2->p2 = pB;
 	$$ = $2;
       }        
   | INTERSECTING addressIntersectableObject AT POINTSINGLET
       {
+	Point *pA = newPoint();
+	pA->label = $4[0];
+	$2->p1 = pA;
 	$$ = $2;
       }      
 ;
@@ -1273,30 +1293,40 @@ intersectionClause :
 addressIntersectableObject :
     addressLineSegment
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->ls1 = $1;
+	$$ = i;
       }          
   | addressLine
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->l1 = $1;
+	$$ = i;
       }        
   | addressArc
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->a1 = $1;
+	$$ = i;
       }        
   | addressCircle
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->c1 = $1;
+	$$ = i;
       }        
   | addressAngleRays
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->r1 = $1;
+	$$ = i;
       }        
 ;
 
 addressAngleRays :
     RAYS ANGLE addressAngle
       {
-	$$ = newAngle();
+	$$ = $3;
       }          
 ;
 
