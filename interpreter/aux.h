@@ -93,3 +93,5 @@ LineSegment getAngleBisector(Angle a);
 LineSegment getPerpendicularPassingThrough(LineSegment ls, Point passingThrough);
 LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough);
 LineSegment getPerpendicularAt(LineSegment ls, Point at);
+Point getPointOnLabelable(Intersection i, Location *l);
+Point getPointNotOnLabelable(Intersection i, Location *l);
