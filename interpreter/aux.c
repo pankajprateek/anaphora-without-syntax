@@ -64,6 +64,112 @@ Point _getArcIntersectionPoint(Point p0, double r0, Point p1, double r1, bool ab
   return ret;
 }
 
-Point getIntersectableIntersectableIntersection(Intersectable i1, Intersectable i2) {
-  
+int getIntersectableObject(Intersection i1) {
+  if(i1.ls1) {
+    return 1;
+  } else if(i1.l1) {
+    return 2;
+  } else if(i1.a1) {
+    return 3;
+  } else if(i1.c1) {
+    return 4;
+  } else if(i1.an1) {
+    return 5;
+  } else if(i1.r1) {
+    return 6;
+  } else {
+    return -1;
+  }
+}
+
+Point getIntersectableIntersectableIntersection(Intersection i1, Intersection i2, bool above) {
+  int l1 = getIntersectableObject(i1);
+  int l2 = getIntersectableObject(i2);
+  if(l1==1 && l2==1) {
+    //ls and ls
+    return getLsLsIntersection(*(i1.ls1), *(i2.ls1), above);
+  } else if(l1==1 && l2==3) {
+    //ls and arc
+    return getLsArcIntersection(*(i1.ls1), *(i2.a1), above);
+  } else if(l1==1 && l2==4) {
+    //ls and circle
+    return getLsCircleIntersection(*(i1.ls1), *(i2.c1), above);
+  } else if(l1==3 && l2==1) {
+    //Arc and ls
+    return getLsArcIntersection(*(i2.ls1), *(i2.a1), above);
+  } else if(l1==3 && l2==3) {
+    //arc and arc
+    return getArcArcIntersection(*(i1.a1), *(i2.a1), above);
+  } else if(l1==3 && l2==4) {
+    //arc and circle
+    return getArcCircleIntersection(*(i1.a1), *(i2.c1), above);
+  } else if(l1==4 && l2==1) {
+    //circle and ls
+    return getLsCircleIntersection(*(i2.ls1), *(i1.c1), above);
+  } else if(l1==4 && l2==3) {
+    // circle and arc
+    return getArcCircleIntersection(*(i2.a1), *(i1.c1), above);
+  } else if(l1==4 && l2==4) {
+    //circle and circle
+    getCircleCircleIntersection(*(i1.c1), *(i2.c1), above);
+  } else {
+    Point *p = newPoint();
+    return *p;
+  }
+}
+
+Point getArcArcIntersection(Arc a1, Arc a2, bool above) {
+  return _getArcIntersectionPoint(a1.center, a1.radius, a2.center, a2.radius, above);
+}
+
+Point getArcCircleIntersection(Arc a, Circle c, bool above) {
+  return _getArcIntersectionPoint(a.center, a.radius, c.center, c.radius, above);
+}
+
+Point getCircleCircleIntersection(Circle c1, Circle c2, bool above) {
+  return _getArcIntersectionPoint(c1.center, c1.radius, c2.center, c2.radius, above);
+}
+
+Point getLsLsIntersection(LineSegment l1, LineSegment l2, bool above) {
+  float x11 = l1.pA.x, y11 = l1.pA.y, x12 = l1.pB.x, y12 = l1.pB.y;
+  float x21 = l2.pA.x, y21 = l2.pA.y, x22 = l2.pB.x, y22 = l2.pB.y;
+  float m1 = (y12 - y11)/(x12 - x11);
+  float m2 = (y22 - y21)/(x22-x21);
+  Point ret;
+  ret.x = ((y21-y11) + (m2*x21-m1*x11))/(m2-m1);
+  ret.y = m1*(ret.x - x11) + y11;
+  return ret;
+}
+
+Point getLsArcIntersection(LineSegment l, Arc a, bool above) {
+  return _getLsArcIntersection(l, a.center, a.radius, above);
+}
+
+Point getLsCircleIntersection(LineSegment l, Circle c, bool above) {
+  return _getLsArcIntersection(l, c.center, c.radius, above);
+}
+
+Point _getLsArcIntersection(LineSegment l, Point c, double r, bool above) {
+  float x1 = l.pA.x, y1 = l.pA.y, x2 = l.pB.x, y2 = l.pB.y;
+  float xc = c.x, yc = c.y;
+  float m = (y2 - y1)/(x2 - x1);
+  float c1 = m*(xc-x1) + (y1-yc);
+  float b = (2*m*r*c1)/(m*m*(r*r+1));
+  float C = (c1*c1 - r*r)/(m*m*(r*r+1));
+  float d = sqrt(b*b - 4*C);
+  float cos1 = (-b-d)/2;
+  float cos2 = (-b+d)/2;
+  float x31 = xc+r*cos1;
+  float x32 = xc+r*cos2;
+  float y31 = m*(x31-x1) + y1;
+  float y32 = m*(x32-x1) + y1;
+  Point ret;
+  if(y31 > y32 && above) {
+    ret.x = x31;
+    ret.y = y31;
+  } else {
+    ret.x = x32;
+    ret.y = y32;
+  }
+  return ret; 
 }
