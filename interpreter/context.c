@@ -482,6 +482,10 @@ Point getLastPoint(){
   return context.points[context.ip-1];
 }
     
+int getNumberOfPoints() {
+  return context.ip;
+}
+
 LineSegment getLastLineSegment() {
   return context.lineSegments[context.ils-1];
 }

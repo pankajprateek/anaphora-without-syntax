@@ -47,6 +47,7 @@ Line getLine(char name);
 Angle getAngle(char name[]);
 Point getPointAtPosition(int i);
 Point getLastPoint();
+int getNumberOfPoints();
 LineSegment getLastLineSegment();
 Line getLastLine();
 Arc getLastArc();
