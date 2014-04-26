@@ -1407,7 +1407,7 @@ perpendicularBisectorAndProperties :
 	Plottables *p = newPlottables();
 	LineSegment ls = $2->lineSegments[0];
 	LineSegment pb = getPerpendicularBisector(ls);
-	updatePlottables(p, pb);
+	updatePlottablesLineSegment(p, pb);
 	$$ = p;
       }
   | PERPENDICULARBISECTORS addressPerpendicularBisectableObjects addressPerpendicularBisectableObjects
@@ -1419,7 +1419,7 @@ perpendicularBisectorAndProperties :
 	Plottables *p = newPlottables();
 	LineSegment ls = getLastLineSegment();
 	LineSegment pb = getPerpendicularBisector(ls);
-	updatePlottables(p, pb);
+	updatePlottablesLineSegment(p, pb);
 	$$ = p;
       }  
   | PERPENDICULARBISECTORS addressIndefinitePreviousObjects
@@ -1472,16 +1472,16 @@ bisectorAndProperties :
   | BISECTOR addressAngle
       {
 	Plottables *p = newPlottables();
-	LineSegment ab = getAngleBisector(*$3);
-	updatePlottables(p, ab);
+	LineSegment ab = getAngleBisector(*$2);
+	updatePlottablesLineSegment(p, ab);
 	$$ = p;
       }  
   | BISECTOR addressIndefinitePreviousObjects
       {
 	Plottables *p = newPlottables();
-	Angle a = getLastAngle();
+	Angle a = *(getLastAngle());
 	LineSegment ab = getAngleBisector(a);
-	updatePlottables(p, ab);
+	updatePlottablesLineSegment(p, ab);
 	$$ = p;
       }  
 ;
@@ -1523,9 +1523,9 @@ perpendicularAndProperties :
 	Plottables *p = newPlottables();
 
 	if($2->passingThroughPoint != NULL){
-	  ls = getPerpendicularPassingThrough($1->ls, $2->passingThroughPoint);
+	  ls = getPerpendicularPassingThrough(*($1->ls), *($2->passingThroughPoint));
 	} else {
-	  ls = getPerpendicularAt($1->ls, $2->atPoint);
+	  ls = getPerpendicularAt(*($1->ls), *($2->atPoint));
 	}
 
 	updatePlottablesLineSegment(p, ls);
@@ -1549,7 +1549,7 @@ perpendicularConditionClause :
   | passingThroughClause
       {
 	Perpendicularization *per = newPerpendicularization();
-	per->passingThroughPoint = $2;
+	per->passingThroughPoint = $1;
 	$$ = per;
       }  
 ;
@@ -1607,10 +1607,10 @@ parallelAndProperties :
 	Plottables *p = newPlottables();
 
 	if($2->passingThroughPoint != NULL){
-	  ls = getParallelPassingThrough($1->ls, $2->passingThroughPoint);
-	} else {
-	  ls = getParallelAt($1->ls, $2->atPoint);
-	}
+	  ls = getParallelPassingThrough(*($1->ls), *($2->passingThroughPoint));
+	} /* else { */
+	/*   ls = getParallelAt(*($1->ls), *($2->atPoint)); */
+	/* } */
 
 	updatePlottablesLineSegment(p, ls);
 
@@ -1626,8 +1626,8 @@ parallelConditionClause :
   | passingThroughClause
       {
 	Parallelization *par =  newParallelization();
-	par->passingThrough = $1;
-	$4 = par;
+	par->passingThroughPoint = $1;
+	$$ = par;
       }  
 
 ;
@@ -1675,12 +1675,13 @@ joinCommand :
 	Command *c = newCommand();
 	Plottables *p = newPlottables();
 
-	for(int i = 0; i < $2->n; i++){
+	int i;
+	for(i = 0; i < $2->n; i++){
 	  char* pp = $2->strings[i];
 	  LineSegment ls;
-	  ls.pA = getPoint(char pp[0]);
-	  ls.pB = getPoint(char pp[1]);
-	  updatePlottables(p, ls);
+	  ls.pA = getPoint(pp[0]);
+	  ls.pB = getPoint(pp[1]);
+	  updatePlottablesLineSegment(p, ls);
 	}
 
 	c->plottables = *p;
@@ -1695,20 +1696,20 @@ JOIN :
 addressPointPairs : 
     POINTPAIR
       {
-	VectorStrings *vec = newVectorStrings();
+	VecStrings *vec = newVectorStrings();
 	vec->strings[vec->n++] = $1;
 	$$ = vec;
       }    
   | POINTPAIR POINTPAIR
       {
-	VectorStrings *vec = newVectorStrings();
+	VecStrings *vec = newVectorStrings();
 	vec->strings[vec->n++] = $1;
 	vec->strings[vec->n++] = $2;
 	$$ = vec;
       }    
   | POINTPAIR POINTPAIR POINTPAIR
       {
-	VectorStrings *vec = newVectorStrings();
+	VecStrings *vec = newVectorStrings();
 	vec->strings[vec->n++] = $1;
 	vec->strings[vec->n++] = $2;
 	vec->strings[vec->n++] = $3;
@@ -1716,7 +1717,7 @@ addressPointPairs :
       }    
   | adjectivePrevious POINTS
       {
-	VectorStrings *vec = newVectorStrings();
+	VecStrings *vec = newVectorStrings();
 	int num = getNumberOfPoints();
 	char* arr = (char*)malloc(sizeof(char)*3);
 	arr[0] = getPointAtPosition(num-1).label;
@@ -1731,7 +1732,7 @@ markCommand :
     MARK markableAndProperties
       {
 	Command *c = newCommand();
-	c->plottables = $2;
+	c->plottables = *$2;
 	$$ = c;
       }        
 ;

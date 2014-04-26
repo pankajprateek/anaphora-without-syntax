@@ -199,6 +199,10 @@ double getSlope(Point a, Point b){
   return slope;
 }
 
+double getSlopeLs(LineSegment ls) {
+  return getSlope(ls.pA, ls.pB);
+}
+
 Point getMidPoint(Point a, Point b){
   Point c;
   c.x = (a.x + b.x) * 0.5;
@@ -248,7 +252,7 @@ LineSegment getAngleBisector(Angle a){
 
 LineSegment getPerpendicularPassingThrough(LineSegment ls, Point passingThrough){
   
-  double slope = getSlope(ls);
+  double slope = getSlopeLs(ls);
   double pslope = slope + 90.0;
   double c = 0.0; //y = mx + c
 
@@ -278,7 +282,7 @@ LineSegment getPerpendicularPassingThrough(LineSegment ls, Point passingThrough)
 
 LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough){
   
-  double slope = getSlope(ls);
+  double slope = getSlopeLs(ls);
   double pslope = slope;
   double c = 0.0; //y = mx + c
 
@@ -302,7 +306,7 @@ LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough){
 
 LineSegment getPerpendicularAt(LineSegment ls, Point at){
   
-  double slope = getSlope(ls);
+  double slope = getSlopeLs(ls);
   double pslope = slope + 90.0;
   double c = 0.0; //y = mx + c
 

@@ -5,6 +5,9 @@
 #define DEGREES_TO_RADIANS ((2.0 * 3.14) / 360.0)
 #define RADIANS_TO_DEGREES (360.0 / (2 * 3.14))
 #define FLOAT_EPSILON 0.0000001
+#define DEFAULT_LINE_SEGMENT_LENGTH 4
+#define true 1
+#define false 0
 
 typedef struct _ArcProperties{
   Point center1, center2;
@@ -81,3 +84,12 @@ Point _getLsArcIntersection(LineSegment l, Point c, double r, bool above);
 Point getAngleArcIntersection(Angle an, Arc a, bool above);
 Point getAngleCircleIntersection(Angle an, Circle c, bool above);
 Point getArcIntersectableIntersection(Arc a, Intersection i, bool above);
+double getSlope(Point a, Point b);
+double getSlopeLs(LineSegment ls);
+Point getMidPoint(Point a, Point b);
+Point locatePoint(Point source, double slope, double distance);
+LineSegment getPerpendicularBisector(LineSegment ls);
+LineSegment getAngleBisector(Angle a);
+LineSegment getPerpendicularPassingThrough(LineSegment ls, Point passingThrough);
+LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough);
+LineSegment getPerpendicularAt(LineSegment ls, Point at);
