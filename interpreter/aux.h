@@ -68,4 +68,4 @@ Perpendicularization* newPerpendicularization();
 Cut* newCut();
 Point getCircleCircleIntersectionPoint(Circle a, Circle b, bool above);
 Point getArcArcIntersectionPoint(Arc a, Arc b, bool above);
-
+Point _getArcIntersectionPoint(Point p0, double r0, Point p1, double r1, bool above);

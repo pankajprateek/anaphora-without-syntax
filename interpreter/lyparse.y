@@ -1103,7 +1103,7 @@ arcProperties :
 
 	updatePlottablesArc(p, b);
 
-	Point pA = getArArccIntersectionPoint(a,b,true);
+	Point pA = getArcArcIntersectionPoint(a,b,true);
 
 	pA.label = $3->points[0].label;
 	updatePlottablesPoint(p, pA);
@@ -1121,7 +1121,7 @@ arcProperties :
 	Plottables *p = newPlottables();
 	Arc a;
 	a.center = *$1;
-	a.radius = *$2;
+	a.radius = $2->length;
 	updatePlottablesArc(p, a);
 	Point in = getArcIntersectableIntersection(a, *$3, true);
 	in.label = $3->p1->label;
@@ -1141,7 +1141,7 @@ arcProperties :
 	Plottables *p = newPlottables();
 	Arc a;
 	a.center = *$1;
-	a.radius = *$2;
+	a.radius = $2->length;
 	updatePlottables(p, a);
 	$$ = p;
       }
@@ -1164,7 +1164,7 @@ mutualIntersectionClause :
       {
 	assert(!existsPointLabel($4[0]));
 	assert(!existsPointLabel($5[0]));
-	VecPoint *vec = newVectorPoints();
+	VecPoints *vec = newVectorPoints();
 
 	Point a,b;
 	a.label = $4[0];
@@ -1178,7 +1178,7 @@ mutualIntersectionClause :
       {
 	assert(!existsPointLabel($3[0]));
 	assert(!existsPointLabel($4[0]));
-	VecPoint *vec = newVectorPoints();
+	VecPoints *vec = newVectorPoints();
 
 	Point a,b;
 	a.label = $3[0];
@@ -1192,7 +1192,7 @@ mutualIntersectionClause :
       {
 	assert(!existsPointLabel($4[0]));
 
-	VecPoint *vec = newVectorPoints();
+	VecPoints *vec = newVectorPoints();
 	Point a;
 	a.label = $4[0];
 	vec->points[vec->n++] = a;
@@ -1202,7 +1202,7 @@ mutualIntersectionClause :
       {
 	assert(!existsPointLabel($3[0]));
 
-	VecPoint *vec = newVectorPoints();
+	VecPoints *vec = newVectorPoints();
 	Point a;
 	a.label = $3[0];
 	vec->points[vec->n++] = a;
@@ -1215,8 +1215,8 @@ centerClause :
       {
 	Point *p = newPoint();
 	p->label = $2[0];
-	if(existsPoint(p)){
-	  p = getPoint(p->label);
+	if(existsPointLabel(p->label)){
+	  *p = getPoint(p->label);
 	} else {
 	  p->x = p->y = 0.0;
 	}
@@ -1231,14 +1231,14 @@ centersClause :
 	Point a,b;
 	a.label = $2[0];
 	if(existsPoint(a)){
-	  a = getPointLabel(a.label);
+	  a = getPoint(a.label);
 	} else {
 	  spiError("No such point(s) exist(s)\n");
 	}
 
 	b.label = $3[0];
 	if(existsPoint(b)){
-	  b = getPointLabel(b.label);
+	  b = getPoint(b.label);
 	} else {
 	  spiError("No such point(s) exist(s)\n");
 	}
