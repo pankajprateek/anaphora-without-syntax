@@ -71,7 +71,7 @@
 %type <operation> operation
 %type <command> command constructCommand markCommand cutCommand joinCommand divideCommand bisectCommand
 
-%type <plottables> constructibleAndProperties lineSegmentAndProperties lineAndProperties arcAndProperties circleAndProperties angleAndProperties rayAndProperties perpendicularBisectorAndProperties bisectorAndProperties perpendicularAndProperties parallelAndProperties genericAngleAndProperties rightAngleAndProperties bisectableAndProperties cuttableAndProperties angleArmPointsAndProperties markableAndProperties divisibleAndProperties chordAndProperties arcProperties
+%type <plottables> constructibleAndProperties lineSegmentAndProperties lineAndProperties arcAndProperties circleAndProperties angleAndProperties rayAndProperties perpendicularBisectorAndProperties bisectorAndProperties perpendicularAndProperties parallelAndProperties genericAngleAndProperties rightAngleAndProperties bisectableAndProperties cuttableAndProperties angleArmPointsAndProperties markableAndProperties divisibleAndProperties chordAndProperties arcProperties pointAndProperties intersectionPointsAndProperties
 
 %type <lineSegment> addressLineSegment divisibleObject addressChord
 
@@ -96,7 +96,8 @@
 %type <object> objects intersectableObjects object intersectableObject addressIndefinitePreviousObjects addressPreviousObjects adjectivePrevious
 
 %type <cut> fromClause atPoints
-%type <intersection> labelable pointAndPropertiesNotOnCase pointAndPropertiesOnCase pointAndProperties addressIntersectableObject intersectionPointsAndProperties intersectionClause addressIntersectingObject addressIntersectablePreviousObjects
+
+%type <intersection> labelable pointAndPropertiesNotOnCase pointAndPropertiesOnCase addressIntersectableObject intersectionClause addressIntersectingObject addressIntersectablePreviousObjects
 
 %type <parallelization> parallelConditionClause parallelToClause
 
@@ -1306,7 +1307,10 @@ addressIntersectableObject :
   | addressArc
       {
 	Intersection *i = newIntersection();
-	i->a1 = $1;
+	i->a1 = &($1->arcs[0]);
+	if($1->n >=2){
+	  i->a2 = &($1->arcs[1]);
+	}
 	$$ = i;
       }        
   | addressCircle
@@ -1318,7 +1322,7 @@ addressIntersectableObject :
   | addressAngleRays
       {
 	Intersection *i = newIntersection();
-	i->r1 = $1;
+	//i->r1 = $1;
 	$$ = i;
       }        
 ;
@@ -1803,7 +1807,7 @@ addressIntersectingObject :
     addressArc
       {
 	Intersection *i = newIntersection();
-	i->a1 = $1;
+	i->a1 = &($1->arcs[0]);
 	$$ = i;
       }                
   | addressCircle
@@ -1927,7 +1931,7 @@ labelable :
   | addressArc
       {
 	Intersection *i = newIntersection();
-	i->a1 = $1;
+	i->a1 = &($1->arcs[0]);
 	$$ = i;
       }              
   | addressLine
@@ -2357,7 +2361,7 @@ cuttableAndProperties :
       {
 	Plottables *p = newPlottables();
 	Intersection *i = newIntersection();
-	i->a1 = $1;
+	i->a1 = &($1->arcs[0]);
 
 	Point p1 = getPointOnLabelable(*i, NULL);
 	p1.label = $2->p1->label;
