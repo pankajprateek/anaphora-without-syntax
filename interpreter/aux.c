@@ -19,13 +19,13 @@ Bisector* newBisector() {
 
 Parallelization* newParallelization() {
   Parallelization* par = (Parallelization*)malloc(sizeof(Parallelization));
-  par->passingThroughPoint = NULL;
+  memset(par, 0, sizeof(Parallelization));
   return par;
 }
 
 Perpendicularization* newPerpendicularization() {
   Perpendicularization* per = (Perpendicularization*)malloc(sizeof(Perpendicularization));
-  per->atPoint = per->passingThroughPoint = NULL;
+  memset(per, 0, sizeof(Perpendicularization));
   return per;
 }
 
@@ -172,4 +172,152 @@ Point _getLsArcIntersection(LineSegment l, Point c, double r, bool above) {
     ret.y = y32;
   }
   return ret; 
+}
+
+double getSlope(Point a, Point b){
+  double deltax = b.x - a.x;
+  double deltay = b.y - a.y;
+
+  if(abs(deltay) <= FLOAT_EPSILON){
+    if(deltax >= FLOAT_EPSILON) return 90.0;
+    else return -90.0;
+  }
+  
+  double slope = atan2(deltay, deltax) * RADIANS_TO_DEGREES;
+  return slope;
+}
+
+Point getMidPoint(Point a, Point b){
+  Point c;
+  c.x = (a.x + b.x) * 0.5;
+  c.y = (a.y + b.y) * 0.5;
+  return c;
+}
+
+Point locatePoint(Point source, double slope, double distance){
+  Point c;
+  c.x = source.x + distance*cos(slope*DEGREES_TO_RADIANS);
+  c.y = source.y + distance*sin(slope*DEGREES_TO_RADIANS);
+  return c;
+}
+
+LineSegment getPerpendicularBisector(LineSegment ls){
+  
+  double baseSlope = getSlope(ls.pA, ls.pB);
+  
+  Point midPoint = getMidPoint(ls.pA, ls.pB);
+  
+  Point pbEndPoint1 = locatePoint(midPoint, baseSlope + 90.0, DEFAULT_LINE_SEGMENT_LENGTH);
+  Point pbEndPoint2 = locatePoint(midPoint, baseSlope - 90.0, DEFAULT_LINE_SEGMENT_LENGTH);
+  
+  pbEndPoint1.label = reserveNextPointLabel();
+  pbEndPoint2.label = reserveNextPointLabel();
+  
+  LineSegment pb;//the perpendicular bisector
+  pb.pA = pbEndPoint1;
+  pb.pB = pbEndPoint2;
+  
+  return pb;
+}
+
+LineSegment getAngleBisector(Angle a){
+
+  double rslope = getSlope(a.rightVertex, a.vertex),
+    lslope = getSlope(a.leftVertex, a.vertex);
+  double midSlope = 0.5 * (rslope + lslope);
+  Point res = locatePoint(a.vertex, midSlope, DEFAULT_ANGLE_ARM_LENGTH);
+  
+  LineSegment ls;
+  ls.pA = a.vertex;
+  ls.pB = res;
+  
+  return ls;
+
+}
+
+LineSegment getPerpendicularPassingThrough(LineSegment ls, Point passingThrough){
+  
+  double slope = getSlope(ls);
+  double pslope = slope + 90.0;
+  double c = 0.0; //y = mx + c
+
+  if(abs(abs(pslope) - 90.0) <= FLOAT_EPSILON){
+    c = passingThrough.x;
+  } else {
+    //   c = y - mx
+    c = passingThrough.y - passingThrough.x * tan(pslope * DEGREES_TO_RADIANS);
+  }
+
+  Point dummyPoint;
+  dummyPoint.x = passingThrough.x + 2.0;
+  dummyPoint.y = c + dummyPoint.x * tan(pslope * DEGREES_TO_RADIANS);
+
+  LineSegment dummyLs;
+  dummyLs.pA = passingThrough;
+  dummyLs.pB = dummyPoint;
+
+  Point in = getLsLsIntersection(ls, dummyLs, true);
+
+  LineSegment res;
+  res.pA = passingThrough;
+  res.pB = in;
+
+  return res;
+}
+
+LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough){
+  
+  double slope = getSlope(ls);
+  double pslope = slope;
+  double c = 0.0; //y = mx + c
+
+  if(abs(abs(pslope) - 90.0) <= FLOAT_EPSILON){
+    c = passingThrough.x;
+  } else {
+    //   c = y - mx
+    c = passingThrough.y - passingThrough.x * tan(pslope * DEGREES_TO_RADIANS);
+  }
+
+  Point dummyPoint = locatePoint(passingThrough, pslope, DEFAULT_LINE_SEGMENT_LENGTH);
+
+  LineSegment res;
+  res.pA = passingThrough;
+  res.pA.label = reserveNextPointLabel();
+  res.pB = dummyPoint;
+  res.pB.label = reserveNextPointLabel();
+
+  return res;
+}
+
+
+
+
+LineSegment getPerpendicularAt(LineSegment ls, Point at){
+  
+  double slope = getSlope(ls);
+  double pslope = slope + 90.0;
+  double c = 0.0; //y = mx + c
+
+  if(abs(abs(pslope) - 90.0) <= FLOAT_EPSILON){
+    c = at.x;
+  } else {
+    //   c = y - mx
+    c = at.y - at.x * tan(pslope * DEGREES_TO_RADIANS);
+  }
+
+  Point dummyPoint;
+  dummyPoint.x = at.x + 2.0;
+  dummyPoint.y = c + dummyPoint.x * tan(pslope * DEGREES_TO_RADIANS);
+
+  LineSegment dummyLs;
+  dummyLs.pA = at;
+  dummyLs.pB = dummyPoint;
+
+  Point in = getLsLsIntersection(ls, dummyLs, true);
+
+  LineSegment res;
+  res.pA = at;
+  res.pB = in;
+
+  return res;
 }

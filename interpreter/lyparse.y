@@ -1404,7 +1404,11 @@ RAYS :
 perpendicularBisectorAndProperties :
     PERPENDICULARBISECTOR addressPerpendicularBisectableObjects
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	LineSegment ls = $2->lineSegments[0];
+	LineSegment pb = getPerpendicularBisector(ls);
+	updatePlottables(p, pb);
+	$$ = p;
       }
   | PERPENDICULARBISECTORS addressPerpendicularBisectableObjects addressPerpendicularBisectableObjects
       {
@@ -1412,7 +1416,11 @@ perpendicularBisectorAndProperties :
       }
   | PERPENDICULARBISECTOR addressIndefinitePreviousObjects
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	LineSegment ls = getLastLineSegment();
+	LineSegment pb = getPerpendicularBisector(ls);
+	updatePlottables(p, pb);
+	$$ = p;
       }  
   | PERPENDICULARBISECTORS addressIndefinitePreviousObjects
       {
@@ -1423,7 +1431,10 @@ perpendicularBisectorAndProperties :
 addressPerpendicularBisectableObjects :
     addressLineSegment
       {
-	$$ = newVectorLineSegments();      
+	VecLineSegments *vec =  newVectorLineSegments();
+	vec->lineSegments[0] = *$1;
+	vec->n++;
+	$$ = vec;
       }
   | addressChord
     {
@@ -1450,7 +1461,7 @@ addressChords :
 ;
 
 PERPENDICULARBISECTOR :
-    "perpendicular" "bisector"                  { $$ = NULL;  }
+    PERPENDICULAR_T BISECTOR_T           { $$ = NULL;  }
 ;
 
 bisectorAndProperties :
@@ -1460,40 +1471,66 @@ bisectorAndProperties :
       }
   | BISECTOR addressAngle
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	LineSegment ab = getAngleBisector(*$3);
+	updatePlottables(p, ab);
+	$$ = p;
       }  
   | BISECTOR addressIndefinitePreviousObjects
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	Angle a = getLastAngle();
+	LineSegment ab = getAngleBisector(a);
+	updatePlottables(p, ab);
+	$$ = p;
       }  
 ;
 
 parallelToClause :
     PARALLEL addressLineSegment
       {
-	$$ = newParallelization();
+	Parallelization *par =  newParallelization();
+	par->ls = $2;
+	$$ = par;
       }    
   | PARALLEL addressLine
       {
-	$$ = newParallelization();
+	Parallelization *par =  newParallelization();
+	par->l = $2;
+	$$ = par;
       }      
 ;
 
 perpendicularToClause :
     PERPENDICULAR addressLineSegment
       {
-	$$ = newPerpendicularization();
+	Perpendicularization *per = newPerpendicularization();
+	per->ls = $2;
+	$$ = per;
       }
   | PERPENDICULAR addressLine
       {
-	$$ = newPerpendicularization();
+	Perpendicularization *per = newPerpendicularization();
+	per->l = $2;
+        $$ = per;
       }
 ;
 
 perpendicularAndProperties :
     perpendicularToClause perpendicularConditionClause
       {
-        $$ = newPlottables();
+	LineSegment ls;
+	Plottables *p = newPlottables();
+
+	if($2->passingThroughPoint != NULL){
+	  ls = getPerpendicularPassingThrough($1->ls, $2->passingThroughPoint);
+	} else {
+	  ls = getPerpendicularAt($1->ls, $2->atPoint);
+	}
+
+	updatePlottablesLineSegment(p, ls);
+
+        $$ = p;
       }
 ;
 
@@ -1505,11 +1542,15 @@ PERPENDICULAR :
 perpendicularConditionClause :
     AT addressPoint
       {
-	$$ = newPerpendicularization();
+	Perpendicularization *per = newPerpendicularization();
+	per->atPoint = $2;
+	$$ = per;
       }
   | passingThroughClause
       {
-	$$ = newPerpendicularization();
+	Perpendicularization *per = newPerpendicularization();
+	per->passingThroughPoint = $2;
+	$$ = per;
       }  
 ;
 
@@ -1562,7 +1603,18 @@ PARALLEL :
 parallelAndProperties :
     parallelToClause parallelConditionClause
       {
-        $$ = newPlottables();
+	LineSegment ls;
+	Plottables *p = newPlottables();
+
+	if($2->passingThroughPoint != NULL){
+	  ls = getParallelPassingThrough($1->ls, $2->passingThroughPoint);
+	} else {
+	  ls = getParallelAt($1->ls, $2->atPoint);
+	}
+
+	updatePlottablesLineSegment(p, ls);
+
+        $$ = p;
       }
 ;
 
@@ -1573,8 +1625,11 @@ parallelConditionClause :
       }    
   | passingThroughClause
       {
-	$$ = newParallelization();
+	Parallelization *par =  newParallelization();
+	par->passingThrough = $1;
+	$4 = par;
       }  
+
 ;
 
 divideCommand :
@@ -1617,7 +1672,19 @@ divisibleObject :
 joinCommand : 
   JOIN addressPointPairs
       {
-	$$ = newCommand();
+	Command *c = newCommand();
+	Plottables *p = newPlottables();
+
+	for(int i = 0; i < $2->n; i++){
+	  char* pp = $2->strings[i];
+	  LineSegment ls;
+	  ls.pA = getPoint(char pp[0]);
+	  ls.pB = getPoint(char pp[1]);
+	  updatePlottables(p, ls);
+	}
+
+	c->plottables = *p;
+	$$ = c;
       }  
 ;
 
@@ -1628,26 +1695,44 @@ JOIN :
 addressPointPairs : 
     POINTPAIR
       {
-	$$ = newVectorStrings();
+	VectorStrings *vec = newVectorStrings();
+	vec->strings[vec->n++] = $1;
+	$$ = vec;
       }    
   | POINTPAIR POINTPAIR
       {
-	$$ = newVectorStrings();
+	VectorStrings *vec = newVectorStrings();
+	vec->strings[vec->n++] = $1;
+	vec->strings[vec->n++] = $2;
+	$$ = vec;
       }    
   | POINTPAIR POINTPAIR POINTPAIR
       {
-	$$ = newVectorStrings();
-      }      
+	VectorStrings *vec = newVectorStrings();
+	vec->strings[vec->n++] = $1;
+	vec->strings[vec->n++] = $2;
+	vec->strings[vec->n++] = $3;
+	$$ = vec;
+      }    
   | adjectivePrevious POINTS
       {
-	$$ = newVectorStrings();
+	VectorStrings *vec = newVectorStrings();
+	int num = getNumberOfPoints();
+	char* arr = (char*)malloc(sizeof(char)*3);
+	arr[0] = getPointAtPosition(num-1).label;
+	arr[1] = getPointAtPosition(num-2).label;
+	arr[2] = '\0';
+	vec->strings[vec->n++] = arr;
+	$$ = vec;
       }      
 ;
 
 markCommand :
     MARK markableAndProperties
       {
-	$$ = newCommand();
+	Command *c = newCommand();
+	c->plottables = $2;
+	$$ = c;
       }        
 ;
 
