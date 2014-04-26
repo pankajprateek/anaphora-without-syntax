@@ -107,34 +107,39 @@ bool stringCompare(char a[], char b[]) {
   int i=0;
   while(a[i] != '\0' && b[i] != '\0') {
     if(a[i]!=b[i])
-      return false;
+      return 0;
   }
   if(a[i] != '\0' && b[i]=='\0')
-    return false;
+    return 0;
   if(a[i] == '\0' && b[i]!='\0')
-    return false;
-  return true;
+    return 0;
+  return 1;
 }
 		  
 void readContext(){
   //read the context file here
-  char line[1000];
+  char *line;
+  size_t len = 0;
+  ssize_t read = 0;
   FILE *f = fopen(contextFilename, "r");
   if(f) {
-    fscanf(f, "%[^\n]s", line);
-    while(fscanf(f, "%[^\n]s", line)) {
-      if(stringCompare(line, "~LINESEGMENTS") == 0)
+    getline(&line, &len, f);
+    while((read = getline(&line, &len, f)) != -1) {
+      if(strcmp(line, "~LINESEGMENTS") == 1)
 	break;
+      printf("%s\n", line);
       //parse and update point
       SplitString vec_line = split(line, ' ');
       context.points[context.ip].label = vec_line.array[0][0];
       context.points[context.ip].x = stod(vec_line.array[1]);
       context.points[context.ip].y = stod(vec_line.array[2]);
       context.ip++;
+      printf("Gettng out\n");
     }
-    while(fscanf(f, "%[^\n]s", line)) {
-      if(stringCompare(line, "~LINES") == 0)
+    while((read = getline(&line, &len, f)) != -1) {
+      if(strcmp(line, "~LINES") == 1)
 	break;
+      printf("%s\n", line);
       //parse and update linesegments
       Point P1 = getPoint(line[0]);
       context.lineSegments[context.ils].pA.label = P1.label;
@@ -147,16 +152,18 @@ void readContext(){
       context.lineSegments[context.ils].length = getLsLength(context.lineSegments[context.ils]);
       context.ils++;
     }
-    while(fscanf(f, "%[^\n]s", line)) {
-      if(stringCompare(line, "~ARCS") == 0)
+    while((read = getline(&line, &len, f)) != -1) {
+      if(strcmp(line, "~ARCS") == 1)
 	break;
+      printf("%s\n", line);
       //parse and update lines
       context.lines[context.iln].label = line[0];
       context.iln++;
     }
-    while(fscanf(f, "%[^\n]s", line)) {
-      if(stringCompare(line, "~ANGLE") == 0)
+    while((read = getline(&line, &len, f)) != -1) {
+      if(strcmp(line, "~ANGLE") == 1)
 	break;
+      printf("%s\n", line);
       //parse and update arcs
       SplitString vec_line = split(line, ' ');
       Point P1 = getPoint(vec_line.array[0][0]);
@@ -166,9 +173,10 @@ void readContext(){
       context.arcs[context.ia].radius = stod(vec_line.array[1]);
       context.ia++;
     }
-    while(fscanf(f, "%[^\n]s", line)) {
-      if(stringCompare(line, "~CIRCLE") == 0)
+    while((read = getline(&line, &len, f)) != -1) {
+      if(strcmp(line, "~CIRCLE") == 1)
 	break;
+      printf("%s\n", line);
       //parse and update angles
       SplitString vec_line = split(line, ' ');
       Point P1 = getPoint(vec_line.array[0][0]);
@@ -186,7 +194,8 @@ void readContext(){
       context.angles[context.ian].degree = stod(vec_line.array[3]);
       context.ian++;
     }
-    while(fscanf(f, "%[^\n]s", line)) {
+    while((read = getline(&line, &len, f)) != -1) {
+      printf("%s\n", line);
       //parse and update circles
       SplitString vec_line = split(line, ' ');
       Point P1 = getPoint(vec_line.array[0][0]);

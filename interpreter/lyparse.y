@@ -444,11 +444,11 @@ LESSTHAN :
 
 command :
     constructCommand  { $$ = $1; executeCommand(*$1); printContext();}
-  | markCommand       { $$ = $1; executeCommand(*$1); }
-  | cutCommand        { $$ = $1; executeCommand(*$1); }
-  | joinCommand       { $$ = $1; executeCommand(*$1); }
-  | divideCommand     { $$ = $1; executeCommand(*$1); }
-  | bisectCommand     { $$ = $1; executeCommand(*$1); }
+  | markCommand       { $$ = $1; executeCommand(*$1); printContext();}
+  | cutCommand        { $$ = $1; executeCommand(*$1); printContext();}
+  | joinCommand       { $$ = $1; executeCommand(*$1); printContext();}
+  | divideCommand     { $$ = $1; executeCommand(*$1); printContext();}
+  | bisectCommand     { $$ = $1; executeCommand(*$1); printContext();}
 ;
 
 constructCommand : 
@@ -1234,6 +1234,7 @@ centersClause :
 	if(existsPoint(a)){
 	  a = getPoint(a.label);
 	} else {
+	  printf("Point %c does not exist\n", a.label);
 	  spitError("No such point(s) exist(s)\n");
 	}
 
@@ -1241,6 +1242,7 @@ centersClause :
 	if(existsPoint(b)){
 	  b = getPoint(b.label);
 	} else {
+	  printf("Point %c does not exist\n", a.label);
 	  spitError("No such point(s) exist(s)\n");
 	}
 
@@ -2592,6 +2594,7 @@ REAL :
 int main()
 {
   readContext();
+  printContext();
   if(PDEBUG){
     printf("main()");
   }
