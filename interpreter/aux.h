@@ -78,3 +78,6 @@ Point getLsLsIntersection(LineSegment l1, LineSegment l2, bool above);
 Point getLsArcIntersection(LineSegment l, Arc a, bool above);
 Point getLsCircleIntersection(LineSegment l, Circle a, bool above);
 Point _getLsArcIntersection(LineSegment l, Point c, double r, bool above);
+Point getAngleArcIntersection(Angle an, Arc a, bool above);
+Point getAngleCircleIntersection(Angle an, Circle c, bool above);
+Point getArcIntersectableIntersection(Arc a, Intersection i, bool above);

@@ -86,7 +86,7 @@
 
 %type <condition> conditions condition
 
-%type <point> addressPoint originClause centerClause passingThroughClause arcConditionClause
+%type <point> addressPoint originClause centerClause passingThroughClause
 %type < vecPoints > centersClause mutualIntersectionClause
 
 
@@ -1103,13 +1103,13 @@ arcProperties :
 
 	updatePlottablesArc(p, b);
 
-	Point pA = getArcArcIntersectionPoint(a,b,true);
+	Point pA = getArcArcIntersection(a,b,true);
 
 	pA.label = $3->points[0].label;
 	updatePlottablesPoint(p, pA);
 	if($3->n >= 2){
 	  //if both the intersection points are to be marked
-	  Point pB = getArcArcIntersectionPoint(a,b,false);
+	  Point pB = getArcArcIntersection(a,b,false);
 	  pB.label = $3->points[1].label;
 	  updatePlottablesPoint(p, pB);
 	}
@@ -1131,7 +1131,7 @@ arcProperties :
 	  //the other intersection point is also to be marked
 	  Point in2 = getArcIntersectableIntersection(a, *$3, false);
 	  in2.label = $3->p2->label;
-	  updatePlottables(p, in2);
+	  updatePlottablesPoint(p, in2);
 	}
 
 	$$ = p;
@@ -1142,7 +1142,7 @@ arcProperties :
 	Arc a;
 	a.center = *$1;
 	a.radius = $2->length;
-	updatePlottables(p, a);
+	updatePlottablesArc(p, a);
 	$$ = p;
       }
 ;
@@ -1233,14 +1233,14 @@ centersClause :
 	if(existsPoint(a)){
 	  a = getPoint(a.label);
 	} else {
-	  spiError("No such point(s) exist(s)\n");
+	  spitError("No such point(s) exist(s)\n");
 	}
 
 	b.label = $3[0];
 	if(existsPoint(b)){
 	  b = getPoint(b.label);
 	} else {
-	  spiError("No such point(s) exist(s)\n");
+	  spitError("No such point(s) exist(s)\n");
 	}
 
 	vec->points[vec->n++]= a;

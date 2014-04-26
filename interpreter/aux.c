@@ -111,7 +111,19 @@ Point getIntersectableIntersectableIntersection(Intersection i1, Intersection i2
     return getArcCircleIntersection(*(i2.a1), *(i1.c1), above);
   } else if(l1==4 && l2==4) {
     //circle and circle
-    getCircleCircleIntersection(*(i1.c1), *(i2.c1), above);
+    return getCircleCircleIntersection(*(i1.c1), *(i2.c1), above);
+  } else if(l1==5 && l2==3) {
+    //angle and arc
+    return getAngleArcIntersection(*(i1.an1), *(i2.a1), above);
+  } else if(l1==5 && l2==4) {
+    // angle and circle
+    return getAngleCircleIntersection(*(i1.an1), *(i2.c1), above);
+  } else if(l1==3 && l2==5) {
+    //arc and angle
+    return getAngleArcIntersection(*(i2.an1), *(i1.a1), above);
+  } else if(l1==4 && l2==5) {
+    //circle and angle
+    return getAngleCircleIntersection(*(i2.an1), *(i1.c1), above);
   } else {
     Point *p = newPoint();
     return *p;
@@ -232,7 +244,6 @@ LineSegment getAngleBisector(Angle a){
   ls.pB = res;
   
   return ls;
-
 }
 
 LineSegment getPerpendicularPassingThrough(LineSegment ls, Point passingThrough){
@@ -289,9 +300,6 @@ LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough){
   return res;
 }
 
-
-
-
 LineSegment getPerpendicularAt(LineSegment ls, Point at){
   
   double slope = getSlope(ls);
@@ -320,4 +328,42 @@ LineSegment getPerpendicularAt(LineSegment ls, Point at){
   res.pB = in;
 
   return res;
+}
+
+Point getAngleArcIntersection(Angle an, Arc a, bool above) {
+  if(above) {
+    LineSegment L;
+    L.pA = an.vertex;
+    L.pB = an.leftVertex;
+    return getLsArcIntersection(L, a, above);
+  } else {
+    LineSegment L;
+    L.pA = an.vertex;
+    L.pB = an.rightVertex;
+    return getLsArcIntersection(L, a, above);
+  }
+  Point P = *newPoint();
+  return P;
+}
+
+Point getAngleCircleIntersection(Angle an, Circle c, bool above) {
+  if(above) {
+    LineSegment L;
+    L.pA = an.vertex;
+    L.pB = an.leftVertex;
+    return getLsCircleIntersection(L, c, above);
+  } else {
+    LineSegment L;
+    L.pA = an.vertex;
+    L.pB = an.rightVertex;
+    return getLsCircleIntersection(L, c, above);
+  }
+  Point P = *newPoint();
+  return P;
+}
+
+Point getArcIntersectableIntersection(Arc a, Intersection i, bool above) {
+  Intersection i2;
+  i2.a1 = &a;
+  return getIntersectableIntersectableIntersection(i2, i, above);
 }
