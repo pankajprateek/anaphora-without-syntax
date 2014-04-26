@@ -1773,8 +1773,8 @@ intersectionPointsAndProperties :
     INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint addressPoint
       {
 	Plottables *p = newPlottables();
-	Point p1 = getIntersectableIntersectableIntersection($2, $3, true);
-	Point p2 = getIntersectableIntersectableIntersection($2, $3, false);
+	Point p1 = getIntersectableIntersectableIntersection(*$2, *$3, true);
+	Point p2 = getIntersectableIntersectableIntersection(*$2, *$3, false);
 	updatePlottablesPoint(p, p1);
 	updatePlottablesPoint(p, p2);
 	$$ = p;
@@ -1782,7 +1782,7 @@ intersectionPointsAndProperties :
   | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
       {
 	Plottables *p = newPlottables();
-	Point p1 = getIntersectableIntersectableIntersection($2, $3, true);
+	Point p1 = getIntersectableIntersectableIntersection(*$2, *$3, true);
 	updatePlottablesPoint(p, p1);
 	$$ = p;
       }              
@@ -1832,7 +1832,7 @@ pointAndProperties :
     POINT POINTSINGLET pointAndPropertiesNotOnCase
       {
 	Plottables *p = newPlottables();
-	Point pt = getPointNotOnLabelable($3);
+	Point pt = getPointNotOnLabelable(*$3, NULL);
 	pt.label = $2[0];
 	updatePlottablesPoint(p, pt);
 	$$ = p;
@@ -1840,7 +1840,7 @@ pointAndProperties :
   | POINT POINTSINGLET pointAndPropertiesOnCase markConditionClause
       {
 	Plottables *p = newPlottables();
-	Point pt = getPointOnLabelable($3, $4);
+	Point pt = getPointOnLabelable(*$3, $4);
 	pt.label = $2[0];
 	updatePlottablesPoint(p, pt);
 	$$ = p;
@@ -1848,7 +1848,7 @@ pointAndProperties :
   | POINT POINTSINGLET pointAndPropertiesOnCase  
       {
 	Plottables *p = newPlottables();
-	Point pt = getPointOnLabelable($3);
+	Point pt = getPointOnLabelable(*$3, NULL);
 	pt.label = $2[0];
 	updatePlottablesPoint(p, pt);
 	$$ = p;
@@ -1856,7 +1856,7 @@ pointAndProperties :
   | POINTSINGLET pointAndPropertiesNotOnCase
       {
 	Plottables *p = newPlottables();
-	Point pt = getPointNotOnLabelable($2);
+	Point pt = getPointNotOnLabelable(*$2, NULL);
 	pt.label = $1[0];
 	updatePlottablesPoint(p, pt);
 	$$ = p;
@@ -1864,7 +1864,7 @@ pointAndProperties :
   | POINTSINGLET pointAndPropertiesOnCase markConditionClause
       {
 	Plottables *p = newPlottables();
-	Point pt = getPointOnLabelable($2, $3);
+	Point pt = getPointOnLabelable(*$2, $3);
 	pt.label = $1[0];
 	updatePlottablesPoint(p, pt);
 	$$ = p;
@@ -1872,7 +1872,8 @@ pointAndProperties :
   | POINTSINGLET pointAndPropertiesOnCase
       {
 	Plottables *p = newPlottables();
-	Point pt = getPointOnLabelable($2);
+
+	Point pt = getPointOnLabelable(*$2, NULL);
 	pt.label = $1[0];
 	updatePlottablesPoint(p, pt);
 	$$ = p;
@@ -1946,7 +1947,7 @@ addressLine :
       {
 	Line *l = newLine();
 	l->label = $1[0];
-	$$ = l
+	$$ = l;
       }                  
   | LINE LINELABEL
       {
@@ -1956,7 +1957,8 @@ addressLine :
       }               
   | adjectivePrevious LINE
       {
-	Line *l = getLastLine();
+	Line *l = newLine();
+	*l = getLastLine();
 	$$ = l;
       }                 
   | addressFreeObject
@@ -1971,7 +1973,7 @@ addressArc :
     adjectivePrevious ARC
       {
 	VecArcs *vec = newVectorArcs();
-	vec->arcs[vec->n++] = *$2;
+	vec->arcs[vec->n++] = getLastArc();
 	$$ = vec;
       }                 
   | adjectivePrevious ARCS
@@ -2252,7 +2254,8 @@ cutCommand :
   CUT cuttableAndProperties
       {
 	Command *c = newCommand();
-	c->plottables = $2;
+
+	c->plottables = *$2;
 	$$ = c;
       }      
 ;
@@ -2356,13 +2359,13 @@ cuttableAndProperties :
 	Intersection *i = newIntersection();
 	i->a1 = $1;
 
-	Point p1 = getPointOnLabelable(i);
-	p1.label = $2->p1.label;
+	Point p1 = getPointOnLabelable(*i, NULL);
+	p1.label = $2->p1->label;
 	updatePlottablesPoint(p, p1);
 
 	if($2->p2 != NULL){
-	  Point p2 = getPointOnLabelable(i);
-	  p2.label = $2->p2.label;
+	  Point p2 = getPointOnLabelable(*i, NULL);
+	  p2.label = $2->p2->label;
 	  updatePlottablesPoint(p, p2);
 	}
 
@@ -2374,13 +2377,13 @@ cuttableAndProperties :
 	Intersection *i = newIntersection();
 	i->c1 = $1;
 
-	Point p1 = getPointOnLabelable(i);
-	p1.label = $2->p1.label;
+	Point p1 = getPointOnLabelable(*i, NULL);
+	p1.label = $2->p1->label;
 	updatePlottablesPoint(p, p1);
 
 	if($2->p2 != NULL){
-	  Point p2 = getPointOnLabelable(i);
-	  p2.label = $2->p2.label;
+	  Point p2 = getPointOnLabelable(*i, NULL);
+	  p2.label = $2->p2->label;
 	  updatePlottablesPoint(p, p2);
 	}
 
@@ -2436,7 +2439,9 @@ addressCircle :
       }                  
   | adjectivePrevious CIRCLE
       {
-	$$ = getLastCircle();
+	Circle *c = newCircle();
+	*c = getLastCircle();
+	$$ = c;
       }                  
   | addressFreeObject
       {
@@ -2528,7 +2533,7 @@ bisectableAndProperties :
       {
 	Plottables *p = newPlottables();
 	LineSegment ls = getAngleBisector(*$1);
-	updatePlottables(p, ls);
+	updatePlottablesLineSegment(p, ls);
 	$$ = p;
       }                      
   | addressIndefinitePreviousObjects

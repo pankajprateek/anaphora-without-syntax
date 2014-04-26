@@ -13,12 +13,6 @@ Object* newObject() {
   return (Object*)malloc(sizeof(Object));
 }
 
-Location* newLocation(){
-  Location *l = (Location*)malloc(sizeof(Location));
-  memset(l, 0, sizeof(Location));
-  return l;
-}
-
 Bisector* newBisector() {
   return (Bisector*)malloc(sizeof(Bisector));
 }

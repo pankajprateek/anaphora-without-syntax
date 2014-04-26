@@ -486,6 +486,10 @@ int getNumberOfPoints() {
   return context.ip;
 }
 
+int getNumberOfArcs() {
+  return context.ia;
+}
+
 LineSegment getLastLineSegment() {
   return context.lineSegments[context.ils-1];
 }

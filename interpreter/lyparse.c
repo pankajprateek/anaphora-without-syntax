@@ -98,7 +98,9 @@ Condition* newCondition(){
 }
 
 Location* newLocation(){
-  return (Location*)malloc(sizeof(Location));
+  Location *l = (Location*)malloc(sizeof(Location));
+  memset(l, 0, sizeof(Location));
+  return l;
 }
 
 Operation* newOperation(){
