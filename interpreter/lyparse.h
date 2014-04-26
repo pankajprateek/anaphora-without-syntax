@@ -83,7 +83,8 @@ typedef struct _Condition{
 } Condition;
 
 typedef struct _Location{
-  
+  double distance;
+  Point fromPoint;
 } Location;
 
 typedef struct _Operation{

@@ -1745,15 +1745,15 @@ MARK :
 markableAndProperties :
     pointAndProperties
       {
-	$$ = newPlottables();
+	$$ = $1;
       }        
   | intersectionPointsAndProperties
       {
-	$$ = newPlottables();
+	$$ = $1;
       }        
   | angleArmPointsAndProperties
       {
-	$$ = newPlottables();
+	$$ = $1;
       }          
 ;
 
@@ -1771,15 +1771,23 @@ ARM :
 intersectionPointsAndProperties : 
     INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint addressPoint
       {
-	$$ = newIntersection();
+	Plottables *p = newPlottables();
+	Point p1 = getIntersectableIntersectableIntersection($2, $3, true);
+	Point p2 = getIntersectableIntersectableIntersection($2, $3, false);
+	updatePlottablesPoint(p, p1);
+	updatePlottablesPoint(p, p2);
+	$$ = p;
       }            
   | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
       {
-	$$ = newIntersection();
+	Plottables *p = newPlottables();
+	Point p1 = getIntersectableIntersectableIntersection($2, $3, true);
+	updatePlottablesPoint(p, p1);
+	$$ = p;
       }              
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint
-      {
-	$$ = newIntersection();
+      {    
+	$$ = newPlottables();
       }              
 ;
 
@@ -1793,11 +1801,15 @@ INTERSECTIONPOINTS :
 addressIntersectingObject : 
     addressArc
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->a1 = $1;
+	$$ = i;
       }                
   | addressCircle
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->c1 = $1;
+	$$ = i;
       }              
   | addressLine
       {
@@ -1805,7 +1817,9 @@ addressIntersectingObject :
       }              
   | addressLineSegment
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->ls1 = $1;
+	$$ = i;
       }              
   | addressPreviousObjects
       {
@@ -1816,34 +1830,61 @@ addressIntersectingObject :
 pointAndProperties : 
     POINT POINTSINGLET pointAndPropertiesNotOnCase
       {
-	$$ = newIntersection();
+	Plottables *p = newPlottables();
+	Point pt = getPointNotOnLabelable($3);
+	pt.label = $2[0];
+	updatePlottablesPoint(p, pt);
+	$$ = p;
       }                
   | POINT POINTSINGLET pointAndPropertiesOnCase markConditionClause
       {
-	$$ = newIntersection();
+	Plottables *p = newPlottables();
+	Point pt = getPointOnLabelable($3, $4);
+	pt.label = $2[0];
+	updatePlottablesPoint(p, pt);
+	$$ = p;
       }              
   | POINT POINTSINGLET pointAndPropertiesOnCase  
       {
-	$$ = newIntersection();
+	Plottables *p = newPlottables();
+	Point pt = getPointOnLabelable($3);
+	pt.label = $2[0];
+	updatePlottablesPoint(p, pt);
+	$$ = p;
       }              
   | POINTSINGLET pointAndPropertiesNotOnCase
       {
-	$$ = newIntersection();
+	Plottables *p = newPlottables();
+	Point pt = getPointNotOnLabelable($2);
+	pt.label = $1[0];
+	updatePlottablesPoint(p, pt);
+	$$ = p;
       }              
   | POINTSINGLET pointAndPropertiesOnCase markConditionClause
       {
-	$$ = newIntersection();
+	Plottables *p = newPlottables();
+	Point pt = getPointOnLabelable($2, $3);
+	pt.label = $1[0];
+	updatePlottablesPoint(p, pt);
+	$$ = p;
       }              
   | POINTSINGLET pointAndPropertiesOnCase
       {
-	$$ = newIntersection();
+	Plottables *p = newPlottables();
+	Point pt = getPointOnLabelable($2);
+	pt.label = $1[0];
+	updatePlottablesPoint(p, pt);
+	$$ = p;
       }              
 ;
 
 markConditionClause :
     DISTANCEFROM addressPoint addressLength
       {
-	$$ = newLocation();
+	Location *l = newLocation();
+	l->distance = $3->length;
+	l->fromPoint = *$2;
+	$$ = l;
       }                
 ;
 
@@ -1854,14 +1895,14 @@ DISTANCEFROM :
 pointAndPropertiesOnCase :
     ON labelable
       {
-	$$ = newIntersection();
+	$$ = $2;
       }                
 ;
 
 pointAndPropertiesNotOnCase :
     NOTON labelable
       {
-	$$ = newIntersection();
+	$$ = $2;
       }                
 ;
 
@@ -1877,15 +1918,21 @@ NOTON :
 labelable :
     addressLineSegment
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->ls1 = $1;
+	$$ = i;
       }                
   | addressArc
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->a1 = $1;
+	$$ = i;
       }              
   | addressLine
       {
-	$$ = newIntersection();
+	Intersection *i = newIntersection();
+	i->l1 = $1;
+	$$ = i;
       }              
   | addressPreviousObjects
       {
@@ -1896,30 +1943,43 @@ labelable :
 addressLine :
     LINELABEL
       {
-	$$ = newLine();
+	Line *l = newLine();
+	l->label = $1[0];
+	$$ = l
       }                  
   | LINE LINELABEL
       {
-	$$ = newLine();
+	Line *l = newLine();
+	l->label = $2[0];
+	$$ = l;
       }               
   | adjectivePrevious LINE
       {
-	$$ = newLine();
+	Line *l = getLastLine();
+	$$ = l;
       }                 
   | addressFreeObject
       {
-	$$ = newLine();
+	Line *l = newLine();
+	l->label = reserveNextLineLabel();
+	$$ = l;
       }                 
 ;
 
 addressArc :
     adjectivePrevious ARC
       {
-	$$ = newVectorArcs();
+	VecArcs *vec = newVectorArcs();
+	vec->arcs[vec->n++] = *$2;
+	$$ = vec;
       }                 
   | adjectivePrevious ARCS
       {
-	$$ = newVectorArcs();
+	VecArcs *vec = newVectorArcs();
+	int num = getNumberOfArcs();
+	vec->arcs[vec->n++] = getArcAtPosition(num-1);
+	vec->arcs[vec->n++] = getArcAtPosition(num-2);
+	$$ = vec;
       }                   
 ;
 
@@ -2190,7 +2250,9 @@ ARCS :
 cutCommand :
   CUT cuttableAndProperties
       {
-	$$ = newCommand();
+	Command *c = newCommand();
+	c->plottables = $2;
+	$$ = c;
       }      
 ;
 
@@ -2249,7 +2311,35 @@ POINTS :
 cuttableAndProperties :
     addressLineSegment addressLength fromClause
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	LineSegment cutting = *$1;
+	LineSegment cuttingFrom = *($3->ls);
+	
+	char toPlot;
+	Point src, dest;
+	if(cutting.pA.label == cuttingFrom.pA.label){
+	  toPlot = cutting.pB.label;
+	  src = cuttingFrom.pA;
+	  dest = cuttingFrom.pB;
+	} else if(cutting.pA.label == cuttingFrom.pB.label){
+	  toPlot = cutting.pB.label;
+	  src = cuttingFrom.pB;
+	  dest = cuttingFrom.pA;
+	} else if (cutting.pB.label == cuttingFrom.pA.label){
+	  toPlot = cutting.pA.label;
+	  src = cuttingFrom.pA;
+	  dest = cuttingFrom.pB;
+	} else { //cutting.pB.label == cuttingFrom.pB.label)
+	  toPlot = cutting.pA.label;
+	  src = cuttingFrom.pB;
+	  dest = cuttingFrom.pA;
+	}
+
+	double slope = getSlope(src, dest);
+	Point res = locatePoint(src, slope, $2->length);
+
+	updatePlottablesPoint(p, res);
+	$$ = p;
       }            
   | addressLineSegment conditions
       {
@@ -2261,29 +2351,64 @@ cuttableAndProperties :
       }              
   | addressArc atPoints
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	Intersection *i = newIntersection();
+	i->a1 = $1;
+
+	Point p1 = getPointOnLabelable(i);
+	p1.label = $2->p1.label;
+	updatePlottablesPoint(p, p1);
+
+	if($2->p2 != NULL){
+	  Point p2 = getPointOnLabelable(i);
+	  p2.label = $2->p2.label;
+	  updatePlottablesPoint(p, p2);
+	}
+
+	$$ = p;
       }              
   | addressCircle atPoints
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	Intersection *i = newIntersection();
+	i->c1 = $1;
+
+	Point p1 = getPointOnLabelable(i);
+	p1.label = $2->p1.label;
+	updatePlottablesPoint(p, p1);
+
+	if($2->p2 != NULL){
+	  Point p2 = getPointOnLabelable(i);
+	  p2.label = $2->p2.label;
+	  updatePlottablesPoint(p, p2);
+	}
+
+	$$ = p;
       }              
 ;
 
 atPoints :
     AT addressPoint
       {
-	$$ = newCut();
+	Cut *c = newCut();
+	c->p1 = $2;
+	$$ = c;
       }                
   | AT addressPoint addressPoint
       {
-	$$ = newCut();
+	Cut *c = newCut();
+	c->p1 = $2;
+	c->p2 = $3;
+	$$ = c;
       }                  
 ;
 
 fromClause :
     FROM addressLineSegment
       {
-	$$ = newCut();
+	Cut *c = newCut();
+	c->ls = $2;
+	$$ = c;	
       }                    
   | FROM addressLine
       {
@@ -2298,19 +2423,26 @@ fromClause :
 addressCircle : 
     CIRCLE AT POINTSINGLET
       {
-	$$ = newCircle();
+	Circle *c = newCircle();
+	c->center.label = $3[0];
+	$$ = c;
       }                
   | CIRCLE CENTER POINTSINGLET
       {
-	$$ = newCircle();
+	Circle *c = newCircle();
+	c->center.label = $3[0];
+	$$ = c;
       }                  
   | adjectivePrevious CIRCLE
       {
-	$$ = newCircle();
+	$$ = getLastCircle();
       }                  
   | addressFreeObject
       {
-	$$ = newCircle();
+	Circle *c = newCircle();
+	c->center.label = reserveNextPointLabel();
+	c->radius = 2.0; //generate random radius here
+	$$ = c;
       }                  
 ;
 
@@ -2344,11 +2476,15 @@ previousDegree :
 operation :
     DIFFERENCE
       {
-	$$ = newOperation();
+	Operation *o = newOperation();
+	o->label = '-';
+	$$ = o;
       }                    
   | SUM
       {
-	$$ = newOperation();
+	Operation *o = newOperation();
+	o->label = '+';
+	$$ = o;
       }                  
 ;
 
@@ -2369,7 +2505,9 @@ FREEVARIABLE :
 bisectCommand :
     BISECT bisectableAndProperties
       {
-	$$ = newCommand();
+	Command *c = newCommand();
+	c->plottables = *$2;
+	$$ = c;
       }                    
 ;
 
@@ -2380,11 +2518,17 @@ BISECT :
 bisectableAndProperties :
     addressLineSegment
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	Point md = getMidPoint($1->pA, $1->pB);
+	updatePlottablesPoint(p, md);
+	$$ = p;
       }                    
   | addressAngle
       {
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	LineSegment ls = getAngleBisector(*$1);
+	updatePlottables(p, ls);
+	$$ = p;
       }                      
   | addressIndefinitePreviousObjects
       {

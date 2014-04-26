@@ -13,6 +13,12 @@ Object* newObject() {
   return (Object*)malloc(sizeof(Object));
 }
 
+Location* newLocation(){
+  Location *l = (Location*)malloc(sizeof(Location));
+  memset(l, 0, sizeof(Location));
+  return l;
+}
+
 Bisector* newBisector() {
   return (Bisector*)malloc(sizeof(Bisector));
 }
@@ -30,7 +36,9 @@ Perpendicularization* newPerpendicularization() {
 }
 
 Cut* newCut() {
-  return (Cut*)malloc(sizeof(Cut));
+  Cut *c = (Cut*)malloc(sizeof(Cut));
+  memset(c, 0, sizeof(Cut));
+  return c;
 }
 
 Point getCircleIntersectionPoint(Circle a, Circle b, bool above){
@@ -366,4 +374,12 @@ Point getArcIntersectableIntersection(Arc a, Intersection i, bool above) {
   Intersection i2;
   i2.a1 = &a;
   return getIntersectableIntersectableIntersection(i2, i, above);
+}
+
+char nextAvailableLineLabel = 'a';
+
+char reserveNextLineLabel(){
+  char label = nextAvailableLineLabel;
+  nextAvailableLineLabel++;
+  return label;
 }
