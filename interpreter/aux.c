@@ -207,6 +207,10 @@ double getSlope(Point a, Point b){
   return slope;
 }
 
+double getSlopeLs(LineSegment ls) {
+  return getSlope(ls.pA, ls.pB);
+}
+
 Point getMidPoint(Point a, Point b){
   Point c;
   c.x = (a.x + b.x) * 0.5;
@@ -256,7 +260,7 @@ LineSegment getAngleBisector(Angle a){
 
 LineSegment getPerpendicularPassingThrough(LineSegment ls, Point passingThrough){
   
-  double slope = getSlope(ls);
+  double slope = getSlopeLs(ls);
   double pslope = slope + 90.0;
   double c = 0.0; //y = mx + c
 
@@ -286,7 +290,7 @@ LineSegment getPerpendicularPassingThrough(LineSegment ls, Point passingThrough)
 
 LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough){
   
-  double slope = getSlope(ls);
+  double slope = getSlopeLs(ls);
   double pslope = slope;
   double c = 0.0; //y = mx + c
 
@@ -310,7 +314,7 @@ LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough){
 
 LineSegment getPerpendicularAt(LineSegment ls, Point at){
   
-  double slope = getSlope(ls);
+  double slope = getSlopeLs(ls);
   double pslope = slope + 90.0;
   double c = 0.0; //y = mx + c
 
@@ -382,4 +386,66 @@ char reserveNextLineLabel(){
   char label = nextAvailableLineLabel;
   nextAvailableLineLabel++;
   return label;
+}
+
+Point getPointOnLabelable(Intersection i, Location *l) {
+  int n = getIntersectableObject(i);
+  if(n==1) {
+    if(l==NULL) {
+      Point P;
+      P.x = 0.5 * (i.ls1->pA.x + i.ls1->pB.x);
+      P.y = 0.5 * (i.ls1->pA.y + i.ls1->pB.y);
+      return P;
+    } else {
+      Circle c;
+      c.center = l->fromPoint;
+      c.radius = l->distance;
+      return getLsCircleIntersection(*i.ls1, c, true);
+    }
+  } else if(n==3) {
+    Point P;
+    P.x = i.a1->center.x + i.a1->radius * cos(60);
+    P.y = i.a1->center.y + i.a1->radius * sin(60);
+    return P;
+  } else if(n==4) {
+    Point P;
+    P.x = i.c1->center.x + i.c1->radius * cos(60);
+    P.y = i.c1->center.y + i.c1->radius * sin(60);
+    return P;
+  }
+  Point P = *newPoint();
+  return P;
+}
+
+Point getPointNotOnLabelable(Intersection i, Location *l) {
+  int n = getIntersectableObject(i);
+  if(n==1) {
+    if(l==NULL) {
+      double slope = getSlopeLs(*i.ls1);
+      Point P;
+      if(slope == 90.0) {
+	P.x = i.ls1->pA.x + DEFAULT_LINE_SEGMENT_LENGTH;
+	P.y = i.ls1->pA.y;
+      } else if(slope == 0.0) {
+	P.x = i.ls1->pA.x;
+	P.y = i.ls1->pA.y + DEFAULT_LINE_SEGMENT_LENGTH;
+      } else {
+	P.x = i.ls1->pA.x + (slope+1)*DEFAULT_LINE_SEGMENT_LENGTH*0.5;
+	P.y = i.ls1->pA.y + DEFAULT_LINE_SEGMENT_LENGTH;
+      }
+      return P;
+    }
+  } else if(n==3) {
+    Point P;
+    P.x = i.a1->center.x + (i.a1->radius+1) * cos(60);
+    P.y = i.a1->center.y + (i.a1->radius+1) * sin(60);
+    return P;
+  } else if(n==4) {
+    Point P;
+    P.x = i.c1->center.x + (i.c1->radius+1) * cos(60);
+    P.y = i.c1->center.y + (i.c1->radius+1) * sin(60);
+    return P;
+  }
+  Point P = *newPoint();
+  return P;
 }
