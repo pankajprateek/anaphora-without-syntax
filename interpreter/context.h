@@ -35,6 +35,8 @@ void updateContext(Plottables p);
 void writeDiff(Plottables p);
 void writeContext();
 bool existsPoint(Point p);
+bool existsCircle(Circle c);
+bool existsArc(Arc a);
 bool existsPointLabel(char label);
 bool existsLineSegment(char pointpair[]);
 bool existsLineSegmentLabel(char point1Label, char point2Label);
