@@ -634,27 +634,22 @@ addressLineSegment :
       }
   | POINTPAIR
       {
-        LineSegment* ls;
+        LineSegment *ls = newLineSegment();
 	char lineSeg[2];
 	lineSeg[0] = yylval.sval[0];
 	lineSeg[1] = yylval.sval[1];
         if(existsLineSegment(lineSeg)){
           *ls = getLineSegment(lineSeg);
         } else {
-          ls = newLineSegment();
 	  ls->pA.label = lineSeg[0];
 	  ls->pB.label = lineSeg[1];
 	  bool existA=false, existB=false;
 	  if(existsPoint(ls->pA)) {
-	    Point X = getPoint(ls->pA.label);
-	    ls->pA.x = X.x;
-	    ls->pA.y = X.y;
+	    ls->pA = getPoint(ls->pA.label);
 	    existA = true;
 	  } 
 	  if(existsPoint(ls->pB)) {
-	    Point X = getPoint(ls->pB.label);
-	    ls->pB.x = X.x;
-	    ls->pB.y = X.y;
+	    ls->pB = getPoint(ls->pB.label);
 	    existB = true;
 	  }
 	  //FIXME: Add Point Coordinates when points do not exist
