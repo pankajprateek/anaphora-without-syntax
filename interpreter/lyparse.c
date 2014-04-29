@@ -65,7 +65,7 @@ void updatePlottablesLineSegment(Plottables* p, LineSegment ls){
 void updatePlottablesArc(Plottables* p, Arc a){
   p->points[p->ip++] = a.center;
   p->lengths[p->ilg++].length = a.radius;
-  //TODO
+  p->arcs[p->ia++] = a;
 }
 
 void updatePlottablesLine(Plottables* p, Line l){

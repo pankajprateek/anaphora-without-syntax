@@ -94,6 +94,7 @@ constructibleAndProperties =
     lineSegmentAndProperties
   | lineAndProperties
   | arcAndProperties
+  | arcsAndProperties
   | circleAndProperties
   | angleAndProperties
   | rayAndProperties
@@ -193,12 +194,20 @@ lineAndProperties =
 arcAndProperties =
   ARC arcProperties
 
+arcsAndProperties =
+  ARCS arcsProperties
+
 ARC =
     'arc'
 
-arcProperties =
+ARCS =
+    'arcs'
+
+arcsProperties =
     centersClause radiiClause mutualIntersectionClause
-  | centerClause radiusClause intersectionClause
+
+arcProperties =
+    centerClause radiusClause intersectionClause
   | centerClause radiusClause
 
 passingThroughClause =
@@ -582,9 +591,6 @@ objects =
 
 BISECTOR =
     'bisector'
-
-ARCS =
-    'arcs'
 
 cutCommand =
   CUT cuttableAndProperties

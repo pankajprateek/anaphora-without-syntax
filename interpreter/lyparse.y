@@ -7,7 +7,7 @@
 #include "./context.h"
 #define true 1
 #define false 0
-#define PDEBUG 0
+#define PDEBUG 1
   
   int yyerror(char* s){
     printf("ERROR: %s\n", s);
@@ -71,7 +71,7 @@
 %type <operation> operation
 %type <command> command constructCommand markCommand cutCommand joinCommand divideCommand bisectCommand
 
-%type <plottables> constructibleAndProperties lineSegmentAndProperties lineAndProperties arcAndProperties circleAndProperties angleAndProperties rayAndProperties perpendicularBisectorAndProperties bisectorAndProperties perpendicularAndProperties parallelAndProperties genericAngleAndProperties rightAngleAndProperties bisectableAndProperties cuttableAndProperties angleArmPointsAndProperties markableAndProperties divisibleAndProperties chordAndProperties arcProperties pointAndProperties intersectionPointsAndProperties
+%type <plottables> constructibleAndProperties lineSegmentAndProperties lineAndProperties arcAndProperties circleAndProperties angleAndProperties rayAndProperties perpendicularBisectorAndProperties bisectorAndProperties perpendicularAndProperties parallelAndProperties genericAngleAndProperties rightAngleAndProperties bisectableAndProperties cuttableAndProperties angleArmPointsAndProperties markableAndProperties divisibleAndProperties chordAndProperties arcProperties pointAndProperties intersectionPointsAndProperties arcsProperties arcsAndProperties
 
 %type <lineSegment> addressLineSegment divisibleObject addressChord
 
@@ -469,6 +469,7 @@ constructibleAndProperties :
     lineSegmentAndProperties  { $$ = $1;  }
   | lineAndProperties         { $$ = $1;  }
   | arcAndProperties          { $$ = $1;  }
+  | arcsAndProperties         { $$ = $1;  }
   | circleAndProperties       { $$ = $1;  }
   | angleAndProperties        { $$ = $1;  }
   | rayAndProperties          { $$ = $1;  }
@@ -1076,6 +1077,49 @@ lineAndProperties :
       }      
 ;
 
+arcsAndProperties :
+  ARCS arcsProperties
+    {
+      $$ = $2;
+    }
+;
+
+ARCS :
+    ARCS_T
+;
+
+arcsProperties :
+    centersClause radiiClause mutualIntersectionClause
+      {
+	Plottables *p = newPlottables();
+	Arc a,b;
+	
+	a.center = $1->points[0];
+	a.radius = $2->lengths[0].length;
+
+	updatePlottablesArc(p, a);
+  printf("%lf %lf\n", a.center.x, a.center.y);
+	b.center = $1->points[1];
+	b.radius = $2->lengths[1].length;
+  printf("%lf %lf\n", b.center.x, b.center.y);
+	updatePlottablesArc(p, b);
+
+	Point pA = getArcArcIntersection(a,b,true);
+  printf("%lf %lf\n", pA.x, pA.y);
+	pA.label = $3->points[0].label;
+	updatePlottablesPoint(p, pA);
+	if($3->n >= 2){
+	  //if both the intersection points are to be marked
+	  Point pB = getArcArcIntersection(a,b,false);
+	  pB.label = $3->points[1].label;
+	  updatePlottablesPoint(p, pB);
+	}
+
+	$$ = p;
+      }
+;
+
+
 arcAndProperties :
   ARC arcProperties
       {
@@ -1089,35 +1133,7 @@ ARC :
 ;
 
 arcProperties :
-    centersClause radiiClause mutualIntersectionClause
-      {
-	Plottables *p = newPlottables();
-	Arc a,b;
-	
-	a.center = $1->points[0];
-	a.radius = $2->lengths[0].length;
-
-	updatePlottablesArc(p, a);
-
-	b.center = $1->points[1];
-	b.radius = $2->lengths[1].length;
-
-	updatePlottablesArc(p, b);
-
-	Point pA = getArcArcIntersection(a,b,true);
-
-	pA.label = $3->points[0].label;
-	updatePlottablesPoint(p, pA);
-	if($3->n >= 2){
-	  //if both the intersection points are to be marked
-	  Point pB = getArcArcIntersection(a,b,false);
-	  pB.label = $3->points[1].label;
-	  updatePlottablesPoint(p, pB);
-	}
-
-	$$ = p;
-      }
-  | centerClause radiusClause intersectionClause
+    centerClause radiusClause intersectionClause
       {
 	Plottables *p = newPlottables();
 	Arc a;
@@ -1247,7 +1263,7 @@ centersClause :
 	}
 
 	vec->points[vec->n++]= a;
-	vec->points[vec->n++]= a;
+	vec->points[vec->n++]= b;
         $$ = vec;
       }        
 ;

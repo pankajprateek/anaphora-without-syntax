@@ -64,6 +64,9 @@ string getInterpretation(string parse){
       file<<"Parse Successful. PreOrder Traversal:"<<endl<<preOrder<<endl;
       file.close();
     }
+    ofstream file("preOrder.txt", ios::out);
+    file<<parseTree.preOrder()<<endl;
+    file.close();
     
     //return action->toString();
     if(DEBUG) cout<<"HERE"<<endl;

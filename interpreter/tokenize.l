@@ -21,7 +21,7 @@ char *strdump(char* str) {
 
 %}
 		
-KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|difference|and|center|any|radius|arc|intersecting|at|two|points|centers|greater|than|arcs|cutting|eachother|join|same|point|on|other|side|draw|mark|it|not|circle|half|its|intersection|previous|bisector|divide|into|parts|diameter|angle|vertex|arm|their|rays|origin|passing|through|measure|degrees|right|bisect|perpendicular|to|chord|bisectors|chords|these|outside|parallel|distance|triangle|equilateral|isosceles|equal|sides|between|them|angled|degree|hypotenuse|firstLeg|ray|sum|base|along|quadrilateral|square|as|making|each|of|angles
+KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|difference|and|center|any|radius|arc|intersecting|at|two|points|centers|greater|than|arcs|cutting|eachother|join|same|point|on|other|side|draw|mark|it|not|circle|half|its|intersection|previous|bisector|divide|into|parts|diameter|angle|vertex|arm|their|rays|origin|passing|through|measure|degrees|right|bisect|perpendicular|to|chord|bisectors|chords|these|outside|parallel|distance|triangle|equilateral|isosceles|equal|sides|between|them|angled|degree|hypotenuse|firstLeg|ray|sum|base|along|quadrilateral|square|as|making|each|of|angles|arcs
  
 
 %%
@@ -43,6 +43,7 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
 "any" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ANY_T;}
 "radius" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return RADIUS_T;}
 "arc" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ARC_T;}
+"arcs" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ARCS_T;}
 "intersecting" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return INTERSECTING_T;}
 "at" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return AT_T;}
 "two" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return TWO_T;}

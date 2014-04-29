@@ -44,6 +44,7 @@ Point getArcIntersectionPoint(Arc a, Arc b, bool above){
 }
 
 Point _getArcIntersectionPoint(Point p0, double r0, Point p1, double r1, bool above){
+  printf("Point values %lf %lf %lf %lf %lf %lf", p0.x, p0.y, r0, p1.x, p1.y, r1);
   float x = p1.x - p0.x, y = p1.y - p0.y;
   float d = sqrt(x*x+y*y);
   float a = (float)(r0*r0 - r1*r1 + d*d) / (float)(2*d);
