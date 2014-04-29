@@ -2,7 +2,7 @@
 
 #include<assert.h>
 #include<stdio.h>
-#include "lyparse.h"
+#include "lylib.h"
 #include "aux.h"
 #define contextFilename "./context.txt"
 #define diffFilename "./diff.txt"

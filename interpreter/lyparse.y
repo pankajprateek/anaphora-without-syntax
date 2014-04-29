@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "./aux.h"
-#include "./lyparse.h"
+#include "./lylib.h"
 #include "./context.h"
 #define true 1
 #define false 0
