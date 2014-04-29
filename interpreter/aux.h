@@ -1,6 +1,6 @@
 #pragma once
 
-#include "lyparse.h"
+#include "lylib.h"
 #define DEFAULT_ANGLE_ARM_LENGTH 4
 #define DEGREES_TO_RADIANS ((2.0 * 3.14) / 360.0)
 #define RADIANS_TO_DEGREES (360.0 / (2 * 3.14))
