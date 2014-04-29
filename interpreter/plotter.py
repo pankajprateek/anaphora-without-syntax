@@ -75,6 +75,7 @@ class App:
         self.contextAngles.clear()
         self.contextArcs.clear()
         self.contextCircles.clear()
+        sys_exec("rm -f context.txt history.txt && touch context.txt && touch history.txt")
 
     def submit_token(self):
         strg = self.entry.get() + '\n'

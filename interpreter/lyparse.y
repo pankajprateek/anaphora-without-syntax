@@ -444,12 +444,12 @@ LESSTHAN :
 ;
 
 command :
-    constructCommand  { $$ = $1; executeCommand(*$1); printContext();}
-  | markCommand       { $$ = $1; executeCommand(*$1); printContext();}
-  | cutCommand        { $$ = $1; executeCommand(*$1); printContext();}
-  | joinCommand       { $$ = $1; executeCommand(*$1); printContext();}
-  | divideCommand     { $$ = $1; executeCommand(*$1); printContext();}
-  | bisectCommand     { $$ = $1; executeCommand(*$1); printContext();}
+    constructCommand  { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
+  | markCommand       { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
+  | cutCommand        { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
+  | joinCommand       { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
+  | divideCommand     { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
+  | bisectCommand     { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
 ;
 
 constructCommand : 
@@ -1792,7 +1792,9 @@ intersectionPointsAndProperties :
       {
 	Plottables *p = newPlottables();
 	Point p1 = getIntersectableIntersectableIntersection(*$2, *$3, true);
+	p1.label = $4->label;
 	Point p2 = getIntersectableIntersectableIntersection(*$2, *$3, false);
+	p2.label = $5->label;
 	updatePlottablesPoint(p, p1);
 	updatePlottablesPoint(p, p2);
 	$$ = p;
@@ -1801,6 +1803,7 @@ intersectionPointsAndProperties :
       {
 	Plottables *p = newPlottables();
 	Point p1 = getIntersectableIntersectableIntersection(*$2, *$3, true);
+	p1.label = $4->label;
 	updatePlottablesPoint(p, p1);
 	$$ = p;
       }              
@@ -1816,6 +1819,7 @@ intersectionPointsAndProperties :
 	Intersection *l = getIntersectionFromPlottables(last),
 	  *sl = getIntersectionFromPlottables(secondLast);
 	Point p1 = getIntersectableIntersectableIntersection(*l,*sl, true);
+	p1.label = $3->label;
 	updatePlottablesPoint(p, p1);
 	$$ = p;
       }              
@@ -2700,9 +2704,10 @@ REAL :
 %%
 int main()
 {
-  printContext();
   readContext();
   printContext();
+  readHistory();
+  printHistory();
   if(PDEBUG){
     printf("main()");
   }

@@ -2,10 +2,11 @@
 #include "context.h"
 #include "aux.h"
 #include "history.h"
+#include "functions.h"
 #include<assert.h>
 
 Plottables pastObjects[MAX_OBJECT_SIZE];
-int pastObjectsCount = 0;
+int pastObjectsCount;
 
 void updateObjects(Plottables p) {
   pastObjects[pastObjectsCount++] = p;
@@ -78,7 +79,7 @@ bool isObjectPoint(Plottables p) {
 
 Plottables getIntersectableObjectBeforePosition(int n) {
   int i;
-  for(i=n;i>=0;i--) {
+  for(i=n-1;i>=0;i--) {
     Plottables object = getObjectAtPosition(i);
     if(isIntersectable(object))
        return object;
@@ -110,7 +111,7 @@ bool isBisectable(Plottables p) {
 
 Plottables getPerpendicularBisectableObjectBeforePosition(int n) {
   int i;
-  for(i=n;i>=0;i--) {
+  for(i=n-1;i>=0;i--) {
     Plottables object = getObjectAtPosition(i);
     if(isPerpendicularBisectable(object))
        return object;
@@ -121,7 +122,7 @@ Plottables getPerpendicularBisectableObjectBeforePosition(int n) {
 
 Plottables getBisectableObjectBeforePosition(int n) {
   int i;
-  for(i=n;i>=0;i--) {
+  for(i=n-1;i>=0;i--) {
     Plottables object = getObjectAtPosition(i);
     if(isBisectable(object))
        return object;
@@ -143,47 +144,173 @@ Plottables getLastBisectableObject() {
 }
 
 Plottables getLastIntersectableObject() {
-  return getIntersectableObjectBeforePosition(pastObjectsCount-1);
+  return getIntersectableObjectBeforePosition(pastObjectsCount);
 }
 
 void printPlottableToFile(Plottables p) {
-  FILE *f = fopen("history.txt", "w");
   int i;
-  fprintf(f,"Points: ");
-  for(i=0;i<p.ip;i++) {
-    fprintf(f, "%c(%lf,%lf) ", p.points[i].label, p.points[i].x, p.points[i].y);
+  FILE* f = fopen("history.txt", "a");
+  fprintf(f, "~POINTS\n");
+  int l = p.ip;
+  for(i=0;i<l;i++) {
+    fprintf(f, "%c %lf %lf\n", p.points[i].label, p.points[i].x, p.points[i].y);
   }
-  fprintf(f, "\n");
-  fprintf(f, "LineSegments: ");
-  for(i=0;i<p.ils;i++) {
-    fprintf(f, "%c%c ", p.lineSegments[i].pA.label, p.lineSegments[i].pB.label);
+  fprintf(f, "~LINESEGMENTS\n");
+  l = p.ils;
+  for(i=0;i<l;i++) {
+    fprintf(f, "%c %c\n", p.lineSegments[i].pA.label, p.lineSegments[i].pB.label);
   }
-  fprintf(f, "\n");
-  fprintf(f, "Angles: ");
-  for(i=0;i<p.ian;i++) {
-    fprintf(f, "%c%c%c(%lf) ", p.angles[i].leftVertex.label, p.angles[i].vertex.label, p.angles[i].rightVertex.label, p.angles[i].degree);
+  fprintf(f, "~LINES\n");
+  l = p.iln;
+  for(i=0;i<l;i++) {
+    fprintf(f, "%c\n", p.lines[i].label);
   }
-  fprintf(f, "\n");
-  fprintf(f, "Arcs: ");
-  for(i=0;i<p.ia;i++) {
-    fprintf(f, "%c(%lf) ", p.arcs[i].center.label, p.arcs[i].radius);
+  fprintf(f, "~ARCS\n");
+  l = p.ia;
+  for(i=0;i<l;i++) {
+    fprintf(f, "%c %lf\n", p.arcs[i].center.label, p.arcs[i].radius);
   }
-  fprintf(f, "\n");
-  fprintf(f, "Lines: ");
-  for(i=0;i<p.iln;i++) {
-    fprintf(f, "%c ", p.lines[i].label);
+  fprintf(f, "~ANGLE\n");
+  l = p.ian;
+  for(i=0;i<l;i++) {
+    fprintf(f, "%c %c %c %lf\n", p.angles[i].vertex.label, p.angles[i].leftVertex.label, p.angles[i].rightVertex.label, p.angles[i].degree);
   }
-  fprintf(f, "\n");
-  fprintf(f, "Circles: ");
-  for(i=0;i<p.ia;i++) {
-    fprintf(f, "%c(%lf) ", p.circles[i].center.label, p.circles[i].radius);
+  fprintf(f, "~CIRCLE\n");
+  l = p.ic;
+  for(i=0;i<l;i++) {
+    fprintf(f, "%c %lf\n", p.circles[i].center.label, p.circles[i].radius);
   }
-  fprintf(f, "\n");
+  fprintf(f, "~PLOTTABLE END\n");
+  fclose(f);
 }
 
-void writeObject() {
+bool isEmptyPlottable(Plottables p) {
+  if(p.ip == 0 && p.ia == 0 && p.ic == 0 && p.ils == 0 && p.iln == 0 && p.ian == 0)
+    return true;
+  else
+    return false;
+}
+
+void writeHistory() {
+  FILE *fp = fopen("history.txt", "w");
+  fclose(fp);
   int i;
   for(i=0;i<pastObjectsCount;i++) {
-    printPlottableToFile(pastObjects[i]);
+    if(!isEmptyPlottable(pastObjects[i]))
+      printPlottableToFile(pastObjects[i]);
   }
+}
+
+bool isEmptyFile(FILE *file) {
+  long savedOffset = ftell(file);
+  fseek(file, 0, SEEK_END);
+  
+  if (ftell(file) == 0) {
+    return true;
+  }
+  
+  fseek(file, savedOffset, SEEK_SET);
+  return false;
+}
+
+void readHistory() {
+  //read the context file here
+  pastObjectsCount = 0;
+  char *line;
+  size_t len = 0;
+  ssize_t read = 0;
+  FILE *f = fopen("history.txt", "r");
+  if(f) {
+    while(!feof(f)) {
+      getline(&line, &len, f);
+      while((read = getline(&line, &len, f)) != -1) {
+	if(strcmp(line, "~LINESEGMENTS\n") == 0)
+	  break;
+	//parse and update point
+	SplitString vec_line = split(line, ' ');
+	pastObjects[pastObjectsCount].points[pastObjects[pastObjectsCount].ip].label = vec_line.array[0][0];
+	pastObjects[pastObjectsCount].points[pastObjects[pastObjectsCount].ip].x = stod(vec_line.array[1]);
+	pastObjects[pastObjectsCount].points[pastObjects[pastObjectsCount].ip].y = stod(vec_line.array[2]);
+	pastObjects[pastObjectsCount].ip++;
+      }
+      while((read = getline(&line, &len, f)) != -1) {
+	if(strcmp(line, "~LINES\n") == 0)
+	  break;
+	//parse and update linesegments
+	Point P1 = getPoint(line[0]);
+	pastObjects[pastObjectsCount].lineSegments[pastObjects[pastObjectsCount].ils].pA.label = P1.label;
+	pastObjects[pastObjectsCount].lineSegments[pastObjects[pastObjectsCount].ils].pA.x = P1.x;
+	pastObjects[pastObjectsCount].lineSegments[pastObjects[pastObjectsCount].ils].pA.y = P1.y;
+	Point P2 = getPoint(line[2]);
+	pastObjects[pastObjectsCount].lineSegments[pastObjects[pastObjectsCount].ils].pB.label = P2.label;
+	pastObjects[pastObjectsCount].lineSegments[pastObjects[pastObjectsCount].ils].pB.x = P2.x;
+	pastObjects[pastObjectsCount].lineSegments[pastObjects[pastObjectsCount].ils].pB.y = P2.y;
+	pastObjects[pastObjectsCount].lineSegments[pastObjects[pastObjectsCount].ils].length = getLsLength(pastObjects[pastObjectsCount].lineSegments[pastObjects[pastObjectsCount].ils]);
+	pastObjects[pastObjectsCount].ils++;
+      }
+      while((read = getline(&line, &len, f)) != -1) {
+	if(strcmp(line, "~ARCS\n") == 0)
+	  break;
+	//parse and update lines
+	pastObjects[pastObjectsCount].lines[pastObjects[pastObjectsCount].iln].label = line[0];
+	pastObjects[pastObjectsCount].iln++;
+      }
+      while((read = getline(&line, &len, f)) != -1) {
+	if(strcmp(line, "~ANGLE\n") == 0)
+	  break;
+	//parse and update arcs
+	SplitString vec_line = split(line, ' ');
+	Point P1 = getPoint(vec_line.array[0][0]);
+	pastObjects[pastObjectsCount].arcs[pastObjects[pastObjectsCount].ia].center.label = P1.label;
+	pastObjects[pastObjectsCount].arcs[pastObjects[pastObjectsCount].ia].center.x = P1.x;
+	pastObjects[pastObjectsCount].arcs[pastObjects[pastObjectsCount].ia].center.y = P1.y;
+	pastObjects[pastObjectsCount].arcs[pastObjects[pastObjectsCount].ia].radius = stod(vec_line.array[1]);
+	pastObjects[pastObjectsCount].ia++;
+      }
+      while((read = getline(&line, &len, f)) != -1) {
+	if(strcmp(line, "~CIRCLE\n") == 0)
+	  break;
+	//parse and update angles
+	SplitString vec_line = split(line, ' ');
+	Point P1 = getPoint(vec_line.array[0][0]);
+	pastObjects[pastObjectsCount].angles[pastObjects[pastObjectsCount].ian].vertex.label = P1.label;
+	pastObjects[pastObjectsCount].angles[pastObjects[pastObjectsCount].ian].vertex.x = P1.x;
+	pastObjects[pastObjectsCount].angles[pastObjects[pastObjectsCount].ian].vertex.y = P1.y;
+	Point P2 = getPoint(vec_line.array[1][0]);
+	pastObjects[pastObjectsCount].angles[pastObjects[pastObjectsCount].ian].leftVertex.label = P2.label;
+	pastObjects[pastObjectsCount].angles[pastObjects[pastObjectsCount].ian].leftVertex.x = P2.x;
+	pastObjects[pastObjectsCount].angles[pastObjects[pastObjectsCount].ian].leftVertex.y = P2.y;
+	Point P3 = getPoint(vec_line.array[2][0]);
+	pastObjects[pastObjectsCount].angles[pastObjects[pastObjectsCount].ian].rightVertex.label = P3.label;
+	pastObjects[pastObjectsCount].angles[pastObjects[pastObjectsCount].ian].rightVertex.x = P3.x;
+	pastObjects[pastObjectsCount].angles[pastObjects[pastObjectsCount].ian].rightVertex.y = P3.y;
+	pastObjects[pastObjectsCount].angles[pastObjects[pastObjectsCount].ian].degree = stod(vec_line.array[3]);
+	pastObjects[pastObjectsCount].ian++;
+      }
+      while((read = getline(&line, &len, f)) != -1) {
+	if(strcmp(line, "~PLOTTABLE END\n") == 0)
+	  break;
+	//parse and update circles
+	SplitString vec_line = split(line, ' ');
+	Point P1 = getPoint(vec_line.array[0][0]);
+	pastObjects[pastObjectsCount].circles[pastObjects[pastObjectsCount].ic].center.label = P1.label;
+	pastObjects[pastObjectsCount].circles[pastObjects[pastObjectsCount].ic].center.x = P1.x;
+	pastObjects[pastObjectsCount].circles[pastObjects[pastObjectsCount].ic].center.y = P1.y;
+	pastObjects[pastObjectsCount].circles[pastObjects[pastObjectsCount].ic].radius = stod(vec_line.array[1]);
+	pastObjects[pastObjectsCount].ic++;
+      }
+      if(!isEmptyPlottable(pastObjects[pastObjectsCount]))
+	pastObjectsCount++;
+    }
+  }
+  fclose(f);
+}
+
+void printHistory() {
+  int i;
+  printf("----------History Begin---------\n");
+  for(i=0;i<pastObjectsCount;i++) {
+    printPlottable(pastObjects[i]);
+  }
+  printf("----------History End---------\n");
 }

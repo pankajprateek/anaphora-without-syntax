@@ -2,6 +2,7 @@
 #include "aux.h"
 #include "context.h"
 #include "history.h"
+#include "functions.h"
 #include <stdlib.h>
 #include <math.h>
 #define false 0
@@ -49,101 +50,24 @@ void executeCommand(Command command){
   updateObjects(command.plottables);
   updateContext(command.plottables);
   writeContext();
-}
-
-double stod(char str[]) {
-  int length = 0;
-  int i = 0;
-  while(str[i] != '\0') {
-    i++;
-    length++;
-  }
-  bool decimal = false;
-  double n = 0;
-  double power = 1;
-  if(str[0] == '-')
-    i=1;
-  else
-    i=0;
-  for(;i<length;i++) {
-    if(str[i] == '.') {
-      decimal = true;
-      power = 10;
-      continue;
-    }
-    if(decimal) {
-      n = n + (str[i] - '0')/power;
-      power = power*10;
-    } else {
-      n = n*10 + (str[i] - '0');
-    }
-  }
-  if(str[0] == '-')
-    n*=(-1);
-  return n;
-}
-
-typedef struct _SplitString {
-  char array[10][50];
-  int length;
-} SplitString;
-
-SplitString split(char str[], char delim) {
-  int length = 0;
-  int i=0;
-  while(str[i] != '\0') {
-    i++;
-    length++;
-  }
-  SplitString splitstr;
-  splitstr.length = 0;
-  int runcount = 0;
-  for(i=0;i<length;i++) {
-    if(str[i] == ' ') {
-      int j;
-      for(j=runcount;j<i;j++) {
-	splitstr.array[splitstr.length][j-runcount] = str[j];
-      }
-      splitstr.array[splitstr.length][j-runcount] = '\0';
-      runcount = i+1;
-      splitstr.length++;
-    }
-  }
-
-  int j;
-  for(j=runcount;j<i-1;j++) {
-    splitstr.array[splitstr.length][j-runcount] = str[j];
-  }
-  splitstr.array[splitstr.length][j-runcount] = '\0';
-  runcount = i+1;
-  splitstr.length++;
-
-  return splitstr;
-}
-
-bool stringCompare(char a[], char b[]) {
-  int i=0;
-  while(a[i] != '\0' && b[i] != '\0') {
-    if(a[i]!=b[i])
-      return 0;
-  }
-  if(a[i] != '\0' && b[i]=='\0')
-    return 0;
-  if(a[i] == '\0' && b[i]!='\0')
-    return 0;
-  return 1;
+  printf("Writing History\n");
+  writeHistory();
 }
 		  
 void readContext(){
+  context.ip = context.ils = context.iln = context.ia = context.ic = context.ian = 0;
   //read the context file here
   char *line;
   size_t len = 0;
   ssize_t read = 0;
   FILE *f = fopen(contextFilename, "r");
   if(f) {
+    if(feof(f)){
+      return;
+    }
     getline(&line, &len, f);
     while((read = getline(&line, &len, f)) != -1) {
-      if(strcmp(line, "~LINESEGMENTS") == 1)
+      if(strcmp(line, "~LINESEGMENTS\n") == 0)
 	break;
       //parse and update point
       SplitString vec_line = split(line, ' ');
@@ -153,7 +77,7 @@ void readContext(){
       context.ip++;
     }
     while((read = getline(&line, &len, f)) != -1) {
-      if(strcmp(line, "~LINES") == 1)
+      if(strcmp(line, "~LINES\n") == 0)
 	break;
       //parse and update linesegments
       Point P1 = getPoint(line[0]);
@@ -168,14 +92,14 @@ void readContext(){
       context.ils++;
     }
     while((read = getline(&line, &len, f)) != -1) {
-      if(strcmp(line, "~ARCS") == 1)
+      if(strcmp(line, "~ARCS\n") == 0)
 	break;
       //parse and update lines
       context.lines[context.iln].label = line[0];
       context.iln++;
     }
     while((read = getline(&line, &len, f)) != -1) {
-      if(strcmp(line, "~ANGLE") == 1)
+      if(strcmp(line, "~ANGLE\n") == 0)
 	break;
       //parse and update arcs
       SplitString vec_line = split(line, ' ');
@@ -187,7 +111,7 @@ void readContext(){
       context.ia++;
     }
     while((read = getline(&line, &len, f)) != -1) {
-      if(strcmp(line, "~CIRCLE") == 1)
+      if(strcmp(line, "~CIRCLE\n") == 0)
 	break;
       //parse and update angles
       SplitString vec_line = split(line, ' ');
@@ -645,7 +569,7 @@ void printPlottable(Plottables p) {
   }
   printf("\n");
   printf("Circles: ");
-  for(i=0;i<p.ia;i++) {
+  for(i=0;i<p.ic;i++) {
     printf("%c(%lf) ", p.circles[i].center.label, p.circles[i].radius);
   }
   printf("\n");

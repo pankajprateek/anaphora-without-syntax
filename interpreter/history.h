@@ -25,4 +25,6 @@ Plottables getLastPerpendicularBisectableObject();
 Plottables getLastBisectableObject();
 Plottables getLastIntersectableObject();
 void printPlottableToFile(Plottables p);
-void writeObject();
+void writeHistory();
+void readHistory();
+void printHistory();
