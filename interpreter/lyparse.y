@@ -15,7 +15,7 @@
   }
   int yyparse(void);
   int yylex(void);
-  int yydebug = 0;
+  int yydebug = 1;
 
   double epsilon = 1.0;
 

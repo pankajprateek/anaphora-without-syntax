@@ -100,7 +100,7 @@ class App:
             sys_exec("./lyparser.out < preOrder.txt")
             self.readContext()
             self.readDiff()
-            self.updateContext()
+            #self.updateContext()
             self.draw()
             self.text.insert(END, strg)
             self.entry.delete(0,END)
@@ -126,7 +126,6 @@ class App:
             temp = a[i].split()
             if temp[0] not in self.contextPoints.keys():
                 self.contextPoints[temp[0]] = [float(temp[1]), float(temp[2])]
-                print temp[0], temp[1], temp[2]
             elif self.contextPoints[temp[0]] != [float(temp[1]), float(temp[2])]:
                 print "Error"
             i+=1
@@ -140,14 +139,12 @@ class App:
                 print "Error"
             if temp not in self.contextLS:
                 self.contextLS.append(temp)
-                print temp
             i+=1
         i+=1
         while a[i][:len(a[i])-1] != "~ARCS":
             temp = a[i][:len(a[i])-1]
             if temp not in self.contextLines:
                 self.contextLines.append(temp)
-                print temp[0]
             i+=1
         i+=1
         while a[i][:len(a[i])-1] != "~ANGLE":
@@ -155,7 +152,6 @@ class App:
             if temp[0] not in self.contextPoints.keys():
                 print "Error"
             self.contextArcs[temp[0]] = float(temp[1])
-            print temp[0], temp[1]
             i+=1
         i+=1
         while a[i][:len(a[i])-1] != "~CIRCLE":
@@ -176,7 +172,6 @@ class App:
             elif temp2 in self.contextAngles.keys():
                 if self.contextAngles[temp2] != float(temp[3]):
                     print "Error"
-            print temp1, temp[3]
             i+=1
         i+=1
         while i<len(a):
@@ -184,14 +179,7 @@ class App:
             if temp[0] not in self.contextPoints.keys():
                 print "Error"
             self.contextCircles[temp[0]] = float(temp[1])
-            print temp[0], temp[1]
             i+=1
-        print self.contextPoints
-        print self.contextLS
-        print self.contextLines
-        print self.contextArcs
-        print self.contextAngles
-        print self.contextCircles
 
         #FIXME self.diff need not have points in general, self.context se self.different hai
     def readDiff(self):
@@ -203,7 +191,6 @@ class App:
             temp = a[i].split()
             if temp[0] not in self.diffPoints.keys():
                 self.diffPoints[temp[0]] = [float(temp[1]), float(temp[2])]
-                print temp[0], temp[1], temp[2]
             elif self.diffPoints[temp[0]] != [float(temp[1]), float(temp[2])]:
                 print "Error"
             if temp[0] in self.contextPoints.keys():
@@ -220,14 +207,12 @@ class App:
                 print "Error"
             if temp not in self.diffLS:
                 self.diffLS.append(temp)
-            print temp
             i+=1
         i+=1
         while a[i][:len(a[i])-1] != "~ARCS":
             temp = a[i][:len(a[i])-1]
             if temp not in self.diffLines:
                 self.diffLines.append(temp)
-            print temp[0]
             i+=1
         i+=1
         while a[i][:len(a[i])-1] != "~ANGLE":
@@ -235,7 +220,6 @@ class App:
             if temp[0] not in self.diffPoints.keys() and temp[0] not in self.contextPoints.keys():
                 print "Error"
             self.diffArcs[temp[0]] = float(temp[1])
-            print temp[0], temp[1]
             i+=1
         i+=1
         while a[i][:len(a[i])-1] != "~CIRCLE":
@@ -256,7 +240,6 @@ class App:
             elif temp2 in self.diffAngles.keys():
                 if self.diffAngles[temp2] != float(temp[3]):
                     print "Error"
-            print temp1, temp[3]
             # Sanity check: angle exists in self.contextPoints (value)
             i+=1
         i+=1
@@ -265,14 +248,7 @@ class App:
             if temp[0] not in self.diffPoints.keys() and temp[0] not in self.contextPoints.keys():
                 print "Error"
             self.diffCircles[temp[0]] = float(temp[1])
-            print temp[0], temp[1]
             i+=1
-        print self.diffPoints
-        print self.diffLS
-        print self.diffLines
-        print self.diffArcs
-        print self.diffAngles
-        print self.diffCircles
 
     def updateContext(self):
         for i in self.diffPoints.keys():
