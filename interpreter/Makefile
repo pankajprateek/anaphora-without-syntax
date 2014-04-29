@@ -36,7 +36,7 @@ lex.yy.c: tokenize.l
 y.tab.c: lyparse.y
 	yacc lyparse.y -Wall -k  --report=all -g -x -d -t		
 
-lyparser.out: $(CSOURCES)
+lyparser.out: $(COBJECTS)
 	gcc $^ -o $@ -pg -w -std=c++0x -lm
 
 listkeywords:
