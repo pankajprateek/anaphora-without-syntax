@@ -674,7 +674,7 @@ void printContext() {
   }
   printf("\n");
   printf("Circles: ");
-  for(i=0;i<context.ia;i++) {
+  for(i=0;i<context.ic;i++) {
     printf("%c(%lf) ", context.circles[i].center.label, context.circles[i].radius);
   }
   printf("\n");
