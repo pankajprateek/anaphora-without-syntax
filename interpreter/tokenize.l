@@ -4,6 +4,9 @@
 #include<math.h>
 #include<stdlib.h>
 #include "./y.tab.h"
+#define true 1
+#define false 0
+#define bool int
 
 //prints all lexical phase information
 #define TDEBUG 1
@@ -17,6 +20,38 @@ char *strdump(char* str) {
   }
   ret[i] = '\0';
   return ret;
+}
+
+double toDouble(char str[]) {
+  int length = 0;
+  int i = 0;
+  while(str[i] != '\0') {
+    i++;
+    length++;
+  }
+  bool decimal = false;
+  double n = 0;
+  double power = 1;
+  if(str[0] == '-')
+    i=1;
+  else
+    i=0;
+  for(;i<length;i++) {
+    if(str[i] == '.') {
+      decimal = true;
+      power = 10;
+      continue;
+    }
+    if(decimal) {
+      n = n + (str[i] - '0')/power;
+      power = power*10;
+    } else {
+      n = n*10 + (str[i] - '0');
+    }
+  }
+  if(str[0] == '-')
+    n*=(-1);
+  return n;
 }
 
 %}
@@ -157,7 +192,7 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
             }
 
 [0-9]+(.[0-9]+)  {
-                   yylval.dval = stod(yytext);
+                   yylval.dval = toDouble(yytext);
                    if(TDEBUG) printf("REAL %lf\n", yylval.dval);
                    return REAL_T;
                  }

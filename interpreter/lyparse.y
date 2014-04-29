@@ -16,7 +16,7 @@
   }
   int yyparse(void);
   int yylex(void);
-  int yydebug = 0;
+  int yydebug = 1;
 
   double epsilon = 1.0;
 
@@ -1808,7 +1808,7 @@ intersectionPointsAndProperties :
       {    
 	Plottables *p = newPlottables();
 	Plottables last = getLastIntersectableObject();
-	Plottables secondLast = getIntersectableObjectBeforePosition(pastObjectsCount-2);
+	Plottables secondLast = getIntersectableObjectBeforePosition(pastObjectsCount-1);
 	Intersection *l = getIntersectionFromPlottables(last),
 	  *sl = getIntersectionFromPlottables(secondLast);
 	Point p1 = getIntersectableIntersectableIntersection(*l,*sl, true);
@@ -2689,7 +2689,7 @@ INTEGER :
 REAL :
     REAL_T
       {
-	return yylval.dval;
+	$$ = yylval.dval;
       }
 ;
 
