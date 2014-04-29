@@ -141,3 +141,7 @@ Plottables getLastPerpendicularBisectableObject() {
 Plottables getLastBisectableObject() {
   return getBisectableObjectBeforePosition(pastObjectsCount-1);
 }
+
+Plottables getLastIntersectableObject() {
+  return getIntersectableObjectBeforePosition(pastObjectsCount-1);
+}

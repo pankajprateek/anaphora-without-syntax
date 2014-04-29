@@ -1,10 +1,11 @@
-%{	
+ %{	
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "./aux.h"
 #include "./lylib.h"
 #include "./context.h"
+#include "./history.h"
 #define true 1
 #define false 0
 #define PDEBUG 1
@@ -42,7 +43,7 @@
   struct _VecStrings* vecStrings;
   struct _String* string;
   struct _Circle * circle;
-  struct _Object * object;
+  //  struct _Object * object;
   struct _Cut *cut;
   struct _Arc *arc;
   struct _Intersection *intersection;
@@ -93,7 +94,7 @@
 %type <circle> addressCircle
 %type <vecArcs> addressArc
 
-%type <object> objects intersectableObjects object intersectableObject addressIndefinitePreviousObjects addressPreviousObjects adjectivePrevious
+%type <plottables> objects intersectableObjects object intersectableObject addressIndefinitePreviousObjects addressPreviousObjects adjectivePrevious
 
 %type <cut> fromClause atPoints
 
@@ -1805,7 +1806,14 @@ intersectionPointsAndProperties :
       }              
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint
       {    
-	$$ = newPlottables();
+	Plottables *p = newPlottables();
+	Plottables last = getLastIntersectableObject();
+	Plottables secondLast = getIntersectableObjectBeforePosition(pastObjectsCount-2);
+	Intersection *l = getIntersectionFromPlottables(last),
+	  *sl = getIntersectionFromPlottables(secondLast);
+	Point p1 = getIntersectableIntersectableIntersection(*l,*sl, true);
+	updatePlottablesPoint(p, p1);
+	$$ = p;
       }              
 ;
 
@@ -2025,85 +2033,129 @@ adjectivePrevious :
 addressIntersectablePreviousObjects :
     THIS intersectableObject
       {
-	$$ = newIntersection();
+	$$ = $2;
       }
   | THESE intersectableObjects
       {
-	$$ = newIntersection();
+	$$ = $2;
       }
   | PREVIOUS intersectableObject
       {
-	$$ = newIntersection();
+	$$ = $2;
       }  
   | PREVIOUS intersectableObjects
       {
-	$$ = newIntersection();
+	$$ = $2;
       }  
   | THOSE intersectableObjects
       {
-	$$ = newIntersection();
+	$$ = $2;
       }  
   | addressIndefinitePreviousObjects
       {
-	$$ = newIntersection();
+	$$ = $1;
       }  
 ;
 
 addressPreviousObjects :
     THIS object
       {
-	$$ = newObject();
+	$$ = $2;
       }      
   | THESE objects
       {
-	$$ = newObject();
+	$$ = $2;
       }        
   | PREVIOUS object
       {
-	$$ = newObject();
+	$$ = $2;
       }      
   | PREVIOUS objects
       {
-	$$ = newObject();
+	$$ = $2;
       }        
   | THOSE objects
       {
-	$$ = newObject();
+	$$ = $2;
       }        
   | addressIndefinitePreviousObjects
       {
-	$$ = newObject();
+	$$ = $1;
       }        
 ;
 
 addressIndefinitePreviousObjects :
     THIS	
       {
-	$$ = newObject();
+	Plottables p = getLastObject();
+	Plottables ret = p;
+	Plottables *plottable = newPlottable();
+	*plottable = ret;
+	$$ = plottable;
       }
   | THESE	
       {
-	$$ = newObject();
+	Plottables p = getLastObject();
+	Plottables ret = p;
+	if(!containsMultipleObjects(p)){
+	  Plottables np = getObjectBeforePosition(pastObjectsCount-1);
+	  ret = combinePlottables(p, np);
+	}
+	Plottables *plottable = newPlottable();
+	*plottable = ret;
+	$$ = plottable;
       }
   | IT
       {
-	$$ = newObject();
+	Plottables p = getLastObject();
+	Plottables ret = p;
+	Plottables *plottable = newPlottable();
+	*plottable = ret;
+	$$ = plottable;
       }  
   | ITS
       {
-	$$ = newObject();
+	Plottables p = getLastObject();
+	Plottables ret = p;
+	Plottables *plottable = newPlottable();
+	*plottable = ret;
+	$$ = plottable;
       }  
   | THEM
       {
-	$$ = newObject();
+	Plottables p = getLastObject();
+	Plottables ret = p;
+	if(!containsMultipleObjects(p)){
+	  Plottables np = getObjectBeforePosition(pastObjectsCount-1);
+	  ret = combinePlottables(p, np);
+	}
+	Plottables *plottable = newPlottable();
+	*plottable = ret;
+	$$ = plottable;
       }  
   | THOSE
       {
-	$$ = newObject();
+	Plottables p = getLastObject();
+	Plottables ret = p;
+	if(!containsMultipleObjects(p)){
+	  Plottables np = getObjectBeforePosition(pastObjectsCount-1);
+	  ret = combinePlottables(p, np);
+	}
+	Plottables *plottable = newPlottable();
+	*plottable = ret;
+	$$ = plottable;
       }  
   | THEIR
       {
-	$$ = newObject();
+	Plottables p = getLastObject();
+	Plottables ret = p;
+	if(!containsMultipleObjects(p)){
+	  Plottables np = getObjectBeforePosition(pastObjectsCount-1);
+	  ret = combinePlottables(p, np);
+	}
+	Plottables *plottable = newPlottable();
+	*plottable = ret;
+	$$ = plottable;
       }  
 ;
 
@@ -2142,19 +2194,35 @@ THOSE :
 intersectableObject :
     LINESEGMENT
       {
-	$$ = newObject();
+	LineSegment *ls = newLineSegment();
+	*ls = getLastLineSegment();
+	Plottables *o = newObject();
+	o->lineSegments[o->ils++] = *ls;
+	$$ = o;
       }    
   | LINE
       {
-	$$ = newObject();
+	Line *l = newLine();
+	*l = getLastLine();
+	Plottables *o = newObject();
+	o->lines[o->iln++] = *l;
+	$$ = o;
       }  
   | CIRCLE
       {
-	$$ = newObject();
+	Circle *c = newCircle();
+	*c = getLastCircle();
+	Plottables *o = newObject();
+	o->circles[o->ic++] = *c;
+	$$ = o;
       }  
   | ARC
       {
-	$$ = newObject();
+	Arc *a = newArc();
+	*a = getLastArc();
+	Plottables *o = newObject();
+	o->arcs[o->ia++] = *a;
+	$$ = o;
       }  
   | PERPENDICULARBISECTOR
       {
@@ -2177,18 +2245,29 @@ intersectableObject :
 object : 
     intersectableObject
       {
-	$$ = newObject();
+	$$ = $1;
       }    
   | POINT
       {
-	$$ = newObject();
+	Point *p = newPoint();
+	Plottables *o = newObject();
+	*p = getLastPoint();
+	o->points[o->ip++] = *p;
+	$$ = o;
       }      
 ;
 
 intersectableObjects :
     LINESEGMENTS
       {
-	$$ = newObject();
+	LineSegment* ls = newLineSegment();
+	*ls = getLastLineSegment();
+	int n = getNumLineSegments();
+	LineSegment *nls = getLineSegmentAtPosition(n-2);
+	Plottables *o = newObject();
+	o->lineSegments[o->ils++] = *ls;
+	o->lineSegments[o->ils++] = *nls;
+	$$ = o;
       }        
   | LINES
       {
@@ -2196,11 +2275,27 @@ intersectableObjects :
       }      
   | CIRCLES
       {
-	$$ = newObject();
+	Circle* c = newCircle();
+	*c = getLastCircle();
+	int n = getNumCircles();
+	Circle *nc = newCircle();
+	*nc = getCircleAtPosition(n-2);
+	Plottables *o = newObject();
+	o->circles[o->ic++] = *c;
+	o->circles[o->ic++] = *nc;
+	$$ = o;
       }      
   | ARCS
       {
-	$$ = newObject();
+	Arc* c = newArc();
+	*c = getLastArc();
+	int n = getNumArcs();
+	Arc *nc = newArc();
+	*nc = getArcAtPosition(n-2);
+	Plottables *o = newObject();
+	o->arcs[o->ia++] = *c;
+	o->arcs[o->ia++] = *nc;
+	$$ = o;
       }      
   | PERPENDICULARBISECTORS
       {
@@ -2251,11 +2346,19 @@ CHORD :
 objects :
     intersectableObjects
       {
-	$$ = newObject();
+	$$ = $1;
       }        
   | POINTS
       {
-	$$ = newObject();
+	Point *p = newPoint();
+	*p = getLastPoint();
+	int n = getNumPoints();
+	Point *np = newPoint();
+	*np = getPointAtPosition(n-2);
+	Plottables *o = newObject();
+	o->points[o->ip++] = *p;
+	o->points[o->ip++] = *np;
+	$$ = o;
       }      
 ;
 
@@ -2555,7 +2658,7 @@ bisectableAndProperties :
       }                      
   | addressIndefinitePreviousObjects
       {
-	$$ = newPlottables();
+	$$ = getPlottablesFromObject($1);
       }                      
 ;
 

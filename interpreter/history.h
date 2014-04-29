@@ -23,3 +23,4 @@ Plottables getBisectableObjectBeforePosition(int n);
 Plottables getLastObject();
 Plottables getLastPerpendicularBisectableObject();
 Plottables getLastBisectableObject();
+Plottables getLastIntersectableObject();

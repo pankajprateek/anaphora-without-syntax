@@ -27,16 +27,16 @@ typedef struct _Intersection{
   bool flip;
 } Intersection;
 
-typedef struct _Object{
-  bool multiple;
-  Point *p1, *p2;
-  LineSegment *ls1, *ls2;
-  Line *l1, *l2;
-  Arc *a1, *a2;
-  Circle *c1, *c2;
-  Angle *an1;
-  Ray *r1, *r2;  
-} Object;
+/* typedef struct _Object{ */
+/*   bool multiple; */
+/*   Point *p1, *p2; */
+/*   LineSegment *ls1, *ls2; */
+/*   Line *l1, *l2; */
+/*   Arc *a1, *a2; */
+/*   Circle *c1, *c2; */
+/*   Angle *an1; */
+/*   Ray *r1, *r2;   */
+/* } Object; */
 
 typedef struct _Bisector{
   LineSegment *ls;
@@ -64,7 +64,7 @@ typedef struct _Cut{
 
 /* Functions */
 Intersection* newIntersection();
-Object* newObject();
+//Object* newObject();
 Bisector* newBisector();
 Parallelization* newParallelization();
 Perpendicularization* newPerpendicularization();
@@ -95,3 +95,5 @@ LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough);
 LineSegment getPerpendicularAt(LineSegment ls, Point at);
 Point getPointOnLabelable(Intersection i, Location *l);
 Point getPointNotOnLabelable(Intersection i, Location *l);
+Intersection *getIntersectionFromPlottables(Plottables p);
+bool containsMultipleObjects(Plottables p);

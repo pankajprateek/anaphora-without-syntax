@@ -9,9 +9,9 @@ Intersection* newIntersection() {
   return i;
 }
 
-Object* newObject() {
-  return (Object*)malloc(sizeof(Object));
-}
+/* Object* newObject() { */
+/*   return (Object*)malloc(sizeof(Object)); */
+/* } */
 
 Bisector* newBisector() {
   return (Bisector*)malloc(sizeof(Bisector));
@@ -443,4 +443,88 @@ Point getPointNotOnLabelable(Intersection i, Location *l) {
   }
   Point P = *newPoint();
   return P;
+}
+
+Intersection *getIntersectionFromPlottables(Plottables p){
+  Intersection *i = newIntersection();
+
+  if(p.ic >=1){
+    Circle *c1 = newCircle();
+    *c1 = p.circles[0];
+    i->c1 = c1;
+
+    if(p.ic >=2){
+      Circle *c2 = newCircle();
+      *c2 = p.circles[1];
+      i->c2 = c2;
+    }
+    return i;
+  }
+
+  if(p.iln >=1){
+    Line *l1 = newLine();
+    *l1 = p.lines[0];
+    i->l1 = l1;
+
+    if(p.iln >=2){
+      Line *l2 = newLine();
+      *l2 = p.lines[1];
+      i->l2 = l2;
+    }
+    return i;
+  }
+
+  if(p.ia >=1){
+    Arc *a1 = newArc();
+    *a1 = p.arcs[0];
+    i->a1 = a1;
+
+    if(p.ia >=2){
+      Arc *a2 = newArc();
+      *a2 = p.arcs[1];
+      i->a2 = a2;
+    }
+    return i;
+  }
+
+  if(p.ils >=1){
+    LineSegment *ls1 = newLineSegment();
+    *ls1 = p.lineSegments[0];
+    i->ls1 = ls1;
+
+    if(p.ils >=2){
+      LineSegment *ls2 = newLineSegment();
+      *ls2 = p.lineSegments[1];
+      i->ls2 = ls2;
+    }
+    return i;
+  }
+
+  if(p.ip >=1){
+    Point *p1 = newPoint();
+    *p1 = p.points[0];
+    i->p1 = p1;
+
+    if(p.ip >= 2){
+      Point *p2 = newPoint();
+      *p2 = p.points[1];
+      i->p2 = p2;    
+    }
+    return i;
+  }
+
+  return i;
+}
+
+bool containsMultipleObjects(Plottables p) { 
+  if(p.ip>1 || p.ils>1 || p.ia>1 || p.ic>1 || p.iln>1 || p.ian>1)
+    return true;
+  else
+    return false;
+}
+
+Plottables combinePlottables(Plottables a, Plottables b) {
+  Plottables p;
+  p.ip = a.ip + b.ip;
+  
 }
