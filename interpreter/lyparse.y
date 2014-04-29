@@ -1808,7 +1808,11 @@ intersectionPointsAndProperties :
       {    
 	Plottables *p = newPlottables();
 	Plottables last = getLastIntersectableObject();
+	printf("Printing last intersectable object\n");
+	printPlottable(last);
+	printf("Printing second last intersectable object\n");
 	Plottables secondLast = getIntersectableObjectBeforePosition(pastObjectsCount-1);
+	printPlottable(secondLast);
 	Intersection *l = getIntersectionFromPlottables(last),
 	  *sl = getIntersectionFromPlottables(secondLast);
 	Point p1 = getIntersectableIntersectableIntersection(*l,*sl, true);

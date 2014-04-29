@@ -145,3 +145,45 @@ Plottables getLastBisectableObject() {
 Plottables getLastIntersectableObject() {
   return getIntersectableObjectBeforePosition(pastObjectsCount-1);
 }
+
+void printPlottableToFile(Plottables p) {
+  FILE *f = fopen("history.txt", "w");
+  int i;
+  fprintf(f,"Points: ");
+  for(i=0;i<p.ip;i++) {
+    fprintf(f, "%c(%lf,%lf) ", p.points[i].label, p.points[i].x, p.points[i].y);
+  }
+  fprintf(f, "\n");
+  fprintf(f, "LineSegments: ");
+  for(i=0;i<p.ils;i++) {
+    fprintf(f, "%c%c ", p.lineSegments[i].pA.label, p.lineSegments[i].pB.label);
+  }
+  fprintf(f, "\n");
+  fprintf(f, "Angles: ");
+  for(i=0;i<p.ian;i++) {
+    fprintf(f, "%c%c%c(%lf) ", p.angles[i].leftVertex.label, p.angles[i].vertex.label, p.angles[i].rightVertex.label, p.angles[i].degree);
+  }
+  fprintf(f, "\n");
+  fprintf(f, "Arcs: ");
+  for(i=0;i<p.ia;i++) {
+    fprintf(f, "%c(%lf) ", p.arcs[i].center.label, p.arcs[i].radius);
+  }
+  fprintf(f, "\n");
+  fprintf(f, "Lines: ");
+  for(i=0;i<p.iln;i++) {
+    fprintf(f, "%c ", p.lines[i].label);
+  }
+  fprintf(f, "\n");
+  fprintf(f, "Circles: ");
+  for(i=0;i<p.ia;i++) {
+    fprintf(f, "%c(%lf) ", p.circles[i].center.label, p.circles[i].radius);
+  }
+  fprintf(f, "\n");
+}
+
+void writeObject() {
+  int i;
+  for(i=0;i<pastObjectsCount;i++) {
+    printPlottableToFile(pastObjects[i]);
+  }
+}
