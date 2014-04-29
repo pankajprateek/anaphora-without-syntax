@@ -5,7 +5,7 @@ CPPOBJECTS = $(CPPSOURCES:.cpp=.o)
 CPPHEADERS = $(CPPSOURCES:.cpp=.h)
 EXECUTABLE = interpret.out
 
-CSOURCES = lylib.c aux.c context.c lex.yy.c y.tab.c
+CSOURCES = history.c lylib.c aux.c context.c lex.yy.c y.tab.c
 COBJECTS = $(CSOURCES:.c=.o)
 
 #~ all: english hindi

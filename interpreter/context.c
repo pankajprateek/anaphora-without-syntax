@@ -1,6 +1,7 @@
 #include "lylib.h"
 #include "aux.h"
 #include "context.h"
+#include "history.h"
 #include <stdlib.h>
 #include <math.h>
 #define false 0
@@ -45,6 +46,7 @@ Command* newCommand() {
 void executeCommand(Command command){
   assert(!isEmpty(command.plottables));
   writeDiff(command.plottables);
+  updateObjects(command.plottables);
   updateContext(command.plottables);
   writeContext();
 }
@@ -680,3 +682,4 @@ void printContext() {
   printf("\n");
   printf("----------Context End---------\n");
 }
+

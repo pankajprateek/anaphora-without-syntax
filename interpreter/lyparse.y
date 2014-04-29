@@ -15,7 +15,7 @@
   }
   int yyparse(void);
   int yylex(void);
-  int yydebug = 1;
+  int yydebug = 0;
 
   double epsilon = 1.0;
 
@@ -2604,6 +2604,7 @@ REAL :
 %%
 int main()
 {
+  printContext();
   readContext();
   printContext();
   if(PDEBUG){

@@ -6,6 +6,7 @@
 #include "aux.h"
 #define contextFilename "./context.txt"
 #define diffFilename "./diff.txt"
+extern int pastObjectsCount;
 
 typedef struct _Context{
   int ip, ils, ia, iln, ic, ian, ilg;
@@ -23,7 +24,6 @@ Context context;
 typedef struct _Command{
   Plottables plottables;
 } Command;
-
 
 /* Functions */
 Command* newCommand();
