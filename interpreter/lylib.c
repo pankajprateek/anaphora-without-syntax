@@ -53,44 +53,60 @@ Plottables* newPlottables(){
 }
 
 void updatePlottablesPoint(Plottables* p, Point pn){
-  p->points[p->ip++] = pn;
+  if(!existsPointLabel(pn.label)) {
+    p->points[p->ip++] = pn;
+  }
 }
 
 void updatePlottablesLineSegment(Plottables* p, LineSegment ls){
-  p->points[p->ip++] = ls.pA;
-  p->points[p->ip++] = ls.pB;
-  p->lineSegments[p->ils++] = ls;
+  if(!existsLineSegmentLabel(ls.pA.label, ls.pB.label)) {
+    p->points[p->ip++] = ls.pA;
+    p->points[p->ip++] = ls.pB;
+    p->lineSegments[p->ils++] = ls;
+  }
 }
   
 void updatePlottablesArc(Plottables* p, Arc a){
-  p->points[p->ip++] = a.center;
-  p->lengths[p->ilg++].length = a.radius;
-  p->arcs[p->ia++] = a;
+  if(!existsArc(a)) {
+    p->points[p->ip++] = a.center;
+    p->lengths[p->ilg++].length = a.radius;
+    p->arcs[p->ia++] = a;
+  }
 }
 
 void updatePlottablesLine(Plottables* p, Line l){
-  p->lines[p->iln++] = l;
+  if(!existsLine(l.label)) {
+    p->lines[p->iln++] = l;
+  }
 }
 
 void updatePlottablesCircle(Plottables *p, Circle c){
-  p->points[p->ip++] = c.center;
-  p->lengths[p->ilg++].length = c.radius;
-  p->circles[p->ic++] = c;
+  if(!existsCircle(c)) {
+    p->points[p->ip++] = c.center;
+    p->lengths[p->ilg++].length = c.radius;
+    p->circles[p->ic++] = c;
+  }
 }
 void updatePlottablesAngle(Plottables *p, Angle a){
-  p->angles[p->ian++] = a;
-  p->points[p->ip++] = a.vertex;
-  p->points[p->ip++] = a.leftVertex;
-  p->points[p->ip++] = a.rightVertex;
-  
-  LineSegment lv, rv;
-  lv.pA = a.leftVertex;
-  lv.pB = a.vertex;
-  rv.pA = a.rightVertex;
-  rv.pB = a.vertex;
-  
-  p->lineSegments[p->ils++] = lv;
-  p->lineSegments[p->ils++] = rv;
+  char angle[4];
+  angle[0] = a.leftVertex.label;
+  angle[1] = a.vertex.label;
+  angle[2] = a.rightVertex.label;
+  if(!existsAngle(angle)) {
+    p->angles[p->ian++] = a;
+    p->points[p->ip++] = a.vertex;
+    p->points[p->ip++] = a.leftVertex;
+    p->points[p->ip++] = a.rightVertex;
+    
+    LineSegment lv, rv;
+    lv.pA = a.leftVertex;
+    lv.pB = a.vertex;
+    rv.pA = a.rightVertex;
+    rv.pB = a.vertex;
+    
+    p->lineSegments[p->ils++] = lv;
+    p->lineSegments[p->ils++] = rv;
+  }
 }
 
 Condition* newCondition(){

@@ -127,19 +127,16 @@ void readContext(){
     while((read = getline(&line, &len, f)) != -1) {
       if(strcmp(line, "~LINESEGMENTS") == 1)
 	break;
-      printf("%s\n", line);
       //parse and update point
       SplitString vec_line = split(line, ' ');
       context.points[context.ip].label = vec_line.array[0][0];
       context.points[context.ip].x = stod(vec_line.array[1]);
       context.points[context.ip].y = stod(vec_line.array[2]);
       context.ip++;
-      printf("Gettng out\n");
     }
     while((read = getline(&line, &len, f)) != -1) {
       if(strcmp(line, "~LINES") == 1)
 	break;
-      printf("%s\n", line);
       //parse and update linesegments
       Point P1 = getPoint(line[0]);
       context.lineSegments[context.ils].pA.label = P1.label;
@@ -155,7 +152,6 @@ void readContext(){
     while((read = getline(&line, &len, f)) != -1) {
       if(strcmp(line, "~ARCS") == 1)
 	break;
-      printf("%s\n", line);
       //parse and update lines
       context.lines[context.iln].label = line[0];
       context.iln++;
@@ -163,7 +159,6 @@ void readContext(){
     while((read = getline(&line, &len, f)) != -1) {
       if(strcmp(line, "~ANGLE") == 1)
 	break;
-      printf("%s\n", line);
       //parse and update arcs
       SplitString vec_line = split(line, ' ');
       Point P1 = getPoint(vec_line.array[0][0]);
@@ -176,7 +171,6 @@ void readContext(){
     while((read = getline(&line, &len, f)) != -1) {
       if(strcmp(line, "~CIRCLE") == 1)
 	break;
-      printf("%s\n", line);
       //parse and update angles
       SplitString vec_line = split(line, ' ');
       Point P1 = getPoint(vec_line.array[0][0]);
@@ -195,7 +189,6 @@ void readContext(){
       context.ian++;
     }
     while((read = getline(&line, &len, f)) != -1) {
-      printf("%s\n", line);
       //parse and update circles
       SplitString vec_line = split(line, ' ');
       Point P1 = getPoint(vec_line.array[0][0]);
@@ -395,6 +388,36 @@ bool existsPointLabel(char label) {
   bool found=false;
   for(i=0;i<l;i++) {
     if(context.points[i].label == label){
+      found = true;
+      break;
+    }
+  }
+  return found;
+}
+
+bool existsCircle(Circle c) {
+  char center = c.center.label;
+  double radius = c.radius;
+  int i;
+  int l = context.ic;
+  bool found = false;
+  for(i=0;i<l;i++) {
+    if(context.circles[i].center.label == center && context.circles[i].radius == radius) {
+      found = true;
+      break;
+    }
+  }
+  return found;
+}
+
+bool existsArc(Arc a) {
+  char center = a.center.label;
+  double radius = a.radius;
+  int i;
+  int l = context.ia;
+  bool found = false;
+  for(i=0;i<l;i++) {
+    if(context.arcs[i].center.label == center && context.arcs[i].radius == radius) {
       found = true;
       break;
     }
