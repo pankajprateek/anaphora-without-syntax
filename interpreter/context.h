@@ -69,3 +69,8 @@ bool comparePoint(Point A, Point B);
 bool compareAngles(Angle A, Angle B);
 void printPlottable(Plottables p);
 void printContext();
+LineSegment getLineSegmentAtPosition(int i);
+int getNumLineSegments();
+int getNumPoints();
+int getNumArcs();
+int getNumCircles();

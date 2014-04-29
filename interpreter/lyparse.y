@@ -94,11 +94,11 @@
 %type <circle> addressCircle
 %type <vecArcs> addressArc
 
-%type <plottables> objects intersectableObjects object intersectableObject addressIndefinitePreviousObjects addressPreviousObjects adjectivePrevious
+%type <plottables> objects intersectableObjects object intersectableObject addressIndefinitePreviousObjects addressPreviousObjects addressIntersectablePreviousObjects
 
 %type <cut> fromClause atPoints
 
-%type <intersection> labelable pointAndPropertiesNotOnCase pointAndPropertiesOnCase addressIntersectableObject intersectionClause addressIntersectingObject addressIntersectablePreviousObjects
+%type <intersection> labelable pointAndPropertiesNotOnCase pointAndPropertiesOnCase addressIntersectableObject intersectionClause addressIntersectingObject
 
 %type <parallelization> parallelConditionClause parallelToClause
 
@@ -107,7 +107,7 @@
 
 %type <location> markConditionClause
 
-%type <voidPtr> LENGTH TIMES CM GREATERTHAN LESSTHAN TWICE THRICE HALF GIVENTHAT CONSTRUCT addressFreeObject ANGLE ANY ARC ARCS ARM AT BISECT BISECTOR BISECTORS CENTER CENTERS CHORD CHORDS CIRCLE CIRCLES CUT DEGREES DIAMETER DISTANCE DISTANCEFROM DIVIDE EACHOTHER EQUALS FREEVARIABLE FROM INTERSECTING INTERSECTIONPOINTS INTO IT ITS JOIN LINE LINES LINESEGMENT LINESEGMENTS MARK NOTON ON ORIGIN PARALLEL PARTS PASSINGTHROUGH PERPENDICULAR PERPENDICULARBISECTOR PERPENDICULARBISECTORS POINT POINTS PREVIOUS previousDegree previousLength RADIUS RAY RAYS RIGHT THEIR THEM THESE THIS THOSE VERTEX DIFFERENCE SUM
+%type <voidPtr> LENGTH TIMES CM GREATERTHAN LESSTHAN TWICE THRICE HALF GIVENTHAT CONSTRUCT addressFreeObject ANGLE ANY ARC ARCS ARM AT BISECT BISECTOR BISECTORS CENTER CENTERS CHORD CHORDS CIRCLE CIRCLES CUT DEGREES DIAMETER DISTANCE DISTANCEFROM DIVIDE EACHOTHER EQUALS FREEVARIABLE FROM INTERSECTING INTERSECTIONPOINTS INTO IT ITS JOIN LINE LINES LINESEGMENT LINESEGMENTS MARK NOTON ON ORIGIN PARALLEL PARTS PASSINGTHROUGH PERPENDICULAR PERPENDICULARBISECTOR PERPENDICULARBISECTORS POINT POINTS PREVIOUS previousDegree previousLength RADIUS RAY RAYS RIGHT THEIR THEM THESE THIS THOSE VERTEX DIFFERENCE SUM adjectivePrevious
 
 
 
@@ -2013,21 +2013,9 @@ addressArc :
 
 adjectivePrevious :
     THIS		
-      {
-	$$ = newObject();
-      }
   | THESE
-      {
-	$$ = newObject();
-      }  
   | PREVIOUS
-      {
-	$$ = newObject();
-      }
   | THOSE
-      {
-	$$ = newObject();
-      }  
 ;
 
 addressIntersectablePreviousObjects :
@@ -2089,7 +2077,7 @@ addressIndefinitePreviousObjects :
       {
 	Plottables p = getLastObject();
 	Plottables ret = p;
-	Plottables *plottable = newPlottable();
+	Plottables *plottable = newPlottables();
 	*plottable = ret;
 	$$ = plottable;
       }
@@ -2098,10 +2086,10 @@ addressIndefinitePreviousObjects :
 	Plottables p = getLastObject();
 	Plottables ret = p;
 	if(!containsMultipleObjects(p)){
-	  Plottables np = getObjectBeforePosition(pastObjectsCount-1);
+	  Plottables np = getObjectAtPosition(pastObjectsCount-1);
 	  ret = combinePlottables(p, np);
 	}
-	Plottables *plottable = newPlottable();
+	Plottables *plottable = newPlottables();
 	*plottable = ret;
 	$$ = plottable;
       }
@@ -2109,7 +2097,7 @@ addressIndefinitePreviousObjects :
       {
 	Plottables p = getLastObject();
 	Plottables ret = p;
-	Plottables *plottable = newPlottable();
+	Plottables *plottable = newPlottables();
 	*plottable = ret;
 	$$ = plottable;
       }  
@@ -2117,7 +2105,7 @@ addressIndefinitePreviousObjects :
       {
 	Plottables p = getLastObject();
 	Plottables ret = p;
-	Plottables *plottable = newPlottable();
+	Plottables *plottable = newPlottables();
 	*plottable = ret;
 	$$ = plottable;
       }  
@@ -2126,10 +2114,10 @@ addressIndefinitePreviousObjects :
 	Plottables p = getLastObject();
 	Plottables ret = p;
 	if(!containsMultipleObjects(p)){
-	  Plottables np = getObjectBeforePosition(pastObjectsCount-1);
+	  Plottables np = getObjectAtPosition(pastObjectsCount-1);
 	  ret = combinePlottables(p, np);
 	}
-	Plottables *plottable = newPlottable();
+	Plottables *plottable = newPlottables();
 	*plottable = ret;
 	$$ = plottable;
       }  
@@ -2138,10 +2126,10 @@ addressIndefinitePreviousObjects :
 	Plottables p = getLastObject();
 	Plottables ret = p;
 	if(!containsMultipleObjects(p)){
-	  Plottables np = getObjectBeforePosition(pastObjectsCount-1);
+	  Plottables np = getObjectAtPosition(pastObjectsCount-1);
 	  ret = combinePlottables(p, np);
 	}
-	Plottables *plottable = newPlottable();
+	Plottables *plottable = newPlottables();
 	*plottable = ret;
 	$$ = plottable;
       }  
@@ -2150,10 +2138,10 @@ addressIndefinitePreviousObjects :
 	Plottables p = getLastObject();
 	Plottables ret = p;
 	if(!containsMultipleObjects(p)){
-	  Plottables np = getObjectBeforePosition(pastObjectsCount-1);
+	  Plottables np = getObjectAtPosition(pastObjectsCount-1);
 	  ret = combinePlottables(p, np);
 	}
-	Plottables *plottable = newPlottable();
+	Plottables *plottable = newPlottables();
 	*plottable = ret;
 	$$ = plottable;
       }  
@@ -2196,7 +2184,7 @@ intersectableObject :
       {
 	LineSegment *ls = newLineSegment();
 	*ls = getLastLineSegment();
-	Plottables *o = newObject();
+	Plottables *o = newPlottables();
 	o->lineSegments[o->ils++] = *ls;
 	$$ = o;
       }    
@@ -2204,7 +2192,7 @@ intersectableObject :
       {
 	Line *l = newLine();
 	*l = getLastLine();
-	Plottables *o = newObject();
+	Plottables *o = newPlottables();
 	o->lines[o->iln++] = *l;
 	$$ = o;
       }  
@@ -2212,7 +2200,7 @@ intersectableObject :
       {
 	Circle *c = newCircle();
 	*c = getLastCircle();
-	Plottables *o = newObject();
+	Plottables *o = newPlottables();
 	o->circles[o->ic++] = *c;
 	$$ = o;
       }  
@@ -2220,25 +2208,25 @@ intersectableObject :
       {
 	Arc *a = newArc();
 	*a = getLastArc();
-	Plottables *o = newObject();
+	Plottables *o = newPlottables();
 	o->arcs[o->ia++] = *a;
 	$$ = o;
       }  
   | PERPENDICULARBISECTOR
       {
-	$$ = newObject();
+	$$ = newPlottables();
       }  
   | BISECTOR
       {
-	$$ = newObject();
+	$$ = newPlottables();
       }  
   | CHORD
       {
-	$$ = newObject();
+	$$ = newPlottables();
       }  
   | RAY
       {
-	$$ = newObject();
+	$$ = newPlottables();
       }  
 ;
 
@@ -2250,7 +2238,7 @@ object :
   | POINT
       {
 	Point *p = newPoint();
-	Plottables *o = newObject();
+	Plottables *o = newPlottables();
 	*p = getLastPoint();
 	o->points[o->ip++] = *p;
 	$$ = o;
@@ -2263,15 +2251,16 @@ intersectableObjects :
 	LineSegment* ls = newLineSegment();
 	*ls = getLastLineSegment();
 	int n = getNumLineSegments();
-	LineSegment *nls = getLineSegmentAtPosition(n-2);
-	Plottables *o = newObject();
+	LineSegment *nls = newLineSegment();
+	*nls = getLineSegmentAtPosition(n-2);
+	Plottables *o = newPlottables();
 	o->lineSegments[o->ils++] = *ls;
 	o->lineSegments[o->ils++] = *nls;
 	$$ = o;
       }        
   | LINES
       {
-	$$ = newObject();
+	$$ = newPlottables();
       }      
   | CIRCLES
       {
@@ -2280,7 +2269,7 @@ intersectableObjects :
 	int n = getNumCircles();
 	Circle *nc = newCircle();
 	*nc = getCircleAtPosition(n-2);
-	Plottables *o = newObject();
+	Plottables *o = newPlottables();
 	o->circles[o->ic++] = *c;
 	o->circles[o->ic++] = *nc;
 	$$ = o;
@@ -2292,26 +2281,26 @@ intersectableObjects :
 	int n = getNumArcs();
 	Arc *nc = newArc();
 	*nc = getArcAtPosition(n-2);
-	Plottables *o = newObject();
+	Plottables *o = newPlottables();
 	o->arcs[o->ia++] = *c;
 	o->arcs[o->ia++] = *nc;
 	$$ = o;
       }      
   | PERPENDICULARBISECTORS
       {
-	$$ = newObject();
+	$$ = newPlottables();
       }      
   | BISECTORS
       {
-	$$ = newObject();
+	$$ = newPlottables();
       }      
   | CHORDS
       {
-	$$ = newObject();
+	$$ = newPlottables();
       }      
   | RAYS
       {
-	$$ = newObject();
+	$$ = newPlottables();
       }      
 ;
 
@@ -2355,7 +2344,7 @@ objects :
 	int n = getNumPoints();
 	Point *np = newPoint();
 	*np = getPointAtPosition(n-2);
-	Plottables *o = newObject();
+	Plottables *o = newPlottables();
 	o->points[o->ip++] = *p;
 	o->points[o->ip++] = *np;
 	$$ = o;
@@ -2658,7 +2647,7 @@ bisectableAndProperties :
       }                      
   | addressIndefinitePreviousObjects
       {
-	$$ = getPlottablesFromObject($1);
+	$$ = $1;
       }                      
 ;
 

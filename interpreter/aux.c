@@ -526,5 +526,49 @@ bool containsMultipleObjects(Plottables p) {
 Plottables combinePlottables(Plottables a, Plottables b) {
   Plottables p;
   p.ip = a.ip + b.ip;
+  p.ic = a.ic + b.ic;
+  p.ia = a.ia + b.ia;
+  p.ils = a.ils + b.ils;
+  p.iln = a.iln + b.iln;
+  p.ian = a.ian + b.ian;
   
+  int i;
+  for(i=0;i<a.ip;i++) {
+    p.points[i] = a.points[i];
+  }
+  for(i=0;i<a.ils;i++) {
+    p.lineSegments[i] = a.lineSegments[i];
+  }
+  for(i=0;i<a.iln;i++) {
+    p.lines[i] = a.lines[i];
+  }
+  for(i=0;i<a.ic;i++) {
+    p.circles[i] = a.circles[i];
+  }
+  for(i=0;i<a.ia;i++) {
+    p.arcs[i] = a.arcs[i];
+  }
+  for(i=0;i<a.ian;i++) {
+    p.angles[i] = a.angles[i];
+  }  
+
+  for(i=0;i<b.ip;i++) {
+    p.points[a.ip+i] = b.points[i];
+  }
+  for(i=0;i<b.ils;i++) {
+    p.lineSegments[a.ils+i] = b.lineSegments[i];
+  }
+  for(i=0;i<b.iln;i++) {
+    p.lines[a.iln+i] = b.lines[i];
+  }
+  for(i=0;i<b.ic;i++) {
+    p.circles[a.ic+i] = b.circles[i];
+  }
+  for(i=0;i<b.ia;i++) {
+    p.arcs[a.ia+i] = b.arcs[i];
+  }
+  for(i=0;i<b.ian;i++) {
+    p.angles[a.ian+i] = b.angles[i];
+  }  
+  return p;
 }

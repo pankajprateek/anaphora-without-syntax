@@ -527,6 +527,11 @@ Point getPointAtPosition(int i) {
   assert(i<context.ip);
   return context.points[i];
 }
+
+LineSegment getLineSegmentAtPosition(int i) {
+  assert(i<context.ils);
+  return context.lineSegments[i];
+}
     
 Point getLastPoint(){
   return context.points[context.ip-1];
@@ -683,3 +688,18 @@ void printContext() {
   printf("----------Context End---------\n");
 }
 
+int getNumLineSegments() {
+  return context.ils;
+}
+
+int getNumPoints() {
+  return context.ip;
+}
+
+int getNumArcs() {
+  return context.ia;
+}
+
+int getNumCircles() {
+  return context.ic;
+}
