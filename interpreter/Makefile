@@ -1,12 +1,12 @@
 .PHONY: all english hindi
 CC = g++
-SOURCES = mapper.cpp interpreter.cpp action.cpp grammar.cpp filter.cpp parse.cpp lib.cpp
-OBJECTS = $(SOURCES:.cpp=.o)
-HEADERS = $(SOURCES:.cpp=.h)
-SOURCES1 = mapper.cpp interpreter1.cpp filter.cpp lib.cpp
-OBJECTS1 = $(SOURCES1:.cpp=.o)
-HEADERS1 = $(SOURCES1:.cpp=.h)
+CPPSOURCES = mapper.cpp interpreter.cpp action.cpp grammar.cpp filter.cpp parse.cpp lib.cpp
+CPPOBJECTS = $(CPPSOURCES:.cpp=.o)
+CPPHEADERS = $(CPPSOURCES:.cpp=.h)
 EXECUTABLE = interpret.out
+
+CSOURCES = lyparse.c aux.c context.c lex.yy.c y.tab.c
+COBJECTS = $(CSOURCES:.c=.o)
 
 #~ all: english hindi
 all: interpret.out lyparser.out
@@ -21,38 +21,28 @@ hindi:
 	cp ./hindi/hindi-target.vcb ./target.vcb
 	cp ./hindi/alignment.txt ./
 
-interpret.out: main.cpp $(OBJECTS) $(HEADERS)
+interpret.out: main.cpp $(CPPOBJECTS) $(CPPHEADERS)
 	$(CC) -g -o $@ $^
-	#./interpret.out < jeetesh_temp_english.txt > temp.txt
-
-interpret1.out: $(OBJECTS1) $(HEADERS1)
-	rm -f *.o
-	$(CC) -g -o $@ $^
-
-image: interpret
-	rm -f drawing_instructions.txt
-	./interpret.out
-	python constructImage.py
 
 .cpp.o:
 	$(CC) -g -c $< -o $@
 
-lyparser.out: tokenize.l lyparse.y
-	yacc lyparse.y -Wall -k  --report=all -g -x -d -t
+.c.o:
+	gcc -g -lm -c $< -o $@
+
+lex.yy.c: tokenize.l
 	flex tokenize.l
-	gcc -g -lm -c lyparse.c -o lyparse.o
-	gcc -g -lm -c aux.c -o aux.o
-	gcc -g -lm -c context.c -o context.o
-	gcc -g -lm -c lex.yy.c -o lex.yy.o
-	gcc -g -lm -c y.tab.c -o y.tab.o
-	gcc aux.o lyparse.o context.o lex.yy.o y.tab.o -o lyparser.out -pg -w -std=c++0x -lm
-	#./lexer < preorder.txt
+
+y.tab.c: lyparse.y
+	yacc lyparse.y -Wall -k  --report=all -g -x -d -t		
+
+lyparser.out: $(CSOURCES)
+	gcc $^ -o $@ -pg -w -std=c++0x -lm
 
 listkeywords:
 	python listKeywords.py < target.vcb > keywords.txt
 
 clean:
 	rm -f drawing_instructions.txt
-	#rm -f ./source.vcb ./target.vcb ./alignment.txt
-	rm -f interpret.out *.o
-	rm -f lex.yy.c y.tab.c lyparser.out
+	rm -f *.out *.o
+	rm -f lex.yy.c y.tab.c
