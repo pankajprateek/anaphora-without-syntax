@@ -445,7 +445,7 @@ LESSTHAN :
 
 command :
     constructCommand  { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
-  | markCommand       { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
+  | markCommand       { $$ = $1; printHistory(); executeCommand(*$1); printContext(); }
   | cutCommand        { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
   | joinCommand       { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
   | divideCommand     { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
@@ -1425,6 +1425,8 @@ perpendicularBisectorAndProperties :
 	Plottables *p = newPlottables();
 	LineSegment ls = $2->lineSegments[0];
 	LineSegment pb = getPerpendicularBisector(ls);
+  printPoint(pb.pA);
+  printPoint(pb.pB);
 	updatePlottablesLineSegment(p, pb);
 	$$ = p;
       }
@@ -1802,9 +1804,14 @@ intersectionPointsAndProperties :
   | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
       {
 	Plottables *p = newPlottables();
+	printf("Interection 1\n");
+	printIntersection(*$2);
+	printf("Interection 2\n");
+	printIntersection(*$3);
 	Point p1 = getIntersectableIntersectableIntersection(*$2, *$3, true);
 	p1.label = $4->label;
 	updatePlottablesPoint(p, p1);
+  printf("%c %lf %lf\n", p->points[0].label, p->points[0].x, p->points[0].y);
 	$$ = p;
       }              
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint
@@ -1818,7 +1825,7 @@ intersectionPointsAndProperties :
 	printPlottable(secondLast);
 	Intersection *l = getIntersectionFromPlottables(last),
 	  *sl = getIntersectionFromPlottables(secondLast);
-	Point p1 = getIntersectableIntersectableIntersection(*l,*sl, true);
+	Point p1 = getIntersectableIntersectableIntersection(*l,*sl, false);
 	p1.label = $3->label;
 	updatePlottablesPoint(p, p1);
 	$$ = p;
@@ -1857,7 +1864,7 @@ addressIntersectingObject :
       }              
   | addressPreviousObjects
       {
-	$$ = newIntersection();
+	$$ = getIntersectionFromPlottables(*$1);
       }              
 ;
 

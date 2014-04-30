@@ -99,7 +99,7 @@ Point getIntersectableIntersectableIntersection(Intersection i1, Intersection i2
     return getLsCircleIntersection(*(i1.ls1), *(i2.c1), above);
   } else if(l1==3 && l2==1) {
     //Arc and ls
-    return getLsArcIntersection(*(i2.ls1), *(i2.a1), above);
+    return getLsArcIntersection(*(i2.ls1), *(i1.a1), above);
   } else if(l1==3 && l2==3) {
     //arc and arc
     return getArcArcIntersection(*(i1.a1), *(i2.a1), above);
@@ -165,19 +165,19 @@ Point getLsCircleIntersection(LineSegment l, Circle c, bool above) {
 }
 
 Point _getLsArcIntersection(LineSegment l, Point c, double r, bool above) {
-  float x1 = l.pA.x, y1 = l.pA.y, x2 = l.pB.x, y2 = l.pB.y;
-  float xc = c.x, yc = c.y;
-  float m = (y2 - y1)/(x2 - x1);
-  float c1 = m*(xc-x1) + (y1-yc);
-  float b = (2*m*r*c1)/(m*m*(r*r+1));
-  float C = (c1*c1 - r*r)/(m*m*(r*r+1));
-  float d = sqrt(b*b - 4*C);
-  float cos1 = (-b-d)/2;
-  float cos2 = (-b+d)/2;
-  float x31 = xc+r*cos1;
-  float x32 = xc+r*cos2;
-  float y31 = m*(x31-x1) + y1;
-  float y32 = m*(x32-x1) + y1;
+  double x1 = l.pA.x, y1 = l.pA.y, x2 = l.pB.x, y2 = l.pB.y;
+  double xc = c.x, yc = c.y;
+  double m = (y2 - y1)/(x2 - x1);
+  double c1 = m*(xc-x1) + (y1-yc);
+  double b = (2*m*r*c1)/(r*r*(m*m+1));
+  double C = (c1*c1 - r*r)/(r*r*(m*m+1));
+  double d = sqrt(b*b - 4*C);
+  double cos1 = (-b-d)/2;
+  double cos2 = (-b+d)/2;
+  double x31 = xc+r*cos1;
+  double x32 = xc+r*cos2;
+  double y31 = m*(x31-x1) + y1;
+  double y32 = m*(x32-x1) + y1;
   Point ret;
   if(y31 > y32 && above) {
     ret.x = x31;
@@ -193,8 +193,8 @@ double getSlope(Point a, Point b){
   double deltax = b.x - a.x;
   double deltay = b.y - a.y;
 
-  if(abs(deltay) <= FLOAT_EPSILON){
-    if(deltax >= FLOAT_EPSILON) return 90.0;
+  if(abs(deltax) <= FLOAT_EPSILON){
+    if(deltay >= FLOAT_EPSILON) return 90.0;
     else return -90.0;
   }
   
@@ -220,15 +220,19 @@ Point locatePoint(Point source, double slope, double distance){
   return c;
 }
 
+void printPoint(Point p){
+  printf("Point %c %lf %lf\b", p.label, p.x, p.y);
+}
+
 LineSegment getPerpendicularBisector(LineSegment ls){
   
   double baseSlope = getSlope(ls.pA, ls.pB);
   
   Point midPoint = getMidPoint(ls.pA, ls.pB);
-  
+
   Point pbEndPoint1 = locatePoint(midPoint, baseSlope + 90.0, DEFAULT_LINE_SEGMENT_LENGTH);
   Point pbEndPoint2 = locatePoint(midPoint, baseSlope - 90.0, DEFAULT_LINE_SEGMENT_LENGTH);
-  
+
   pbEndPoint1.label = reserveNextPointLabel();
   pbEndPoint2.label = reserveNextPointLabel();
   
@@ -571,4 +575,23 @@ Plottables combinePlottables(Plottables a, Plottables b) {
     p.angles[a.ian+i] = b.angles[i];
   }  
   return p;
+}
+
+void printIntersection(Intersection p) {
+  if(p.p1)
+    printf("%c\n", p.p1->label);
+  if(p.p2)
+    printf("%c\n", p.p2->label);
+  if(p.ls1)
+    printf("%c%c\n", p.ls1->pA.label, p.ls1->pB.label);
+  if(p.ls2)
+    printf("%c%c\n", p.ls2->pA.label, p.ls2->pB.label);
+  if(p.a1)
+    printf("%c\n", p.a1->center.label);
+  if(p.a2)
+    printf("%c\n", p.a2->center.label);
+  if(p.c1)
+    printf("%c\n", p.c1->center.label);
+  if(p.c2)
+    printf("%c\n", p.c2->center.label);
 }
