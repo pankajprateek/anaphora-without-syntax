@@ -62,7 +62,7 @@ mark this line line I point S at intersetion
 triangle ABC construct given AB equals 5 cm BC equals 6 cm AC equals 7 cm
 
 6 cm लंबाई का रेखाखंड BC खींचिए
-6 cm length lineSegment BC construct
+6 cm length line segment BC construct
 
 B को केंद्र मानकर और 5 cm त्रिज्या लेकर एक चाप खींचिए
 B center and 5 cm radius arc construct
@@ -119,7 +119,7 @@ BC = 7.5 cm और AC = 5 cm और कोण C = 60 डिग्री वा�
 BC equals 7.5 cm and AC equals 5 cm and angle C equals 60 degrees given triangle ABC construct
 
 6 cm लंबाई का रेखाखंड XY खींचिए
-6 cm length lineSegment XY construct
+6 cm length line segment XY construct
 
 X पर एक किरण XP खींचिए जो XY से 30 डिग्री का कोण बनाए
 X at ray XP construct XY with 30 degrees angle subtending
@@ -143,7 +143,7 @@ triangle PQR construct given PQ equals 5 cm angle PQR equals 105 degrees and ang
 triangle construct given angle LMN isoscelesAngle and LN equals 5 cm and MN equals 3 cm
 
 3 सेमी लंबाई का रेखाखंड MN खींचिए
-3 cm length lineSegment MN construct
+3 cm length line segment MN construct
 
 M पर MX लंब MN खींचिए
 M at MX perpendicular MN construct

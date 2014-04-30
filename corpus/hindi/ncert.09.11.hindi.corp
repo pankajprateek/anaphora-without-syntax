@@ -8,7 +8,7 @@ D and E center and 0.5 DE than greater radius arc construct eachother F at inter
 ray BF construct
 
 A और B को केन्द्र मानकर तथा 0.5 AB से अधिक त्रिज्या लेकर रेखाखंड AB के दोनों ओर एक दूसरे को प्रतिच्छेद करते हुए चाप लगाइये
-A and B center and 0.5 AB than greater radius lineSegment AB both sides eachother intersecting arcs construct
+A and B center and 0.5 AB than greater radius line segment AB both sides eachother intersecting arcs construct
 
 मान लीजिये कि ये चाप एक दूसरे को P और Q पर प्रतिच्छेद करते हैं
 mark these arcs eachother P and Q at intersecting
@@ -59,7 +59,7 @@ base BC construct
 point B at previous angle equal angle XBC construct
 
 किरण BX से AB + AC के बराबर रेखाखंड BD काटिए
-ray BX from AB sum AC equal lineSegment BD cut
+ray BX from AB sum AC equal line segment BD cut
 
 DC को मिलाइए
 DC join
@@ -77,7 +77,7 @@ base BC construct
 point B at previous angle equal angle XBC construct
 
 किरण BX से AB-AC के बराबर रेखाखंड BD काटिए
-ray BX from AB difference AC equal lineSegment BD cut
+ray BX from AB difference AC equal line segment BD cut
 
 DC को मिलाइए
 DC join
@@ -107,7 +107,7 @@ AC को मिलाइए
 AC join
 
 BC + CA + AB के बराबर एक रेखाखण्ड XY खींचिए
-BC sum CA sum AB equal lineSegment XY construct
+BC sum CA sum AB equal line segment XY construct
 
 कोण  B के बराबर कोण LXY बनाइये
 angle B equal angle LXY construct
@@ -128,7 +128,7 @@ AB और AC को मिलाइए
 AB AC join
 
 एक रेखाखंड PQ = 11 cm खींचिए
-lineSegment PQ equals 11 cm construct
+line segment PQ equals 11 cm construct
 ##
 P पर 60 डिग्री का कोण तथा K पर 45 डिग्री का कोण बनाइए
 P at 60 degrees angle and K at 45 degrees angle construct

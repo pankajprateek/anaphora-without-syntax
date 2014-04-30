@@ -32,22 +32,22 @@ A को केंद्र लेकर l को B पर काटता ह�
 A center l B at intersecting arc construct
 
 4 सेमी लम्बाई का एक रेखाखण्ड खींचिए
-4 cm length lineSegment construct
+4 cm length line segment construct
 
 5.6 सेमी लम्बाई का एक रेखाखण्ड खींचिए
-5.6 cm length lineSegment construct
+5.6 cm length line segment construct
 
 7.8 सेमी लम्बाई का एक रेखाखण्ड खींचिए 
-7.8 cm length lineSegment construct
+7.8 cm length line segment construct
 
 इसमें से AC काटिये जिसकी लम्बाई 4.7 सेमी हो
 this from AC cut length 4.7 cm
 
 3.9 सेमी लम्बाई का एक रेखाखण्ड AB खींचिए 
-3.9 cm length lineSegment AB construct
+3.9 cm length line segment AB construct
 
 एक रेखाखण्ड PQ खींचिए जो रेखाखण्ड AB का दोगुना हो 
-lineSegment PQ construct lineSegment AB twice
+line segment PQ construct line segment AB twice
 
 PX खींचिए ताकि PX की लम्बाई AB की लम्बाई के बराबर हो
 PX construct PX length AB length equals
@@ -56,19 +56,19 @@ XQ काटिये ताकि XQ की लम्बाई भी AB की
 XQ cut XQ length AB length equals
 
 4 सेमी लम्बाई का एक रेखाखण्ड AB खींचिए 
-4 cm length lineSegment AB construct
+4 cm length line segment AB construct
 
 3.4 सेमी लम्बाई का रेखाखण्ड CD खींचिए
-3.4 cm length lineSegment CD construct
+3.4 cm length line segment CD construct
 
 एक रेखाखण्ड XY खींचिए ताकि XY की लम्बाई AB और CD कि लम्बाइयों के अंतर के बराबर हो 
-lineSegment XY construct XY length AB and CD length difference equals
+line segment XY construct XY length AB and CD length difference equals
 
 एक चाप लगाइये जो l को D पर काटे 
 arc construct l D at intersecting
 
 एक रेखाखण्ड PQ कि रचना कीजिये जिसकी लम्बाई AB कि लम्बाई कि दोगुनी हो 
-lineSegment PQ construct length AB length twice
+line segment PQ construct length AB length twice
 
 P को केंद्र मानकर और एक सुविधाजनक त्रिज्या लेकर एक चाप लगाइये जो रेखा l को दो बिंदुओं A और B पर प्रतिच्छेद करे
 P center and any radius arc construct line l two points A and B intersecting
@@ -89,7 +89,7 @@ PQ को जोड़िये
 PQ join
 
 एक रेखाखण्ड AB खींचिए 
-lineSegment AB construct
+line segment AB construct
 
 इस पर कोई बिंदु M अंकित कीजिये 
 it on any point M mark
@@ -101,7 +101,7 @@ A और B को केंद्र मानकर 4 सेमी और 5 स
 A and B center 4 cm and 5 cm radius two radius construct eachother C at intersecting
 
 एक रेखाखण्ड PQ खींचिए
-lineSegment PQ construct
+line segment PQ construct
 
 कोई बिंदु R लीजिये जो PQ पर न हो 
 any point R mark PQ on not
@@ -119,7 +119,7 @@ it on point X mark
 line l on perpendicular XY construct
 
 किसी भी लम्बाई का एक रेखाखण्ड AB खींचिए 
-any length lineSegment AB construct
+any length line segment AB construct
 
 A को केंद्र मानकर और त्रिज्या AB के आधे से अधिक लेकर एक वृत्त खींचिए 
 A center and radius AB half than greater circle construct
@@ -137,22 +137,22 @@ CS join
 mark it AB O at intersection
 
 4 सेमी लम्बाई का एक रेखाखण्ड AB खींचिए 
-4 cm length lineSegment AB construct
+4 cm length line segment AB construct
 
 9.5 सेमी लम्बाई एक रेखाखण्ड खींचिए 
-9.5 cm length lineSegment construct
+9.5 cm length line segment construct
 
 रेखाखण्ड XY का लांब समद्विभाजक खींचिए जिसकी लम्बाई 5 सेमी हो
-lineSegment XY perpendicular bisector construct length 5 cm
+line segment XY perpendicular bisector construct length 5 cm
 
 इस लांब समद्विभाजक पर कोई बिंदु P लीजिये
 this perpendicular bisector on any point P mark
 
 लम्बाई 12.8 सेमी वाला एक रेखाखण्ड खींचिए
-length 12.8 cm lineSegment construct
+length 12.8 cm line segment construct
 
 6.1 सेमी लम्बाई का एक रेखाखण्ड PQ खींचिए
-6.1 cm length lineSegment PQ construct
+6.1 cm length line segment PQ construct
 
 A और B को केंद्र मानकर 4 सेमी और 5 सेमी त्रिज्या लेकर दो चाप बनाइये जो परस्पर C पर काटें
 A and B center 4 cm and 5 cm radius two arcs construct eachother C at intersecting
