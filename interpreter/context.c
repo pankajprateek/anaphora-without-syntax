@@ -514,11 +514,11 @@ bool existsLastLineSegment(){
   return context.iln!=0 ?true :false;
 }
 
-char nextAvailablePointLabel = 'A';
+char nextAvailablePointLabel = 'Z';
 
-char reserveNextPointLabel(){
+char reserveNextPointLabel(){  
   char label = nextAvailablePointLabel;
-  nextAvailablePointLabel++;
+  nextAvailablePointLabel--;
   return label;
 }
 

@@ -98,3 +98,5 @@ Point getPointNotOnLabelable(Intersection i, Location *l);
 Intersection *getIntersectionFromPlottables(Plottables p);
 bool containsMultipleObjects(Plottables p);
 Plottables combinePlottables(Plottables a, Plottables b);
+void printIntersection(Intersection p);
+void printPoint(Point p);
