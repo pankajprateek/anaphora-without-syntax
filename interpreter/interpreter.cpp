@@ -18,17 +18,12 @@ string getInterpretation(string parse){
   }
   */
 
-  if(FileDebug) {
-    ofstream file("testing.txt", ios::out|ios::app);
-    file<<"\nParse String:"<<endl<<parse<<endl;
-    file.close();
-  }
-
   Action *action = new Action();
 
   if(DEBUG) cout<<"No. of possibilities " <<mappings.size()<<endl;
   if(mappings.size()==0 and FileDebug) {
     ofstream file("testing.txt", ios::out|ios::app);
+    file<<"\nParse String:"<<endl<<parse<<endl;
     file<<"No mappings generated"<<endl;
     file.close();
   }
@@ -47,6 +42,7 @@ string getInterpretation(string parse){
 	cout<<"All possibilities parsed. No parse tree found"<<endl;
 	if(FileDebug) {
 	  ofstream file("testing.txt", ios::out|ios::app);
+	  file<<"\nParse String:"<<endl<<parse<<endl;
 	  file<<"All possibilities parsed. No parse tree found"<<endl;
 	  file.close();
 	}
@@ -59,11 +55,12 @@ string getInterpretation(string parse){
 
     string preOrder = parseTree.preOrder();
     cout<< "PreOrder Traversal of Tree:" <<endl<< preOrder <<endl;
-    if(FileDebug) {
-      ofstream file("testing.txt", ios::out|ios::app);
-      file<<"Parse Successful. PreOrder Traversal:"<<endl<<preOrder<<endl;
-      file.close();
-    }
+    // if(FileDebug) {
+    //   ofstream file("testing.txt", ios::out|ios::app);
+    //   file<<"\nParse String:"<<endl<<parse<<endl;
+    //   file<<"Parse Successful. PreOrder Traversal:"<<endl<<preOrder<<endl;
+    //   file.close();
+    // }
     ofstream file("preOrder.txt", ios::out);
     file<<parseTree.preOrder()<<endl;
     file.close();

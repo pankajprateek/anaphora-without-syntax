@@ -12,7 +12,7 @@ cut AC length 3.5 cm from this
 
 from this cut AC of length 3.4 cm
 from this cut AC length 3.4 cm
-#
+
 construct PQ such that the length of PQ is twice that of AB
 construct PQ given that length PQ twice AB
 
@@ -36,7 +36,7 @@ A and B centers and radius greater than AP construct two arcs cutting eachother 
 
 Join PQ
 join PQ
-#
+
 With P as center draw an arc which intersects line l at two points A and B
 P center construct arc intersecting line l at two points A and B
 
@@ -111,7 +111,7 @@ draw circle radius 4 cm
 
 Draw any angle with vertex O
 draw any angle vertex O
-#
+
 Take a point A on one of its arms and B on the other
 mark point A on arm it and point B on other
 
@@ -162,7 +162,7 @@ O center construct arc any radius intersecting line PQ at point A
 
 With center as A, now draw an arc that passes through O
 center A construct arc passing through O
-#
+
 mark the intersection points of the two arcs as B
 mark intersection points two arcs B
 
@@ -177,10 +177,10 @@ construct point O on it
 
 with center as O, draw an arc of convenient radius which cuts the previous line at A
 center O construct arc any radius intersecting previous line at A
-##  
+
 with the same radius, draw an arc with A as center which cuts the first arc at B
 same radius construct arc A center intersecting previous arc at B
-##
+
 with same radius and with B as center, draw an arc which cuts the first arc at C
 radius same B center construct arc intersecting previous arc at C
 
@@ -240,7 +240,7 @@ construct it perpendicular bisector
 
 Draw the perpendicular bisector of XY
 construct perpendicular bisector XY
-#
+
 Draw any chord AB
 construct chord AB
 
@@ -252,6 +252,6 @@ construct perpendicular bisectors OA and OB
 
 Draw any two of its chords
 construct two chords it
-#
+
 Construct the perpendicular bisectors of these chords
 construct perpendicular bisectors chords these
