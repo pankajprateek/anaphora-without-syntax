@@ -1,0 +1,15 @@
+How to set up:
+$ make
+
+How to run for English
+$ cd interpreter
+$ make english
+$ python plotter.py
+
+How to run for Hindi
+$ cd interpreter
+$ make hindi
+$ python plotter.py
+
+the implementation is not complete.
+The file interpreter/lyparse.y requires more work to be complete.
