@@ -655,6 +655,7 @@ EQUALS =
 
 previousLength =
     'same'
+    'previous'
 
 previousDegree =
     'same'

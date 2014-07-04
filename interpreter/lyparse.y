@@ -2597,6 +2597,7 @@ EQUALS :
 
 previousLength :
     SAME_T                  { $$ = NULL;  }
+  | PREVIOUS_T                  { $$ = NULL;  }    
 ;
 
 previousDegree :
