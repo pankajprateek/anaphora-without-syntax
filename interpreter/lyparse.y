@@ -1814,6 +1814,25 @@ intersectionPointsAndProperties :
   printf("%c %lf %lf\n", p->points[0].label, p->points[0].x, p->points[0].y);
 	$$ = p;
       }              
+  | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint addressPoint
+      {    
+	Plottables *p = newPlottables();
+	Plottables last = getLastIntersectableObject();
+	printf("Printing last intersectable object\n");
+	printPlottable(last);
+	printf("Printing second last intersectable object\n");
+	Plottables secondLast = getIntersectableObjectBeforePosition(pastObjectsCount-1);
+	printPlottable(secondLast);
+	Intersection *l = getIntersectionFromPlottables(last),
+	  *sl = getIntersectionFromPlottables(secondLast);
+	Point p1 = getIntersectableIntersectableIntersection(*l,*sl, true);
+	Point p2 = getIntersectableIntersectableIntersection(*l,*sl, false);	
+	p1.label = $3->label;
+	updatePlottablesPoint(p, p1);
+	p2.label = $4->label;
+	updatePlottablesPoint(p, p2);
+	$$ = p;
+      }       
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint
       {    
 	Plottables *p = newPlottables();

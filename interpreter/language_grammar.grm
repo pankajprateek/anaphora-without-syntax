@@ -427,6 +427,7 @@ ARM =
 intersectionPointsAndProperties = 
     INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint addressPoint
   | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
+  | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint addressPoint  
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint
 
 INTERSECTIONPOINTS =
