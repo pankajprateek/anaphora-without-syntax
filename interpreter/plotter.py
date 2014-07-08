@@ -90,15 +90,14 @@ class App:
                 f=open("triangle.txt", "w")
                 f.write(strg.encode('utf8').strip())
                 f.close()
-                print sys_exec("./interpret.out < triangle.txt")
-                sys_exec("./interpret.out < triangle.txt")
-                # Writes preOrder String to preOrder.txt
+                interpreter_log = sys_exec("./interpret.out < triangle.txt")
+                print interpreter_log[1]
             else:
                 f=open("preOrder.txt", "w")
                 f.write(strg.encode('utf8').strip())
                 f.close()
-            print sys_exec("./lyparser.out < preOrder.txt")
-            sys_exec("./lyparser.out < preOrder.txt")
+            lyparser_log = sys_exec("./lyparser.out < preOrder.txt")
+            print lyparser_log[1];
             self.readContext()
             self.readDiff()
             #self.updateContext()
