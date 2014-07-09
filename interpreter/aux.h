@@ -100,3 +100,4 @@ bool containsMultipleObjects(Plottables p);
 Plottables combinePlottables(Plottables a, Plottables b);
 void printIntersection(Intersection p);
 void printPoint(Point p);
+void printLineSegment(LineSegment ls);

@@ -2,7 +2,7 @@
 #include "aux.h"
 #include<string.h>
 #include<stdlib.h>
-
+#define ADEBUG 1
 Intersection* newIntersection() {
   Intersection *i = (Intersection*)malloc(sizeof(Intersection));
   memset((void*)i, 0, sizeof(Intersection));
@@ -197,7 +197,7 @@ double getSlope(Point a, Point b){
     if(deltay >= FLOAT_EPSILON) return 90.0;
     else return -90.0;
   }
-  
+
   double slope = atan2(deltay, deltax) * RADIANS_TO_DEGREES;
   return slope;
 }
@@ -215,6 +215,8 @@ Point getMidPoint(Point a, Point b){
 
 Point locatePoint(Point source, double slope, double distance){
   Point c;
+  while(slope < 0.0) slope += 360.0;
+  while(slope > 360.0) slope -= 360.0;
   c.x = source.x + distance*cos(slope*DEGREES_TO_RADIANS);
   c.y = source.y + distance*sin(slope*DEGREES_TO_RADIANS);
   return c;
@@ -312,31 +314,33 @@ LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough){
 }
 
 LineSegment getPerpendicularAt(LineSegment ls, Point at){
+
+  if(ADEBUG){
+	  printf("getPerpendicularAt(");
+	  printLineSegment(ls);
+	  printPoint(at);
+	  printf(")\n");
+  }
   
   double slope = getSlopeLs(ls);
-  double pslope = slope + 90.0;
-  double c = 0.0; //y = mx + c
+  double pslope = slope - 90.0;
 
-  if(abs(abs(pslope) - 90.0) <= FLOAT_EPSILON){
-    c = at.x;
-  } else {
-    //   c = y - mx
-    c = at.y - at.x * tan(pslope * DEGREES_TO_RADIANS);
+  if(ADEBUG){
+	  printf("Slope=%lf\n", slope);
   }
-
+  
   Point dummyPoint;
-  dummyPoint.x = at.x + 2.0;
-  dummyPoint.y = c + dummyPoint.x * tan(pslope * DEGREES_TO_RADIANS);
-
-  LineSegment dummyLs;
-  dummyLs.pA = at;
-  dummyLs.pB = dummyPoint;
-
-  Point in = getLsLsIntersection(ls, dummyLs, true);
-
+  if(abs(abs(pslope) - 90.0) <= FLOAT_EPSILON){
+    dummyPoint.x = at.x;
+    dummyPoint.y = at.y - DEFAULT_LINE_SEGMENT_LENGTH;
+  } else {
+    dummyPoint = locatePoint(at, pslope, DEFAULT_LINE_SEGMENT_LENGTH);
+  }
+  printPoint(dummyPoint);
+  dummyPoint.label = reserveNextPointLabel();
   LineSegment res;
   res.pA = at;
-  res.pB = in;
+  res.pB = dummyPoint;
 
   return res;
 }
@@ -594,4 +598,8 @@ void printIntersection(Intersection p) {
     printf("%c\n", p.c1->center.label);
   if(p.c2)
     printf("%c\n", p.c2->center.label);
+}
+
+void printLineSegment(LineSegment ls){
+	printf("Printing line segment: %c%c %lf\n", ls.pA.label, ls.pB.label, ls.length);
 }
