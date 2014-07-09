@@ -5,6 +5,7 @@
 #include "functions.h"
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #define false 0
 #define true 1
 #define CDEBUG 1
@@ -514,12 +515,24 @@ bool existsLastLineSegment(){
   return context.iln!=0 ?true :false;
 }
 
-char nextAvailablePointLabel = 'Z';
-
-char reserveNextPointLabel(){  
-  char label = nextAvailablePointLabel;
-  nextAvailablePointLabel--;
-  return label;
+char reserveNextPointLabel(){
+  int i, flags[26];
+  
+  for(i=0; i<26; i++) flags[i] = 0;
+  for(i=0; i<context.ip; i++){
+	  flags[ (int) (context.points[i].label - 'A')] = 1;
+  }
+  
+  for(i=0; i<26; i++){
+	  if(flags[i] == 0){
+		//this label has not been used in context
+		return (char)(i+'A');
+	  }
+  }
+  
+  //return random label in case we are out of labels
+  srand(time(NULL));
+  return (char)((rand() % 26) + 'A');
 }
 
 void LineSegmentCopy(LineSegment ls, LineSegment *l) {
