@@ -158,14 +158,14 @@ addressLength1 :
                     }
   | LENGTH addressLineSegment
                     {
-                      assert(existsLineSegmentLabel($2->pA.label, $2->pB.label));                      
+                      //assert(existsLineSegmentLabel($2->pA.label, $2->pB.label));                      
                       Length* length = newLength();
                       length->length = $2->length;
                       $$ = length;
                     }
   | addressLineSegment
                     {
-                      assert(existsLineSegmentLabel($1->pA.label, $1->pB.label));
+                      //assert(existsLineSegmentLabel($1->pA.label, $1->pB.label));
                       Length* length = newLength();
                       length->length = $1->length;
                       $$ = length;
@@ -605,56 +605,53 @@ CM :
 addressLineSegment :
     LINESEGMENT POINTPAIR
       {
-        LineSegment* ls;
-	char lineSeg[2];
-	lineSeg[0] = yylval.sval[0];
-	lineSeg[1] = yylval.sval[1];
+        LineSegment* ls = newLineSegment();
+		char lineSeg[2];
+		lineSeg[0] = yylval.sval[0];
+		lineSeg[1] = yylval.sval[1];
         if(existsLineSegment(lineSeg)){
           *ls = getLineSegment(lineSeg);
         } else {
-          ls = newLineSegment();
-	  ls->pA.label = lineSeg[0];
-	  ls->pB.label = lineSeg[1];
-	  bool existA=false, existB=false;
-	  if(existsPoint(ls->pA)) {
-	    Point X = getPoint(ls->pA.label);
-	    ls->pA.x = X.x;
-	    ls->pA.y = X.y;
-	    existA = true;
-	  } 
-	  if(existsPoint(ls->pB)) {
-	    Point X = getPoint(ls->pB.label);
-	    ls->pB.x = X.x;
-	    ls->pB.y = X.y;
-	    existB = true;
-	  }
-	  //FIXME: Add Point Coordinates when not exist
-	  //TIP: Let's do that in the lineSegmentAndProperties rule
-        }
-        $$ = ls;
+		  ls->pA.label = lineSeg[0];
+		  ls->pB.label = lineSeg[1];
+		  bool existA=false, existB=false;
+		  if(existsPoint(ls->pA)) {
+			ls->pA = getPoint(ls->pA.label);
+			existA = true;
+		  } 
+		  if(existsPoint(ls->pB)) {
+			ls->pB = getPoint(ls->pB.label);
+			existB = true;
+		  }
+		  if(existA && existB){
+			ls->length = getDistance(ls->pA, ls->pB);
+		  }
+		}
+		$$ = ls;
       }
   | POINTPAIR
       {
         LineSegment *ls = newLineSegment();
-	char lineSeg[2];
-	lineSeg[0] = yylval.sval[0];
-	lineSeg[1] = yylval.sval[1];
+		char lineSeg[2];
+		lineSeg[0] = yylval.sval[0];
+		lineSeg[1] = yylval.sval[1];
         if(existsLineSegment(lineSeg)){
           *ls = getLineSegment(lineSeg);
         } else {
-	  ls->pA.label = lineSeg[0];
-	  ls->pB.label = lineSeg[1];
-	  bool existA=false, existB=false;
-	  if(existsPoint(ls->pA)) {
-	    ls->pA = getPoint(ls->pA.label);
-	    existA = true;
-	  } 
-	  if(existsPoint(ls->pB)) {
-	    ls->pB = getPoint(ls->pB.label);
-	    existB = true;
-	  }
-	  //FIXME: Add Point Coordinates when points do not exist
-	  //Let's do this in the lineSegmentAndProperties rule
+		  ls->pA.label = lineSeg[0];
+		  ls->pB.label = lineSeg[1];
+		  bool existA=false, existB=false;
+		  if(existsPoint(ls->pA)) {
+			ls->pA = getPoint(ls->pA.label);
+			existA = true;
+		  } 
+		  if(existsPoint(ls->pB)) {
+			ls->pB = getPoint(ls->pB.label);
+			existB = true;
+		  }
+		  if(existA && existB){
+			ls->length = getDistance(ls->pA, ls->pB);
+		  }
         }
         $$ = ls;
       }
