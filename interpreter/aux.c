@@ -603,3 +603,10 @@ void printIntersection(Intersection p) {
 void printLineSegment(LineSegment ls){
 	printf("Printing line segment: %c%c %lf\n", ls.pA.label, ls.pB.label, ls.length);
 }
+
+double getDistance(Point a, Point b){
+	double dx = b.x - a.x;
+	double dy = b.y - a.y;
+	double distance = sqrt(dx*dx + dy*dy);
+	return distance;
+}
