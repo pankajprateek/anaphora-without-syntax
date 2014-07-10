@@ -1620,31 +1620,33 @@ PARALLEL :
 parallelAndProperties :
     parallelToClause parallelConditionClause
       {
-	LineSegment ls;
-	Plottables *p = newPlottables();
+		LineSegment ls;
+		Plottables *p = newPlottables();
 
-	if($2->passingThroughPoint != NULL){
-	  ls = getParallelPassingThrough(*($1->ls), *($2->passingThroughPoint));
-	} /* else { */
-	/*   ls = getParallelAt(*($1->ls), *($2->atPoint)); */
-	/* } */
+		if($2->passingThroughPoint != NULL){
+		  ls = getParallelPassingThrough(*($1->ls), *($2->passingThroughPoint));
+		} else {
+		  assert(0);
+		}
+		
+		updatePlottablesLineSegment(p, ls);
 
-	updatePlottablesLineSegment(p, ls);
-
-        $$ = p;
+		$$ = p;
       }
 ;
 
 parallelConditionClause :
     AT addressPoint
       {
-	$$ = newParallelization();
-      }    
+		Parallelization *par =  newParallelization();
+		par->passingThroughPoint = $2;
+		$$ = par;
+	}    
   | passingThroughClause
       {
-	Parallelization *par =  newParallelization();
-	par->passingThroughPoint = $1;
-	$$ = par;
+		Parallelization *par =  newParallelization();
+		par->passingThroughPoint = $1;
+		$$ = par;
       }  
 
 ;
