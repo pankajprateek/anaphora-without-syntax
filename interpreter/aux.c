@@ -306,7 +306,6 @@ LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough){
 
   LineSegment res;
   res.pA = passingThrough;
-  res.pA.label = reserveNextPointLabel();
   res.pB = dummyPoint;
   res.pB.label = reserveNextPointLabel();
 
