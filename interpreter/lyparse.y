@@ -1887,55 +1887,30 @@ addressIntersectingObject :
 ;
 
 pointAndProperties : 
-    POINT POINTSINGLET pointAndPropertiesNotOnCase
-      {
-	Plottables *p = newPlottables();
-	Point pt = getPointNotOnLabelable(*$3, NULL);
-	pt.label = $2[0];
-	updatePlottablesPoint(p, pt);
-	$$ = p;
-      }                
-  | POINT POINTSINGLET pointAndPropertiesOnCase markConditionClause
-      {
-	Plottables *p = newPlottables();
-	Point pt = getPointOnLabelable(*$3, $4);
-	pt.label = $2[0];
-	updatePlottablesPoint(p, pt);
-	$$ = p;
-      }              
-  | POINT POINTSINGLET pointAndPropertiesOnCase  
-      {
-	Plottables *p = newPlottables();
-	Point pt = getPointOnLabelable(*$3, NULL);
-	pt.label = $2[0];
-	updatePlottablesPoint(p, pt);
-	$$ = p;
-      }              
-  | POINTSINGLET pointAndPropertiesNotOnCase
+    addressPoint pointAndPropertiesNotOnCase
       {
 	Plottables *p = newPlottables();
 	Point pt = getPointNotOnLabelable(*$2, NULL);
-	pt.label = $1[0];
+	pt.label = $1->label;
 	updatePlottablesPoint(p, pt);
 	$$ = p;
-      }              
-  | POINTSINGLET pointAndPropertiesOnCase markConditionClause
+      }                
+  | addressPoint pointAndPropertiesOnCase markConditionClause
       {
 	Plottables *p = newPlottables();
 	Point pt = getPointOnLabelable(*$2, $3);
-	pt.label = $1[0];
+	pt.label = $1->label;
 	updatePlottablesPoint(p, pt);
 	$$ = p;
       }              
-  | POINTSINGLET pointAndPropertiesOnCase
+  | addressPoint pointAndPropertiesOnCase  
       {
 	Plottables *p = newPlottables();
-
 	Point pt = getPointOnLabelable(*$2, NULL);
-	pt.label = $1[0];
+	pt.label = $1->label;
 	updatePlottablesPoint(p, pt);
 	$$ = p;
-      }              
+      }                           
 ;
 
 markConditionClause :
