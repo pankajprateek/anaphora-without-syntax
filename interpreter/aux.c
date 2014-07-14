@@ -179,13 +179,23 @@ Point _getLsArcIntersection(LineSegment l, Point c, double r, bool above) {
   double y31 = m*(x31-x1) + y1;
   double y32 = m*(x32-x1) + y1;
   Point ret;
-  if(y31 > y32 && above) {
-    ret.x = x31;
-    ret.y = y31;
+  if(above){
+	if(y31 - y32 > FLOAT_EPSILON) {
+	  ret.x = x31;
+	  ret.y = y31;
+	} else {
+	  ret.x = x32;
+	  ret.y = y32;
+	}
   } else {
-    ret.x = x32;
-    ret.y = y32;
-  }
+	if(y32 - y31 > FLOAT_EPSILON) {
+	  ret.x = x31;
+	  ret.y = y31;
+	} else {
+	  ret.x = x32;
+	  ret.y = y32;
+	}
+  }	  
   return ret; 
 }
 
@@ -392,7 +402,7 @@ char reserveNextLineLabel(){
 
 Point getPointOnLabelable(Intersection i, Location *l) {
   int n = getIntersectableObject(i);
-  if(n==1) {
+  if(n==1) { //line segment
     if(l==NULL) {
       Point P;
       P.x = 0.5 * (i.ls1->pA.x + i.ls1->pB.x);
@@ -402,14 +412,22 @@ Point getPointOnLabelable(Intersection i, Location *l) {
       Circle c;
       c.center = l->fromPoint;
       c.radius = l->distance;
-      return getLsCircleIntersection(*i.ls1, c, true);
+      Point p = getLsCircleIntersection(*i.ls1, c, true);
+      //First make sure p actually lies on ls1
+      if(liesOn(p, *i.ls1)){
+		  printf("HERE01\n");
+		  return p;
+	  } else {
+		  printf("HERE02\n");
+		  return getLsCircleIntersection(*i.ls1, c, false);
+	  }
     }
-  } else if(n==3) {
+  } else if(n==3) { //arc
     Point P;
     P.x = i.a1->center.x + i.a1->radius * cos(60);
     P.y = i.a1->center.y + i.a1->radius * sin(60);
     return P;
-  } else if(n==4) {
+  } else if(n==4) { //circle
     Point P;
     P.x = i.c1->center.x + i.c1->radius * cos(60);
     P.y = i.c1->center.y + i.c1->radius * sin(60);
@@ -608,4 +626,15 @@ double getDistance(Point a, Point b){
 	double dy = b.y - a.y;
 	double distance = sqrt(dx*dx + dy*dy);
 	return distance;
+}
+
+bool liesOn(Point p, LineSegment l){
+	double Dx = l.pB.x - l.pA.x, Dy = l.pB.y - l.pA.y;
+	double dx = p.x - l.pA.x, dy = p.y - l.pA.y;
+	if(abs(Dy/Dx - dy/dx) > FLOAT_EPSILON) return false;
+	if( p.x - l.pA.x > FLOAT_EPSILON && p.x - l.pB.x > FLOAT_EPSILON) return false;
+	if( l.pA.x - p.x > FLOAT_EPSILON && l.pB.x - p.x > FLOAT_EPSILON) return false;
+	if( p.y - l.pA.y > FLOAT_EPSILON && p.y - l.pB.y > FLOAT_EPSILON) return false;
+	if( l.pA.y - p.y > FLOAT_EPSILON && l.pB.y - p.y > FLOAT_EPSILON) return false;
+	return true;
 }
