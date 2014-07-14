@@ -1110,6 +1110,23 @@ arcsProperties :
 
 	$$ = p;
       }
+  |  centersClause radiiClause
+      {
+	Plottables *p = newPlottables();
+	Arc a,b;
+	
+	a.center = $1->points[0];
+	a.radius = $2->lengths[0].length;
+
+	updatePlottablesArc(p, a);
+  printf("%lf %lf\n", a.center.x, a.center.y);
+	b.center = $1->points[1];
+	b.radius = $2->lengths[1].length;
+  printf("%lf %lf\n", b.center.x, b.center.y);
+	updatePlottablesArc(p, b);
+
+	$$ = p;
+      }
 ;
 
 
