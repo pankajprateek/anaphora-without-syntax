@@ -74,3 +74,4 @@ int getNumLineSegments();
 int getNumPoints();
 int getNumArcs();
 int getNumCircles();
+bool existsAngleLabel(char leftVertex, char vertex, char rightVertex);
