@@ -3,7 +3,7 @@
 #define bool int
 #define true 1
 #define false 0
-#define MAX_OBJECT_SIZE 100
+#define MAX_NUM_OBJECTS 100
 
 //functions
 void updateObjects(Plottables p);
