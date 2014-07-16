@@ -468,12 +468,12 @@ Angle getAngle(char name[]) {
 }
     
 Point getPointAtPosition(int i) {
-  assert(i<context.ip);
+  assert(i<context.ip && i >=0);
   return context.points[i];
 }
 
 LineSegment getLineSegmentAtPosition(int i) {
-  assert(i<context.ils);
+  assert(i<context.ils && i >=0);
   return context.lineSegments[i];
 }
     
@@ -502,7 +502,7 @@ Arc getLastArc(){
 }
 
 Arc getArcAtPosition(int i) {
-  assert(i<context.ia);
+  assert(i<context.ia && i >=0);
   return context.arcs[i];
 }
 
@@ -511,7 +511,7 @@ Circle getLastCircle(){
 }
 
 Circle getCircleAtPosition(int i) {
-  assert(i<context.ic);
+  assert(i<context.ic && i >=0);
   return context.circles[i];
 }
     
