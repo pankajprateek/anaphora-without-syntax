@@ -158,14 +158,14 @@ addressLength1 :
                     }
   | LENGTH addressLineSegment
                     {
-                      assert(existsLineSegmentLabel($2->pA.label, $2->pB.label));                      
+                      //assert(existsLineSegmentLabel($2->pA.label, $2->pB.label));                      
                       Length* length = newLength();
                       length->length = $2->length;
                       $$ = length;
                     }
   | addressLineSegment
                     {
-                      assert(existsLineSegmentLabel($1->pA.label, $1->pB.label));
+                      //assert(existsLineSegmentLabel($1->pA.label, $1->pB.label));
                       Length* length = newLength();
                       length->length = $1->length;
                       $$ = length;
@@ -605,56 +605,53 @@ CM :
 addressLineSegment :
     LINESEGMENT POINTPAIR
       {
-        LineSegment* ls;
-	char lineSeg[2];
-	lineSeg[0] = yylval.sval[0];
-	lineSeg[1] = yylval.sval[1];
+        LineSegment* ls = newLineSegment();
+		char lineSeg[2];
+		lineSeg[0] = yylval.sval[0];
+		lineSeg[1] = yylval.sval[1];
         if(existsLineSegment(lineSeg)){
           *ls = getLineSegment(lineSeg);
         } else {
-          ls = newLineSegment();
-	  ls->pA.label = lineSeg[0];
-	  ls->pB.label = lineSeg[1];
-	  bool existA=false, existB=false;
-	  if(existsPoint(ls->pA)) {
-	    Point X = getPoint(ls->pA.label);
-	    ls->pA.x = X.x;
-	    ls->pA.y = X.y;
-	    existA = true;
-	  } 
-	  if(existsPoint(ls->pB)) {
-	    Point X = getPoint(ls->pB.label);
-	    ls->pB.x = X.x;
-	    ls->pB.y = X.y;
-	    existB = true;
-	  }
-	  //FIXME: Add Point Coordinates when not exist
-	  //TIP: Let's do that in the lineSegmentAndProperties rule
-        }
-        $$ = ls;
+		  ls->pA.label = lineSeg[0];
+		  ls->pB.label = lineSeg[1];
+		  bool existA=false, existB=false;
+		  if(existsPoint(ls->pA)) {
+			ls->pA = getPoint(ls->pA.label);
+			existA = true;
+		  } 
+		  if(existsPoint(ls->pB)) {
+			ls->pB = getPoint(ls->pB.label);
+			existB = true;
+		  }
+		  if(existA && existB){
+			ls->length = getDistance(ls->pA, ls->pB);
+		  }
+		}
+		$$ = ls;
       }
   | POINTPAIR
       {
         LineSegment *ls = newLineSegment();
-	char lineSeg[2];
-	lineSeg[0] = yylval.sval[0];
-	lineSeg[1] = yylval.sval[1];
+		char lineSeg[2];
+		lineSeg[0] = yylval.sval[0];
+		lineSeg[1] = yylval.sval[1];
         if(existsLineSegment(lineSeg)){
           *ls = getLineSegment(lineSeg);
         } else {
-	  ls->pA.label = lineSeg[0];
-	  ls->pB.label = lineSeg[1];
-	  bool existA=false, existB=false;
-	  if(existsPoint(ls->pA)) {
-	    ls->pA = getPoint(ls->pA.label);
-	    existA = true;
-	  } 
-	  if(existsPoint(ls->pB)) {
-	    ls->pB = getPoint(ls->pB.label);
-	    existB = true;
-	  }
-	  //FIXME: Add Point Coordinates when points do not exist
-	  //Let's do this in the lineSegmentAndProperties rule
+		  ls->pA.label = lineSeg[0];
+		  ls->pB.label = lineSeg[1];
+		  bool existA=false, existB=false;
+		  if(existsPoint(ls->pA)) {
+			ls->pA = getPoint(ls->pA.label);
+			existA = true;
+		  } 
+		  if(existsPoint(ls->pB)) {
+			ls->pB = getPoint(ls->pB.label);
+			existB = true;
+		  }
+		  if(existA && existB){
+			ls->length = getDistance(ls->pA, ls->pB);
+		  }
         }
         $$ = ls;
       }
@@ -1110,6 +1107,23 @@ arcsProperties :
 	  pB.label = $3->points[1].label;
 	  updatePlottablesPoint(p, pB);
 	}
+
+	$$ = p;
+      }
+  |  centersClause radiiClause
+      {
+	Plottables *p = newPlottables();
+	Arc a,b;
+	
+	a.center = $1->points[0];
+	a.radius = $2->lengths[0].length;
+
+	updatePlottablesArc(p, a);
+  printf("%lf %lf\n", a.center.x, a.center.y);
+	b.center = $1->points[1];
+	b.radius = $2->lengths[1].length;
+  printf("%lf %lf\n", b.center.x, b.center.y);
+	updatePlottablesArc(p, b);
 
 	$$ = p;
       }
@@ -1623,31 +1637,33 @@ PARALLEL :
 parallelAndProperties :
     parallelToClause parallelConditionClause
       {
-	LineSegment ls;
-	Plottables *p = newPlottables();
+		LineSegment ls;
+		Plottables *p = newPlottables();
 
-	if($2->passingThroughPoint != NULL){
-	  ls = getParallelPassingThrough(*($1->ls), *($2->passingThroughPoint));
-	} /* else { */
-	/*   ls = getParallelAt(*($1->ls), *($2->atPoint)); */
-	/* } */
+		if($2->passingThroughPoint != NULL){
+		  ls = getParallelPassingThrough(*($1->ls), *($2->passingThroughPoint));
+		} else {
+		  assert(0);
+		}
+		
+		updatePlottablesLineSegment(p, ls);
 
-	updatePlottablesLineSegment(p, ls);
-
-        $$ = p;
+		$$ = p;
       }
 ;
 
 parallelConditionClause :
     AT addressPoint
       {
-	$$ = newParallelization();
-      }    
+		Parallelization *par =  newParallelization();
+		par->passingThroughPoint = $2;
+		$$ = par;
+	}    
   | passingThroughClause
       {
-	Parallelization *par =  newParallelization();
-	par->passingThroughPoint = $1;
-	$$ = par;
+		Parallelization *par =  newParallelization();
+		par->passingThroughPoint = $1;
+		$$ = par;
       }  
 
 ;
@@ -1814,6 +1830,25 @@ intersectionPointsAndProperties :
   printf("%c %lf %lf\n", p->points[0].label, p->points[0].x, p->points[0].y);
 	$$ = p;
       }              
+  | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint addressPoint
+      {    
+	Plottables *p = newPlottables();
+	Plottables last = getLastIntersectableObject();
+	printf("Printing last intersectable object\n");
+	printPlottable(last);
+	printf("Printing second last intersectable object\n");
+	Plottables secondLast = getIntersectableObjectBeforePosition(pastObjectsCount-1);
+	printPlottable(secondLast);
+	Intersection *l = getIntersectionFromPlottables(last),
+	  *sl = getIntersectionFromPlottables(secondLast);
+	Point p1 = getIntersectableIntersectableIntersection(*l,*sl, true);
+	Point p2 = getIntersectableIntersectableIntersection(*l,*sl, false);	
+	p1.label = $3->label;
+	updatePlottablesPoint(p, p1);
+	p2.label = $4->label;
+	updatePlottablesPoint(p, p2);
+	$$ = p;
+      }       
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint
       {    
 	Plottables *p = newPlottables();
@@ -1869,55 +1904,30 @@ addressIntersectingObject :
 ;
 
 pointAndProperties : 
-    POINT POINTSINGLET pointAndPropertiesNotOnCase
-      {
-	Plottables *p = newPlottables();
-	Point pt = getPointNotOnLabelable(*$3, NULL);
-	pt.label = $2[0];
-	updatePlottablesPoint(p, pt);
-	$$ = p;
-      }                
-  | POINT POINTSINGLET pointAndPropertiesOnCase markConditionClause
-      {
-	Plottables *p = newPlottables();
-	Point pt = getPointOnLabelable(*$3, $4);
-	pt.label = $2[0];
-	updatePlottablesPoint(p, pt);
-	$$ = p;
-      }              
-  | POINT POINTSINGLET pointAndPropertiesOnCase  
-      {
-	Plottables *p = newPlottables();
-	Point pt = getPointOnLabelable(*$3, NULL);
-	pt.label = $2[0];
-	updatePlottablesPoint(p, pt);
-	$$ = p;
-      }              
-  | POINTSINGLET pointAndPropertiesNotOnCase
+    addressPoint pointAndPropertiesNotOnCase
       {
 	Plottables *p = newPlottables();
 	Point pt = getPointNotOnLabelable(*$2, NULL);
-	pt.label = $1[0];
+	pt.label = $1->label;
 	updatePlottablesPoint(p, pt);
 	$$ = p;
-      }              
-  | POINTSINGLET pointAndPropertiesOnCase markConditionClause
+      }                
+  | addressPoint pointAndPropertiesOnCase markConditionClause
       {
 	Plottables *p = newPlottables();
 	Point pt = getPointOnLabelable(*$2, $3);
-	pt.label = $1[0];
+	pt.label = $1->label;
 	updatePlottablesPoint(p, pt);
 	$$ = p;
       }              
-  | POINTSINGLET pointAndPropertiesOnCase
+  | addressPoint pointAndPropertiesOnCase  
       {
 	Plottables *p = newPlottables();
-
 	Point pt = getPointOnLabelable(*$2, NULL);
-	pt.label = $1[0];
+	pt.label = $1->label;
 	updatePlottablesPoint(p, pt);
 	$$ = p;
-      }              
+      }                           
 ;
 
 markConditionClause :
@@ -2597,6 +2607,7 @@ EQUALS :
 
 previousLength :
     SAME_T                  { $$ = NULL;  }
+  | PREVIOUS_T                  { $$ = NULL;  }    
 ;
 
 previousDegree :

@@ -5,11 +5,54 @@
 #include "functions.h"
 #include<assert.h>
 
-Plottables pastObjects[MAX_OBJECT_SIZE];
+Plottables pastObjects[MAX_NUM_OBJECTS];
 int pastObjectsCount;
 
 void updateObjects(Plottables p) {
-  pastObjects[pastObjectsCount++] = p;
+  int i;
+  int l;
+
+  l = p.ip;
+  for(i=0;i<l;i++) {//points
+    int ip = pastObjects[pastObjectsCount].ip++;
+    pastObjects[ pastObjectsCount ].points[ ip ] = p.points[i];
+    pastObjectsCount ++;
+  }
+
+  l = p.ils;
+  for(i=0;i<l;i++) {//line segments
+    int ils = pastObjects[pastObjectsCount].ils++;
+    pastObjects[ pastObjectsCount ].lineSegments[ ils ] = p.lineSegments[i];
+    pastObjectsCount ++;
+  }
+
+  l = p.ia;
+  for(i=0;i<l;i++) {//arcs
+    int ia = pastObjects[pastObjectsCount].ia++;
+    pastObjects[ pastObjectsCount ].arcs[ ia ] = p.arcs[i];
+    pastObjectsCount ++;
+  }
+
+  l = p.iln;
+  for(i=0;i<l;i++) {//lines
+    int iln = pastObjects[pastObjectsCount].iln++;
+    pastObjects[ pastObjectsCount ].lines[ iln ] = p.lines[i];
+    pastObjectsCount ++;
+  }
+
+  l = p.ic;
+  for(i=0;i<l;i++) {//circles
+    int ic = pastObjects[pastObjectsCount].ic++;
+    pastObjects[ pastObjectsCount ].circles[ ic ] = p.circles[i];
+    pastObjectsCount ++;
+  }
+
+  l = p.ian;
+  for(i=0;i<l;i++) {//angles
+    int ian = pastObjects[pastObjectsCount].ian++;
+    pastObjects[ pastObjectsCount ].angles[ ian ] = p.angles[i];
+    pastObjectsCount ++;  
+  }
 }
 
 Plottables getObjectAtPosition(int i) {

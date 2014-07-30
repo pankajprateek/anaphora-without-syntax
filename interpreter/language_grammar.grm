@@ -215,6 +215,7 @@ ARCS =
 
 arcsProperties =
     centersClause radiiClause mutualIntersectionClause
+  | centersClause radiiClause
 
 arcProperties =
     centerClause radiusClause intersectionClause
@@ -437,6 +438,7 @@ ARM =
 intersectionPointsAndProperties = 
     INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint addressPoint
   | INTERSECTIONPOINTS addressIntersectingObject addressIntersectingObject addressPoint
+  | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint addressPoint  
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint
 
 INTERSECTIONPOINTS =
@@ -453,12 +455,9 @@ addressIntersectingObject =
   | addressPreviousObjects
 
 pointAndProperties = 
-    POINT POINTSINGLET pointAndPropertiesNotOnCase
-  | POINT POINTSINGLET pointAndPropertiesOnCase markConditionClause
-  | POINT POINTSINGLET pointAndPropertiesOnCase  
-  | POINTSINGLET pointAndPropertiesNotOnCase
-  | POINTSINGLET pointAndPropertiesOnCase markConditionClause
-  | POINTSINGLET pointAndPropertiesOnCase
+    addressPoint pointAndPropertiesNotOnCase
+  | addressPoint pointAndPropertiesOnCase markConditionClause
+  | addressPoint pointAndPropertiesOnCase
 
 markConditionClause =
     DISTANCEFROM addressPoint addressLength
@@ -665,6 +664,7 @@ EQUALS =
 
 previousLength =
     'same'
+    'previous'
 
 previousDegree =
     'same'

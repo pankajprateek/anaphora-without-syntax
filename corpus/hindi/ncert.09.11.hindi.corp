@@ -20,10 +20,10 @@ PK join
 mark PQ AB point M at intersection
 
 A को केन्द्र मानकर तथा कोई त्रिज्या लेकर एक चाप खींचिए जो AB को D पर प्रतिच्छेद करता है
-A center and any radius arc construct AB D at intersecting
+A center and any radius one arc construct AB D at intersecting
 
 D को केन्द्र मानकर और पिछली त्रिज्या लेकर एक चाप खींचिए, जो पिछली चाप को बिन्दु E पर प्रतिच्छेद करता है
-D center and previous radius arc construct previous arc point E at intersecting
+D center and previous radius one arc construct previous arc point E at intersecting
 
 E से जाने वाली किरण AC खींचिए
 E through passing ray AC construct
@@ -107,7 +107,7 @@ AC को मिलाइए
 AC join
 
 BC + CA + AB के बराबर एक रेखाखण्ड XY खींचिए
-BC sum CA sum AB equal line segment XY construct
+BC sum CA sum AB equal one line segment XY construct
 
 कोण  B के बराबर कोण LXY बनाइये
 angle B equal angle LXY construct
@@ -116,7 +116,7 @@ angle B equal angle LXY construct
 angle MYX bisect
 
 मान  लीजिए ये समद्विभाजक एक बिन्दु A पर प्रतिच्छेद करते हैं
-mark these bisectors point A at intersection
+mark these bisectors one point A at intersection
 ##
 AX का लम्ब समद्विभाजक PQ तथा AY का लम्ब समद्विभाजक RS खींचिए
 AX perpendicular bisector PQ and AY perpendicular bisector RS construct
@@ -128,7 +128,7 @@ AB और AC को मिलाइए
 AB AC join
 
 एक रेखाखंड PQ = 11 cm खींचिए
-line segment PQ equals 11 cm construct
+one line segment PQ equals 11 cm construct
 ##
 P पर 60 डिग्री का कोण तथा K पर 45 डिग्री का कोण बनाइए
 P at 60 degrees angle and K at 45 degrees angle construct
@@ -137,7 +137,7 @@ P at 60 degrees angle and K at 45 degrees angle construct
 these angle bisect
 
 मान लीजिए कि ये समद्विभाजक एक बिन्दु A पर प्रतिच्छेद करते हैं
-mark these bisectors point A at intersection
+mark these bisectors one point A at intersection
 
 AP का लंब समद्विभाजक DE खींचिए जो PQ को बिन्दु B पर प्रतिच्छेद करता है
 AP perpendicular bisector DE construct PQ point B at intersecting
@@ -149,16 +149,16 @@ AB और AC को मिलाइए
 AB AC join
 
 एक त्रिभुज ABC की रचना कीजिए, जिसमें BC = 7cm , कोण B = 75 डिग्री और AB + AC = 13 cm हो
-triangle ABC construct given BC equals 7 cm angle B equals 75 degrees AB sum AC equals 13 cm
+one triangle ABC construct given BC equals 7 cm angle B equals 75 degrees AB sum AC equals 13 cm
 
 एक त्रिभुज ABC की रचना कीजिए, जिसमें BC = 8 cm, कोण B = 45 डिग्री और AB - AC = 3.5 cm हो
-triangle ABC construct given BC equals 8 cm angle B equals 45 degrees AB difference AC equals 3.5 cm
+one triangle ABC construct given BC equals 8 cm angle B equals 45 degrees AB difference AC equals 3.5 cm
 
 एक त्रिभुज PQR की रचना कीजिए, जिसमें QR = 6 cm, कोण Q = 60 डिग्री और PR - PQ = 2 cm हो
-triangle PQR construct given QR equals 6 cm angle Q equals 60 degrees PR difference PQ equals 2 cm
+one triangle PQR construct given QR equals 6 cm angle Q equals 60 degrees PR difference PQ equals 2 cm
 
 एक त्रिभुज XYZ की रचना कीजिए, जिसमें कोण Y = 30 डिग्री, कोण Z = 90 डिग्री और XY + YZ + ZX = 11 cm हो
-triangle XYZ construct given angle Y equals 30 degrees angle Z equals 90 degrees XY sum YZ sum ZX equals 11 cm
+one triangle XYZ construct given angle Y equals 30 degrees angle Z equals 90 degrees XY sum YZ sum ZX equals 11 cm
 ##
 #एक समकोण त्रिभुज की रचना कीजिए, जिसका आधार 12 cm और कर्ण तथा अन्य भुजा का योग 18cm है
-#right triangle construct base 12 cm product and 
+#one right triangle construct base 12 cm product and 

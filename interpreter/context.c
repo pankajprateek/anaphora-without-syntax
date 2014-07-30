@@ -5,6 +5,7 @@
 #include "functions.h"
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #define false 0
 #define true 1
 #define CDEBUG 1
@@ -254,12 +255,16 @@ void writeDiff(Plottables p) {
   fprintf(f, "~POINTS\n");
   int l = p.ip;
   for(i=0;i<l;i++) {
-    fprintf(f, "%c %lf %lf\n", p.points[i].label, p.points[i].x, p.points[i].y);
+    if(!existsPoint(p.points[i])){
+     fprintf(f, "%c %lf %lf\n", p.points[i].label, p.points[i].x, p.points[i].y);
+    }
   }
   fprintf(f, "~LINESEGMENTS\n");
   l = p.ils;
   for(i=0;i<l;i++) {
-    fprintf(f, "%c %c\n", p.lineSegments[i].pA.label, p.lineSegments[i].pB.label);
+    if(!existsLineSegmentLabel(p.lineSegments[i].pA.label, p.lineSegments[i].pB.label)){
+     fprintf(f, "%c %c\n", p.lineSegments[i].pA.label, p.lineSegments[i].pB.label);
+    }
   }
   fprintf(f, "~LINES\n");
   l = p.iln;
@@ -269,17 +274,23 @@ void writeDiff(Plottables p) {
   fprintf(f, "~ARCS\n");
   l = p.ia;
   for(i=0;i<l;i++) {
-    fprintf(f, "%c %lf\n", p.arcs[i].center.label, p.arcs[i].radius);
+    if(!existsArc(p.arcs[i])){
+     fprintf(f, "%c %lf\n", p.arcs[i].center.label, p.arcs[i].radius);
+    }
   }
   fprintf(f, "~ANGLE\n");
   l = p.ian;
   for(i=0;i<l;i++) {
-    fprintf(f, "%c %c %c %lf\n", p.angles[i].vertex.label, p.angles[i].leftVertex.label, p.angles[i].rightVertex.label, p.angles[i].degree);
+    if(!existsAngleLabel(p.angles[i].leftVertex.label, p.angles[i].vertex.label, p.angles[i].rightVertex.label)){
+     fprintf(f, "%c %c %c %lf\n", p.angles[i].vertex.label, p.angles[i].leftVertex.label, p.angles[i].rightVertex.label, p.angles[i].degree);
+    }
   }
   fprintf(f, "~CIRCLE\n");
   l = p.ic;
   for(i=0;i<l;i++) {
-    fprintf(f, "%c %lf\n", p.circles[i].center.label, p.circles[i].radius);
+    if(!existsCircle(p.circles[i])){
+     fprintf(f, "%c %lf\n", p.circles[i].center.label, p.circles[i].radius);
+    }
   }
   fclose(f);
 }
@@ -399,12 +410,21 @@ bool existsLastPoint(){
   return context.ip != 0 ? true : false;
 }
 
+bool existsAngleLabel(char leftVertex, char vertex, char rightVertex){
+ char name[3];
+ name[0] = leftVertex;
+ name[1] = vertex;
+ name[2] = rightVertex;
+ return existsAngle(name);
+}
 
 bool existsAngle(char name[]) {
   int i;
   int l = context.ian;
   for(i=0;i<l;i++) {
     if( (context.angles[i].vertex.label == name[1]) && ( (context.angles[i].rightVertex.label == name[0] && context.angles[i].leftVertex.label == name[2]) || (context.angles[i].leftVertex.label == name[2] && context.angles[i].rightVertex.label == name[0]) ) )
+      return true;
+    if( (context.angles[i].vertex.label == name[1]) && ( (context.angles[i].rightVertex.label == name[2] && context.angles[i].leftVertex.label == name[0]) || (context.angles[i].leftVertex.label == name[2] && context.angles[i].rightVertex.label == name[0]) ) )
       return true;
   }
   return false;
@@ -448,12 +468,12 @@ Angle getAngle(char name[]) {
 }
     
 Point getPointAtPosition(int i) {
-  assert(i<context.ip);
+  assert(i<context.ip && i >=0);
   return context.points[i];
 }
 
 LineSegment getLineSegmentAtPosition(int i) {
-  assert(i<context.ils);
+  assert(i<context.ils && i >=0);
   return context.lineSegments[i];
 }
     
@@ -482,7 +502,7 @@ Arc getLastArc(){
 }
 
 Arc getArcAtPosition(int i) {
-  assert(i<context.ia);
+  assert(i<context.ia && i >=0);
   return context.arcs[i];
 }
 
@@ -491,7 +511,7 @@ Circle getLastCircle(){
 }
 
 Circle getCircleAtPosition(int i) {
-  assert(i<context.ic);
+  assert(i<context.ic && i >=0);
   return context.circles[i];
 }
     
@@ -514,12 +534,24 @@ bool existsLastLineSegment(){
   return context.iln!=0 ?true :false;
 }
 
-char nextAvailablePointLabel = 'Z';
-
-char reserveNextPointLabel(){  
-  char label = nextAvailablePointLabel;
-  nextAvailablePointLabel--;
-  return label;
+char reserveNextPointLabel(){
+  int i, flags[26];
+  
+  for(i=0; i<26; i++) flags[i] = 0;
+  for(i=0; i<context.ip; i++){
+	  flags[ (int) (context.points[i].label - 'A')] = 1;
+  }
+  
+  for(i=0; i<26; i++){
+	  if(flags[i] == 0){
+		//this label has not been used in context
+		return (char)(i+'A');
+	  }
+  }
+  
+  //return random label in case we are out of labels
+  srand(time(NULL));
+  return (char)((rand() % 26) + 'A');
 }
 
 void LineSegmentCopy(LineSegment ls, LineSegment *l) {

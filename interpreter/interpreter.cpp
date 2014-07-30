@@ -65,9 +65,6 @@ string getInterpretation(string parse){
     file<<parseTree.preOrder()<<endl;
     file.close();
     
-    //return action->toString();
-    if(DEBUG) cout<<"HERE"<<endl;
-    
     return action->toString();
     
     action->extractAction(parseTree);

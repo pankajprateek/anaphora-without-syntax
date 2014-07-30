@@ -2,7 +2,7 @@
 #include "aux.h"
 #include<string.h>
 #include<stdlib.h>
-
+#define ADEBUG 1
 Intersection* newIntersection() {
   Intersection *i = (Intersection*)malloc(sizeof(Intersection));
   memset((void*)i, 0, sizeof(Intersection));
@@ -179,13 +179,23 @@ Point _getLsArcIntersection(LineSegment l, Point c, double r, bool above) {
   double y31 = m*(x31-x1) + y1;
   double y32 = m*(x32-x1) + y1;
   Point ret;
-  if(y31 > y32 && above) {
-    ret.x = x31;
-    ret.y = y31;
+  if(above){
+	if(y31 - y32 > FLOAT_EPSILON) {
+	  ret.x = x31;
+	  ret.y = y31;
+	} else {
+	  ret.x = x32;
+	  ret.y = y32;
+	}
   } else {
-    ret.x = x32;
-    ret.y = y32;
-  }
+	if(y32 - y31 > FLOAT_EPSILON) {
+	  ret.x = x31;
+	  ret.y = y31;
+	} else {
+	  ret.x = x32;
+	  ret.y = y32;
+	}
+  }	  
   return ret; 
 }
 
@@ -197,7 +207,7 @@ double getSlope(Point a, Point b){
     if(deltay >= FLOAT_EPSILON) return 90.0;
     else return -90.0;
   }
-  
+
   double slope = atan2(deltay, deltax) * RADIANS_TO_DEGREES;
   return slope;
 }
@@ -215,6 +225,8 @@ Point getMidPoint(Point a, Point b){
 
 Point locatePoint(Point source, double slope, double distance){
   Point c;
+  while(slope < 0.0) slope += 360.0;
+  while(slope > 360.0) slope -= 360.0;
   c.x = source.x + distance*cos(slope*DEGREES_TO_RADIANS);
   c.y = source.y + distance*sin(slope*DEGREES_TO_RADIANS);
   return c;
@@ -304,7 +316,6 @@ LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough){
 
   LineSegment res;
   res.pA = passingThrough;
-  res.pA.label = reserveNextPointLabel();
   res.pB = dummyPoint;
   res.pB.label = reserveNextPointLabel();
 
@@ -312,31 +323,33 @@ LineSegment getParallelPassingThrough(LineSegment ls, Point passingThrough){
 }
 
 LineSegment getPerpendicularAt(LineSegment ls, Point at){
+
+  if(ADEBUG){
+	  printf("getPerpendicularAt(");
+	  printLineSegment(ls);
+	  printPoint(at);
+	  printf(")\n");
+  }
   
   double slope = getSlopeLs(ls);
-  double pslope = slope + 90.0;
-  double c = 0.0; //y = mx + c
+  double pslope = slope - 90.0;
 
-  if(abs(abs(pslope) - 90.0) <= FLOAT_EPSILON){
-    c = at.x;
-  } else {
-    //   c = y - mx
-    c = at.y - at.x * tan(pslope * DEGREES_TO_RADIANS);
+  if(ADEBUG){
+	  printf("Slope=%lf\n", slope);
   }
-
+  
   Point dummyPoint;
-  dummyPoint.x = at.x + 2.0;
-  dummyPoint.y = c + dummyPoint.x * tan(pslope * DEGREES_TO_RADIANS);
-
-  LineSegment dummyLs;
-  dummyLs.pA = at;
-  dummyLs.pB = dummyPoint;
-
-  Point in = getLsLsIntersection(ls, dummyLs, true);
-
+  if(abs(abs(pslope) - 90.0) <= FLOAT_EPSILON){
+    dummyPoint.x = at.x;
+    dummyPoint.y = at.y - DEFAULT_LINE_SEGMENT_LENGTH;
+  } else {
+    dummyPoint = locatePoint(at, pslope, DEFAULT_LINE_SEGMENT_LENGTH);
+  }
+  printPoint(dummyPoint);
+  dummyPoint.label = reserveNextPointLabel();
   LineSegment res;
   res.pA = at;
-  res.pB = in;
+  res.pB = dummyPoint;
 
   return res;
 }
@@ -389,7 +402,7 @@ char reserveNextLineLabel(){
 
 Point getPointOnLabelable(Intersection i, Location *l) {
   int n = getIntersectableObject(i);
-  if(n==1) {
+  if(n==1) { //line segment
     if(l==NULL) {
       Point P;
       P.x = 0.5 * (i.ls1->pA.x + i.ls1->pB.x);
@@ -399,14 +412,22 @@ Point getPointOnLabelable(Intersection i, Location *l) {
       Circle c;
       c.center = l->fromPoint;
       c.radius = l->distance;
-      return getLsCircleIntersection(*i.ls1, c, true);
+      Point p = getLsCircleIntersection(*i.ls1, c, true);
+      //First make sure p actually lies on ls1
+      if(liesOn(p, *i.ls1)){
+		  printf("HERE01\n");
+		  return p;
+	  } else {
+		  printf("HERE02\n");
+		  return getLsCircleIntersection(*i.ls1, c, false);
+	  }
     }
-  } else if(n==3) {
+  } else if(n==3) { //arc
     Point P;
     P.x = i.a1->center.x + i.a1->radius * cos(60);
     P.y = i.a1->center.y + i.a1->radius * sin(60);
     return P;
-  } else if(n==4) {
+  } else if(n==4) { //circle
     Point P;
     P.x = i.c1->center.x + i.c1->radius * cos(60);
     P.y = i.c1->center.y + i.c1->radius * sin(60);
@@ -594,4 +615,26 @@ void printIntersection(Intersection p) {
     printf("%c\n", p.c1->center.label);
   if(p.c2)
     printf("%c\n", p.c2->center.label);
+}
+
+void printLineSegment(LineSegment ls){
+	printf("Printing line segment: %c%c %lf\n", ls.pA.label, ls.pB.label, ls.length);
+}
+
+double getDistance(Point a, Point b){
+	double dx = b.x - a.x;
+	double dy = b.y - a.y;
+	double distance = sqrt(dx*dx + dy*dy);
+	return distance;
+}
+
+bool liesOn(Point p, LineSegment l){
+	double Dx = l.pB.x - l.pA.x, Dy = l.pB.y - l.pA.y;
+	double dx = p.x - l.pA.x, dy = p.y - l.pA.y;
+	if(abs(Dy/Dx - dy/dx) > FLOAT_EPSILON) return false;
+	if( p.x - l.pA.x > FLOAT_EPSILON && p.x - l.pB.x > FLOAT_EPSILON) return false;
+	if( l.pA.x - p.x > FLOAT_EPSILON && l.pB.x - p.x > FLOAT_EPSILON) return false;
+	if( p.y - l.pA.y > FLOAT_EPSILON && p.y - l.pB.y > FLOAT_EPSILON) return false;
+	if( l.pA.y - p.y > FLOAT_EPSILON && l.pB.y - p.y > FLOAT_EPSILON) return false;
+	return true;
 }
