@@ -2074,23 +2074,23 @@ addressIntersectablePreviousObjects :
 addressPreviousObjects :
    THIS object
    {
-    $$ = $1;
+    $$ = $2;
    }      
  | THESE objects
       {
-    $$ = $1;
+    $$ = $2;
       }        
   | PREVIOUS object
       {
-    $$ = $1;
+    $$ = $2;
       }      
   | PREVIOUS objects
       {
-    $$ = $1;
+    $$ = $2;
       }        
   | THOSE objects
       {
-    $$ = $1;
+    $$ = $2;
       }        
   | addressIndefinitePreviousObjects
       {
