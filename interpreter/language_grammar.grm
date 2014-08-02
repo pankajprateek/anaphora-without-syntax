@@ -142,7 +142,7 @@ addressLineSegment =
     LINESEGMENT POINTPAIR
   | POINTPAIR
   | adjectivePrevious LINESEGMENT
-  | addressFreeObject
+  | adjectiveFree LINESEGMENT
 
 angleAndProperties =
     genericAngleAndProperties
@@ -478,7 +478,7 @@ addressLine =
     [a-z]
   | LINE [a-z]
   | adjectivePrevious LINE
-  | addressFreeObject
+  | adjectiveFree LINE
 
 addressArc =
   | adjectivePrevious ARC
@@ -601,9 +601,9 @@ addressPoint =
     POINTSINGLET
   | POINT POINTSINGLET
   | adjectivePrevious POINT
-  | addressFreeObject
+  | adjectiveFree POINT
 
-addressFreeObject =
+adjectiveFree =
     'ANY'
 
 ANY =
@@ -635,7 +635,7 @@ addressCircle =
     CIRCLE AT POINTSINGLET
   | CIRCLE CENTER POINTSINGLET
   | adjectivePrevious CIRCLE
-  | addressFreeObject
+  | adjectiveFree CIRCLE
 
 FROM =
   'from'
