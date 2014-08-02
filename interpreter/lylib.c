@@ -49,6 +49,9 @@ char* newString(char *s){
 
 Plottables* newPlottables(){
   Plottables *p = (Plottables*)malloc(sizeof(Plottables));
+  p->type = INDEFINITE_D;
+  p->class = INDEFINITE_D;
+  p->singleton = false;
   p->ip = p->ils = p->ia = p->iln = p->ic = p->ian = p->ilg = 0;
   return p;
 }
