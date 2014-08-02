@@ -1833,6 +1833,7 @@ intersectionPointsAndProperties :
       }              
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint addressPoint
       {    
+ resolvePlottables($2);
 	Intersection *l = getIntersectionFromPlottables(*$2);
 	Point p1 = getIntersectableIntersection(*l, true);
 	Point p2 = getIntersectableIntersection(*l, false);	
