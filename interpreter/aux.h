@@ -27,17 +27,6 @@ typedef struct _Intersection{
   bool flip;
 } Intersection;
 
-/* typedef struct _Object{ */
-/*   bool multiple; */
-/*   Point *p1, *p2; */
-/*   LineSegment *ls1, *ls2; */
-/*   Line *l1, *l2; */
-/*   Arc *a1, *a2; */
-/*   Circle *c1, *c2; */
-/*   Angle *an1; */
-/*   Ray *r1, *r2;   */
-/* } Object; */
-
 typedef struct _Bisector{
   LineSegment *ls;
   Angle *a;
@@ -103,3 +92,5 @@ void printPoint(Point p);
 void printLineSegment(LineSegment ls);
 double getDistance(Point a, Point b);
 bool liesOn(Point p, LineSegment l);
+Point getIntersectableIntersection(Intersection i, bool above);
+LineSegment getPerpendicularBisectorPlottable(Plottables p);

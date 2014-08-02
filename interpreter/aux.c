@@ -2,16 +2,13 @@
 #include "aux.h"
 #include<string.h>
 #include<stdlib.h>
+#include<assert.h>
 #define ADEBUG 1
 Intersection* newIntersection() {
   Intersection *i = (Intersection*)malloc(sizeof(Intersection));
   memset((void*)i, 0, sizeof(Intersection));
   return i;
 }
-
-/* Object* newObject() { */
-/*   return (Object*)malloc(sizeof(Object)); */
-/* } */
 
 Bisector* newBisector() {
   return (Bisector*)malloc(sizeof(Bisector));
@@ -483,7 +480,6 @@ Intersection *getIntersectionFromPlottables(Plottables p){
       *c2 = p.circles[1];
       i->c2 = c2;
     }
-    return i;
   }
 
   if(p.iln >=1){
@@ -496,7 +492,6 @@ Intersection *getIntersectionFromPlottables(Plottables p){
       *l2 = p.lines[1];
       i->l2 = l2;
     }
-    return i;
   }
 
   if(p.ia >=1){
@@ -509,7 +504,6 @@ Intersection *getIntersectionFromPlottables(Plottables p){
       *a2 = p.arcs[1];
       i->a2 = a2;
     }
-    return i;
   }
 
   if(p.ils >=1){
@@ -522,7 +516,6 @@ Intersection *getIntersectionFromPlottables(Plottables p){
       *ls2 = p.lineSegments[1];
       i->ls2 = ls2;
     }
-    return i;
   }
 
   if(p.ip >=1){
@@ -535,7 +528,6 @@ Intersection *getIntersectionFromPlottables(Plottables p){
       *p2 = p.points[1];
       i->p2 = p2;    
     }
-    return i;
   }
 
   return i;
@@ -637,4 +629,43 @@ bool liesOn(Point p, LineSegment l){
 	if( p.y - l.pA.y > FLOAT_EPSILON && p.y - l.pB.y > FLOAT_EPSILON) return false;
 	if( l.pA.y - p.y > FLOAT_EPSILON && l.pB.y - p.y > FLOAT_EPSILON) return false;
 	return true;
+}
+
+Point getIntersectableIntersection(Intersection i, bool above){
+ //Intersection i contains the two objects intersecting eachother
+ //We need to construct two new Intersection instances each containing
+ //one of the intersecting objects
+ Intersection *in = newIntersection();
+ 
+ if(i.p1){
+  in->p1 = i.p1;
+  i.p1 = NULL;
+ } else if(i.ls1){
+  in->ls1 = i.ls1;
+  i.ls1 = NULL;
+ } else if(i.l1){
+  in->l1 = i.l1;
+  i.l1 = NULL;
+ } else if(i.a1){
+  in->a1 = i.a1;
+  i.a1 = NULL;
+ } else if(i.c1){
+  in->c1 = i.c1;
+  i.c1 = NULL;
+ } else if(i.an1){
+  in->an1 = i.an1;
+  i.an1 = NULL;
+ } else if(i.r1){
+  in->r1 = i.r1;
+  i.r1 = NULL;
+ }
+ 
+ Point p = getIntersectableIntersectableIntersection(i, *in, above);
+ free(in);
+ return p;
+}
+
+LineSegment getPerpendicularBisectorPlottable(Plottables p){
+ assert(false);
+ return *newLineSegment();
 }
