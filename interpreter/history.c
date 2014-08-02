@@ -429,30 +429,34 @@ void resolvePlottables(Plottables *p){
  
  if(p->class == INTERSECTABLE_D){
   int i;
-  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i++, wanted--){
+  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i--){
    if(isIntersectable(pastObjects[i])){
     *p = combinePlottables(*p, pastObjects[i]);
+    wanted--;
    }
   }
  } else if(p->class == BISECTABLE_D){
   int i;
-  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i++, wanted--){
+  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i--){
    if(isBisectable(pastObjects[i])){
     *p = combinePlottables(*p, pastObjects[i]);
+    wanted--;
    }  
   }
  } else if(p->class == PERPENDICULAR_BISECTABLE_D){
   int i;
-  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i++, wanted--){
+  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i--){
    if(isPerpendicularBisectable(pastObjects[i])){
     *p = combinePlottables(*p, pastObjects[i]);
+    wanted--;
    }  
   }
  } else if(p->class == LABELABLE_D){
   int i;
-  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i++, wanted--){
+  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i--){
    if(isLabelable(pastObjects[i])){
     *p = combinePlottables(*p, pastObjects[i]);
+    wanted--;
    }  
   }
  }
