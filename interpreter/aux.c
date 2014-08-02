@@ -656,25 +656,31 @@ Point getIntersectableIntersection(Intersection i, bool above){
  
  if(i.p1){
   in->p1 = i.p1;
-  i.p1 = NULL;
+  i.p1 = i.p2;
+  i.p2 = NULL;
  } else if(i.ls1){
   in->ls1 = i.ls1;
-  i.ls1 = NULL;
+  i.ls1 = i.ls2;
+  i.ls2 = NULL;
  } else if(i.l1){
   in->l1 = i.l1;
-  i.l1 = NULL;
+  i.l1 = i.l2;
+  i.l2 = NULL;
  } else if(i.a1){
   in->a1 = i.a1;
-  i.a1 = NULL;
+  i.a1 = i.a2;
+  i.a2 = NULL;
  } else if(i.c1){
   in->c1 = i.c1;
-  i.c1 = NULL;
+  i.c1 = i.c2;
+  i.c2 = NULL;
  } else if(i.an1){
   in->an1 = i.an1;
   i.an1 = NULL;
  } else if(i.r1){
   in->r1 = i.r1;
-  i.r1 = NULL;
+  i.r1 = i.r2;
+  i.r2 = NULL;
  }
  
  Point p = getIntersectableIntersectableIntersection(i, *in, above);
