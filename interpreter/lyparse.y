@@ -2185,28 +2185,28 @@ THOSE :
 intersectableObject :
    LINESEGMENT
    {
-    Plottables*p = newPlottables();
+    Plottables * p = newPlottables();
     p->type = LINE_SEGMENT_D;
     p->singleton = true;
     $$ = p;
    }    
  | LINE
    {
-    Plottables*p = newPlottables();
+    Plottables * p = newPlottables();
     p->type = LINE_D;
     p->singleton = true;
     $$ = p;
    }    
  | CIRCLE
    {
-    Plottables*p = newPlottables();
+    Plottables * p = newPlottables();
     p->type = CIRCLE_D;
     p->singleton = true;
     $$ = p;
    }    
  | ARC
    {
-    Plottables*p = newPlottables();
+    Plottables * p = newPlottables();
     p->type = ARC_D;
     p->singleton = true;
     $$ = p;
