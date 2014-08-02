@@ -4,6 +4,7 @@
 #include "history.h"
 #include "functions.h"
 #include<assert.h>
+#define HDEBUG 1
 
 Plottables pastObjects[MAX_NUM_OBJECTS];
 int pastObjectsCount;
@@ -147,6 +148,14 @@ bool isPerpendicularBisectable(Plottables p) {
 
 bool isBisectable(Plottables p) {
   if(isObjectAngle(p) || isObjectLineSegment(p))
+    return true;
+  else
+    return false;
+}
+
+bool isLabelable(Plottables p) {
+  if(isObjectPoint(p) || isObjectLineSegment(p) || isObjectArc(p)
+      ||isObjectLine(p) || isObjectCircle(p))
     return true;
   else
     return false;
@@ -356,4 +365,76 @@ void printHistory() {
     printPlottable(pastObjects[i]);
   }
   printf("----------History End---------\n");
+}
+
+void resolvePlottables(Plottables *p){
+ if(isResolved(p)){
+  return;
+ }
+
+ if(p->type == POINT_D){
+  p->points[p->ip] = getLastPoint();
+  p->ip ++ ;
+ } else if(p->type == LINE_SEGMENT_D){
+  p->lineSegments[p->ils] = getLastLineSegment();
+  p->ils ++ ;
+ } else if(p->type == LINE_D){
+  p->lines[p->iln] = getLastLine();
+  p->iln ++ ;
+ } else if(p->type == ARC_D){
+  p->arcs[p->ia] = getLastArc();
+  p->ia ++ ;
+ } else if(p->type == CIRCLE_D){
+  p->circles[p->ic] = getLastCircle();
+  p->ic ++ ;
+ } else if(p->type == ANGLE_D){
+  p->angles[p->ian] = getLastAngle();
+  p->ian ++ ;
+ }
+ 
+ if(isResolved(p)){
+  return;
+ }
+ 
+ if(p->class == INTERSECTABLE_D){
+  int i;
+  for(i=pastObjectsCount-1; i>=0; i++){
+   if(isIntersectable(pastObjects[i])){
+    *p = pastObjects[i];
+   }
+  }
+ } else if(p->class == BISECTABLE_D){
+  int i;
+  for(i=pastObjectsCount-1; i>=0; i++){
+   if(isBisectable(pastObjects[i])){
+    *p = pastObjects[i];
+   }  
+  }
+ } else if(p->class == PERPENDICULAR_BISECTABLE_D){
+  int i;
+  for(i=pastObjectsCount-1; i>=0; i++){
+   if(isPerpendicularBisectable(pastObjects[i])){
+    *p = pastObjects[i];
+   }  
+  }
+ } else if(p->class == LABELABLE_D){
+  int i;
+  for(i=pastObjectsCount-1; i>=0; i++){
+   if(isLabelable(pastObjects[i])){
+    *p = pastObjects[i];
+   }  
+  }
+ }
+
+ if(HDEBUG && ! isResolved(p) ){
+  printf("Could not resolve Plottable\n");
+ }
+
+ return;
+
+}
+
+bool isResolved(Plottables *p){
+ return p->ip > 0 || p->ils > 0 || p->ia > 0 || p->iln > 0 || p->ic > 0 || p->ian > 0
+  || p->ilg > 0;
 }
