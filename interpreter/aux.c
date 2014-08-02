@@ -464,7 +464,7 @@ Point getPointNotOnLabelable(Intersection i, Location *l) {
 	P.x = i.ls1->pA.x;
 	P.y = i.ls1->pA.y + DEFAULT_LINE_SEGMENT_LENGTH;
       } else {
-	P.x = i.ls1->pA.x + (slope+1)*DEFAULT_LINE_SEGMENT_LENGTH*0.5;
+	P.x = i.ls1->pA.x + cos(slope+45)*DEFAULT_LINE_SEGMENT_LENGTH*0.5;
 	P.y = i.ls1->pA.y + DEFAULT_LINE_SEGMENT_LENGTH;
       }
       return P;
