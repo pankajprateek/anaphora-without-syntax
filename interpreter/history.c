@@ -375,53 +375,84 @@ void resolvePlottables(Plottables *p){
  if(p->type == POINT_D){
   p->points[p->ip] = getLastPoint();
   p->ip ++ ;
+  if(p->singleton == false){
+   p->points[p->ip] = getSecondLastPoint();
+   p->ip ++ ;
+  }
  } else if(p->type == LINE_SEGMENT_D){
   p->lineSegments[p->ils] = getLastLineSegment();
   p->ils ++ ;
+  if(p->singleton == false){
+   p->lineSegments[p->ils] = getSecondLastLineSegment();
+   p->ils ++ ;
+  }
  } else if(p->type == LINE_D){
   p->lines[p->iln] = getLastLine();
   p->iln ++ ;
+  if(p->singleton == false){
+   p->lines[p->iln] = getSecondLastLine();
+   p->iln ++ ;
+  }
  } else if(p->type == ARC_D){
   p->arcs[p->ia] = getLastArc();
   p->ia ++ ;
+  if(p->singleton == false){
+   p->arcs[p->ia] = getSecondLastArc();
+   p->ia ++ ;
+  }
  } else if(p->type == CIRCLE_D){
   p->circles[p->ic] = getLastCircle();
   p->ic ++ ;
+  if(p->singleton == false){
+   p->circles[p->ic] = getSecondLastCircle();
+   p->ic ++ ;
+  }
  } else if(p->type == ANGLE_D){
   p->angles[p->ian] = getLastAngle();
   p->ian ++ ;
+  if(p->singleton == false){
+   p->angles[p->ian] = getSecondLastAngle();
+   p->ian ++ ;
+  }
  }
  
  if(isResolved(p)){
   return;
  }
  
+ int wanted = 0;
+ if(p->singleton == false){
+  wanted = 2;
+ } else {
+  wanted = 1;
+ }
+ 
  if(p->class == INTERSECTABLE_D){
   int i;
-  for(i=pastObjectsCount-1; i>=0; i++){
+  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i++, wanted--){
    if(isIntersectable(pastObjects[i])){
-    *p = pastObjects[i];
+    *p = combinePlottables(*p, pastObjects[i]);
    }
   }
  } else if(p->class == BISECTABLE_D){
   int i;
-  for(i=pastObjectsCount-1; i>=0; i++){
+  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i++, wanted--){
    if(isBisectable(pastObjects[i])){
-    *p = pastObjects[i];
+    *p = combinePlottables(*p, pastObjects[i]);
    }  
   }
  } else if(p->class == PERPENDICULAR_BISECTABLE_D){
   int i;
-  for(i=pastObjectsCount-1; i>=0; i++){
+  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i++, wanted--){
    if(isPerpendicularBisectable(pastObjects[i])){
-    *p = pastObjects[i];
+    *p = combinePlottables(*p, pastObjects[i]);
    }  
   }
  } else if(p->class == LABELABLE_D){
   int i;
-  for(i=pastObjectsCount-1; i>=0; i++){
+  for(i=pastObjectsCount-1; i>=0 && wanted > 0; i++, wanted--){
    if(isLabelable(pastObjects[i])){
-    *p = pastObjects[i];
+    *p = combinePlottables(*p, pastObjects[i]);
    }  
   }
  }
