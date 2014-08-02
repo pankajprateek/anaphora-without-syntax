@@ -61,12 +61,22 @@ Point _getArcIntersectionPoint(Point p0, double r0, Point p1, double r1, bool ab
   }
 
   Point ret;
-  if(y31>y32 && above) {
-    ret.x = x31;
-    ret.y = y31;
+  if(y31>y32) {
+   if(above){
+     ret.x = x31;
+     ret.y = y31;
+   } else {
+     ret.x = x32;
+     ret.y = y32;
+   }
   } else {
-    ret.x = x32;
-    ret.y = y32;
+   if(above){
+     ret.x = x32;
+     ret.y = y32;
+   } else {
+     ret.x = x31;
+     ret.y = y31;
+   }   
   }
   return ret;
 }
