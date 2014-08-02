@@ -109,6 +109,14 @@ lineSegmentAndProperties =
   | LINESEGMENT addressLineSegment lineSegmentProperties
   | LINESEGMENT addressLineSegment perpendicularToClause perpendicularConditionClause
   | LINESEGMENT addressLineSegment parallelToClause parallelConditionClause
+  | LINESEGMENT GIVENTHAT conditions
+  | LINESEGMENT lineSegmentProperties
+  | LINESEGMENT perpendicularToClause perpendicularConditionClause
+  | LINESEGMENT parallelToClause parallelConditionClause
+  | addressLineSegment GIVENTHAT conditions
+  | addressLineSegment lineSegmentProperties
+  | addressLineSegment perpendicularToClause perpendicularConditionClause
+  | addressLineSegment parallelToClause parallelConditionClause
 
 conditions =
     condition
@@ -151,6 +159,8 @@ angleAndProperties =
 genericAngleAndProperties =
     ANGLE VERTEX addressPoint addressDegree
   | ANGLE addressAngle addressDegree
+  | ANGLE VERTEX addressDegree
+  | ANGLE addressDegree
 
 rightAngleAndProperties =
     RIGHT ANGLE VERTEX addressPoint
