@@ -5,6 +5,21 @@
 #define MAX_PLOTTABLES 15
 #define VECT_SIZE 3
 
+//types
+#define INDEFINITE_D 0
+#define POINT_D 1
+#define LINE_SEGMENT_D 2
+#define LINE_D 3
+#define ARC_D 4
+#define CIRCLE_D 5
+#define ANGLE_D 6
+
+//classes
+#define INTERSECTABLE_D 50
+#define BISECTABLE_D 51
+#define PERPENDICULAR_BISECTABLE_D 52
+#define LABELABLE_D 53
+
 typedef int bool;
 
 typedef struct _Length{
@@ -65,6 +80,8 @@ typedef struct _Circle{
 } Circle;
 
 typedef struct _Plottables{  
+  int type, class;
+  bool singleton;
   int ip, ils, ia, iln, ic, ian, ilg;
   Point points[MAX_PLOTTABLES];
   LineSegment lineSegments[MAX_PLOTTABLES];
@@ -132,3 +149,4 @@ double getDegree(Angle *an);
 bool areSameLineSegment(LineSegment l1, LineSegment l2);
 void setLineSegment(Condition *c, LineSegment l);
 void setAngle(Condition *c, Angle a);
+void resolvePlottables(Plottables *p);
