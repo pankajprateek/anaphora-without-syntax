@@ -51,8 +51,9 @@ void executeCommand(Command command){
   updateObjects(command.plottables);
   updateContext(command.plottables);
   writeContext();
-  printf("Writing History\n");
   writeHistory();
+  //~ printContext();
+  //~ printHistory();
 }
 		  
 void readContext(){
@@ -490,14 +491,17 @@ int getNumberOfArcs() {
 }
 
 LineSegment getLastLineSegment() {
+  assert(context.ils > 0);
   return context.lineSegments[context.ils-1];
 }
 
 Line getLastLine() {
+  assert(context.iln > 0);
   return context.lines[context.iln-1];
 }
 
 Arc getLastArc(){
+  assert(context.ia > 0);
   return context.arcs[context.ia-1];
 }
 
@@ -507,6 +511,7 @@ Arc getArcAtPosition(int i) {
 }
 
 Circle getLastCircle(){
+  assert(context.ic > 0);
   return context.circles[context.ic-1];
 }
 
@@ -515,13 +520,9 @@ Circle getCircleAtPosition(int i) {
   return context.circles[i];
 }
     
-Angle* getLastAngle() {
-  Angle *an = (Angle*)malloc(sizeof(Angle));
-  an->vertex = context.angles[context.ian-1].vertex;
-  an->leftVertex = context.angles[context.ian-1].leftVertex;
-  an->rightVertex = context.angles[context.ian-1].rightVertex;
-  an->degree = context.angles[context.ian-1].degree;
-  return an;
+Angle getLastAngle() {
+  assert(context.ian > 0);
+  return context.angles[context.ian-1];
 }
     
 Length* getLastLength() {

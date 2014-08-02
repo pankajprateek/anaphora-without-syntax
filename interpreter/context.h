@@ -57,7 +57,7 @@ Arc getLastArc();
 Arc getArcAtPosition(int i);
 Circle getLastCircle();
 Circle getCircleAtPosition(int i);
-Angle *getLastAngle();
+Angle getLastAngle();
 Length *getLastLength();
 bool existsLastLineSegment();
 char reserveNextPointLabel();
