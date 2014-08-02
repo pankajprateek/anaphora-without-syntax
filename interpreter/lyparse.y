@@ -107,7 +107,7 @@
 
 %type <location> markConditionClause
 
-%type <voidPtr> LENGTH TIMES CM GREATERTHAN LESSTHAN TWICE THRICE HALF GIVENTHAT CONSTRUCT addressFreeObject ANGLE ANY ARC ARCS ARM AT BISECT BISECTOR BISECTORS CENTER CENTERS CHORD CHORDS CIRCLE CIRCLES CUT DEGREES DIAMETER DISTANCE DISTANCEFROM DIVIDE EACHOTHER EQUALS FREEVARIABLE FROM INTERSECTING INTERSECTIONPOINTS INTO IT ITS JOIN LINE LINES LINESEGMENT LINESEGMENTS MARK NOTON ON ORIGIN PARALLEL PARTS PASSINGTHROUGH PERPENDICULAR PERPENDICULARBISECTOR PERPENDICULARBISECTORS POINT POINTS PREVIOUS previousDegree previousLength RADIUS RAY RAYS RIGHT THEIR THEM THESE THIS THOSE VERTEX DIFFERENCE SUM adjectivePrevious
+%type <voidPtr> LENGTH TIMES CM GREATERTHAN LESSTHAN TWICE THRICE HALF GIVENTHAT CONSTRUCT adjectiveFree ANGLE ANY ARC ARCS ARM AT BISECT BISECTOR BISECTORS CENTER CENTERS CHORD CHORDS CIRCLE CIRCLES CUT DEGREES DIAMETER DISTANCE DISTANCEFROM DIVIDE EACHOTHER EQUALS FREEVARIABLE FROM INTERSECTING INTERSECTIONPOINTS INTO IT ITS JOIN LINE LINES LINESEGMENT LINESEGMENTS MARK NOTON ON ORIGIN PARALLEL PARTS PASSINGTHROUGH PERPENDICULAR PERPENDICULARBISECTOR PERPENDICULARBISECTORS POINT POINTS PREVIOUS previousDegree previousLength RADIUS RAY RAYS RIGHT THEIR THEM THESE THIS THOSE VERTEX DIFFERENCE SUM adjectivePrevious
 
 
 
@@ -308,9 +308,9 @@ addressDegree1 :
                     }
   | previousDegree  {
                       assert(existsLastAngle());
-                      Angle* la = getLastAngle();
+                      Angle la = getLastAngle();
                       Degree *degree = newDegree();
-                      degree->degree = la->degree;
+                      degree->degree = la.degree;
                       $$ = degree;
                     }
   | addressAngle    {
@@ -444,12 +444,12 @@ LESSTHAN :
 ;
 
 command :
-    constructCommand  { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
-  | markCommand       { $$ = $1; printHistory(); executeCommand(*$1); printContext(); }
-  | cutCommand        { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
-  | joinCommand       { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
-  | divideCommand     { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
-  | bisectCommand     { $$ = $1; executeCommand(*$1); printContext(); printHistory();}
+    constructCommand  { $$ = $1; executeCommand(*$1); }
+  | markCommand       { $$ = $1; executeCommand(*$1); }
+  | cutCommand        { $$ = $1; executeCommand(*$1); }
+  | joinCommand       { $$ = $1; executeCommand(*$1); }
+  | divideCommand     { $$ = $1; executeCommand(*$1); }
+  | bisectCommand     { $$ = $1; executeCommand(*$1); }
 ;
 
 constructCommand : 
@@ -534,7 +534,6 @@ lineSegmentAndProperties :
 	}
         updatePlottablesLineSegment(p, *$2);
         $$ = p;
-        printPlottable(*p);
       }
   | LINESEGMENT addressLineSegment perpendicularToClause perpendicularConditionClause
       {
@@ -665,7 +664,7 @@ addressLineSegment :
 	LineSegmentCopy(ls, l);
         $$ = l;
       }  
-  | addressFreeObject
+  | adjectiveFree LINESEGMENT
       {
         //assert(existsLastLineSegment());
         //LineSegment ls = getLastLineSegment();
@@ -984,10 +983,12 @@ addressAngle :
       }
   | adjectivePrevious ANGLE
       {
-	if(!existsLastAngle()){
-	  spitError("No previous angle");
-	}
-        $$ = getLastAngle();
+       if(!existsLastAngle()){
+         spitError("No previous angle");
+       }
+       Angle *a = newAngle();
+       *a = getLastAngle();
+       $$ = a;
       }      
 ;
 
@@ -1321,7 +1322,7 @@ intersectionClause :
 
 addressIntersectableObject :
     addressLineSegment
-      {
+      {      
 	Intersection *i = newIntersection();
 	i->ls1 = $1;
 	$$ = i;
@@ -1450,9 +1451,9 @@ perpendicularBisectorAndProperties :
       }
   | PERPENDICULARBISECTOR addressIndefinitePreviousObjects
       {
+ resolvePlottables($2);
 	Plottables *p = newPlottables();
-	LineSegment ls = getLastLineSegment();
-	LineSegment pb = getPerpendicularBisector(ls);
+	LineSegment pb = getPerpendicularBisectorPlottable(*$2);
 	updatePlottablesLineSegment(p, pb);
 	$$ = p;
       }  
@@ -1513,7 +1514,7 @@ bisectorAndProperties :
   | BISECTOR addressIndefinitePreviousObjects
       {
 	Plottables *p = newPlottables();
-	Angle a = *(getLastAngle());
+	Angle a = getLastAngle();
 	LineSegment ab = getAngleBisector(a);
 	updatePlottablesLineSegment(p, ab);
 	$$ = p;
@@ -1832,17 +1833,10 @@ intersectionPointsAndProperties :
       }              
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint addressPoint
       {    
-	Plottables *p = newPlottables();
-	Plottables last = getLastIntersectableObject();
-	printf("Printing last intersectable object\n");
-	printPlottable(last);
-	printf("Printing second last intersectable object\n");
-	Plottables secondLast = getIntersectableObjectBeforePosition(pastObjectsCount-1);
-	printPlottable(secondLast);
-	Intersection *l = getIntersectionFromPlottables(last),
-	  *sl = getIntersectionFromPlottables(secondLast);
-	Point p1 = getIntersectableIntersectableIntersection(*l,*sl, true);
-	Point p2 = getIntersectableIntersectableIntersection(*l,*sl, false);	
+	Intersection *l = getIntersectionFromPlottables(*$2);
+	Point p1 = getIntersectableIntersection(*l, true);
+	Point p2 = getIntersectableIntersection(*l, false);	
+ Plottables *p = newPlottables();
 	p1.label = $3->label;
 	updatePlottablesPoint(p, p1);
 	p2.label = $4->label;
@@ -1851,17 +1845,11 @@ intersectionPointsAndProperties :
       }       
   | INTERSECTIONPOINTS addressIntersectablePreviousObjects addressPoint
       {    
-	Plottables *p = newPlottables();
-	Plottables last = getLastIntersectableObject();
-	printf("Printing last intersectable object\n");
-	printPlottable(last);
-	printf("Printing second last intersectable object\n");
-	Plottables secondLast = getIntersectableObjectBeforePosition(pastObjectsCount-1);
-	printPlottable(secondLast);
-	Intersection *l = getIntersectionFromPlottables(last),
-	  *sl = getIntersectionFromPlottables(secondLast);
-	Point p1 = getIntersectableIntersectableIntersection(*l,*sl, false);
+ resolvePlottables($2);
+	Intersection *l = getIntersectionFromPlottables(*$2);
+	Point p1 = getIntersectableIntersection(*l, false);
 	p1.label = $3->label;
+ Plottables *p = newPlottables();
 	updatePlottablesPoint(p, p1);
 	$$ = p;
       }              
@@ -1899,6 +1887,8 @@ addressIntersectingObject :
       }              
   | addressPreviousObjects
       {
+ $1->class = INTERSECTABLE_D;
+ resolvePlottables($1);
 	$$ = getIntersectionFromPlottables(*$1);
       }              
 ;
@@ -1979,6 +1969,7 @@ labelable :
 	Intersection *i = newIntersection();
 	i->a1 = &($1->arcs[0]);
 	$$ = i;
+ 
       }              
   | addressLine
       {
@@ -1988,7 +1979,10 @@ labelable :
       }              
   | addressPreviousObjects
       {
-	$$ = newIntersection();
+    $1->class = LABELABLE_D;
+    resolvePlottables($1);
+    Intersection *i = getIntersectionFromPlottables(*$1);
+    $$ = i;
       }              
 ;
 
@@ -2011,7 +2005,7 @@ addressLine :
 	*l = getLastLine();
 	$$ = l;
       }                 
-  | addressFreeObject
+  | adjectiveFree LINE
       {
 	Line *l = newLine();
 	l->label = reserveNextLineLabel();
@@ -2044,132 +2038,115 @@ adjectivePrevious :
 ;
 
 addressIntersectablePreviousObjects :
-    THIS intersectableObject
-      {
-	$$ = $2;
-      }
-  | THESE intersectableObjects
-      {
-	$$ = $2;
-      }
-  | PREVIOUS intersectableObject
-      {
-	$$ = $2;
-      }  
-  | PREVIOUS intersectableObjects
-      {
-	$$ = $2;
-      }  
-  | THOSE intersectableObjects
-      {
-	$$ = $2;
-      }  
-  | addressIndefinitePreviousObjects
-      {
-	$$ = $1;
-      }  
+   THIS intersectableObject
+   {
+    $2->class = INTERSECTABLE_D;
+    $$ = $2;
+   }
+ | THESE intersectableObjects
+   {
+    $2->class = INTERSECTABLE_D;
+    $$ = $2;
+   }
+ | PREVIOUS intersectableObject
+   {
+    $2->class = INTERSECTABLE_D;
+    $$ = $2;
+   }  
+ | PREVIOUS intersectableObjects
+   {
+    $2->class = INTERSECTABLE_D;
+    $$ = $2;
+   }  
+ | THOSE intersectableObjects
+   {
+    $2->class = INTERSECTABLE_D;
+    $$ = $2;
+   }  
+ | addressIndefinitePreviousObjects
+   {
+    $1->class = INTERSECTABLE_D;
+    $$ = $1;
+   }  
 ;
 
 addressPreviousObjects :
-    THIS object
+   THIS object
+   {
+    $$ = $1;
+   }      
+ | THESE objects
       {
-	$$ = $2;
-      }      
-  | THESE objects
-      {
-	$$ = $2;
+    $$ = $1;
       }        
   | PREVIOUS object
       {
-	$$ = $2;
+    $$ = $1;
       }      
   | PREVIOUS objects
       {
-	$$ = $2;
+    $$ = $1;
       }        
   | THOSE objects
       {
-	$$ = $2;
+    $$ = $1;
       }        
   | addressIndefinitePreviousObjects
       {
-	$$ = $1;
+    $$ = $1;
       }        
 ;
 
 addressIndefinitePreviousObjects :
-    THIS	
-      {
-	Plottables p = getLastObject();
-	Plottables ret = p;
-	Plottables *plottable = newPlottables();
-	*plottable = ret;
-	$$ = plottable;
-      }
-  | THESE	
-      {
-	Plottables p = getLastObject();
-	Plottables ret = p;
-	if(!containsMultipleObjects(p)){
-	  Plottables np = getObjectAtPosition(pastObjectsCount-1);
-	  ret = combinePlottables(p, np);
-	}
-	Plottables *plottable = newPlottables();
-	*plottable = ret;
-	$$ = plottable;
-      }
-  | IT
-      {
-	Plottables p = getLastObject();
-	Plottables ret = p;
-	Plottables *plottable = newPlottables();
-	*plottable = ret;
-	$$ = plottable;
-      }  
-  | ITS
-      {
-	Plottables p = getLastObject();
-	Plottables ret = p;
-	Plottables *plottable = newPlottables();
-	*plottable = ret;
-	$$ = plottable;
-      }  
-  | THEM
-      {
-	Plottables p = getLastObject();
-	Plottables ret = p;
-	if(!containsMultipleObjects(p)){
-	  Plottables np = getObjectAtPosition(pastObjectsCount-1);
-	  ret = combinePlottables(p, np);
-	}
-	Plottables *plottable = newPlottables();
-	*plottable = ret;
-	$$ = plottable;
-      }  
-  | THOSE
-      {
-	Plottables p = getLastObject();
-	Plottables ret = p;
-	if(!containsMultipleObjects(p)){
-	  Plottables np = getObjectAtPosition(pastObjectsCount-1);
-	  ret = combinePlottables(p, np);
-	}
-	Plottables *plottable = newPlottables();
-	*plottable = ret;
-	$$ = plottable;
-      }  
-  | THEIR
-      {
-	Plottables p = getLastObject();
-	Plottables ret = p;
-	if(!containsMultipleObjects(p)){
-	  Plottables np = getObjectAtPosition(pastObjectsCount-1);
-	  ret = combinePlottables(p, np);
-	}
-	Plottables *plottable = newPlottables();
-	*plottable = ret;
-	$$ = plottable;
-      }  
+   THIS	
+   {
+    Plottables *p = newPlottables();
+    p->type = INDEFINITE_D;
+    p->singleton = true;
+    $$ = p;
+   }
+ | THESE	
+   {
+    Plottables *p = newPlottables();
+    p->type = INDEFINITE_D;
+    p->singleton = false;
+    $$ = p;
+   }
+ | IT
+   {
+    Plottables *p = newPlottables();
+    p->type = INDEFINITE_D;
+    p->singleton = true;
+    $$ = p;
+   }
+ | ITS
+   {
+    Plottables *p = newPlottables();
+    p->type = INDEFINITE_D;
+    p->singleton = true;
+    $$ = p;
+   }
+ | THEM
+   {
+    Plottables *p = newPlottables();
+    p->type = INDEFINITE_D;
+    p->singleton = false;
+    $$ = p;
+   }
+ | THOSE
+   {
+    Plottables *p = newPlottables();
+    p->type = INDEFINITE_D;
+    p->singleton = false;
+    $$ = p;
+   }
+ | THEIR
+   {
+    Plottables *p = newPlottables();
+    p->type = INDEFINITE_D;
+    p->singleton = false;
+    $$ = p;
+   }
 ;
 
 THEIR :
@@ -2205,128 +2182,111 @@ THOSE :
 ;
 
 intersectableObject :
-    LINESEGMENT
-      {
-	LineSegment *ls = newLineSegment();
-	*ls = getLastLineSegment();
-	Plottables *o = newPlottables();
-	o->lineSegments[o->ils++] = *ls;
-	$$ = o;
-      }    
-  | LINE
-      {
-	Line *l = newLine();
-	*l = getLastLine();
-	Plottables *o = newPlottables();
-	o->lines[o->iln++] = *l;
-	$$ = o;
-      }  
-  | CIRCLE
-      {
-	Circle *c = newCircle();
-	*c = getLastCircle();
-	Plottables *o = newPlottables();
-	o->circles[o->ic++] = *c;
-	$$ = o;
-      }  
-  | ARC
-      {
-	Arc *a = newArc();
-	*a = getLastArc();
-	Plottables *o = newPlottables();
-	o->arcs[o->ia++] = *a;
-	$$ = o;
-      }  
-  | PERPENDICULARBISECTOR
-      {
-	$$ = newPlottables();
-      }  
-  | BISECTOR
-      {
-	$$ = newPlottables();
-      }  
-  | CHORD
-      {
-	$$ = newPlottables();
-      }  
-  | RAY
-      {
-	$$ = newPlottables();
-      }  
+   LINESEGMENT
+   {
+    Plottables*p = newPlottables();
+    p->type = LINE_SEGMENT_D;
+    p->singleton = true;
+    $$ = p;
+   }    
+ | LINE
+   {
+    Plottables*p = newPlottables();
+    p->type = LINE_D;
+    p->singleton = true;
+    $$ = p;
+   }    
+ | CIRCLE
+   {
+    Plottables*p = newPlottables();
+    p->type = CIRCLE_D;
+    p->singleton = true;
+    $$ = p;
+   }    
+ | ARC
+   {
+    Plottables*p = newPlottables();
+    p->type = ARC_D;
+    p->singleton = true;
+    $$ = p;
+   }    
+ | PERPENDICULARBISECTOR
+   {
+    $$ = newPlottables();
+   }  
+ | BISECTOR
+   {
+    $$ = newPlottables();
+   }  
+ | CHORD
+   {
+    $$ = newPlottables();
+   }  
+ | RAY
+   {
+    $$ = newPlottables();
+   }  
 ;
 
 object : 
-    intersectableObject
-      {
-	$$ = $1;
-      }    
-  | POINT
-      {
-	Point *p = newPoint();
-	Plottables *o = newPlottables();
-	*p = getLastPoint();
-	o->points[o->ip++] = *p;
-	$$ = o;
-      }      
+   intersectableObject
+   {
+    $$ = $1;
+   }    
+ | POINT
+   {
+    Plottables *p = newPlottables();
+    p->type = POINT_D;
+    p->singleton = true;
+    $$ = p;
+   }      
 ;
 
 intersectableObjects :
-    LINESEGMENTS
-      {
-	LineSegment* ls = newLineSegment();
-	*ls = getLastLineSegment();
-	int n = getNumLineSegments();
-	LineSegment *nls = newLineSegment();
-	*nls = getLineSegmentAtPosition(n-2);
-	Plottables *o = newPlottables();
-	o->lineSegments[o->ils++] = *ls;
-	o->lineSegments[o->ils++] = *nls;
-	$$ = o;
-      }        
-  | LINES
-      {
-	$$ = newPlottables();
-      }      
-  | CIRCLES
-      {
-	Circle* c = newCircle();
-	*c = getLastCircle();
-	int n = getNumCircles();
-	Circle *nc = newCircle();
-	*nc = getCircleAtPosition(n-2);
-	Plottables *o = newPlottables();
-	o->circles[o->ic++] = *c;
-	o->circles[o->ic++] = *nc;
-	$$ = o;
-      }      
-  | ARCS
-      {
-	Arc* c = newArc();
-	*c = getLastArc();
-	int n = getNumArcs();
-	Arc *nc = newArc();
-	*nc = getArcAtPosition(n-2);
-	Plottables *o = newPlottables();
-	o->arcs[o->ia++] = *c;
-	o->arcs[o->ia++] = *nc;
-	$$ = o;
-      }      
-  | PERPENDICULARBISECTORS
-      {
-	$$ = newPlottables();
-      }      
-  | BISECTORS
-      {
-	$$ = newPlottables();
-      }      
-  | CHORDS
-      {
-	$$ = newPlottables();
-      }      
-  | RAYS
-      {
-	$$ = newPlottables();
-      }      
+   LINESEGMENTS
+   {
+    Plottables *p = newPlottables();
+    p->type = LINE_SEGMENT_D;
+    p->singleton = false;
+    $$ = p;
+   }
+ | LINES
+   {
+    Plottables *p = newPlottables();
+    p->type = LINE_D;
+    p->singleton = false;
+    $$ = p;
+   }      
+ | CIRCLES
+   {
+    Plottables *p = newPlottables();
+    p->type = CIRCLE_D;
+    p->singleton = false;
+    $$ = p;
+   }      
+ | ARCS
+   {
+    Plottables *p = newPlottables();
+    p->type = ARC_D;
+    p->singleton = false;
+    $$ = p;
+   }      
+ | PERPENDICULARBISECTORS
+   {
+    $$ = newPlottables();
+   }      
+ | BISECTORS
+   {
+    $$ = newPlottables();
+   }      
+ | CHORDS
+   {
+    $$ = newPlottables();
+   }      
+ | RAYS
+   {
+    $$ = newPlottables();
+   }      
 ;
 
 LINESEGMENTS :
@@ -2358,22 +2318,17 @@ CHORD :
 ;
 
 objects :
-    intersectableObjects
-      {
-	$$ = $1;
-      }        
-  | POINTS
-      {
-	Point *p = newPoint();
-	*p = getLastPoint();
-	int n = getNumPoints();
-	Point *np = newPoint();
-	*np = getPointAtPosition(n-2);
-	Plottables *o = newPlottables();
-	o->points[o->ip++] = *p;
-	o->points[o->ip++] = *np;
-	$$ = o;
-      }      
+   intersectableObjects
+   {
+    $$ = $1;
+   }        
+ | POINTS
+   {
+    Plottables *p = newPlottables();
+    p->type = POINT_D;
+    p->singleton = false;
+    $$ = p;
+   }      
 ;
 
 BISECTOR :
@@ -2422,7 +2377,7 @@ addressPoint :
 	*p = getLastPoint();
 	$$ = p;
       }          
-  | addressFreeObject
+  | adjectiveFree POINT
       {
 	Point *p = newPoint();
 	p->label = reserveNextPointLabel();
@@ -2430,7 +2385,7 @@ addressPoint :
       }          
 ;
 
-addressFreeObject :
+adjectiveFree :
     ANY                  { $$ = NULL;  }
 ;
 
@@ -2577,7 +2532,7 @@ addressCircle :
 	*c = getLastCircle();
 	$$ = c;
       }                  
-  | addressFreeObject
+  | adjectiveFree CIRCLE
       {
 	Circle *c = newCircle();
 	c->center.label = reserveNextPointLabel();
@@ -2671,10 +2626,12 @@ bisectableAndProperties :
 	updatePlottablesLineSegment(p, ls);
 	$$ = p;
       }                      
-  | addressIndefinitePreviousObjects
-      {
-	$$ = $1;
-      }                      
+ | addressIndefinitePreviousObjects
+   {
+    $1->class = BISECTABLE_D;
+    resolvePlottables($1);
+    $$ = $1;
+   }                      
 ;
 
 POINTSINGLET :
@@ -2723,12 +2680,7 @@ REAL :
 int main()
 {
   readContext();
-  printContext();
   readHistory();
-  printHistory();
-  if(PDEBUG){
-    printf("main()");
-  }
   yyparse();
   return 0;
 }
