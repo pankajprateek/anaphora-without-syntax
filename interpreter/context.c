@@ -479,7 +479,13 @@ LineSegment getLineSegmentAtPosition(int i) {
 }
     
 Point getLastPoint(){
+  assert(context.ip > 0);
   return context.points[context.ip-1];
+}
+
+Point getSecondLastPoint(){
+  assert(context.ip > 1);
+  return context.points[context.ip-2];
 }
     
 int getNumberOfPoints() {
@@ -495,14 +501,30 @@ LineSegment getLastLineSegment() {
   return context.lineSegments[context.ils-1];
 }
 
+LineSegment getSecondLastLineSegment() {
+  assert(context.ils > 1);
+  return context.lineSegments[context.ils-2];
+}
+
 Line getLastLine() {
   assert(context.iln > 0);
   return context.lines[context.iln-1];
 }
 
+Line getSecondLastLine() {
+  assert(context.iln > 1);
+  return context.lines[context.iln-2];
+}
+
 Arc getLastArc(){
   assert(context.ia > 0);
   return context.arcs[context.ia-1];
+}
+
+
+Arc getSecondLastArc(){
+  assert(context.ia > 1);
+  return context.arcs[context.ia-2];
 }
 
 Arc getArcAtPosition(int i) {
@@ -515,6 +537,11 @@ Circle getLastCircle(){
   return context.circles[context.ic-1];
 }
 
+Circle getSecondLastCircle(){
+  assert(context.ic > 1);
+  return context.circles[context.ic-2];
+}
+
 Circle getCircleAtPosition(int i) {
   assert(i<context.ic && i >=0);
   return context.circles[i];
@@ -523,6 +550,11 @@ Circle getCircleAtPosition(int i) {
 Angle getLastAngle() {
   assert(context.ian > 0);
   return context.angles[context.ian-1];
+}
+
+Angle getSecondLastAngle() {
+  assert(context.ian > 1);
+  return context.angles[context.ian-2];
 }
     
 Length* getLastLength() {
