@@ -52,8 +52,10 @@ void executeCommand(Command command){
   updateContext(command.plottables);
   writeContext();
   writeHistory();
-  //~ printContext();
-  //~ printHistory();
+  if(CDEBUG){
+   printContext();
+   printHistory();
+  }
 }
 		  
 void readContext(){
@@ -607,6 +609,9 @@ void setLength(Condition *c, double l) {
 
 void printPlottable(Plottables p) {
   printf("----------Plottable Begin---------\n");
+  
+  printf("Type: %d, Class: %d, Singleton:%d\n", p.type, p.class, p.singleton);
+  
   int i;
   printf("Points: ");
   for(i=0;i<p.ip;i++) {
