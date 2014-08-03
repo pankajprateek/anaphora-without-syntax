@@ -1919,7 +1919,18 @@ pointAndProperties :
 	pt.label = $1->label;
 	updatePlottablesPoint(p, pt);
 	$$ = p;
-      }                           
+      }
+  | addressPoint
+    {
+     Plottables *p = newPlottables();
+     $1->x = (rand() % DEFAULT_LINE_SEGMENT_LENGTH)
+      -(DEFAULT_LINE_SEGMENT_LENGTH/2);
+     $1->y = (rand() % DEFAULT_LINE_SEGMENT_LENGTH)
+      -(DEFAULT_LINE_SEGMENT_LENGTH/2);
+     updatePlottablesPoint(p, *$1);
+     $$ = p;
+    
+    }
 ;
 
 markConditionClause :

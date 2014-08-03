@@ -458,6 +458,7 @@ pointAndProperties =
     addressPoint pointAndPropertiesNotOnCase
   | addressPoint pointAndPropertiesOnCase markConditionClause
   | addressPoint pointAndPropertiesOnCase
+  | addressPoint
 
 markConditionClause =
     DISTANCEFROM addressPoint addressLength
