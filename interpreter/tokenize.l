@@ -76,6 +76,7 @@ KEYWORD construct|length|cm|from|this|cut|given|that|twice|equals|line|segment|d
 "and" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return AND_T;}
 "center" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return CENTER_T;}
 "any" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ANY_T;}
+"one" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ANY_T;}
 "radius" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return RADIUS_T;}
 "arc" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ARC_T;}
 "arcs" 				{if(TDEBUG) printf("Keyword %s\n", yytext); return ARCS_T;}

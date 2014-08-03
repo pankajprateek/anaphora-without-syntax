@@ -615,10 +615,11 @@ addressPoint =
   | adjectiveFree POINT
 
 adjectiveFree =
-    'ANY'
+    ANY
 
 ANY =
-  'any'
+    'any'
+  | 'one'
 
 POINT =
     'point'
