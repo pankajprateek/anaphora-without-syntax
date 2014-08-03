@@ -429,22 +429,22 @@ Point getPointOnLabelable(Intersection i, Location *l) {
       Point p = getLsCircleIntersection(*i.ls1, c, true);
       //First make sure p actually lies on ls1
       if(liesOn(p, *i.ls1)){
-		  printf("HERE01\n");
 		  return p;
 	  } else {
-		  printf("HERE02\n");
 		  return getLsCircleIntersection(*i.ls1, c, false);
 	  }
     }
-  } else if(n==3) { //arc
+  } else if(n==3) {
     Point P;
-    P.x = i.a1->center.x + i.a1->radius * cos(60);
-    P.y = i.a1->center.y + i.a1->radius * sin(60);
+    double randAngle = rand()%360;
+    P.x = i.a1->center.x + (i.a1->radius) * cos(randAngle);
+    P.y = i.a1->center.y + (i.a1->radius) * sin(randAngle);
     return P;
-  } else if(n==4) { //circle
+  } else if(n==4) {
     Point P;
-    P.x = i.c1->center.x + i.c1->radius * cos(60);
-    P.y = i.c1->center.y + i.c1->radius * sin(60);
+    double randAngle = rand()%360;
+    P.x = i.c1->center.x + (i.c1->radius) * cos(randAngle);
+    P.y = i.c1->center.y + (i.c1->radius) * sin(randAngle);
     return P;
   }
   Point P = *newPoint();
@@ -457,27 +457,26 @@ Point getPointNotOnLabelable(Intersection i, Location *l) {
     if(l==NULL) {
       double slope = getSlopeLs(*i.ls1);
       Point P;
-      if(slope == 90.0) {
-	P.x = i.ls1->pA.x + DEFAULT_LINE_SEGMENT_LENGTH;
-	P.y = i.ls1->pA.y;
-      } else if(slope == 0.0) {
-	P.x = i.ls1->pA.x;
-	P.y = i.ls1->pA.y + DEFAULT_LINE_SEGMENT_LENGTH;
-      } else {
-	P.x = i.ls1->pA.x + cos(slope+45)*DEFAULT_LINE_SEGMENT_LENGTH*0.5;
-	P.y = i.ls1->pA.y + DEFAULT_LINE_SEGMENT_LENGTH;
-      }
+      int xm = (i.ls1->pA.x + i.ls1->pB.x)/2,
+       ym = (i.ls1->pA.y + i.ls1->pB.y)/2;
+      double randSlope = slope + ((rand()%90) + 45);
+      double randRad = rand()%DEFAULT_LINE_SEGMENT_LENGTH
+       + DEFAULT_LINE_SEGMENT_LENGTH/2;
+      P.x = xm + cos(randSlope)*randRad;
+      P.y = ym + sin(randSlope)*randRad;
       return P;
     }
   } else if(n==3) {
     Point P;
-    P.x = i.a1->center.x + (i.a1->radius+1) * cos(60);
-    P.y = i.a1->center.y + (i.a1->radius+1) * sin(60);
+    double randAngle = rand()%360;
+    P.x = i.a1->center.x + (i.a1->radius+1) * cos(randAngle);
+    P.y = i.a1->center.y + (i.a1->radius+1) * sin(randAngle);
     return P;
   } else if(n==4) {
     Point P;
-    P.x = i.c1->center.x + (i.c1->radius+1) * cos(60);
-    P.y = i.c1->center.y + (i.c1->radius+1) * sin(60);
+    double randAngle = rand()%360;
+    P.x = i.c1->center.x + (i.c1->radius+1) * cos(randAngle);
+    P.y = i.c1->center.y + (i.c1->radius+1) * sin(randAngle);
     return P;
   }
   Point P = *newPoint();
