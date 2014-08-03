@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 #include "./aux.h"
 #include "./lylib.h"
 #include "./context.h"
@@ -2680,6 +2681,7 @@ REAL :
 %%
 int main()
 {
+  srand(time(NULL));
   readContext();
   readHistory();
   yyparse();
