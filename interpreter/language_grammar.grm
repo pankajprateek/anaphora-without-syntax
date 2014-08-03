@@ -425,8 +425,8 @@ MARK =
   | 'label'
 
 markableAndProperties =
-    pointAndProperties
-  | intersectionPointsAndProperties
+    intersectionPointsAndProperties
+  | pointAndProperties
   | angleArmPointsAndProperties
 
 angleArmPointsAndProperties =

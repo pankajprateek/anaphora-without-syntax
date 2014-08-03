@@ -1782,11 +1782,11 @@ MARK :
 ;
 
 markableAndProperties :
-    pointAndProperties
+    intersectionPointsAndProperties
       {
 	$$ = $1;
       }        
-  | intersectionPointsAndProperties
+  | pointAndProperties
       {
 	$$ = $1;
       }        
