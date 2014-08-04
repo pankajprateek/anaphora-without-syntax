@@ -912,6 +912,35 @@ genericAngleAndProperties :
 	updatePlottablesAngle(p, *$2);
         $$ = p;
       }
+  | ANGLE addressDegree
+      {
+        Plottables *p = newPlottables();
+
+        char c1 = reserveNextPointLabel();
+        char c2 = reserveNextPointLabel();
+	Point *vertex = newPoint();
+	vertex->label = reserveNextPointLabel();	
+
+	//assert(!existsPoint(*$3));
+	Angle* angle = newAngle();
+	angle->vertex = *vertex;
+	angle->leftVertex.label = c1;
+	angle->rightVertex.label = c2;
+	angle->degree = $2->degree;
+
+	//command is like "construct angle of 34 degrees"
+	//default position is origin
+	angle->vertex.x = angle->vertex.y = 0.0;
+	angle->rightVertex.x = 0.0 + DEFAULT_ANGLE_ARM_LENGTH;
+	angle->rightVertex.y = 0.0;
+
+	angle->leftVertex.x = DEFAULT_ANGLE_ARM_LENGTH*cos((angle->degree)*DEGREES_TO_RADIANS);
+	angle->rightVertex.y = DEFAULT_ANGLE_ARM_LENGTH*sin((angle->degree)*DEGREES_TO_RADIANS);
+
+	updatePlottablesAngle(p, *angle);
+        $$ = p;
+      
+      }
 ;
 
 rightAngleAndProperties :
