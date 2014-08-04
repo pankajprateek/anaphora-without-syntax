@@ -159,7 +159,6 @@ angleAndProperties =
 genericAngleAndProperties =
     ANGLE VERTEX addressPoint addressDegree
   | ANGLE addressAngle addressDegree
-  | ANGLE VERTEX addressDegree
   | ANGLE addressDegree
 
 rightAngleAndProperties =
