@@ -559,8 +559,8 @@ lineSegmentAndProperties :
         
 	LineSegment *thisLineSegment = newLineSegment();
 	thisLineSegment->length = $3->length;
-	thisLineSegment->pA.label = reserveNextLineLabel();
-	thisLineSegment->pB.label = reserveNextLineLabel();
+	thisLineSegment->pA.label = reserveNextPointLabel();
+	thisLineSegment->pB.label = reserveNextPointLabel();
 	if(!existsPoint(thisLineSegment->pA)){
 	  if(!existsPoint(thisLineSegment->pB)){
 	    //default position is (0,0)
@@ -578,6 +578,7 @@ lineSegmentAndProperties :
 	  }	  
 	}
         updatePlottablesLineSegment(p, *thisLineSegment);
+	free(thisLineSegment);
         $$ = p;
       }
   | LINESEGMENT lineSegmentProperties
@@ -605,6 +606,7 @@ lineSegmentAndProperties :
 	  }	  
 	}
         updatePlottablesLineSegment(p, *thisLineSegment);
+	free(thisLineSegment);
         $$ = p;
       }
   | LINESEGMENT perpendicularToClause perpendicularConditionClause
@@ -918,12 +920,12 @@ genericAngleAndProperties :
 
         char c1 = reserveNextPointLabel();
         char c2 = reserveNextPointLabel();
-	Point *vertex = newPoint();
-	vertex->label = reserveNextPointLabel();	
+	Point vertex = *newPoint();
+	vertex.label = reserveNextPointLabel();	
 
 	//assert(!existsPoint(*$3));
 	Angle* angle = newAngle();
-	angle->vertex = *vertex;
+	angle->vertex = vertex;
 	angle->leftVertex.label = c1;
 	angle->rightVertex.label = c2;
 	angle->degree = $2->degree;
