@@ -548,6 +548,143 @@ lineSegmentAndProperties :
         //not implemented now
         $$ = p;
       }
+  | LINESEGMENT GIVENTHAT conditions
+      {
+        Plottables *p = newPlottables();
+        LineSegment addressedLineSegment = $3->ls;
+        /* LineSegment thisLineSegment = *$2; */
+        /* if(!areSameLineSegment(addressedLineSegment, thisLineSegment)){ */
+        /*   spitError("line segment not same"); */
+        /* } */
+        
+	LineSegment *thisLineSegment = newLineSegment();
+	thisLineSegment->length = $3->length;
+	thisLineSegment->pA.label = reserveNextLineLabel();
+	thisLineSegment->pB.label = reserveNextLineLabel();
+	if(!existsPoint(thisLineSegment->pA)){
+	  if(!existsPoint(thisLineSegment->pB)){
+	    //default position is (0,0)
+	    thisLineSegment->pA.x = thisLineSegment->pA.y = 0.0;
+	    thisLineSegment->pB.x = thisLineSegment->length;
+	    thisLineSegment->pB.y = 0.0;
+	  } else {
+	    thisLineSegment->pA.x = thisLineSegment->pB.x - thisLineSegment->length;
+	    thisLineSegment->pA.y = thisLineSegment->pB.y;
+	  }
+	} else {
+	  if(!existsPoint(thisLineSegment->pB)){
+	    thisLineSegment->pB.x = thisLineSegment->pA.x + thisLineSegment->length;
+	    thisLineSegment->pB.y = thisLineSegment->pA.y;
+	  }	  
+	}
+        updatePlottablesLineSegment(p, *thisLineSegment);
+        $$ = p;
+      }
+  | LINESEGMENT lineSegmentProperties
+      {
+        Plottables *p = newPlottables(); 
+	LineSegment *thisLineSegment = newLineSegment();
+        thisLineSegment->length = $2->length;
+	thisLineSegment->pA.label = reserveNextLineLabel();
+	thisLineSegment->pB.label = reserveNextLineLabel();
+        
+	if(!existsPoint(thisLineSegment->pA)){
+	  if(!existsPoint(thisLineSegment->pB)){
+	    //default position is (0,0)
+	    thisLineSegment->pA.x = thisLineSegment->pA.y = 0.0;
+	    thisLineSegment->pB.x = thisLineSegment->length;
+	    thisLineSegment->pB.y = 0.0;
+	  } else {
+	    thisLineSegment->pA.x = thisLineSegment->pB.x - thisLineSegment->length;
+	    thisLineSegment->pA.y = thisLineSegment->pB.y;
+	  }
+	} else {
+	  if(!existsPoint(thisLineSegment->pB)){
+	    thisLineSegment->pB.x = thisLineSegment->pA.x + thisLineSegment->length;
+	    thisLineSegment->pB.y = thisLineSegment->pA.y;
+	  }	  
+	}
+        updatePlottablesLineSegment(p, *thisLineSegment);
+        $$ = p;
+      }
+  | LINESEGMENT perpendicularToClause perpendicularConditionClause
+      {
+        Plottables *p = newPlottables();
+        //not implemented now
+        $$ = p;
+      }
+  | LINESEGMENT parallelToClause parallelConditionClause
+      {
+        Plottables *p = newPlottables();
+        //not implemented now
+        $$ = p;
+      }
+  | addressLineSegment GIVENTHAT conditions
+      {
+        Plottables *p = newPlottables();
+        LineSegment addressedLineSegment = $3->ls;
+        LineSegment thisLineSegment = *$1;
+        if(!areSameLineSegment(addressedLineSegment, thisLineSegment)){
+          spitError("line segment not same");
+        }
+        
+        $1->length = $3->length;
+	if(!existsPoint($1->pA)){
+	  if(!existsPoint($1->pB)){
+	    //default position is (0,0)
+	    $1->pA.x = $1->pA.y = 0.0;
+	    $1->pB.x = $1->length;
+	    $1->pB.y = 0.0;
+	  } else {
+	    $1->pA.x = $1->pB.x - $1->length;
+	    $1->pA.y = $1->pB.y;
+	  }
+	} else {
+	  if(!existsPoint($1->pB)){
+	    $1->pB.x = $1->pA.x + $1->length;
+	    $1->pB.y = $1->pA.y;
+	  }	  
+	}
+        updatePlottablesLineSegment(p, *$1);
+        $$ = p;
+      }
+  | addressLineSegment lineSegmentProperties
+      {
+        Plottables *p = newPlottables(); 
+        $1->length = $2->length;
+        
+	if(!existsPoint($1->pA)){
+	  if(!existsPoint($1->pB)){
+	    //default position is (0,0)
+	    $1->pA.x = $1->pA.y = 0.0;
+	    $1->pB.x = $1->length;
+	    $1->pB.y = 0.0;
+	  } else {
+	    $1->pA.x = $1->pB.x - $1->length;
+	    $1->pA.y = $1->pB.y;
+	  }
+	} else {
+	  if(!existsPoint($1->pB)){
+	    $1->pB.x = $1->pA.x + $1->length;
+	    $1->pB.y = $1->pA.y;
+	  }	  
+	}
+        updatePlottablesLineSegment(p, *$1);
+        $$ = p;
+      }
+  | addressLineSegment perpendicularToClause perpendicularConditionClause
+      {
+        Plottables *p = newPlottables();
+        //not implemented now
+        $$ = p;
+      }
+  | addressLineSegment parallelToClause parallelConditionClause
+      {
+        Plottables *p = newPlottables();
+        //not implemented now
+        $$ = p;
+      }
+
 ;
 
 conditions :
