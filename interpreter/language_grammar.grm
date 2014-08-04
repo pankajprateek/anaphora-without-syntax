@@ -219,6 +219,7 @@ arcsProperties =
 arcProperties =
     centerClause radiusClause intersectionClause
   | centerClause radiusClause
+  | centerClause passingThroughClause
 
 passingThroughClause =
     PASSINGTHROUGH addressPoint

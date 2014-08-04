@@ -1340,6 +1340,15 @@ arcProperties :
 	updatePlottablesArc(p, a);
 	$$ = p;
       }
+  | centerClause passingThroughClause
+      {
+	Plottables *p = newPlottables();
+	Arc a;
+	a.center = *$1;
+	a.radius = getDistance(*$1, *$2);
+	updatePlottablesArc(p, a);
+	$$ = p;
+      }  
 ;
 
 passingThroughClause :
