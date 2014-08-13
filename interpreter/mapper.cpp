@@ -3,10 +3,11 @@
 #include<stdio.h>
 #include<algorithm>
 #include<vector>
+#include<sstream>
 #include "mapper.h"
 #include "lib.h"
 #include "filter.h"
-#define debug 0
+#define debug 1
 
 vector<pair<string, int> > src;
 vector<pair<int, string> > trg;
@@ -15,6 +16,28 @@ vector<vector<pair<string, double> > > parsed;
 vector<string> split_parse;
 string parse;
 vector<pair<string, double> > sentences;
+
+string toString(int c) {
+  stringstream s;
+  string ret;
+  s<<c;
+  s>>ret;
+  return ret;
+}
+
+int isNumeral(string s) {
+  if(s == "one") { return 1; }
+  if(s == "two") { return 2; }
+  if(s == "three") { return 3; }
+  if(s == "four") { return 4; }
+  if(s == "five") { return 5; }
+  if(s == "six") { return 6; }
+  if(s == "seven") { return 7; }
+  if(s == "eight") { return 8; }
+  if(s == "nine") { return 9; }
+  if(s == "ten") { return 10; }
+  return 0;
+}
 
 bool compare(const pair<string, double>& l, const pair<string, double>& r) {
   return l.second > r.second;
@@ -162,6 +185,11 @@ vector<pair<string, double> > getPossibleMappings(string parse) {
     if(isPointSingle(split_parse[i]) or isPointDouble(split_parse[i]) or isPointTriple(split_parse[i]) or isNumber(split_parse[i]) or isLine(split_parse[i])) {
       vector<pair<string, double> > tmp;
       tmp.push_back(make_pair(split_parse[i],1));
+      parsed[i] = tmp;
+    }
+    if(int c = isNumeral(split_parse[i])) {
+      vector<pair<string, double> > tmp;
+      tmp.push_back(make_pair(toString(c), 1));
       parsed[i] = tmp;
     }
   }
