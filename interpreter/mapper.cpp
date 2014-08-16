@@ -187,11 +187,11 @@ vector<pair<string, double> > getPossibleMappings(string parse) {
       tmp.push_back(make_pair(split_parse[i],1));
       parsed[i] = tmp;
     }
-    if(int c = isNumeral(split_parse[i])) {
-      vector<pair<string, double> > tmp;
-      tmp.push_back(make_pair(toString(c), 1));
-      parsed[i] = tmp;
-    }
+    // if(int c = isNumeral(split_parse[i])) {
+    //   vector<pair<string, double> > tmp;
+    //   tmp.push_back(make_pair(toString(c), 1));
+    //   parsed[i] = tmp;
+    // }
   }
 
   if(debug) {
