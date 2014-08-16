@@ -1850,7 +1850,9 @@ parallelConditionClause :
 divideCommand :
     DIVIDE divisibleAndProperties
       {
-	$$ = newCommand();
+	Command *command = newCommand();
+	command->plottables = *$2;
+	$$ = command;
       }
 ;
 
@@ -1861,7 +1863,19 @@ DIVIDE :
 divisibleAndProperties :
     divisibleObject INTO INTEGER PARTS
       {
-	$$ = newPlottables();
+	// $$ = newPlottables();
+	LineSegment lS = *$1;
+	Plottables *p = newPlottables();
+	int number = $3;
+	double slope = getSlope(lS.pA, lS.pB);
+	double distance = getDistance(lS.pA, lS.pB);
+	int i;
+	for(i=0;i<number;i++) {
+	  Point P1 = locatePoint(lS.pA, slope, (distance*(i+1))/number);
+	  P1.label = reserveNextPointLabel();
+	  updatePlottablesPoint(p, P1);
+	}
+	$$=p;
       }
 ;
 
@@ -1876,11 +1890,13 @@ INTO :
 divisibleObject :
     addressLineSegment
       {
-	$$ = newLineSegment();
+	// $$ = newLineSegment();
+	$$ = $1;
       }
   | addressIndefinitePreviousObjects
       {
 	$$ = newLineSegment();
+	//Jeetesh
       }  
 ;
 
