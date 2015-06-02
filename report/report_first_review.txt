@@ -1,9 +1,0 @@
-A.  The lit review section is rather de-focused.  The paragraphs you have would go better in an 
-annotated bibl.  What is needed is a more specific review stating how these works are related and particularly their deficiencies w.r.t. the objectives. 
-
-0. Review the papers (or give a table showing which papers use a) parse knowledge, b) other 
-linguistic / domain knowledge. c) assume linguistic cues are already translated into logical forms
-
-C. If the annotations are not too big, replace the references w the annotated bibliography. 
-
-E. As part of the results, discuss some ambiguous / failures / difficulties . 
