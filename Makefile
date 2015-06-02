@@ -8,6 +8,7 @@ english-align:
 	cp ./corpus/english-source.txt ./aligner/english/
 	cp ./corpus/english-target.txt ./aligner/english/
 	make english --directory=./aligner
+	mkdir -p ./interpreter/english/
 	cp ./aligner/english/*.t3.* ./interpreter/english/alignment.txt
 	cp ./aligner/english/english-source.vcb ./interpreter/english/
 	cp ./aligner/english/english-target.vcb ./interpreter/english/
@@ -22,6 +23,7 @@ hindi-align:
 	cp ./corpus/hindi-source.txt ./aligner/hindi
 	cp ./corpus/hindi-target.txt ./aligner/hindi
 	make hindi --directory=./aligner
+	mkdir -p ./interpreter/hindi/
 	cp ./aligner/hindi/*.t3.* ./interpreter/hindi/alignment.txt
 	cp ./aligner/hindi/hindi-source.vcb ./interpreter/hindi/
 	cp ./aligner/hindi/hindi-target.vcb ./interpreter/hindi/	
@@ -34,3 +36,9 @@ clean:
 	make clean --directory=./aligner
 	# make clean --directory=./interpreter
 	rm -rf *.o *~
+
+install:
+       make install --directory=./giza-pp
+       make install --directory=./corpus
+       make --directory=./
+       make install --directory=./interpreter

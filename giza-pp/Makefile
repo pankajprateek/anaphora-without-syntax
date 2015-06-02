@@ -1,7 +1,7 @@
 
 .PHONY: gizapp mkcls-v2
 
-all: gizapp mkcls-v2
+install: gizapp mkcls-v2
 
 gizapp:
 	$(MAKE) -C GIZAppv2

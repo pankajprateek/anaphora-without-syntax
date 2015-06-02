@@ -16,3 +16,8 @@ clean:
 	rm -f english-source.txt english-target.txt
 	make clean --directory=./english
 	rm -f hindi-source.txt hindi-target.txt
+
+install:
+	g++ get0mod3Lines.cpp -o get0mod3Lines.out
+	g++ get1mod3Lines.cpp -o get1mod3Lines.out
+	g++ filter.cpp -o filter.out

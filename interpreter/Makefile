@@ -46,3 +46,5 @@ clean:
 	rm -f drawing_instructions.txt
 	rm -f *.out *.o
 	rm -f lex.yy.c y.tab.c
+
+install: y.tab.c lyparser.out interpret.out
