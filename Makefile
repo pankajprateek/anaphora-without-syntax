@@ -1,5 +1,9 @@
-.PHONY: all english hindi
-all: english hindi
+.PHONY: install
+install:
+	make install --directory=./giza-pp
+	make install --directory=./corpus
+	make --directory=./
+	make install --directory=./interpreter
 
 english: english-align english-interpret
 
@@ -36,9 +40,3 @@ clean:
 	make clean --directory=./aligner
 	# make clean --directory=./interpreter
 	rm -rf *.o *~
-
-install:
-	make install --directory=./giza-pp
-	make install --directory=./corpus
-	make --directory=./
-	make install --directory=./interpreter
