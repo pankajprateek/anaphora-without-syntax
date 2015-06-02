@@ -22,4 +22,9 @@ y.tab.h
 *.log
 *.gch
 *~
-interpreter/interpret
+interpreter/*
+aligner/*
+giza-pp/*
+corpus/*
+Makefile
+readme
