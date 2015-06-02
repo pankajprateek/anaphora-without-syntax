@@ -32,5 +32,5 @@ hindi-interpret:
 clean:
 	make clean --directory=./corpus
 	make clean --directory=./aligner
-	make clean --directory=./interpreter
+	# make clean --directory=./interpreter
 	rm -rf *.o *~

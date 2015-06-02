@@ -55,12 +55,12 @@ string getInterpretation(string parse){
 
     string preOrder = parseTree.preOrder();
     cout<< "PreOrder Traversal of Tree:" <<endl<< preOrder <<endl;
-    // if(FileDebug) {
-    //   ofstream file("testing.txt", ios::out|ios::app);
-    //   file<<"\nParse String:"<<endl<<parse<<endl;
-    //   file<<"Parse Successful. PreOrder Traversal:"<<endl<<preOrder<<endl;
-    //   file.close();
-    // }
+    if(FileDebug) {
+      ofstream file("testing.txt", ios::out|ios::app);
+      file<<"\nParse String:"<<endl<<parse<<endl;
+      file<<"Parse Successful. PreOrder Traversal:"<<endl<<preOrder<<endl;
+      file.close();
+    }
     ofstream file("preOrder.txt", ios::out);
     file<<parseTree.preOrder()<<endl;
     file.close();

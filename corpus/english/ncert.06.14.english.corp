@@ -122,7 +122,7 @@ Draw a line l
 construct line l
 
 Choose a point P on it
-construct point P on it
+mark point P on it
 
 With A as center, draw an arc to cut the rays of angle A at B and C
 A center construct arc intersecting rays angle A at B and C
@@ -173,7 +173,7 @@ Draw any line PQ
 construct any line PQ
 
 Take a point O on it
-construct point O on it
+mark point O on it
 
 with center as O, draw an arc of convenient radius which cuts the previous line at A
 center O construct arc any radius intersecting previous line at A

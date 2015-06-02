@@ -480,6 +480,11 @@ Since the mapping is statistical in nature, there might be various close alignme
 After incorporating the assumption that the every word in the sentence should map to either a word in the meta language or some null word, the map comes out to be nearly perfect. Even less frequent words like ``equilateral'', ``trapezium'' etc. map with very high probabilities with their meta langauge counterparts. This gives increased confidence in the correctness of meta langauge sentence produced from a given natural language sentence.
 \end{itemize}
 
+OA {\dn aura} OB {\dn kA samadvibhAjaka khI.mcie}
+A {\dn aura} B {\dn ko ke.mdra mAnakara aura} 4 {\dn aura} 5 {\dn semI trijyA lekara do cApa khI.mcie jo paraspara} C {\dn para kA.tatI ho}
+{\dn isakI do jIhvA khI.mcie}
+{\dn isake cAra bhAga kIjiye}
+
 \subsection{Future Work}
 \begin{enumerate}
 \item Enrich the corpus as well as grammar to cover larger domains of expressions e.g. having larger number of primitive steps, providing for higher-level primitives, specifying relative distances, dealing with anaphoras and references

@@ -61,8 +61,8 @@ draw AC length 7 cm
 construct its perpendicular bisector
 construct it perpendicular bisector
 
-#Cut off 3 cm lengths on either side of the drawn bisector.
-#cut line segments lengths 3 cm
+Cut off 3 cm lengths on either side of the drawn bisector.
+cut line segments lengths 3 cm
 
 mark their intersection points as O
 mark their intersection points O

@@ -196,9 +196,9 @@ LINE =
     'line'
 
 lineAndProperties = 
-    LINE [a-z] perpendicularToClause perpendicularConditionClause
+    LINE [a-z]
+  | LINE [a-z] perpendicularToClause perpendicularConditionClause
   | LINE [a-z] parallelToClause parallelConditionClause
-  | LINE [a-z]
 
 arcAndProperties =
   ARC arcProperties
@@ -482,8 +482,8 @@ NOTON =
 labelable =
     addressLineSegment
   | addressArc
-  | addressLine
   | addressPreviousObjects
+  | addressLine
 
 addressLine =
     [a-z]

@@ -169,8 +169,8 @@ mark it intersection point BX A
 Join AC
 join AC
 
-#Cut line segment BD equal to AC minus AB from the line BX extended on opposite side of line segment BC
-#cut line segment BD equals AC difference AB from line BX length difference length AC length AB
+Cut line segment BD equal to AC minus AB from the line BX extended on opposite side of line segment BC
+cut line segment BD equals AC difference AB from line BX length difference length AC length AB
 
 Join DC
 join DC
