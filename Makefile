@@ -2,7 +2,8 @@
 install:
 	make install --directory=./giza-pp
 	make install --directory=./corpus
-	make --directory=./
+	make english
+	make hindi
 	make install --directory=./interpreter
 
 english: english-align english-interpret
