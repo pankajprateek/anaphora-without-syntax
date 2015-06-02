@@ -1,4 +1,4 @@
-How to set up:
+Installation Instructions:
 $ make
 
 How to run for English
@@ -11,5 +11,5 @@ $ cd interpreter
 $ make hindi
 $ python plotter.py
 
-the implementation is not complete.
-The file interpreter/lyparse.y requires more work to be complete.
+Publication Link: http://ltrc.iiit.ac.in/icon/2014/proceedings/File74-p179.pdf
+Project Page: http://cse.iitk.ac.in/users/grounded-lang/pratikkr/
