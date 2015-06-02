@@ -38,7 +38,7 @@ clean:
 	rm -rf *.o *~
 
 install:
-       make install --directory=./giza-pp
-       make install --directory=./corpus
-       make --directory=./
-       make install --directory=./interpreter
+	make install --directory=./giza-pp
+	make install --directory=./corpus
+	make --directory=./
+	make install --directory=./interpreter
