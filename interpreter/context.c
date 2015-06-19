@@ -1,11 +1,12 @@
-#include "lylib.h"
-#include "aux.h"
-#include "context.h"
-#include "history.h"
-#include "functions.h"
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <time.h>
+#include "context.h"
+#include "lylib.h"
+#include "aux.h"
+#include "history.h"
+#include "functions.h"
 #define false 0
 #define true 1
 #define CDEBUG 1

@@ -1,9 +1,10 @@
-#include "lylib.h"
+#include <assert.h>
+#include <string.h>
 #include "context.h"
-#include "aux.h"
 #include "history.h"
+#include "lylib.h"
+#include "aux.h"
 #include "functions.h"
-#include<assert.h>
 #define HDEBUG 1
 
 Plottables pastObjects[MAX_NUM_OBJECTS];
