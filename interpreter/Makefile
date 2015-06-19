@@ -5,7 +5,7 @@ CPPOBJECTS = $(CPPSOURCES:.cpp=.o)
 CPPHEADERS = $(CPPSOURCES:.cpp=.h)
 EXECUTABLE = interpret.out
 
-CSOURCES = functions.c history.c lylib.c aux.c context.c lex.yy.c y.tab.c
+CSOURCES = context.c functions.c history.c lylib.c aux.c lex.yy.c y.tab.c
 COBJECTS = $(CSOURCES:.c=.o)
 
 #~ all: english hindi
@@ -48,3 +48,8 @@ clean:
 	rm -f lex.yy.c y.tab.c
 
 install: y.tab.c lyparser.out interpret.out
+	rm -f context.txt diff.txt history.txt
+	echo "~POINTS\n~LINESEGMENTS\n~LINES\n~ARCS\n~ANGLE\n~CIRCLE" > diff.txt
+	echo "~POINTS\n~LINESEGMENTS\n~LINES\n~ARCS\n~ANGLE\n~CIRCLE" > context.txt
+	echo "~POINTS\n~LINESEGMENTS\n~LINES\n~ARCS\n~ANGLE\n~CIRCLE\n~PLOTTABLE END" > history.txt
+
