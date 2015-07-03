@@ -49,7 +49,7 @@ clean:
 
 install: y.tab.c lyparser.out interpret.out
 	rm -f context.txt diff.txt history.txt
-	echo "~POINTS\n~LINESEGMENTS\n~LINES\n~ARCS\n~ANGLE\n~CIRCLE" > diff.txt
-	echo "~POINTS\n~LINESEGMENTS\n~LINES\n~ARCS\n~ANGLE\n~CIRCLE" > context.txt
-	echo "~POINTS\n~LINESEGMENTS\n~LINES\n~ARCS\n~ANGLE\n~CIRCLE\n~PLOTTABLE END" > history.txt
+	echo -e "~POINTS\n~LINESEGMENTS\n~LINES\n~ARCS\n~ANGLE\n~CIRCLE" > diff.txt
+	echo -e "~POINTS\n~LINESEGMENTS\n~LINES\n~ARCS\n~ANGLE\n~CIRCLE" > context.txt
+	echo -e "~POINTS\n~LINESEGMENTS\n~LINES\n~ARCS\n~ANGLE\n~CIRCLE\n~PLOTTABLE END" > history.txt
 
